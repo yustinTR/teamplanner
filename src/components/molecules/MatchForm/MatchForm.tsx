@@ -30,20 +30,25 @@ export function MatchForm({
   const [loading, setLoading] = useState(false);
   const [homeAway, setHomeAway] = useState<HomeAway>(defaultValues?.home_away ?? "home");
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setLoading(true);
-    await onSubmit({
-      opponent: formData.get("opponent") as string,
-      match_date: formData.get("match_date") as string,
-      location: (formData.get("location") as string) || null,
-      home_away: homeAway,
-      notes: (formData.get("notes") as string) || null,
-    });
-    setLoading(false);
+    try {
+      const formData = new FormData(e.currentTarget);
+      await onSubmit({
+        opponent: formData.get("opponent") as string,
+        match_date: formData.get("match_date") as string,
+        location: (formData.get("location") as string) || null,
+        home_away: homeAway,
+        notes: (formData.get("notes") as string) || null,
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <form action={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <FormField label="Tegenstander" htmlFor="opponent">
         <Input
           id="opponent"

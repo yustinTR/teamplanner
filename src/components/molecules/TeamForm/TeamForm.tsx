@@ -14,17 +14,22 @@ interface TeamFormProps {
 export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: TeamFormProps) {
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setLoading(true);
-    await onSubmit({
-      name: formData.get("name") as string,
-      club_name: formData.get("club_name") as string,
-    });
-    setLoading(false);
+    try {
+      const formData = new FormData(e.currentTarget);
+      await onSubmit({
+        name: formData.get("name") as string,
+        club_name: formData.get("club_name") as string,
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <form action={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="name">Teamnaam</Label>
         <Input

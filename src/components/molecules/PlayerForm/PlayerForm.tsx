@@ -35,20 +35,25 @@ export function PlayerForm({
   const [loading, setLoading] = useState(false);
   const [position, setPosition] = useState<string>(defaultValues?.position ?? "");
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setLoading(true);
-    const jerseyNum = formData.get("jersey_number") as string;
-    await onSubmit({
-      name: formData.get("name") as string,
-      position: position || null,
-      jersey_number: jerseyNum ? parseInt(jerseyNum, 10) : null,
-      notes: (formData.get("notes") as string) || null,
-    });
-    setLoading(false);
+    try {
+      const formData = new FormData(e.currentTarget);
+      const jerseyNum = formData.get("jersey_number") as string;
+      await onSubmit({
+        name: formData.get("name") as string,
+        position: position || null,
+        jersey_number: jerseyNum ? parseInt(jerseyNum, 10) : null,
+        notes: (formData.get("notes") as string) || null,
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <form action={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <FormField label="Naam" htmlFor="name">
         <Input
           id="name"
