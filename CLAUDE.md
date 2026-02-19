@@ -6,31 +6,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 TeamPlanner is a mobile-first PWA for amateur football team management, replacing WhatsApp-based coordination. Coaches manage teams, matches, and lineups; players submit availability. Built for simplicity — amateur football, not enterprise software.
 
-**Current status: Phase 0 — Setup & Design System.** Next.js project not yet initialized. See PROJECT_CONTEXT.md and CONVENTIONS.md for full specs.
+**Current status: Phase 0 — Setup & Design System complete.** See PROJECT_CONTEXT.md and CONVENTIONS.md for full specs.
 
 ## Commands
-
-Not yet configured (Phase 0). Once initialized, expected commands:
 
 ```bash
 npm run dev              # Start Next.js dev server
 npm run build            # Production build
 npm run lint             # ESLint
-npm run test             # Vitest + React Testing Library
-npx vitest run <path>    # Run a single test file
+npm run storybook        # Start Storybook dev server (port 6006)
+npx vitest               # Run all tests (Storybook stories via Playwright browser)
 
 # Supabase
-supabase start           # Local Supabase
-supabase migration new <name>  # Create migration (never edit existing ones)
-supabase gen types typescript  # Regenerate database types → src/lib/supabase/types.ts
+npx supabase start       # Local Supabase
+npx supabase migration new <name>  # Create migration (never edit existing ones)
+npx supabase gen types typescript --local > src/lib/supabase/types.ts  # Regenerate DB types
 
 # shadcn/ui
-npx shadcn-ui add <component>  # Add shadcn component
+npx shadcn@latest add <component>  # Add shadcn component
 ```
 
 ## Tech Stack
 
-Next.js 14+ (App Router) · TypeScript (strict) · Tailwind CSS (mobile-first) · shadcn/ui · Zustand (client state) + TanStack React Query (server state) · Supabase (Auth, PostgreSQL, Realtime, Storage, Edge Functions) · dnd-kit (drag & drop) · Serwist (PWA/service worker) · Vitest · Lucide React · Deployed on Vercel
+Next.js 16 (App Router) · TypeScript (strict) · Tailwind CSS v4 (mobile-first) · shadcn/ui · Zustand (client state) + TanStack React Query (server state) · Supabase (Auth, PostgreSQL, Realtime, Storage, Edge Functions) · Storybook 10 (component testing) · Vitest + Playwright (browser tests) · dnd-kit (drag & drop) · Serwist (PWA/service worker) · Lucide React · Deployed on Vercel
 
 ## Architecture
 
@@ -44,7 +42,7 @@ All UI components follow Atomic Design with strict rules per level:
 - **templates/** — Layout/structure only, receive children/slots, no data fetching
 - **pages/** — Fetch data via hooks, pass to templates/organisms, connected to `app/` routes
 
-Each component lives in its own PascalCase folder with `Component.tsx`, `Component.test.tsx`, and `index.ts` (barrel export).
+Each component lives in its own PascalCase folder with `Component.tsx`, `Component.stories.tsx`, and `index.ts` (barrel export).
 
 ### Data Fetching Pattern
 
@@ -105,6 +103,41 @@ Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can upd
 - Props as `interface`, not `type`
 - Shared types in `src/types/`
 - DB types generated via `supabase gen types typescript`
+
+### Storybook & Testing
+
+**Every component MUST have a Storybook story file (`Component.stories.tsx`).** No exceptions. This is the primary way components are documented and tested.
+
+**Component folder structure:**
+```
+src/components/atoms/Button/
+├── Button.tsx              → Component
+├── Button.stories.tsx      → Storybook stories (REQUIRED)
+├── index.ts                → Barrel export
+```
+
+**Story requirements:**
+- Every component variant must have its own story
+- Use `args` for interactive controls
+- Test all sizes, states (disabled, loading), and edge cases
+- Stories serve as living documentation — write them as if they're examples for other developers
+
+**Testing workflow (Vitest + Playwright browser):**
+- Stories are automatically run as tests via `@storybook/addon-vitest` with Playwright browser
+- Run `npx vitest` to execute all story-based tests headlessly
+- The `a11y` addon checks accessibility violations on every story
+
+**Pre-commit checklist — before every commit, verify:**
+1. `npm run build` — Production build succeeds without errors
+2. `npm run lint` — No ESLint errors
+3. `npx vitest run` — All Storybook tests pass (runs stories in Playwright headless browser)
+4. Visually verify new/changed components in Storybook (`npm run storybook`)
+
+**Do NOT commit code that:**
+- Introduces components without stories
+- Breaks existing Storybook stories
+- Fails `npx vitest run`
+- Has TypeScript or lint errors
 
 ### Git
 
