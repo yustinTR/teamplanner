@@ -1,0 +1,155 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Calendar, Plus } from "lucide-react";
+import { useAuthStore } from "@/stores/auth-store";
+import { useMatches, useCreateMatch } from "@/hooks/use-matches";
+import { MatchCard } from "@/components/organisms/MatchCard";
+import { Button } from "@/components/atoms/Button";
+import { EmptyState } from "@/components/atoms/EmptyState";
+import { Spinner } from "@/components/atoms/Spinner";
+import { MatchForm } from "@/components/molecules/MatchForm";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import type { Match } from "@/types";
+
+function groupByMonth(matches: Match[]): Record<string, Match[]> {
+  const groups: Record<string, Match[]> = {};
+  for (const match of matches) {
+    const date = new Date(match.match_date);
+    const key = date.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(match);
+  }
+  return groups;
+}
+
+export function MatchList() {
+  const router = useRouter();
+  const { currentTeam, isCoach } = useAuthStore();
+  const { data: matches, isLoading } = useMatches(currentTeam?.id);
+  const createMatch = useCreateMatch();
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-12">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (!matches?.length) {
+    return (
+      <EmptyState
+        icon={Calendar}
+        title="Geen wedstrijden"
+        description="Plan je eerste wedstrijd om te beginnen."
+        action={
+          isCoach ? (
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+              <SheetTrigger asChild>
+                <Button>
+                  <Plus className="mr-2 size-4" />
+                  Wedstrijd toevoegen
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+                <SheetHeader>
+                  <SheetTitle>Wedstrijd toevoegen</SheetTitle>
+                </SheetHeader>
+                <div className="px-4 pb-4">
+                  <MatchForm
+                    submitLabel="Toevoegen"
+                    onSubmit={async (data) => {
+                      if (!currentTeam) return;
+                      await createMatch.mutateAsync({
+                        ...data,
+                        team_id: currentTeam.id,
+                      });
+                      setSheetOpen(false);
+                    }}
+                  />
+                </div>
+              </SheetContent>
+            </Sheet>
+          ) : undefined
+        }
+      />
+    );
+  }
+
+  // Sort: upcoming first, then by date
+  const now = new Date().toISOString();
+  const upcoming = matches.filter(
+    (m) => m.status === "upcoming" && m.match_date >= now
+  );
+  const past = matches.filter(
+    (m) => m.status !== "upcoming" || m.match_date < now
+  );
+  past.reverse();
+
+  const sortedMatches = [...upcoming, ...past];
+  const grouped = groupByMonth(sortedMatches);
+
+  return (
+    <div>
+      <div className="mb-4 flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">
+          {matches.length} {matches.length === 1 ? "wedstrijd" : "wedstrijden"}
+        </p>
+        {isCoach && (
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+            <SheetTrigger asChild>
+              <Button size="sm">
+                <Plus className="mr-1 size-4" />
+                Toevoegen
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle>Wedstrijd toevoegen</SheetTitle>
+              </SheetHeader>
+              <div className="px-4 pb-4">
+                <MatchForm
+                  submitLabel="Toevoegen"
+                  onSubmit={async (data) => {
+                    if (!currentTeam) return;
+                    await createMatch.mutateAsync({
+                      ...data,
+                      team_id: currentTeam.id,
+                    });
+                    setSheetOpen(false);
+                  }}
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
+        )}
+      </div>
+
+      {Object.entries(grouped).map(([month, monthMatches]) => (
+        <div key={month} className="mb-6">
+          <h2 className="mb-2 text-sm font-medium capitalize text-muted-foreground">
+            {month}
+          </h2>
+          <div className="space-y-2">
+            {monthMatches.map((match) => (
+              <MatchCard
+                key={match.id}
+                match={match}
+                onClick={() => router.push(`/matches/${match.id}`)}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

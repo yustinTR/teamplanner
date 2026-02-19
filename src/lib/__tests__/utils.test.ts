@@ -1,0 +1,62 @@
+import { describe, it, expect } from "vitest";
+import { cn, formatMatchDate, formatDateShort, getInviteUrl } from "../utils";
+
+describe("cn", () => {
+  it("merges class names", () => {
+    expect(cn("foo", "bar")).toBe("foo bar");
+  });
+
+  it("handles conditional classes", () => {
+    expect(cn("base", false && "hidden", "visible")).toBe("base visible");
+  });
+
+  it("deduplicates conflicting Tailwind classes", () => {
+    expect(cn("p-4", "p-2")).toBe("p-2");
+  });
+
+  it("handles empty input", () => {
+    expect(cn()).toBe("");
+  });
+});
+
+describe("formatMatchDate", () => {
+  it("formats a date in Dutch locale with weekday, day, month, and time", () => {
+    const result = formatMatchDate("2026-03-15T14:00:00Z");
+    // Should contain Dutch weekday and month
+    expect(result).toContain("maart");
+    expect(result).toContain("15");
+  });
+
+  it("includes time component", () => {
+    const result = formatMatchDate("2026-06-20T18:30:00Z");
+    // Time should be present (exact format depends on locale/timezone)
+    expect(result).toMatch(/\d{2}:\d{2}/);
+  });
+});
+
+describe("formatDateShort", () => {
+  it("formats a date with day, short month, and time", () => {
+    const result = formatDateShort("2026-03-15T14:00:00Z");
+    expect(result).toContain("15");
+    // Short month in Dutch
+    expect(result).toMatch(/mrt|mar/i);
+  });
+
+  it("includes time", () => {
+    const result = formatDateShort("2026-06-20T18:30:00Z");
+    expect(result).toMatch(/\d{2}:\d{2}/);
+  });
+});
+
+describe("getInviteUrl", () => {
+  it("builds a URL with the invite code", () => {
+    const url = getInviteUrl("ABC123");
+    expect(url).toContain("/join/ABC123");
+  });
+
+  it("uses the base URL from env or fallback", () => {
+    const url = getInviteUrl("XYZ");
+    // In Node test env without window, should use env or fallback
+    expect(url).toMatch(/^https?:\/\/.+\/join\/XYZ$/);
+  });
+});
