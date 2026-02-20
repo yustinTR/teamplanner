@@ -1,3 +1,7 @@
+-- supabase:disable-transaction
+-- Disable transaction because ALTER TYPE ADD VALUE cannot run inside a transaction,
+-- and new enum values cannot be used in the same transaction they were added.
+
 -- Add new team type enum values for better age group coverage
 -- JO15 and below play 7v7, JO17+ play 11v11
 ALTER TYPE public.team_type ADD VALUE IF NOT EXISTS 'jo19_jo17';
