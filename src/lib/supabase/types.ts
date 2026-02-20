@@ -440,7 +440,7 @@ export type Database = {
       availability_status: "available" | "unavailable" | "maybe"
       home_away: "home" | "away"
       match_status: "upcoming" | "completed" | "cancelled"
-      team_type: "senioren" | "jo19_jo15" | "jo13_jo11" | "jo9_jo7" | "g_team"
+      team_type: "senioren" | "jo19_jo17" | "jo15_jo13" | "jo11_jo9" | "g_team" | "jo19_jo15" | "jo13_jo11" | "jo9_jo7"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -575,7 +575,7 @@ export const Constants = {
       availability_status: ["available", "unavailable", "maybe"],
       home_away: ["home", "away"],
       match_status: ["upcoming", "completed", "cancelled"],
-      team_type: ["senioren", "jo19_jo15", "jo13_jo11", "jo9_jo7", "g_team"],
+      team_type: ["senioren", "jo19_jo17", "jo15_jo13", "jo11_jo9", "g_team", "jo19_jo15", "jo13_jo11", "jo9_jo7"],
     },
   },
 } as const

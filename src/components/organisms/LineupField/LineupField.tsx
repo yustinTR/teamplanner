@@ -14,10 +14,9 @@ import { FormationSelector } from "@/components/molecules/FormationSelector";
 import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
-import { FORMATIONS } from "@/lib/constants";
+import { FORMATIONS, TEAM_TYPE_CONFIG, getFormationsForTeamType, getDefaultFormation } from "@/lib/constants";
 import { generateSubstitutionPlan, type SubstituteSuggestion, matchPlayerToPlayer } from "@/lib/lineup-generator";
 import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
-import { TEAM_TYPE_CONFIG } from "@/lib/constants";
 import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan } from "@/types";
 
 interface LineupFieldProps {
@@ -32,8 +31,12 @@ export function LineupField({ matchId }: LineupFieldProps) {
   const { data: existingLineup, isLoading: lineupLoading } = useLineup(matchId);
   const saveLineup = useSaveLineup();
 
+  const teamType = currentTeam?.team_type ?? "senioren";
+  const defaultFormation = getDefaultFormation(teamType);
+  const teamFormations = getFormationsForTeamType(teamType);
+
   const [formation, setFormation] = useState(
-    existingLineup?.formation ?? "4-3-3"
+    existingLineup?.formation ?? defaultFormation
   );
   const [positions, setPositions] = useState<LineupPosition[]>(
     () => (existingLineup?.positions as unknown as LineupPosition[]) ?? []
@@ -45,7 +48,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
   // Update state when lineup loads
   useState(() => {
     if (existingLineup) {
-      setFormation(existingLineup.formation ?? "4-3-3");
+      setFormation(existingLineup.formation ?? defaultFormation);
       setPositions(
         (existingLineup.positions as unknown as LineupPosition[]) ?? []
       );
@@ -83,13 +86,13 @@ export function LineupField({ matchId }: LineupFieldProps) {
   const allPlayersForMap: Player[] = [...(players ?? []), ...matchPlayersList];
   const playerMap = new Map(allPlayersForMap.map((p) => [p.id, p]));
 
-  const formationSlots = FORMATIONS[formation] ?? FORMATIONS["4-3-3"];
+  const formationSlots = FORMATIONS[formation] ?? teamFormations[defaultFormation];
 
   const handleFormationChange = useCallback(
     (newFormation: string) => {
       setFormation(newFormation);
       // Reset positions when changing formation
-      const newSlots = FORMATIONS[newFormation] ?? [];
+      const newSlots = teamFormations[newFormation] ?? FORMATIONS[newFormation] ?? [];
       const newPositions: LineupPosition[] = newSlots.map((slot, i) => {
         const existing = positions[i];
         return existing
@@ -108,7 +111,6 @@ export function LineupField({ matchId }: LineupFieldProps) {
       ...matchPlayersList,
     ];
 
-    const teamType = currentTeam?.team_type ?? "senioren";
     const config = TEAM_TYPE_CONFIG[teamType];
 
     const result = generateSubstitutionPlan(
@@ -195,7 +197,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <FormationSelector value={formation} onChange={handleFormationChange} />
+          <FormationSelector value={formation} onChange={handleFormationChange} teamType={teamType} />
           <Button
             variant="outline"
             size="sm"

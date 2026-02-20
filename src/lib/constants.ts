@@ -1,5 +1,4 @@
 import type { LineupPosition } from "@/types/lineup";
-import type { TeamType } from "@/types/team";
 
 // --- Team type configuration ---
 
@@ -10,20 +9,31 @@ export interface TeamTypeConfig {
   fieldPlayers: number;
 }
 
-export const TEAM_TYPE_CONFIG: Record<TeamType, TeamTypeConfig> = {
+export const TEAM_TYPE_CONFIG: Record<string, TeamTypeConfig> = {
   senioren: { label: "Senioren", halfMinutes: 45, halves: 2, fieldPlayers: 11 },
-  jo19_jo15: { label: "JO19 - JO15", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
-  jo13_jo11: { label: "JO13 - JO11", halfMinutes: 30, halves: 2, fieldPlayers: 11 },
-  jo9_jo7: { label: "JO9 - JO7", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
+  jo19_jo17: { label: "JO19 - JO17", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
+  jo15_jo13: { label: "JO15 - JO13", halfMinutes: 30, halves: 2, fieldPlayers: 7 },
+  jo11_jo9: { label: "JO11 - JO9", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
   g_team: { label: "G-Team", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
+  // Legacy values (still valid in DB, mapped to new configs)
+  jo19_jo15: { label: "JO19 - JO15", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
+  jo13_jo11: { label: "JO13 - JO11", halfMinutes: 30, halves: 2, fieldPlayers: 7 },
+  jo9_jo7: { label: "JO9 - JO7", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
 };
 
-export const TEAM_TYPE_LABELS: Record<TeamType, string> = {
+// Only show these team types in the UI (excludes legacy values)
+export const ACTIVE_TEAM_TYPES = ["senioren", "jo19_jo17", "jo15_jo13", "jo11_jo9", "g_team"] as const;
+
+export const TEAM_TYPE_LABELS: Record<string, string> = {
   senioren: "Senioren",
+  jo19_jo17: "JO19 - JO17",
+  jo15_jo13: "JO15 - JO13",
+  jo11_jo9: "JO11 - JO9",
+  g_team: "G-Team",
+  // Legacy
   jo19_jo15: "JO19 - JO15",
   jo13_jo11: "JO13 - JO11",
   jo9_jo7: "JO9 - JO7",
-  g_team: "G-Team",
 };
 
 // --- Attendance labels (events) ---
@@ -36,7 +46,8 @@ export const ATTENDANCE_LABELS: Record<string, string> = {
 
 // --- Formations ---
 
-export const FORMATIONS: Record<string, Omit<LineupPosition, "player_id">[]> = {
+// 11v11 formations (senioren, JO19-JO17)
+export const FORMATIONS_11: Record<string, Omit<LineupPosition, "player_id">[]> = {
   "4-3-3": [
     { x: 50, y: 92, position_label: "K" },
     { x: 15, y: 75, position_label: "LB" },
@@ -90,6 +101,70 @@ export const FORMATIONS: Record<string, Omit<LineupPosition, "player_id">[]> = {
     { x: 50, y: 15, position_label: "ST" },
   ],
 };
+
+// 7v7 formations (JO15 en lager, G-team)
+export const FORMATIONS_7: Record<string, Omit<LineupPosition, "player_id">[]> = {
+  "2-3-1": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 30, y: 72, position_label: "CB" },
+    { x: 70, y: 72, position_label: "CB" },
+    { x: 20, y: 48, position_label: "LM" },
+    { x: 50, y: 45, position_label: "CM" },
+    { x: 80, y: 48, position_label: "RM" },
+    { x: 50, y: 20, position_label: "ST" },
+  ],
+  "3-2-1": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 20, y: 72, position_label: "LB" },
+    { x: 50, y: 75, position_label: "CB" },
+    { x: 80, y: 72, position_label: "RB" },
+    { x: 35, y: 48, position_label: "CM" },
+    { x: 65, y: 48, position_label: "CM" },
+    { x: 50, y: 20, position_label: "ST" },
+  ],
+  "2-2-2": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 30, y: 72, position_label: "CB" },
+    { x: 70, y: 72, position_label: "CB" },
+    { x: 30, y: 48, position_label: "CM" },
+    { x: 70, y: 48, position_label: "CM" },
+    { x: 30, y: 22, position_label: "LW" },
+    { x: 70, y: 22, position_label: "RW" },
+  ],
+  "1-3-2": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 50, y: 72, position_label: "CB" },
+    { x: 20, y: 48, position_label: "LM" },
+    { x: 50, y: 45, position_label: "CM" },
+    { x: 80, y: 48, position_label: "RM" },
+    { x: 35, y: 20, position_label: "ST" },
+    { x: 65, y: 20, position_label: "ST" },
+  ],
+};
+
+// Combined lookup (for backward compatibility with lineup-generator)
+export const FORMATIONS: Record<string, Omit<LineupPosition, "player_id">[]> = {
+  ...FORMATIONS_11,
+  ...FORMATIONS_7,
+};
+
+// Helper to get the right formations for a team type
+export function getFormationsForTeamType(teamType: string): Record<string, Omit<LineupPosition, "player_id">[]> {
+  const config = TEAM_TYPE_CONFIG[teamType];
+  if (config && config.fieldPlayers <= 7) {
+    return FORMATIONS_7;
+  }
+  return FORMATIONS_11;
+}
+
+// Helper to get the default formation for a team type
+export function getDefaultFormation(teamType: string): string {
+  const config = TEAM_TYPE_CONFIG[teamType];
+  if (config && config.fieldPlayers <= 7) {
+    return "2-3-1";
+  }
+  return "4-3-3";
+}
 
 export const AVAILABILITY_LABELS: Record<string, string> = {
   available: "Beschikbaar",

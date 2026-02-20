@@ -1,18 +1,21 @@
 "use client";
 
 import { Button } from "@/components/atoms/Button";
-import { FORMATIONS } from "@/lib/constants";
+import { getFormationsForTeamType } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 interface FormationSelectorProps {
   value: string;
   onChange: (formation: string) => void;
+  teamType?: string;
 }
 
-export function FormationSelector({ value, onChange }: FormationSelectorProps) {
+export function FormationSelector({ value, onChange, teamType = "senioren" }: FormationSelectorProps) {
+  const formations = getFormationsForTeamType(teamType);
+
   return (
     <div className="flex gap-2 overflow-x-auto pb-2">
-      {Object.keys(FORMATIONS).map((formation) => (
+      {Object.keys(formations).map((formation) => (
         <Button
           key={formation}
           variant={value === formation ? "default" : "outline"}

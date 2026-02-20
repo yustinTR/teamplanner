@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TEAM_TYPE_LABELS } from "@/lib/constants";
+import { TEAM_TYPE_LABELS, ACTIVE_TEAM_TYPES } from "@/lib/constants";
 import type { TeamType } from "@/types";
 
 interface TeamFormProps {
@@ -69,9 +69,9 @@ export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: T
             <SelectValue placeholder="Kies een teamtype" />
           </SelectTrigger>
           <SelectContent>
-            {Object.entries(TEAM_TYPE_LABELS).map(([value, label]) => (
+            {ACTIVE_TEAM_TYPES.map((value) => (
               <SelectItem key={value} value={value}>
-                {label}
+                {TEAM_TYPE_LABELS[value]}
               </SelectItem>
             ))}
           </SelectContent>
