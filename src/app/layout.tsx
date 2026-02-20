@@ -48,7 +48,7 @@ export const metadata: Metadata = {
       "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/api/og",
         width: 1200,
         height: 630,
         alt: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     title: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
     description:
       "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen.",
-    images: ["/og-image.png"],
+    images: ["/api/og"],
   },
   robots: {
     index: true,

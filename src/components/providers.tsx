@@ -1,6 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/next";
 import { useState, useEffect } from "react";
 import { useUiStore } from "@/stores/ui-store";
 import { WifiOff } from "lucide-react";
@@ -54,6 +55,7 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Analytics />
       <OfflineBanner />
       {children}
     </QueryClientProvider>
