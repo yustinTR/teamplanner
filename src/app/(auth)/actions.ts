@@ -20,24 +20,6 @@ export async function loginWithPassword(formData: FormData) {
   redirect("/dashboard");
 }
 
-export async function loginWithMagicLink(formData: FormData) {
-  const supabase = await createClient();
-  const email = formData.get("email") as string;
-
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/auth/callback`,
-    },
-  });
-
-  if (error) {
-    return { error: "Kon geen magic link versturen. Probeer het opnieuw." };
-  }
-
-  return { success: "Check je e-mail voor de inloglink." };
-}
-
 export async function register(formData: FormData) {
   const supabase = await createClient();
   const name = formData.get("name") as string;

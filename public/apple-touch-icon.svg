@@ -1,41 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#065f46"/>
       <stop offset="100%" stop-color="#059669"/>
     </linearGradient>
   </defs>
-  <!-- Rounded square background -->
   <rect width="512" height="512" rx="96" fill="url(#bg)"/>
-
-  <!-- Calendar top bar -->
   <rect x="116" y="96" width="280" height="44" rx="10" fill="white" opacity="0.2"/>
-  <!-- Calendar binding rings -->
   <rect x="178" y="82" width="14" height="30" rx="5" fill="white" opacity="0.4"/>
   <rect x="320" y="82" width="14" height="30" rx="5" fill="white" opacity="0.4"/>
-
-  <!-- Football / soccer ball -->
   <circle cx="256" cy="280" r="134" fill="white"/>
-
-  <!-- Classic pentagon pattern on ball -->
-  <!-- Center pentagon -->
   <polygon points="256,232 282,250 272,280 240,280 230,250" fill="#065f46"/>
-  <!-- Lines from center pentagon to edges -->
   <line x1="256" y1="232" x2="256" y2="188" stroke="#0d7a5f" stroke-width="4.5" stroke-linecap="round"/>
   <line x1="282" y1="250" x2="318" y2="228" stroke="#0d7a5f" stroke-width="4.5" stroke-linecap="round"/>
   <line x1="272" y1="280" x2="306" y2="308" stroke="#0d7a5f" stroke-width="4.5" stroke-linecap="round"/>
   <line x1="240" y1="280" x2="206" y2="308" stroke="#0d7a5f" stroke-width="4.5" stroke-linecap="round"/>
   <line x1="230" y1="250" x2="194" y2="228" stroke="#0d7a5f" stroke-width="4.5" stroke-linecap="round"/>
-
-  <!-- Top outer pentagon -->
   <polygon points="256,188 276,172 236,172" fill="#065f46" opacity="0.5"/>
-  <!-- Top-right outer pentagon -->
   <polygon points="318,228 338,236 332,208" fill="#065f46" opacity="0.5"/>
-  <!-- Bottom-right outer pentagon -->
   <polygon points="306,308 326,328 336,298" fill="#065f46" opacity="0.5"/>
-  <!-- Bottom-left outer pentagon -->
   <polygon points="206,308 186,298 176,328" fill="#065f46" opacity="0.5"/>
-  <!-- Top-left outer pentagon -->
   <polygon points="194,228 180,208 174,236" fill="#065f46" opacity="0.5"/>
-
 </svg>

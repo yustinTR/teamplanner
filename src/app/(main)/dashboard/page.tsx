@@ -11,19 +11,14 @@ export default function DashboardPage() {
   if (!currentTeam) {
     return (
       <div className="flex flex-col items-center justify-center p-4 py-20">
-        <div className="mx-auto mb-4 flex size-20 items-center justify-center rounded-full bg-primary-100">
-          <svg
-            viewBox="0 0 24 24"
-            className="size-10 text-primary-700"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-            <path d="M2 12h20" />
-          </svg>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/icons/icon-192x192.svg"
+          alt="MyTeamPlanner logo"
+          width={80}
+          height={80}
+          className="mx-auto mb-4 rounded-2xl"
+        />
         <h1 className="text-2xl font-bold">Welkom bij MyTeamPlanner</h1>
         <p className="mt-2 text-center text-muted-foreground">
           Je hebt nog geen team. Maak er een aan om te beginnen.

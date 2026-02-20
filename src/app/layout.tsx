@@ -70,6 +70,14 @@ export const metadata: Metadata = {
       follow: true,
     },
   },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.svg", type: "image/svg+xml" },
+    ],
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

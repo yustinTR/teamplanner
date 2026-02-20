@@ -2,38 +2,21 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail } from "lucide-react";
-import { loginWithPassword, loginWithMagicLink } from "@/app/(auth)/actions";
+import { loginWithPassword } from "@/app/(auth)/actions";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Label } from "@/components/ui/label";
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleLogin(formData: FormData) {
     setError(null);
-    setSuccess(null);
     setLoading(true);
     const result = await loginWithPassword(formData);
     if (result?.error) {
       setError(result.error);
-    }
-    setLoading(false);
-  }
-
-  async function handleMagicLink(formData: FormData) {
-    setError(null);
-    setSuccess(null);
-    setLoading(true);
-    const result = await loginWithMagicLink(formData);
-    if (result?.error) {
-      setError(result.error);
-    }
-    if (result?.success) {
-      setSuccess(result.success);
     }
     setLoading(false);
   }
@@ -77,47 +60,9 @@ export function LoginForm() {
             {error}
           </div>
         )}
-        {success && (
-          <div className="rounded-lg bg-success-50 p-3 text-sm text-success">
-            {success}
-          </div>
-        )}
 
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? "Bezig..." : "Inloggen"}
-        </Button>
-      </form>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-white px-2 text-muted-foreground">of</span>
-        </div>
-      </div>
-
-      <form action={handleMagicLink}>
-        <input type="hidden" name="email" id="magic-email" />
-        <Button
-          type="submit"
-          variant="outline"
-          className="w-full gap-2"
-          disabled={loading}
-          onClick={(e) => {
-            const emailInput = document.getElementById("email") as HTMLInputElement;
-            const hiddenInput = document.getElementById("magic-email") as HTMLInputElement;
-            if (emailInput && hiddenInput) {
-              hiddenInput.value = emailInput.value;
-            }
-            if (!emailInput?.value) {
-              e.preventDefault();
-              setError("Vul eerst je e-mailadres in.");
-            }
-          }}
-        >
-          <Mail className="size-4" />
-          Inloggen via e-mail link
         </Button>
       </form>
 

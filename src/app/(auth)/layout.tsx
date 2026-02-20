@@ -26,23 +26,14 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
       <div className="relative z-10 w-full max-w-sm px-4">
         {/* Logo / Brand */}
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex size-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm">
-            <svg
-              viewBox="0 0 24 24"
-              className="size-9 text-white"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-              <path d="M2 12h20" />
-              <path d="M12 2c2.5 4 4 8 4 10s-1.5 6-4 10" />
-              <path d="M12 2c-2.5 4-4 8-4 10s1.5 6 4 10" />
-            </svg>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/icons/icon-192x192.svg"
+            alt="MyTeamPlanner logo"
+            width={64}
+            height={64}
+            className="mx-auto mb-3 rounded-2xl"
+          />
           <h1 className="text-2xl font-bold text-white">MyTeamPlanner</h1>
           <p className="mt-1 text-sm text-white/60">
             De teamplanner voor amateurvoetbal

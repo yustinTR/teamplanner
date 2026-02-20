@@ -84,23 +84,14 @@ export default function LandingPage() {
 
         <div className="relative mx-auto max-w-4xl px-4 pb-20 pt-16 text-center">
           {/* Logo */}
-          <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm">
-            <svg
-              viewBox="0 0 24 24"
-              className="size-11 text-white"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-              <path d="M2 12h20" />
-              <path d="M12 2c2.5 4 4 8 4 10s-1.5 6-4 10" />
-              <path d="M12 2c-2.5 4-4 8-4 10s1.5 6 4 10" />
-            </svg>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/icons/icon-192x192.svg"
+            alt="MyTeamPlanner logo"
+            width={80}
+            height={80}
+            className="mx-auto mb-6 rounded-2xl"
+          />
 
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
             MyTeamPlanner
@@ -256,17 +247,14 @@ export default function LandingPage() {
         <div className="mx-auto max-w-4xl px-4">
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="flex items-center gap-2 text-white">
-              <svg
-                viewBox="0 0 24 24"
-                className="size-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                <path d="M2 12h20" />
-              </svg>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/icons/icon-192x192.svg"
+                alt="MyTeamPlanner"
+                width={28}
+                height={28}
+                className="rounded-md"
+              />
               <span className="font-semibold">MyTeamPlanner</span>
             </div>
             <p className="text-sm text-neutral-400">
