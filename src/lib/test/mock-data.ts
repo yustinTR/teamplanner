@@ -1,4 +1,4 @@
-import type { Team, Player, Match, Availability, AvailabilityWithPlayer } from "@/types";
+import type { Team, Player, Match, Availability, AvailabilityWithPlayer, MatchPlayer, Event, EventAttendance, EventTask } from "@/types";
 import type { LineupPosition } from "@/types/lineup";
 import type { User } from "@supabase/supabase-js";
 
@@ -21,7 +21,12 @@ export function createMockTeam(overrides?: Partial<Team>): Team {
     created_by: "user-coach-001",
     invite_code: "ABC123",
     formation: "4-3-3",
+    team_type: "senioren",
     logo_url: null,
+    import_club_abbrev: null,
+    import_team_id: null,
+    import_team_name: null,
+    import_team_url: null,
     created_at: "2026-01-01T00:00:00Z",
     updated_at: "2026-01-01T00:00:00Z",
     ...overrides,
@@ -124,6 +129,71 @@ export function createMockUser(overrides?: Partial<User>): User {
     created_at: "2026-01-01T00:00:00Z",
     ...overrides,
   } as User;
+}
+
+// --- Match Player (leen-speler) ---
+
+export function createMockMatchPlayer(overrides?: Partial<MatchPlayer>): MatchPlayer {
+  const id = overrides?.id ?? uid();
+  return {
+    id,
+    match_id: "match-001",
+    name: "Leen Speler",
+    position: null,
+    created_at: "2026-01-01T00:00:00Z",
+    ...overrides,
+  };
+}
+
+// --- Event ---
+
+export function createMockEvent(overrides?: Partial<Event>): Event {
+  const id = overrides?.id ?? uid();
+  return {
+    id,
+    team_id: "team-001",
+    title: "Teamuitje",
+    description: null,
+    event_date: "2026-04-01T18:00:00Z",
+    end_date: null,
+    location: null,
+    notes: null,
+    created_by: "user-coach-001",
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
+    ...overrides,
+  };
+}
+
+// --- Event Attendance ---
+
+export function createMockEventAttendance(overrides?: Partial<EventAttendance>): EventAttendance {
+  const id = overrides?.id ?? uid();
+  return {
+    id,
+    event_id: "event-001",
+    player_id: "player-001",
+    status: "coming",
+    responded_at: "2026-03-10T12:00:00Z",
+    ...overrides,
+  };
+}
+
+// --- Event Task ---
+
+export function createMockEventTask(overrides?: Partial<EventTask>): EventTask {
+  const id = overrides?.id ?? uid();
+  return {
+    id,
+    event_id: "event-001",
+    title: "Bier regelen",
+    description: null,
+    assigned_to: null,
+    deadline: null,
+    is_done: false,
+    created_at: "2026-01-01T00:00:00Z",
+    ...overrides,
+  };
 }
 
 // --- Pre-built arrays ---

@@ -28,7 +28,7 @@ export const CreateTeam: Story = {
 
 export const EditTeam: Story = {
   args: {
-    defaultValues: { name: "Heren 1", club_name: "VV De Spartaan" },
+    defaultValues: { name: "Heren 1", club_name: "VV De Spartaan", team_type: "senioren" },
     submitLabel: "Opslaan",
     onSubmit: async (data) => {
       console.log("Submit:", data);

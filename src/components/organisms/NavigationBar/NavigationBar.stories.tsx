@@ -38,6 +38,16 @@ export const MatchesActive: Story = {
   },
 };
 
+export const EventsActive: Story = {
+  parameters: {
+    nextjs: {
+      navigation: {
+        pathname: "/events",
+      },
+    },
+  },
+};
+
 export const TeamActive: Story = {
   parameters: {
     nextjs: {

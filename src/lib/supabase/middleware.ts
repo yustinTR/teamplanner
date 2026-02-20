@@ -1,9 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const publicPaths = ["/login", "/register", "/auth/callback"];
+const publicPaths = ["/login", "/register", "/auth/callback", "/landing"];
 
 function isPublicPath(pathname: string): boolean {
+  if (pathname === "/") return true;
   return publicPaths.some((path) => pathname.startsWith(path)) ||
     pathname.startsWith("/join/");
 }
@@ -39,6 +40,23 @@ export async function updateSession(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
+  // Landing page: authenticated users go to dashboard, unauthenticated see landing
+  if (pathname === "/") {
+    if (user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
+    return supabaseResponse;
+  }
+
+  // Dashboard requires auth
+  if (pathname.startsWith("/dashboard") && !user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
   // Redirect unauthenticated users to login (except public paths)
   if (!user && !isPublicPath(pathname)) {
     const url = request.nextUrl.clone();
@@ -49,7 +67,7 @@ export async function updateSession(request: NextRequest) {
   // Redirect authenticated users away from auth pages
   if (user && (pathname === "/login" || pathname === "/register")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
 

@@ -12,7 +12,7 @@ export default async function MainLayout({ children }: MainLayoutProps) {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/");
   }
 
   // Find team where user is coach or player
@@ -57,7 +57,7 @@ export default async function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <AuthHydrator user={user} team={team} player={playerQuery.data}>
-      <div className="flex min-h-screen flex-col pb-16">
+      <div className="flex min-h-screen flex-col bg-neutral-50 pb-16">
         <main className="flex-1">{children}</main>
         <NavigationBar />
       </div>

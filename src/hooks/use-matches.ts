@@ -4,6 +4,37 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import type { MatchInsert, MatchUpdate } from "@/types";
 
+interface RefreshResult {
+  matchesCreated: number;
+  matchesUpdated: number;
+  errors: string[];
+}
+
+export function useRefreshMatches() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (teamId: string): Promise<RefreshResult> => {
+      const response = await fetch("/api/import-voetbal-nl/refresh", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teamId }),
+      });
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        throw new Error(json.error ?? "Er is een fout opgetreden.");
+      }
+
+      return json.results;
+    },
+    onSuccess: (_data, teamId) => {
+      queryClient.invalidateQueries({ queryKey: ["matches", teamId] });
+    },
+  });
+}
+
 export function useMatches(teamId: string | undefined) {
   const supabase = createClient();
 

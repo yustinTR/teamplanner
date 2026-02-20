@@ -10,24 +10,26 @@ export default function TeamPage() {
   const { currentTeam, isCoach } = useAuthStore();
 
   return (
-    <div className="p-4">
-      <div className="mb-4 flex items-center justify-between">
+    <div>
+      <div className="flex items-center justify-between bg-gradient-to-r from-primary-800 to-primary-600 px-4 pb-6 pt-5">
         <div>
-          <h1 className="text-2xl font-semibold">Team</h1>
+          <h1 className="text-2xl font-bold text-white">Team</h1>
           {currentTeam && (
-            <p className="text-sm text-muted-foreground">{currentTeam.name}</p>
+            <p className="text-sm text-white/70">{currentTeam.name}</p>
           )}
         </div>
         {isCoach && (
           <Link href="/team/settings">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white">
               <Settings className="size-5" />
             </Button>
           </Link>
         )}
       </div>
 
-      <PlayerList />
+      <div className="-mt-2 px-4 pb-4">
+        <PlayerList />
+      </div>
     </div>
   );
 }

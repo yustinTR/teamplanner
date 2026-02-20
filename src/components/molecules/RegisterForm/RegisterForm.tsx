@@ -9,14 +9,19 @@ import { Label } from "@/components/ui/label";
 
 export function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleRegister(formData: FormData) {
     setError(null);
+    setSuccess(null);
     setLoading(true);
     const result = await register(formData);
     if (result?.error) {
       setError(result.error);
+    }
+    if (result?.success) {
+      setSuccess(result.success);
     }
     setLoading(false);
   }
@@ -24,9 +29,9 @@ export function RegisterForm() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold">Registreren</h1>
+        <h2 className="text-xl font-semibold text-neutral-900">Registreren</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Maak een account aan
+          Maak een gratis account aan
         </p>
       </div>
 
@@ -69,7 +74,14 @@ export function RegisterForm() {
         </div>
 
         {error && (
-          <p className="text-sm text-danger">{error}</p>
+          <div className="rounded-lg bg-danger-50 p-3 text-sm text-danger">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="rounded-lg bg-success-50 p-3 text-sm text-success">
+            {success}
+          </div>
         )}
 
         <Button type="submit" className="w-full" disabled={loading}>

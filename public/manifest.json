@@ -1,11 +1,11 @@
 {
-  "name": "TeamPlanner",
-  "short_name": "TeamPlanner",
-  "description": "Voetbalteam manager voor amateurclubs",
+  "name": "MyTeamPlanner",
+  "short_name": "MyTeamPlanner",
+  "description": "De gratis teamplanner voor amateurvoetbal. Wedstrijden, opstellingen, beschikbaarheid en meer.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2563eb",
+  "background_color": "#064e3b",
+  "theme_color": "#059669",
   "orientation": "portrait",
   "icons": [
     {

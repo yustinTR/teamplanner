@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, Plus } from "lucide-react";
+import { Calendar, Plus, RefreshCw } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
-import { useMatches, useCreateMatch } from "@/hooks/use-matches";
+import { useMatches, useCreateMatch, useRefreshMatches } from "@/hooks/use-matches";
 import { MatchCard } from "@/components/organisms/MatchCard";
 import { Button } from "@/components/atoms/Button";
 import { EmptyState } from "@/components/atoms/EmptyState";
@@ -35,7 +35,28 @@ export function MatchList() {
   const { currentTeam, isCoach } = useAuthStore();
   const { data: matches, isLoading } = useMatches(currentTeam?.id);
   const createMatch = useCreateMatch();
+  const refreshMatches = useRefreshMatches();
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [refreshResult, setRefreshResult] = useState<{
+    matchesCreated: number;
+    matchesUpdated: number;
+    errors: string[];
+  } | null>(null);
+
+  const hasImportSource = !!currentTeam?.import_club_abbrev;
+
+  async function handleRefresh() {
+    if (!currentTeam) return;
+    setRefreshResult(null);
+    try {
+      const result = await refreshMatches.mutateAsync(currentTeam.id);
+      setRefreshResult(result);
+      // Auto-hide result after 5 seconds
+      setTimeout(() => setRefreshResult(null), 5000);
+    } catch {
+      // Error is handled by the mutation
+    }
+  }
 
   if (isLoading) {
     return (
@@ -100,18 +121,50 @@ export function MatchList() {
 
   return (
     <div>
+      {refreshResult && (
+        <div className="mb-4 rounded-lg bg-success/10 p-3 text-sm text-success">
+          {refreshResult.matchesCreated > 0 &&
+            `${refreshResult.matchesCreated} nieuwe wedstrijden. `}
+          {refreshResult.matchesUpdated > 0 &&
+            `${refreshResult.matchesUpdated} wedstrijden bijgewerkt. `}
+          {refreshResult.matchesCreated === 0 &&
+            refreshResult.matchesUpdated === 0 &&
+            "Alles is al up-to-date."}
+        </div>
+      )}
+      {refreshMatches.isError && (
+        <div className="mb-4 rounded-lg bg-danger/10 p-3 text-sm text-danger">
+          {refreshMatches.error instanceof Error
+            ? refreshMatches.error.message
+            : "Er is een fout opgetreden bij het vernieuwen."}
+        </div>
+      )}
       <div className="mb-4 flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
           {matches.length} {matches.length === 1 ? "wedstrijd" : "wedstrijden"}
         </p>
         {isCoach && (
-          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-            <SheetTrigger asChild>
-              <Button size="sm">
-                <Plus className="mr-1 size-4" />
-                Toevoegen
+          <div className="flex gap-2">
+            {hasImportSource && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleRefresh}
+                disabled={refreshMatches.isPending}
+              >
+                <RefreshCw
+                  className={`mr-1 size-4 ${refreshMatches.isPending ? "animate-spin" : ""}`}
+                />
+                {refreshMatches.isPending ? "Vernieuwen..." : "Vernieuwen"}
               </Button>
-            </SheetTrigger>
+            )}
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+              <SheetTrigger asChild>
+                <Button size="sm">
+                  <Plus className="mr-1 size-4" />
+                  Toevoegen
+                </Button>
+              </SheetTrigger>
             <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
               <SheetHeader>
                 <SheetTitle>Wedstrijd toevoegen</SheetTitle>
@@ -130,7 +183,8 @@ export function MatchList() {
                 />
               </div>
             </SheetContent>
-          </Sheet>
+            </Sheet>
+          </div>
         )}
       </div>
 

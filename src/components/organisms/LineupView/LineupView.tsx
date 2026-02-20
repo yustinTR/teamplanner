@@ -2,7 +2,9 @@
 
 import { useLineup } from "@/hooks/use-lineup";
 import { usePlayers } from "@/hooks/use-players";
+import { useMatchPlayers } from "@/hooks/use-match-players";
 import { useAuthStore } from "@/stores/auth-store";
+import { matchPlayerToPlayer } from "@/lib/lineup-generator";
 import { Spinner } from "@/components/atoms/Spinner";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { ClipboardList } from "lucide-react";
@@ -17,6 +19,7 @@ export function LineupView({ matchId }: LineupViewProps) {
   const { currentTeam } = useAuthStore();
   const { data: lineup, isLoading } = useLineup(matchId);
   const { data: players } = usePlayers(currentTeam?.id);
+  const { data: matchPlayersData } = useMatchPlayers(matchId);
 
   if (isLoading) {
     return (
@@ -39,7 +42,9 @@ export function LineupView({ matchId }: LineupViewProps) {
   const positions = lineup.positions as unknown as LineupPosition[];
   const formation = lineup.formation ?? "4-3-3";
   const formationSlots = FORMATIONS[formation] ?? FORMATIONS["4-3-3"];
-  const playerMap = new Map((players ?? []).map((p) => [p.id, p]));
+  const matchPlayersList = (matchPlayersData ?? []).map(matchPlayerToPlayer);
+  const allPlayers = [...(players ?? []), ...matchPlayersList];
+  const playerMap = new Map(allPlayers.map((p) => [p.id, p]));
 
   return (
     <div className="space-y-2">

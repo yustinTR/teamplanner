@@ -2,17 +2,23 @@
 
 import { useState, useCallback } from "react";
 import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { Wand2 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlayers } from "@/hooks/use-players";
 import { useAvailability } from "@/hooks/use-availability";
+import { useMatchPlayers } from "@/hooks/use-match-players";
 import { useLineup, useSaveLineup } from "@/hooks/use-lineup";
 import { PitchPlayer } from "@/components/molecules/PitchPlayer";
 import { BenchPlayer } from "@/components/molecules/BenchPlayer";
 import { FormationSelector } from "@/components/molecules/FormationSelector";
+import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
 import { FORMATIONS } from "@/lib/constants";
-import type { LineupPosition } from "@/types";
+import { generateSubstitutionPlan, type SubstituteSuggestion, matchPlayerToPlayer } from "@/lib/lineup-generator";
+import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
+import { TEAM_TYPE_CONFIG } from "@/lib/constants";
+import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan } from "@/types";
 
 interface LineupFieldProps {
   matchId: string;
@@ -22,6 +28,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
   const { currentTeam } = useAuthStore();
   const { data: players, isLoading: playersLoading } = usePlayers(currentTeam?.id);
   const { data: availability } = useAvailability(matchId);
+  const { data: matchPlayersData } = useMatchPlayers(matchId);
   const { data: existingLineup, isLoading: lineupLoading } = useLineup(matchId);
   const saveLineup = useSaveLineup();
 
@@ -32,6 +39,8 @@ export function LineupField({ matchId }: LineupFieldProps) {
     () => (existingLineup?.positions as unknown as LineupPosition[]) ?? []
   );
   const [hasChanges, setHasChanges] = useState(false);
+  const [substitutes, setSubstitutes] = useState<SubstituteSuggestion[]>([]);
+  const [substitutionPlan, setSubstitutionPlan] = useState<SubstitutionPlan | null>(null);
 
   // Update state when lineup loads
   useState(() => {
@@ -61,11 +70,18 @@ export function LineupField({ matchId }: LineupFieldProps) {
 
   const assignedPlayerIds = new Set(positions.map((p) => p.player_id));
 
-  const benchPlayers = (players ?? []).filter(
-    (p) => availablePlayerIds.has(p.id) && !assignedPlayerIds.has(p.id)
-  );
+  // Convert match players to Player-like objects for the bench
+  const matchPlayersList: Player[] = (matchPlayersData ?? []).map(matchPlayerToPlayer);
 
-  const playerMap = new Map((players ?? []).map((p) => [p.id, p]));
+  const benchPlayers = [
+    ...(players ?? []).filter(
+      (p) => availablePlayerIds.has(p.id) && !assignedPlayerIds.has(p.id)
+    ),
+    ...matchPlayersList.filter((p) => !assignedPlayerIds.has(p.id)),
+  ];
+
+  const allPlayersForMap: Player[] = [...(players ?? []), ...matchPlayersList];
+  const playerMap = new Map(allPlayersForMap.map((p) => [p.id, p]));
 
   const formationSlots = FORMATIONS[formation] ?? FORMATIONS["4-3-3"];
 
@@ -85,6 +101,27 @@ export function LineupField({ matchId }: LineupFieldProps) {
     },
     [positions]
   );
+
+  function handleAutoLineup() {
+    const availablePlayers = [
+      ...(players ?? []).filter((p) => availablePlayerIds.has(p.id)),
+      ...matchPlayersList,
+    ];
+
+    const teamType = currentTeam?.team_type ?? "senioren";
+    const config = TEAM_TYPE_CONFIG[teamType];
+
+    const result = generateSubstitutionPlan(
+      formation,
+      availablePlayers,
+      (availability ?? []) as AvailabilityWithPlayer[],
+      config
+    );
+    setPositions(result.positions);
+    setSubstitutes(result.substitutes);
+    setSubstitutionPlan(result.substitutionPlan);
+    setHasChanges(true);
+  }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -141,6 +178,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
       matchId,
       formation,
       positions: positions.filter((p) => p.player_id),
+      substitutionPlan,
     });
     setHasChanges(false);
   }
@@ -156,7 +194,19 @@ export function LineupField({ matchId }: LineupFieldProps) {
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div className="space-y-4">
-        <FormationSelector value={formation} onChange={handleFormationChange} />
+        <div className="flex items-center gap-2">
+          <FormationSelector value={formation} onChange={handleFormationChange} />
+          <Button
+            variant="outline"
+            size="sm"
+            className="shrink-0 gap-1.5"
+            onClick={handleAutoLineup}
+            disabled={!players?.length}
+          >
+            <Wand2 className="size-4" />
+            Auto
+          </Button>
+        </div>
 
         {/* Pitch */}
         <div className="relative aspect-[68/105] w-full overflow-hidden rounded-lg bg-green-600">
@@ -217,6 +267,42 @@ export function LineupField({ matchId }: LineupFieldProps) {
             ))}
           </div>
         </div>
+
+        {/* Substitute suggestions */}
+        {substitutes.length > 0 && (
+          <div>
+            <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+              Wissels ({substitutes.length})
+            </h3>
+            <div className="grid grid-cols-1 gap-2">
+              {substitutes.map((sub) => (
+                <div
+                  key={sub.player.id}
+                  className="flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2"
+                >
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium">
+                    {sub.player.name}
+                  </span>
+                  <Badge
+                    variant={
+                      sub.compatibility === "exact"
+                        ? "available"
+                        : sub.compatibility === "related"
+                          ? "maybe"
+                          : "default"
+                    }
+                    label={sub.position_label}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Substitution Plan */}
+        {substitutionPlan && (
+          <SubstitutionPlanView plan={substitutionPlan} />
+        )}
 
         {hasChanges && (
           <Button

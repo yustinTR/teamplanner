@@ -44,13 +44,33 @@ export default async function JoinPage({ params }: JoinPageProps) {
     .single();
 
   if (!existingPlayer) {
-    // Create player record for this user
-    await supabase.from("players").insert({
-      team_id: team.id,
-      user_id: user.id,
-      name: user.user_metadata?.name ?? user.email ?? "Speler",
-    });
+    const userName = user.user_metadata?.name ?? user.email ?? "Speler";
+
+    // Check for an imported (unregistered) player with matching name
+    const { data: importedPlayer } = await supabase
+      .from("players")
+      .select("id")
+      .eq("team_id", team.id)
+      .is("user_id", null)
+      .ilike("name", userName)
+      .limit(1)
+      .single();
+
+    if (importedPlayer) {
+      // Claim the imported player record
+      await supabase
+        .from("players")
+        .update({ user_id: user.id, name: userName })
+        .eq("id", importedPlayer.id);
+    } else {
+      // Create new player record
+      await supabase.from("players").insert({
+        team_id: team.id,
+        user_id: user.id,
+        name: userName,
+      });
+    }
   }
 
-  redirect("/");
+  redirect("/dashboard");
 }

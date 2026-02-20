@@ -1,0 +1,120 @@
+"use client";
+
+import Link from "next/link";
+import { Calendar, Users, Settings, Plus, PartyPopper, ChevronRight } from "lucide-react";
+import { useAuthStore } from "@/stores/auth-store";
+import { Button } from "@/components/atoms/Button";
+
+export default function DashboardPage() {
+  const { currentTeam, isCoach, currentPlayer } = useAuthStore();
+
+  if (!currentTeam) {
+    return (
+      <div className="flex flex-col items-center justify-center p-4 py-20">
+        <div className="mx-auto mb-4 flex size-20 items-center justify-center rounded-full bg-primary-100">
+          <svg
+            viewBox="0 0 24 24"
+            className="size-10 text-primary-700"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+            <path d="M2 12h20" />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-bold">Welkom bij MyTeamPlanner</h1>
+        <p className="mt-2 text-center text-muted-foreground">
+          Je hebt nog geen team. Maak er een aan om te beginnen.
+        </p>
+        <Link href="/create-team" className="mt-6">
+          <Button className="gap-2">
+            <Plus className="size-4" />
+            Team aanmaken
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Hero header */}
+      <div className="bg-gradient-to-br from-primary-800 via-primary-700 to-primary-600 px-4 pb-8 pt-6 text-white">
+        <p className="text-sm font-medium text-white/60">
+          {isCoach ? "Coach" : currentPlayer?.name ?? "Speler"}
+        </p>
+        <h1 className="mt-0.5 text-2xl font-bold">{currentTeam.name}</h1>
+        {currentTeam.club_name && (
+          <p className="mt-0.5 text-sm text-white/70">{currentTeam.club_name}</p>
+        )}
+      </div>
+
+      {/* Quick action cards */}
+      <div className="-mt-4 grid gap-3 px-4 pb-4">
+        <Link href="/matches">
+          <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary-100">
+              <Calendar className="size-6 text-primary-700" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-neutral-900">Wedstrijden</h3>
+              <p className="text-sm text-muted-foreground">
+                Bekijk het wedstrijdprogramma
+              </p>
+            </div>
+            <ChevronRight className="size-5 text-neutral-400" />
+          </div>
+        </Link>
+
+        <Link href="/events">
+          <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-warning-100">
+              <PartyPopper className="size-6 text-warning-700" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-neutral-900">Evenementen</h3>
+              <p className="text-sm text-muted-foreground">
+                Toernooien, feesten en meer
+              </p>
+            </div>
+            <ChevronRight className="size-5 text-neutral-400" />
+          </div>
+        </Link>
+
+        <Link href="/team">
+          <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary-100">
+              <Users className="size-6 text-primary-700" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-neutral-900">Teamoverzicht</h3>
+              <p className="text-sm text-muted-foreground">
+                Bekijk alle spelers
+              </p>
+            </div>
+            <ChevronRight className="size-5 text-neutral-400" />
+          </div>
+        </Link>
+
+        {isCoach && (
+          <Link href="/team/settings">
+            <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-neutral-100">
+                <Settings className="size-6 text-neutral-600" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="font-semibold text-neutral-900">Instellingen</h3>
+                <p className="text-sm text-muted-foreground">
+                  Teaminstellingen en uitnodigingslink
+                </p>
+              </div>
+              <ChevronRight className="size-5 text-neutral-400" />
+            </div>
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}

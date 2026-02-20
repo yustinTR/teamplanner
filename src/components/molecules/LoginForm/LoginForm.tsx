@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Mail } from "lucide-react";
 import { loginWithPassword, loginWithMagicLink } from "@/app/(auth)/actions";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
@@ -40,7 +41,7 @@ export function LoginForm() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold">Inloggen</h1>
+        <h2 className="text-xl font-semibold text-neutral-900">Inloggen</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Log in bij je team
         </p>
@@ -72,10 +73,14 @@ export function LoginForm() {
         </div>
 
         {error && (
-          <p className="text-sm text-danger">{error}</p>
+          <div className="rounded-lg bg-danger-50 p-3 text-sm text-danger">
+            {error}
+          </div>
         )}
         {success && (
-          <p className="text-sm text-success">{success}</p>
+          <div className="rounded-lg bg-success-50 p-3 text-sm text-success">
+            {success}
+          </div>
         )}
 
         <Button type="submit" className="w-full" disabled={loading}>
@@ -83,12 +88,21 @@ export function LoginForm() {
         </Button>
       </form>
 
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs">
+          <span className="bg-white px-2 text-muted-foreground">of</span>
+        </div>
+      </div>
+
       <form action={handleMagicLink}>
         <input type="hidden" name="email" id="magic-email" />
         <Button
           type="submit"
           variant="outline"
-          className="w-full"
+          className="w-full gap-2"
           disabled={loading}
           onClick={(e) => {
             const emailInput = document.getElementById("email") as HTMLInputElement;
@@ -102,7 +116,8 @@ export function LoginForm() {
             }
           }}
         >
-          Stuur magic link
+          <Mail className="size-4" />
+          Inloggen via e-mail link
         </Button>
       </form>
 

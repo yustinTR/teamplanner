@@ -13,19 +13,76 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://myteamplanner.nl";
+
 export const metadata: Metadata = {
-  title: "TeamPlanner",
-  description: "Voetbalteam manager voor amateurclubs",
+  title: {
+    default: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
+    template: "%s | MyTeamPlanner",
+  },
+  description:
+    "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen. Makkelijker dan WhatsApp, speciaal voor coaches en spelers.",
+  keywords: [
+    "teamplanner",
+    "voetbal",
+    "amateurvoetbal",
+    "opstelling",
+    "wedstrijden",
+    "beschikbaarheid",
+    "wisselschema",
+    "voetbal app",
+    "team beheer",
+    "coach app",
+    "gratis teamplanner",
+  ],
+  authors: [{ name: "MyTeamPlanner" }],
+  creator: "MyTeamPlanner",
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    type: "website",
+    locale: "nl_NL",
+    url: siteUrl,
+    siteName: "MyTeamPlanner",
+    title: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
+    description:
+      "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
+    description:
+      "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "TeamPlanner",
+    title: "MyTeamPlanner",
+  },
+  alternates: {
+    canonical: siteUrl,
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2563eb",
+  themeColor: "#059669",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -39,6 +96,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="nl">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "MyTeamPlanner",
+              applicationCategory: "SportsApplication",
+              operatingSystem: "Web",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "EUR",
+              },
+              description:
+                "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen.",
+              url: siteUrl,
+              inLanguage: "nl",
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

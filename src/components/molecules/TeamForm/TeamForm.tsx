@@ -4,15 +4,25 @@ import { useState } from "react";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { TEAM_TYPE_LABELS } from "@/lib/constants";
+import type { TeamType } from "@/types";
 
 interface TeamFormProps {
-  defaultValues?: { name?: string; club_name?: string };
-  onSubmit: (data: { name: string; club_name: string }) => Promise<void>;
+  defaultValues?: { name?: string; club_name?: string; team_type?: TeamType };
+  onSubmit: (data: { name: string; club_name: string; team_type: TeamType }) => Promise<void>;
   submitLabel?: string;
 }
 
 export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: TeamFormProps) {
   const [loading, setLoading] = useState(false);
+  const [teamType, setTeamType] = useState<TeamType>(defaultValues?.team_type ?? "senioren");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,6 +32,7 @@ export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: T
       await onSubmit({
         name: formData.get("name") as string,
         club_name: formData.get("club_name") as string,
+        team_type: teamType,
       });
     } finally {
       setLoading(false);
@@ -49,6 +60,22 @@ export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: T
           placeholder="bijv. VV De Spartaan"
           defaultValue={defaultValues?.club_name}
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Teamtype</Label>
+        <Select value={teamType} onValueChange={(v) => setTeamType(v as TeamType)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Kies een teamtype" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(TEAM_TYPE_LABELS).map(([value, label]) => (
+              <SelectItem key={value} value={value}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <Button type="submit" className="w-full" disabled={loading}>

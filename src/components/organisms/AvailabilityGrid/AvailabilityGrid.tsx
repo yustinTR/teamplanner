@@ -3,9 +3,11 @@
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlayers } from "@/hooks/use-players";
 import { useAvailability, useAvailabilityRealtime, useSetAvailability } from "@/hooks/use-availability";
+import { useMatchPlayers } from "@/hooks/use-match-players";
 import { PlayerAvailabilityRow } from "@/components/molecules/PlayerAvailabilityRow";
 import { AvailabilitySummary } from "@/components/molecules/AvailabilitySummary";
 import { AvailabilityToggle } from "@/components/molecules/AvailabilityToggle";
+import { Badge } from "@/components/atoms/Badge";
 import { Spinner } from "@/components/atoms/Spinner";
 import type { AvailabilityStatus, Player } from "@/types";
 
@@ -17,6 +19,7 @@ export function AvailabilityGrid({ matchId }: AvailabilityGridProps) {
   const { currentTeam, isCoach } = useAuthStore();
   const { data: players, isLoading: playersLoading } = usePlayers(currentTeam?.id);
   const { data: availability, isLoading: availabilityLoading } = useAvailability(matchId);
+  const { data: matchPlayers } = useMatchPlayers(matchId);
   const setAvailability = useSetAvailability();
 
   useAvailabilityRealtime(matchId);
@@ -73,6 +76,25 @@ export function AvailabilityGrid({ matchId }: AvailabilityGridProps) {
         unavailable={unavailableCount}
         maybe={maybeCount}
       />
+
+      {matchPlayers && matchPlayers.length > 0 && (
+        <div>
+          <h3 className="mb-1 text-sm font-medium text-muted-foreground">
+            Leen-spelers ({matchPlayers.length})
+          </h3>
+          <div className="divide-y">
+            {matchPlayers.map((mp) => (
+              <div key={mp.id} className="flex min-h-[44px] items-center gap-3 py-2">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                  {mp.name.charAt(0)}
+                </div>
+                <span className="min-w-0 flex-1 truncate text-sm font-medium">{mp.name}</span>
+                <Badge variant="available" label="Beschikbaar" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {(["available", "maybe", "unavailable", "none"] as const).map((group) => {
         const groupPlayers = groups[group];

@@ -44,3 +44,17 @@ export const Default: Story = {
     matchId: "match-001",
   },
 };
+
+export const WithAutoLineup: Story = {
+  args: {
+    matchId: "match-001",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Klik op de "Auto" knop om automatisch een opstelling te genereren op basis van beschikbare spelers en hun posities.',
+      },
+    },
+  },
+};

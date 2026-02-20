@@ -1,17 +1,17 @@
-/* Design Tokens — TeamPlanner */
+/* Design Tokens — MyTeamPlanner */
 
 :root {
-  /* Primary — Blue */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
+  /* Primary — Emerald Green (football pitch) */
+  --color-primary-50: #ecfdf5;
+  --color-primary-100: #d1fae5;
+  --color-primary-200: #a7f3d0;
+  --color-primary-300: #6ee7b7;
+  --color-primary-400: #34d399;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-900: #064e3b;
   --color-primary: var(--color-primary-600);
 
   /* Success — Green */
@@ -30,7 +30,7 @@
   --color-danger-700: #b91c1c;
   --color-danger: var(--color-danger-600);
 
-  /* Warning — Orange */
+  /* Warning — Amber */
   --color-warning-50: #fffbeb;
   --color-warning-100: #fef3c7;
   --color-warning-500: #f59e0b;
@@ -67,7 +67,7 @@
   --space-2xl: 48px;
 
   /* Border Radius */
-  --radius-sm: 6px;
+  --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-full: 9999px;

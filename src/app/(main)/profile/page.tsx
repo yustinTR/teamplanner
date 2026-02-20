@@ -6,7 +6,6 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Avatar } from "@/components/atoms/Avatar";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
-import { Card, CardContent } from "@/components/atoms/Card";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { logout } from "@/app/(auth)/actions";
@@ -39,27 +38,39 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="mb-6 text-2xl font-semibold">Profiel</h1>
-
-      <div className="flex items-center gap-4 mb-6">
-        <Avatar
-          fallback={user?.user_metadata?.name ?? user?.email ?? "?"}
-          size="lg"
-        />
-        <div>
-          <h2 className="font-semibold">
-            {user?.user_metadata?.name ?? "Geen naam"}
-          </h2>
-          <p className="text-sm text-muted-foreground">{user?.email}</p>
-        </div>
+    <div>
+      {/* Profile header */}
+      <div className="bg-gradient-to-br from-primary-800 via-primary-700 to-primary-600 px-4 pb-12 pt-6 text-white">
+        <h1 className="text-2xl font-bold">Profiel</h1>
       </div>
 
-      <div className="space-y-4">
-        <Card>
-          <CardContent className="p-4 space-y-3">
+      <div className="-mt-8 px-4 pb-4">
+        {/* Profile card */}
+        <div className="rounded-xl bg-white p-5 shadow-md">
+          <div className="flex items-center gap-4">
+            <Avatar
+              fallback={user?.user_metadata?.name ?? user?.email ?? "?"}
+              size="lg"
+            />
+            <div>
+              <h2 className="font-semibold text-neutral-900">
+                {user?.user_metadata?.name ?? "Geen naam"}
+              </h2>
+              <p className="text-sm text-muted-foreground">{user?.email}</p>
+              {currentTeam && (
+                <p className="mt-0.5 text-xs font-medium text-primary-600">
+                  {isCoach ? "Coach" : "Speler"} — {currentTeam.name}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Settings */}
+        <div className="mt-4 space-y-4">
+          <div className="rounded-xl bg-white p-5 shadow-sm">
             {editing ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="name">Naam</Label>
                 <Input
                   id="name"
@@ -80,46 +91,38 @@ export default function ProfilePage() {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Naam</p>
-                  <p className="font-medium">
-                    {user?.user_metadata?.name ?? "Niet ingesteld"}
-                  </p>
+              <>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-muted-foreground">Naam</p>
+                    <p className="font-medium text-neutral-900">
+                      {user?.user_metadata?.name ?? "Niet ingesteld"}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setEditing(true)}
+                  >
+                    <Pencil className="size-4" />
+                  </Button>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setEditing(true)}
-                >
-                  <Pencil className="size-4" />
-                </Button>
-              </div>
+
+                <div className="mt-4 border-t pt-4">
+                  <p className="text-xs font-medium text-muted-foreground">E-mail</p>
+                  <p className="font-medium text-neutral-900">{user?.email}</p>
+                </div>
+              </>
             )}
+          </div>
 
-            <div>
-              <p className="text-sm text-muted-foreground">E-mail</p>
-              <p className="font-medium">{user?.email}</p>
-            </div>
-
-            {currentTeam && (
-              <div>
-                <p className="text-sm text-muted-foreground">Team</p>
-                <p className="font-medium">{currentTeam.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {isCoach ? "Coach" : "Speler"}
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <form action={logout}>
-          <Button variant="outline" className="w-full" type="submit">
-            <LogOut className="mr-2 size-4" />
-            Uitloggen
-          </Button>
-        </form>
+          <form action={logout}>
+            <Button variant="outline" className="w-full gap-2 text-danger hover:bg-danger-50 hover:text-danger" type="submit">
+              <LogOut className="size-4" />
+              Uitloggen
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );

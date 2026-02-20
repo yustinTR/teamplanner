@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/types";
-import type { LineupPosition } from "@/types";
+import type { LineupPosition, SubstitutionPlan } from "@/types";
 
 export function useLineup(matchId: string | undefined) {
   const supabase = createClient();
@@ -32,10 +32,12 @@ export function useSaveLineup() {
       matchId,
       formation,
       positions,
+      substitutionPlan,
     }: {
       matchId: string;
       formation: string;
       positions: LineupPosition[];
+      substitutionPlan?: SubstitutionPlan | null;
     }) => {
       const { data, error } = await supabase
         .from("lineups")
@@ -44,6 +46,9 @@ export function useSaveLineup() {
             match_id: matchId,
             formation,
             positions: JSON.parse(JSON.stringify(positions)) as Json,
+            substitution_plan: substitutionPlan
+              ? (JSON.parse(JSON.stringify(substitutionPlan)) as Json)
+              : null,
           },
           { onConflict: "match_id" }
         )

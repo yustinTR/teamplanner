@@ -1,0 +1,1 @@
+export { MyEventAttendance } from "./MyEventAttendance";

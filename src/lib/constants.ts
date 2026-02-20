@@ -1,4 +1,40 @@
 import type { LineupPosition } from "@/types/lineup";
+import type { TeamType } from "@/types/team";
+
+// --- Team type configuration ---
+
+export interface TeamTypeConfig {
+  label: string;
+  halfMinutes: number;
+  halves: number;
+  fieldPlayers: number;
+}
+
+export const TEAM_TYPE_CONFIG: Record<TeamType, TeamTypeConfig> = {
+  senioren: { label: "Senioren", halfMinutes: 45, halves: 2, fieldPlayers: 11 },
+  jo19_jo15: { label: "JO19 - JO15", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
+  jo13_jo11: { label: "JO13 - JO11", halfMinutes: 30, halves: 2, fieldPlayers: 11 },
+  jo9_jo7: { label: "JO9 - JO7", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
+  g_team: { label: "G-Team", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
+};
+
+export const TEAM_TYPE_LABELS: Record<TeamType, string> = {
+  senioren: "Senioren",
+  jo19_jo15: "JO19 - JO15",
+  jo13_jo11: "JO13 - JO11",
+  jo9_jo7: "JO9 - JO7",
+  g_team: "G-Team",
+};
+
+// --- Attendance labels (events) ---
+
+export const ATTENDANCE_LABELS: Record<string, string> = {
+  coming: "Aanwezig",
+  not_coming: "Afwezig",
+  maybe: "Misschien",
+};
+
+// --- Formations ---
 
 export const FORMATIONS: Record<string, Omit<LineupPosition, "player_id">[]> = {
   "4-3-3": [

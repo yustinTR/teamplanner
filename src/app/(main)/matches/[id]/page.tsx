@@ -2,11 +2,10 @@
 
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, MapPin, Clock, XCircle, ClipboardList } from "lucide-react";
+import { ArrowLeft, Pencil, MapPin, Clock, XCircle, ClipboardList, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useMatch, useUpdateMatch, useCancelMatch } from "@/hooks/use-matches";
 import { useAuthStore } from "@/stores/auth-store";
-import { Card, CardContent } from "@/components/atoms/Card";
 import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
 import { MatchStatusBadge } from "@/components/molecules/MatchStatusBadge";
@@ -14,6 +13,9 @@ import { MatchScore } from "@/components/molecules/MatchScore";
 import { MatchForm } from "@/components/molecules/MatchForm";
 import { MyAvailability } from "@/components/organisms/MyAvailability";
 import { AvailabilityGrid } from "@/components/organisms/AvailabilityGrid";
+import { MatchPlayerForm } from "@/components/molecules/MatchPlayerForm";
+import { MatchPlayerChip } from "@/components/molecules/MatchPlayerChip";
+import { useMatchPlayers, useCreateMatchPlayer, useDeleteMatchPlayer } from "@/hooks/use-match-players";
 import { formatMatchDate } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
 import {
@@ -44,8 +46,12 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
   const { data: match, isLoading } = useMatch(id);
   const updateMatch = useUpdateMatch();
   const cancelMatch = useCancelMatch();
+  const { data: matchPlayers } = useMatchPlayers(id);
+  const createMatchPlayer = useCreateMatchPlayer();
+  const deleteMatchPlayer = useDeleteMatchPlayer();
   const [editOpen, setEditOpen] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
+  const [leenOpen, setLeenOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -64,136 +70,193 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
   }
 
   return (
-    <div className="p-4">
-      <button
-        onClick={() => router.back()}
-        className="mb-4 flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="size-4" />
-        Terug
-      </button>
+    <div>
+      {/* Header with match info */}
+      <div className="bg-gradient-to-br from-primary-800 via-primary-700 to-primary-600 px-4 pb-8 pt-4 text-white">
+        <button
+          onClick={() => router.back()}
+          className="mb-3 flex items-center gap-1 text-sm text-white/70 hover:text-white"
+        >
+          <ArrowLeft className="size-4" />
+          Terug
+        </button>
 
-      <Card>
-        <CardContent className="space-y-3 p-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-xl font-semibold">{match.opponent}</h1>
-              <span className="text-sm text-muted-foreground">
-                {HOME_AWAY_LABELS[match.home_away]}
-              </span>
-            </div>
-            <MatchStatusBadge status={match.status} />
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-xl font-bold">{match.opponent}</h1>
+            <span className="text-sm text-white/70">
+              {HOME_AWAY_LABELS[match.home_away]}
+            </span>
           </div>
+          <MatchStatusBadge status={match.status} />
+        </div>
 
-          {match.status === "completed" && (
+        {match.status === "completed" && (
+          <div className="mt-2">
             <MatchScore
               scoreHome={match.score_home}
               scoreAway={match.score_away}
             />
-          )}
-
-          <div className="space-y-1 text-sm text-muted-foreground">
-            <p className="flex items-center gap-2">
-              <Clock className="size-4" />
-              {formatMatchDate(match.match_date)}
-            </p>
-            {match.location && (
-              <p className="flex items-center gap-2">
-                <MapPin className="size-4" />
-                {match.location}
-              </p>
-            )}
           </div>
+        )}
 
-          {match.notes && (
-            <p className="text-sm">{match.notes}</p>
+        <div className="mt-3 space-y-1 text-sm text-white/80">
+          <p className="flex items-center gap-2">
+            <Clock className="size-4" />
+            {formatMatchDate(match.match_date)}
+          </p>
+          {match.location && (
+            <p className="flex items-center gap-2">
+              <MapPin className="size-4" />
+              {match.location}
+            </p>
           )}
-        </CardContent>
-      </Card>
-
-      {match.status === "upcoming" && (
-        <div className="mt-6">
-          <MyAvailability matchId={match.id} />
         </div>
-      )}
 
-      <div className="mt-6">
-        <div className="mb-2 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Beschikbaarheid</h2>
-          <Link href={`/matches/${match.id}/lineup`}>
-            <Button variant="ghost" size="sm">
-              <ClipboardList className="mr-1 size-4" />
-              Opstelling
-            </Button>
-          </Link>
-        </div>
-        <AvailabilityGrid matchId={match.id} />
+        {match.notes && (
+          <p className="mt-2 text-sm text-white/70">{match.notes}</p>
+        )}
       </div>
 
-      {isCoach && match.status === "upcoming" && (
-        <div className="mt-4 flex gap-2">
-          <Sheet open={editOpen} onOpenChange={setEditOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" className="flex-1">
-                <Pencil className="mr-2 size-4" />
-                Bewerken
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
-              <SheetHeader>
-                <SheetTitle>Wedstrijd bewerken</SheetTitle>
-              </SheetHeader>
-              <div className="px-4 pb-4">
-                <MatchForm
-                  defaultValues={{
-                    opponent: match.opponent,
-                    match_date: match.match_date,
-                    location: match.location,
-                    home_away: match.home_away,
-                    notes: match.notes,
-                  }}
-                  onSubmit={async (data) => {
-                    await updateMatch.mutateAsync({ id: match.id, ...data });
-                    setEditOpen(false);
-                  }}
-                />
-              </div>
-            </SheetContent>
-          </Sheet>
+      <div className="-mt-4 space-y-4 px-4 pb-4">
+        {match.status === "upcoming" && (
+          <div className="rounded-xl bg-white p-4 shadow-md">
+            <MyAvailability matchId={match.id} />
+          </div>
+        )}
 
-          <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
-            <DialogTrigger asChild>
-              <Button variant="destructive">
-                <XCircle className="mr-2 size-4" />
-                Afgelasten
+        <div className="rounded-xl bg-white p-4 shadow-md">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Beschikbaarheid</h2>
+            <Link href={`/matches/${match.id}/lineup`}>
+              <Button variant="ghost" size="sm" className="gap-1">
+                <ClipboardList className="size-4" />
+                Opstelling
               </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Wedstrijd afgelasten</DialogTitle>
-                <DialogDescription>
-                  Weet je zeker dat je de wedstrijd tegen {match.opponent} wilt
-                  afgelasten?
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setCancelOpen(false)}>
-                  Annuleren
+            </Link>
+          </div>
+          <AvailabilityGrid matchId={match.id} />
+        </div>
+
+        {/* Leen-spelers section */}
+        {match.status === "upcoming" && (
+          <div className="rounded-xl bg-white p-4 shadow-md">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Leen-spelers</h2>
+              {isCoach && (
+                <Sheet open={leenOpen} onOpenChange={setLeenOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="sm" className="gap-1">
+                      <UserPlus className="size-4" />
+                      Toevoegen
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="bottom" className="overflow-y-auto">
+                    <SheetHeader>
+                      <SheetTitle>Leen-speler toevoegen</SheetTitle>
+                    </SheetHeader>
+                    <div className="px-4 pb-4">
+                      <MatchPlayerForm
+                        onSubmit={async (data) => {
+                          await createMatchPlayer.mutateAsync({
+                            match_id: match.id,
+                            name: data.name,
+                            position: data.position,
+                          });
+                          setLeenOpen(false);
+                        }}
+                      />
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              )}
+            </div>
+            {matchPlayers && matchPlayers.length > 0 ? (
+              <div className="space-y-2">
+                {matchPlayers.map((mp) => (
+                  <MatchPlayerChip
+                    key={mp.id}
+                    name={mp.name}
+                    position={mp.position}
+                    onDelete={
+                      isCoach
+                        ? () => deleteMatchPlayer.mutate({ id: mp.id, matchId: match.id })
+                        : undefined
+                    }
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">Geen leen-spelers.</p>
+            )}
+          </div>
+        )}
+
+        {isCoach && match.status === "upcoming" && (
+          <div className="flex gap-2">
+            <Sheet open={editOpen} onOpenChange={setEditOpen}>
+              <SheetTrigger asChild>
+                <Button variant="outline" className="flex-1 gap-2">
+                  <Pencil className="size-4" />
+                  Bewerken
                 </Button>
-                <Button
-                  variant="destructive"
-                  onClick={async () => {
-                    await cancelMatch.mutateAsync(match.id);
-                    setCancelOpen(false);
-                  }}
-                >
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+                <SheetHeader>
+                  <SheetTitle>Wedstrijd bewerken</SheetTitle>
+                </SheetHeader>
+                <div className="px-4 pb-4">
+                  <MatchForm
+                    defaultValues={{
+                      opponent: match.opponent,
+                      match_date: match.match_date,
+                      location: match.location,
+                      home_away: match.home_away,
+                      notes: match.notes,
+                    }}
+                    onSubmit={async (data) => {
+                      await updateMatch.mutateAsync({ id: match.id, ...data });
+                      setEditOpen(false);
+                    }}
+                  />
+                </div>
+              </SheetContent>
+            </Sheet>
+
+            <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
+              <DialogTrigger asChild>
+                <Button variant="destructive" className="gap-2">
+                  <XCircle className="size-4" />
                   Afgelasten
                 </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      )}
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Wedstrijd afgelasten</DialogTitle>
+                  <DialogDescription>
+                    Weet je zeker dat je de wedstrijd tegen {match.opponent} wilt
+                    afgelasten?
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setCancelOpen(false)}>
+                    Annuleren
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={async () => {
+                      await cancelMatch.mutateAsync(match.id);
+                      setCancelOpen(false);
+                    }}
+                  >
+                    Afgelasten
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

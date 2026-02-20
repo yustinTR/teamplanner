@@ -34,6 +34,143 @@ export type Database = {
   }
   public: {
     Tables: {
+      event_attendance: {
+        Row: {
+          event_id: string
+          id: string
+          player_id: string
+          responded_at: string
+          status: Database["public"]["Enums"]["attendance_status"]
+        }
+        Insert: {
+          event_id: string
+          id?: string
+          player_id: string
+          responded_at?: string
+          status: Database["public"]["Enums"]["attendance_status"]
+        }
+        Update: {
+          event_id?: string
+          id?: string
+          player_id?: string
+          responded_at?: string
+          status?: Database["public"]["Enums"]["attendance_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_attendance_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_attendance_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_tasks: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          deadline: string | null
+          description: string | null
+          event_id: string
+          id: string
+          is_done: boolean
+          title: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          deadline?: string | null
+          description?: string | null
+          event_id: string
+          id?: string
+          is_done?: boolean
+          title: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          deadline?: string | null
+          description?: string | null
+          event_id?: string
+          id?: string
+          is_done?: boolean
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_tasks_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          end_date: string | null
+          event_date: string
+          id: string
+          location: string | null
+          notes: string | null
+          team_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          end_date?: string | null
+          event_date: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          team_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          end_date?: string | null
+          event_date?: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          team_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       availability: {
         Row: {
           id: string
@@ -80,6 +217,7 @@ export type Database = {
           id: string
           match_id: string
           positions: Json
+          substitution_plan: Json | null
           updated_at: string
         }
         Insert: {
@@ -88,6 +226,7 @@ export type Database = {
           id?: string
           match_id: string
           positions?: Json
+          substitution_plan?: Json | null
           updated_at?: string
         }
         Update: {
@@ -96,6 +235,7 @@ export type Database = {
           id?: string
           match_id?: string
           positions?: Json
+          substitution_plan?: Json | null
           updated_at?: string
         }
         Relationships: [
@@ -103,6 +243,38 @@ export type Database = {
             foreignKeyName: "lineups_match_id_fkey"
             columns: ["match_id"]
             isOneToOne: true
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_players: {
+        Row: {
+          created_at: string
+          id: string
+          match_id: string
+          name: string
+          position: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_id: string
+          name: string
+          position?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_id?: string
+          name?: string
+          position?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_players_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
             referencedRelation: "matches"
             referencedColumns: ["id"]
           },
@@ -212,9 +384,14 @@ export type Database = {
           created_by: string
           formation: string | null
           id: string
+          import_club_abbrev: string | null
+          import_team_id: number | null
+          import_team_name: string | null
+          import_team_url: string | null
           invite_code: string
           logo_url: string | null
           name: string
+          team_type: Database["public"]["Enums"]["team_type"]
           updated_at: string
         }
         Insert: {
@@ -223,9 +400,14 @@ export type Database = {
           created_by: string
           formation?: string | null
           id?: string
+          import_club_abbrev?: string | null
+          import_team_id?: number | null
+          import_team_name?: string | null
+          import_team_url?: string | null
           invite_code?: string
           logo_url?: string | null
           name: string
+          team_type?: Database["public"]["Enums"]["team_type"]
           updated_at?: string
         }
         Update: {
@@ -234,9 +416,14 @@ export type Database = {
           created_by?: string
           formation?: string | null
           id?: string
+          import_club_abbrev?: string | null
+          import_team_id?: number | null
+          import_team_name?: string | null
+          import_team_url?: string | null
           invite_code?: string
           logo_url?: string | null
           name?: string
+          team_type?: Database["public"]["Enums"]["team_type"]
           updated_at?: string
         }
         Relationships: []
@@ -249,9 +436,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      attendance_status: "coming" | "not_coming" | "maybe"
       availability_status: "available" | "unavailable" | "maybe"
       home_away: "home" | "away"
       match_status: "upcoming" | "completed" | "cancelled"
+      team_type: "senioren" | "jo19_jo15" | "jo13_jo11" | "jo9_jo7" | "g_team"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -382,9 +571,11 @@ export const Constants = {
   },
   public: {
     Enums: {
+      attendance_status: ["coming", "not_coming", "maybe"],
       availability_status: ["available", "unavailable", "maybe"],
       home_away: ["home", "away"],
       match_status: ["upcoming", "completed", "cancelled"],
+      team_type: ["senioren", "jo19_jo15", "jo13_jo11", "jo9_jo7", "g_team"],
     },
   },
 } as const
