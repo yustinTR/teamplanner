@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -24,8 +25,8 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
       </div>
 
       <div className="relative z-10 w-full max-w-sm px-4">
-        {/* Logo / Brand */}
-        <div className="mb-8 text-center">
+        {/* Logo / Brand — links back to landing page */}
+        <Link href="/" className="mb-8 block text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/icons/icon-192x192.svg"
@@ -38,7 +39,7 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
           <p className="mt-1 text-sm text-white/60">
             De teamplanner voor amateurvoetbal
           </p>
-        </div>
+        </Link>
 
         {/* Form card */}
         <div className="rounded-2xl bg-white p-6 shadow-xl">
