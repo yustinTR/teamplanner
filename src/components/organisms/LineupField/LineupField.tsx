@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { Wand2 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
@@ -88,22 +88,19 @@ export function LineupField({ matchId }: LineupFieldProps) {
 
   const formationSlots = FORMATIONS[formation] ?? teamFormations[defaultFormation];
 
-  const handleFormationChange = useCallback(
-    (newFormation: string) => {
-      setFormation(newFormation);
-      // Reset positions when changing formation
-      const newSlots = teamFormations[newFormation] ?? FORMATIONS[newFormation] ?? [];
-      const newPositions: LineupPosition[] = newSlots.map((slot, i) => {
-        const existing = positions[i];
-        return existing
-          ? { ...existing, x: slot.x, y: slot.y, position_label: slot.position_label }
-          : { player_id: "", x: slot.x, y: slot.y, position_label: slot.position_label };
-      });
-      setPositions(newPositions);
-      setHasChanges(true);
-    },
-    [positions]
-  );
+  function handleFormationChange(newFormation: string) {
+    setFormation(newFormation);
+    // Reset positions when changing formation
+    const newSlots = teamFormations[newFormation] ?? FORMATIONS[newFormation] ?? [];
+    const newPositions: LineupPosition[] = newSlots.map((slot, i) => {
+      const existing = positions[i];
+      return existing
+        ? { ...existing, x: slot.x, y: slot.y, position_label: slot.position_label }
+        : { player_id: "", x: slot.x, y: slot.y, position_label: slot.position_label };
+    });
+    setPositions(newPositions);
+    setHasChanges(true);
+  }
 
   function handleAutoLineup() {
     const availablePlayers = [

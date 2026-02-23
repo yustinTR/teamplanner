@@ -91,6 +91,7 @@ vi.mock("@/hooks/use-matches", async () => {
     useCreateMatch: () => noopMutation,
     useUpdateMatch: () => noopMutation,
     useCancelMatch: () => noopMutation,
+    useRefreshMatches: () => noopMutation,
   };
 });
 
