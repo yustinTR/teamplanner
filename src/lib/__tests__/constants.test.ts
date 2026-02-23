@@ -11,6 +11,8 @@ import {
   POSITION_TO_CATEGORY,
   ROLE_LABELS,
   HOME_AWAY_LABELS,
+  getFormationsForTeamType,
+  getDefaultFormation,
 } from "../constants";
 
 describe("FORMATIONS_11", () => {
@@ -177,5 +179,50 @@ describe("HOME_AWAY_LABELS", () => {
   it("contains home and away", () => {
     expect(HOME_AWAY_LABELS).toHaveProperty("home");
     expect(HOME_AWAY_LABELS).toHaveProperty("away");
+  });
+});
+
+describe("getFormationsForTeamType", () => {
+  it("returns 11v11 formations for senioren", () => {
+    const result = getFormationsForTeamType("senioren");
+    expect(result).toBe(FORMATIONS_11);
+  });
+
+  it("returns 11v11 formations for jo19_jo17", () => {
+    const result = getFormationsForTeamType("jo19_jo17");
+    expect(result).toBe(FORMATIONS_11);
+  });
+
+  it("returns 7v7 formations for jo15_jo13", () => {
+    const result = getFormationsForTeamType("jo15_jo13");
+    expect(result).toBe(FORMATIONS_7);
+  });
+
+  it("returns 7v7 formations for g_team", () => {
+    const result = getFormationsForTeamType("g_team");
+    expect(result).toBe(FORMATIONS_7);
+  });
+
+  it("returns 11v11 formations for unknown team type", () => {
+    const result = getFormationsForTeamType("unknown");
+    expect(result).toBe(FORMATIONS_11);
+  });
+});
+
+describe("getDefaultFormation", () => {
+  it('returns "4-3-3" for senioren', () => {
+    expect(getDefaultFormation("senioren")).toBe("4-3-3");
+  });
+
+  it('returns "2-3-1" for jo15_jo13', () => {
+    expect(getDefaultFormation("jo15_jo13")).toBe("2-3-1");
+  });
+
+  it('returns "2-3-1" for g_team', () => {
+    expect(getDefaultFormation("g_team")).toBe("2-3-1");
+  });
+
+  it('returns "4-3-3" for unknown team type', () => {
+    expect(getDefaultFormation("unknown")).toBe("4-3-3");
   });
 });
