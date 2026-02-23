@@ -172,11 +172,53 @@ export const AVAILABILITY_LABELS: Record<string, string> = {
   maybe: "Misschien",
 };
 
-export const POSITION_LABELS: Record<string, string> = {
-  goalkeeper: "Keeper",
-  defender: "Verdediger",
-  midfielder: "Middenvelder",
-  forward: "Aanvaller",
+export const DETAILED_POSITION_LABELS: Record<string, string> = {
+  K: "Keeper",
+  CB: "Centrale Verdediger",
+  LB: "Links Achter",
+  RB: "Rechts Achter",
+  LWB: "Linker Wingback",
+  RWB: "Rechter Wingback",
+  CM: "Centrale Middenvelder",
+  CDM: "Verdedigende Middenvelder",
+  CAM: "Aanvallende Middenvelder",
+  LM: "Links Midden",
+  RM: "Rechts Midden",
+  LW: "Links Buiten",
+  RW: "Rechts Buiten",
+  ST: "Spits",
+};
+
+// Backward-compatible alias
+export const POSITION_LABELS = DETAILED_POSITION_LABELS;
+
+export const POSITION_GROUPS = [
+  { label: "Keeper", positions: ["K"] },
+  { label: "Verdediging", positions: ["CB", "LB", "RB", "LWB", "RWB"] },
+  { label: "Middenveld", positions: ["CM", "CDM", "CAM", "LM", "RM"] },
+  { label: "Aanval", positions: ["LW", "RW", "ST"] },
+];
+
+export const POSITION_TO_CATEGORY: Record<string, string> = {
+  K: "goalkeeper",
+  CB: "defender",
+  LB: "defender",
+  RB: "defender",
+  LWB: "defender",
+  RWB: "defender",
+  CM: "midfielder",
+  CDM: "midfielder",
+  CAM: "midfielder",
+  LM: "midfielder",
+  RM: "midfielder",
+  LW: "forward",
+  RW: "forward",
+  ST: "forward",
+};
+
+export const ROLE_LABELS: Record<string, string> = {
+  player: "Speler",
+  staff: "Teammanager",
 };
 
 export const MATCH_STATUS_LABELS: Record<string, string> = {

@@ -154,7 +154,7 @@ export async function POST(request: Request) {
         const { error } = await supabase.from("players").insert({
           team_id: teamId,
           name: player.name,
-          position: player.position,
+          primary_position: player.position,
         });
 
         if (error) {

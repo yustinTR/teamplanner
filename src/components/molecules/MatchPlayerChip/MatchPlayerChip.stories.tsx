@@ -26,14 +26,14 @@ export const Default: Story = {
 export const WithPosition: Story = {
   args: {
     name: "Lars de Jong",
-    position: "midfielder",
+    position: "CM",
   },
 };
 
 export const WithDelete: Story = {
   args: {
     name: "Lars de Jong",
-    position: "defender",
+    position: "CB",
     onDelete: () => console.log("delete"),
   },
 };

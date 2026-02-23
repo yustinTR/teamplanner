@@ -1,12 +1,13 @@
 import { Avatar } from "@/components/atoms/Avatar";
 import { Badge } from "@/components/atoms/Badge";
 import { cn } from "@/lib/utils";
-import { POSITION_LABELS } from "@/lib/constants";
+import { DETAILED_POSITION_LABELS } from "@/lib/constants";
 
 interface PlayerChipProps {
   name: string;
   photoUrl?: string | null;
-  position?: string | null;
+  primaryPosition?: string | null;
+  role?: string;
   jerseyNumber?: number | null;
   onClick?: () => void;
   className?: string;
@@ -15,12 +16,14 @@ interface PlayerChipProps {
 export function PlayerChip({
   name,
   photoUrl,
-  position,
+  primaryPosition,
+  role,
   jerseyNumber,
   onClick,
   className,
 }: PlayerChipProps) {
   const Component = onClick ? "button" : "div";
+  const isStaff = role === "staff";
 
   return (
     <Component
@@ -39,13 +42,19 @@ export function PlayerChip({
             <span className="text-xs text-muted-foreground">#{jerseyNumber}</span>
           )}
         </div>
-        {position && (
+        {isStaff ? (
           <Badge
             variant="default"
-            label={POSITION_LABELS[position] ?? position}
+            label="Staff"
             className="mt-0.5"
           />
-        )}
+        ) : primaryPosition ? (
+          <Badge
+            variant="default"
+            label={DETAILED_POSITION_LABELS[primaryPosition] ?? primaryPosition}
+            className="mt-0.5"
+          />
+        ) : null}
       </div>
     </Component>
   );

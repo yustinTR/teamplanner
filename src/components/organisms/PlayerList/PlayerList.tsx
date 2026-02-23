@@ -115,7 +115,8 @@ export function PlayerList() {
             key={player.id}
             name={player.name}
             photoUrl={player.photo_url}
-            position={player.position}
+            primaryPosition={player.primary_position}
+            role={player.role}
             jerseyNumber={player.jersey_number}
             onClick={() => router.push(`/team/players/${player.id}`)}
           />

@@ -42,7 +42,9 @@ export function createMockPlayer(overrides?: Partial<Player>): Player {
     team_id: "team-001",
     user_id: null,
     name: "Test Speler",
-    position: "midfielder",
+    primary_position: "CM",
+    secondary_positions: [],
+    role: "player",
     jersey_number: 10,
     photo_url: null,
     notes: null,
@@ -139,7 +141,7 @@ export function createMockMatchPlayer(overrides?: Partial<MatchPlayer>): MatchPl
     id,
     match_id: "match-001",
     name: "Leen Speler",
-    position: null,
+    primary_position: null,
     created_at: "2026-01-01T00:00:00Z",
     ...overrides,
   };
@@ -201,11 +203,12 @@ export function createMockEventTask(overrides?: Partial<EventTask>): EventTask {
 export const MOCK_TEAM = createMockTeam({ id: "team-001", created_by: "user-coach-001" });
 
 export const MOCK_PLAYERS: Player[] = [
-  createMockPlayer({ id: "player-001", name: "Jan de Vries", jersey_number: 1, position: "goalkeeper", team_id: "team-001", user_id: "user-coach-001" }),
-  createMockPlayer({ id: "player-002", name: "Pieter Bakker", jersey_number: 4, position: "defender", team_id: "team-001" }),
-  createMockPlayer({ id: "player-003", name: "Klaas Jansen", jersey_number: 8, position: "midfielder", team_id: "team-001" }),
-  createMockPlayer({ id: "player-004", name: "Willem Visser", jersey_number: 9, position: "forward", team_id: "team-001" }),
-  createMockPlayer({ id: "player-005", name: "Henk Smit", jersey_number: 11, position: "forward", team_id: "team-001" }),
+  createMockPlayer({ id: "player-001", name: "Jan de Vries", jersey_number: 1, primary_position: "K", team_id: "team-001", user_id: "user-coach-001" }),
+  createMockPlayer({ id: "player-002", name: "Pieter Bakker", jersey_number: 4, primary_position: "CB", team_id: "team-001" }),
+  createMockPlayer({ id: "player-003", name: "Klaas Jansen", jersey_number: 8, primary_position: "CM", team_id: "team-001" }),
+  createMockPlayer({ id: "player-004", name: "Willem Visser", jersey_number: 9, primary_position: "ST", team_id: "team-001" }),
+  createMockPlayer({ id: "player-005", name: "Henk Smit", jersey_number: 11, primary_position: "LW", team_id: "team-001" }),
+  createMockPlayer({ id: "player-006", name: "Gerard Mulder", jersey_number: null, primary_position: null, secondary_positions: [], role: "staff", team_id: "team-001" }),
 ];
 
 export const MOCK_MATCHES: Match[] = [

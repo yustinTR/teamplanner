@@ -7,33 +7,52 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.1"
   }
   public: {
     Tables: {
+      availability: {
+        Row: {
+          id: string
+          match_id: string
+          player_id: string
+          responded_at: string
+          status: Database["public"]["Enums"]["availability_status"]
+        }
+        Insert: {
+          id?: string
+          match_id: string
+          player_id: string
+          responded_at?: string
+          status: Database["public"]["Enums"]["availability_status"]
+        }
+        Update: {
+          id?: string
+          match_id?: string
+          player_id?: string
+          responded_at?: string
+          status?: Database["public"]["Enums"]["availability_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "availability_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "availability_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_attendance: {
         Row: {
           event_id: string
@@ -106,17 +125,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "event_tasks_event_id_fkey"
-            columns: ["event_id"]
-            isOneToOne: false
-            referencedRelation: "events"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "event_tasks_assigned_to_fkey"
             columns: ["assigned_to"]
             isOneToOne: false
             referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_tasks_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
             referencedColumns: ["id"]
           },
         ]
@@ -171,45 +190,6 @@ export type Database = {
           },
         ]
       }
-      availability: {
-        Row: {
-          id: string
-          match_id: string
-          player_id: string
-          responded_at: string
-          status: Database["public"]["Enums"]["availability_status"]
-        }
-        Insert: {
-          id?: string
-          match_id: string
-          player_id: string
-          responded_at?: string
-          status: Database["public"]["Enums"]["availability_status"]
-        }
-        Update: {
-          id?: string
-          match_id?: string
-          player_id?: string
-          responded_at?: string
-          status?: Database["public"]["Enums"]["availability_status"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "availability_match_id_fkey"
-            columns: ["match_id"]
-            isOneToOne: false
-            referencedRelation: "matches"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "availability_player_id_fkey"
-            columns: ["player_id"]
-            isOneToOne: false
-            referencedRelation: "players"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       lineups: {
         Row: {
           created_at: string
@@ -254,21 +234,21 @@ export type Database = {
           id: string
           match_id: string
           name: string
-          position: string | null
+          primary_position: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           match_id: string
           name: string
-          position?: string | null
+          primary_position?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           match_id?: string
           name?: string
-          position?: string | null
+          primary_position?: string | null
         }
         Relationships: [
           {
@@ -339,7 +319,9 @@ export type Database = {
           name: string
           notes: string | null
           photo_url: string | null
-          position: string | null
+          primary_position: string | null
+          role: string
+          secondary_positions: string[]
           team_id: string
           user_id: string | null
         }
@@ -351,7 +333,9 @@ export type Database = {
           name: string
           notes?: string | null
           photo_url?: string | null
-          position?: string | null
+          primary_position?: string | null
+          role?: string
+          secondary_positions?: string[]
           team_id: string
           user_id?: string | null
         }
@@ -363,7 +347,9 @@ export type Database = {
           name?: string
           notes?: string | null
           photo_url?: string | null
-          position?: string | null
+          primary_position?: string | null
+          role?: string
+          secondary_positions?: string[]
           team_id?: string
           user_id?: string | null
         }
@@ -433,14 +419,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_my_team_ids: { Args: never; Returns: string[] }
     }
     Enums: {
       attendance_status: "coming" | "not_coming" | "maybe"
       availability_status: "available" | "unavailable" | "maybe"
       home_away: "home" | "away"
       match_status: "upcoming" | "completed" | "cancelled"
-      team_type: "senioren" | "jo19_jo17" | "jo15_jo13" | "jo11_jo9" | "g_team" | "jo19_jo15" | "jo13_jo11" | "jo9_jo7"
+      team_type:
+        | "senioren"
+        | "jo19_jo17"
+        | "jo15_jo13"
+        | "jo11_jo9"
+        | "g_team"
+        | "jo19_jo15"
+        | "jo13_jo11"
+        | "jo9_jo7"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -566,17 +560,22 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       attendance_status: ["coming", "not_coming", "maybe"],
       availability_status: ["available", "unavailable", "maybe"],
       home_away: ["home", "away"],
       match_status: ["upcoming", "completed", "cancelled"],
-      team_type: ["senioren", "jo19_jo17", "jo15_jo13", "jo11_jo9", "g_team", "jo19_jo15", "jo13_jo11", "jo9_jo7"],
+      team_type: [
+        "senioren",
+        "jo19_jo17",
+        "jo15_jo13",
+        "jo11_jo9",
+        "g_team",
+        "jo19_jo15",
+        "jo13_jo11",
+        "jo9_jo7",
+      ],
     },
   },
 } as const
-

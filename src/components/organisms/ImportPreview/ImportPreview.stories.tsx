@@ -24,10 +24,10 @@ const MOCK_MATCHES: ParsedMatch[] = [
 ];
 
 const MOCK_PLAYERS: ParsedPlayer[] = [
-  { name: "Jan de Vries", position: "goalkeeper" },
-  { name: "Pieter Bakker", position: "defender" },
-  { name: "Klaas Jansen", position: "midfielder" },
-  { name: "Willem Visser", position: "forward" },
+  { name: "Jan de Vries", position: null },
+  { name: "Pieter Bakker", position: null },
+  { name: "Klaas Jansen", position: null },
+  { name: "Willem Visser", position: null },
   { name: "Henk Smit", position: null },
 ];
 
