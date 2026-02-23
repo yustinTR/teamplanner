@@ -32,7 +32,10 @@ export function AvailabilityGrid({ matchId }: AvailabilityGridProps) {
     );
   }
 
-  if (!players?.length) return null;
+  // Filter out staff members from availability grid
+  const fieldPlayers = players?.filter((p) => p.role !== "staff") ?? [];
+
+  if (!fieldPlayers.length) return null;
 
   const statusMap = new Map(
     availability?.map((a) => [a.player_id, a.status]) ?? []
@@ -45,7 +48,7 @@ export function AvailabilityGrid({ matchId }: AvailabilityGridProps) {
     none: [],
   };
 
-  for (const player of players) {
+  for (const player of fieldPlayers) {
     const status = statusMap.get(player.id);
     if (status) {
       groups[status].push(player);

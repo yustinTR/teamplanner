@@ -78,7 +78,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
 
   const benchPlayers = [
     ...(players ?? []).filter(
-      (p) => availablePlayerIds.has(p.id) && !assignedPlayerIds.has(p.id)
+      (p) => availablePlayerIds.has(p.id) && !assignedPlayerIds.has(p.id) && p.role !== "staff"
     ),
     ...matchPlayersList.filter((p) => !assignedPlayerIds.has(p.id)),
   ];
@@ -107,7 +107,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
 
   function handleAutoLineup() {
     const availablePlayers = [
-      ...(players ?? []).filter((p) => availablePlayerIds.has(p.id)),
+      ...(players ?? []).filter((p) => availablePlayerIds.has(p.id) && p.role !== "staff"),
       ...matchPlayersList,
     ];
 

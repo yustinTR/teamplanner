@@ -161,7 +161,7 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
                           await createMatchPlayer.mutateAsync({
                             match_id: match.id,
                             name: data.name,
-                            position: data.position,
+                            primary_position: data.primary_position,
                           });
                           setLeenOpen(false);
                         }}
@@ -177,7 +177,7 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
                   <MatchPlayerChip
                     key={mp.id}
                     name={mp.name}
-                    position={mp.position}
+                    position={mp.primary_position}
                     onDelete={
                       isCoach
                         ? () => deleteMatchPlayer.mutate({ id: mp.id, matchId: match.id })

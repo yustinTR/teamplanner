@@ -21,10 +21,11 @@ npm run test:stories     # Run Storybook tests only (Playwright browser)
 npm run test:watch       # Tests in watch mode
 npm run test:e2e         # E2E tests (Playwright)
 
-# Supabase
-npx supabase start       # Local Supabase
-npx supabase migration new <name>  # Create migration (never edit existing ones)
-npx supabase gen types typescript --local > src/lib/supabase/types.ts  # Regenerate DB types
+# Supabase (remote — no local instance)
+# Project ID: zonxfimxwqgpgycblvcg
+npx supabase migration new <name>  # Create migration file (never edit existing ones)
+# Apply migrations via MCP Supabase tool (apply_migration) — not via local CLI
+# Regenerate types via MCP Supabase tool (generate_typescript_types) → write to src/lib/supabase/types.ts
 
 # shadcn/ui
 npx shadcn@latest add <component>  # Add shadcn component

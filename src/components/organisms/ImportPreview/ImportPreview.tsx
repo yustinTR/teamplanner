@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/atoms/Button";
 import { Card } from "@/components/atoms/Card";
 import { Badge } from "@/components/atoms/Badge";
-import { POSITION_LABELS } from "@/lib/constants";
+import { DETAILED_POSITION_LABELS } from "@/lib/constants";
 import type { ParsedMatch, ParsedPlayer } from "@/lib/voetbal-nl-parser";
 
 interface ImportPreviewProps {
@@ -131,7 +131,7 @@ export function ImportPreview({
                     <Badge
                       variant="default"
                       label={
-                        POSITION_LABELS[player.position] ?? player.position
+                        DETAILED_POSITION_LABELS[player.position] ?? player.position
                       }
                     />
                   )}

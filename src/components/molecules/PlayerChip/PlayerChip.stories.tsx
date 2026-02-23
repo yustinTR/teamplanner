@@ -23,10 +23,10 @@ export const Default: Story = {
   },
 };
 
-export const WithPosition: Story = {
+export const WithDetailedPosition: Story = {
   args: {
     name: "Pieter Bakker",
-    position: "midfielder",
+    primaryPosition: "CM",
     jerseyNumber: 8,
   },
 };
@@ -41,8 +41,15 @@ export const WithJerseyNumber: Story = {
 export const Clickable: Story = {
   args: {
     name: "Marco van Dijk",
-    position: "forward",
+    primaryPosition: "ST",
     jerseyNumber: 9,
     onClick: () => console.log("clicked"),
+  },
+};
+
+export const StaffMember: Story = {
+  args: {
+    name: "Gerard Mulder",
+    role: "staff",
   },
 };

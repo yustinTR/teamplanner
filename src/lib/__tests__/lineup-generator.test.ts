@@ -3,13 +3,13 @@ import { generateLineup } from "../lineup-generator";
 import type { Player, AvailabilityWithPlayer } from "@/types";
 import { createMockPlayer, createMockAvailabilityWithPlayer } from "@/lib/test/mock-data";
 
-function makePlayers(count: number, position?: string | null): Player[] {
+function makePlayers(count: number, primaryPosition?: string | null): Player[] {
   return Array.from({ length: count }, (_, i) =>
     createMockPlayer({
       id: `p-${i + 1}`,
       name: `Speler ${i + 1}`,
       jersey_number: i + 1,
-      position: position === undefined ? null : position,
+      primary_position: primaryPosition === undefined ? null : primaryPosition,
     })
   );
 }
@@ -30,15 +30,15 @@ function makeAvailability(
 describe("generateLineup", () => {
   it("generates a valid 11-player lineup with enough players", () => {
     const players: Player[] = [
-      createMockPlayer({ id: "gk", position: "goalkeeper" }),
+      createMockPlayer({ id: "gk", primary_position: "K" }),
       ...Array.from({ length: 4 }, (_, i) =>
-        createMockPlayer({ id: `def-${i}`, position: "defender" })
+        createMockPlayer({ id: `def-${i}`, primary_position: "CB" })
       ),
       ...Array.from({ length: 3 }, (_, i) =>
-        createMockPlayer({ id: `mid-${i}`, position: "midfielder" })
+        createMockPlayer({ id: `mid-${i}`, primary_position: "CM" })
       ),
       ...Array.from({ length: 3 }, (_, i) =>
-        createMockPlayer({ id: `fwd-${i}`, position: "forward" })
+        createMockPlayer({ id: `fwd-${i}`, primary_position: "ST" })
       ),
     ];
     const avail = makeAvailability(players);
@@ -52,9 +52,9 @@ describe("generateLineup", () => {
   });
 
   it("fills the keeper slot first", () => {
-    const keeper = createMockPlayer({ id: "gk", position: "goalkeeper" });
+    const keeper = createMockPlayer({ id: "gk", primary_position: "K" });
     const others = Array.from({ length: 10 }, (_, i) =>
-      createMockPlayer({ id: `p-${i}`, position: "midfielder" })
+      createMockPlayer({ id: `p-${i}`, primary_position: "CM" })
     );
     const players = [keeper, ...others];
     const avail = makeAvailability(players);
@@ -68,39 +68,83 @@ describe("generateLineup", () => {
     expect(keeperPosition!.player_id).toBe("gk");
   });
 
-  it("matches defenders to defensive formation slots", () => {
+  it("matches exact position labels to formation slots", () => {
     const players: Player[] = [
-      createMockPlayer({ id: "gk", position: "goalkeeper" }),
-      createMockPlayer({ id: "def-1", position: "defender" }),
-      createMockPlayer({ id: "def-2", position: "defender" }),
-      createMockPlayer({ id: "def-3", position: "defender" }),
-      createMockPlayer({ id: "def-4", position: "defender" }),
+      createMockPlayer({ id: "gk", primary_position: "K" }),
+      createMockPlayer({ id: "lb", primary_position: "LB" }),
+      createMockPlayer({ id: "cb-1", primary_position: "CB" }),
+      createMockPlayer({ id: "cb-2", primary_position: "CB" }),
+      createMockPlayer({ id: "rb", primary_position: "RB" }),
       ...Array.from({ length: 3 }, (_, i) =>
-        createMockPlayer({ id: `mid-${i}`, position: "midfielder" })
+        createMockPlayer({ id: `mid-${i}`, primary_position: "CM" })
       ),
-      ...Array.from({ length: 3 }, (_, i) =>
-        createMockPlayer({ id: `fwd-${i}`, position: "forward" })
+      createMockPlayer({ id: "lw", primary_position: "LW" }),
+      createMockPlayer({ id: "st", primary_position: "ST" }),
+      createMockPlayer({ id: "rw", primary_position: "RW" }),
+    ];
+    const avail = makeAvailability(players);
+
+    const result = generateLineup("4-3-3", players, avail);
+
+    // LB slot should be filled by LB player
+    const lbPos = result.positions.find((p) => p.position_label === "LB");
+    expect(lbPos?.player_id).toBe("lb");
+
+    // RB slot should be filled by RB player
+    const rbPos = result.positions.find((p) => p.position_label === "RB");
+    expect(rbPos?.player_id).toBe("rb");
+  });
+
+  it("matches secondary positions", () => {
+    const players: Player[] = [
+      createMockPlayer({ id: "gk", primary_position: "K" }),
+      createMockPlayer({ id: "versatile", primary_position: "CM", secondary_positions: ["LB", "CB"] }),
+      ...Array.from({ length: 9 }, (_, i) =>
+        createMockPlayer({ id: `p-${i}`, primary_position: "ST" })
       ),
     ];
     const avail = makeAvailability(players);
 
     const result = generateLineup("4-3-3", players, avail);
 
+    // Versatile player should be placed in CM (exact match) or one of the CB/LB slots
+    const versatilePos = result.positions.find((p) => p.player_id === "versatile");
+    expect(versatilePos).toBeDefined();
+  });
+
+  it("matches same category when no exact match", () => {
+    const players: Player[] = [
+      createMockPlayer({ id: "gk", primary_position: "K" }),
+      createMockPlayer({ id: "cb-1", primary_position: "CB" }),
+      createMockPlayer({ id: "cb-2", primary_position: "CB" }),
+      createMockPlayer({ id: "cb-3", primary_position: "CB" }),
+      createMockPlayer({ id: "cb-4", primary_position: "CB" }),
+      ...Array.from({ length: 3 }, (_, i) =>
+        createMockPlayer({ id: `mid-${i}`, primary_position: "CM" })
+      ),
+      ...Array.from({ length: 3 }, (_, i) =>
+        createMockPlayer({ id: `fwd-${i}`, primary_position: "ST" })
+      ),
+    ];
+    const avail = makeAvailability(players);
+
+    const result = generateLineup("4-3-3", players, avail);
+
+    // CB players should fill LB and RB slots (same category: defender)
     const defLabels = ["LB", "CB", "RB"];
     const defPositions = result.positions.filter((p) =>
       defLabels.includes(p.position_label)
     );
-    // All defensive positions should be filled by defenders
     for (const pos of defPositions) {
-      expect(pos.player_id).toMatch(/^def-/);
+      expect(pos.player_id).toMatch(/^cb-/);
     }
   });
 
   it("puts remaining available players as substitutes", () => {
     const players: Player[] = [
-      createMockPlayer({ id: "gk", position: "goalkeeper" }),
+      createMockPlayer({ id: "gk", primary_position: "K" }),
       ...Array.from({ length: 12 }, (_, i) =>
-        createMockPlayer({ id: `p-${i}`, position: "midfielder" })
+        createMockPlayer({ id: `p-${i}`, primary_position: "CM" })
       ),
     ];
     const avail = makeAvailability(players);
@@ -113,9 +157,9 @@ describe("generateLineup", () => {
 
   it("works with fewer than 11 players", () => {
     const players = [
-      createMockPlayer({ id: "gk", position: "goalkeeper" }),
-      createMockPlayer({ id: "def-1", position: "defender" }),
-      createMockPlayer({ id: "mid-1", position: "midfielder" }),
+      createMockPlayer({ id: "gk", primary_position: "K" }),
+      createMockPlayer({ id: "def-1", primary_position: "CB" }),
+      createMockPlayer({ id: "mid-1", primary_position: "CM" }),
     ];
     const avail = makeAvailability(players);
 
@@ -126,7 +170,7 @@ describe("generateLineup", () => {
   });
 
   it("works when all players have the same position", () => {
-    const players = makePlayers(11, "midfielder");
+    const players = makePlayers(11, "CM");
     const avail = makeAvailability(players);
 
     const result = generateLineup("4-3-3", players, avail);
@@ -149,11 +193,11 @@ describe("generateLineup", () => {
   it("prioritizes available over maybe players", () => {
     const availPlayer = createMockPlayer({
       id: "avail",
-      position: "goalkeeper",
+      primary_position: "K",
     });
     const maybePlayer = createMockPlayer({
       id: "maybe",
-      position: "goalkeeper",
+      primary_position: "K",
     });
 
     const availability: AvailabilityWithPlayer[] = [
@@ -190,13 +234,13 @@ describe("generateLineup", () => {
 
   it("substitute suggestions have correct compatibility labels", () => {
     const players: Player[] = [
-      createMockPlayer({ id: "gk", position: "goalkeeper" }),
+      createMockPlayer({ id: "gk", primary_position: "K" }),
       ...Array.from({ length: 10 }, (_, i) =>
-        createMockPlayer({ id: `mid-${i}`, position: "midfielder" })
+        createMockPlayer({ id: `mid-${i}`, primary_position: "CM" })
       ),
       // Extra players as substitutes
-      createMockPlayer({ id: "sub-def", position: "defender" }),
-      createMockPlayer({ id: "sub-fwd", position: "forward" }),
+      createMockPlayer({ id: "sub-def", primary_position: "CB" }),
+      createMockPlayer({ id: "sub-fwd", primary_position: "ST" }),
     ];
     const avail = makeAvailability(players);
 

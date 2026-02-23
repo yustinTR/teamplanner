@@ -9,7 +9,9 @@ export function matchPlayerToPlayer(mp: MatchPlayer): Player {
     team_id: "",
     user_id: null,
     name: mp.name,
-    position: mp.position,
+    primary_position: mp.primary_position,
+    secondary_positions: [],
+    role: "player",
     jersey_number: null,
     photo_url: null,
     notes: null,
@@ -96,40 +98,67 @@ export function generateLineup(
 
   const positions: LineupPosition[] = [];
 
-  // Helper: find best player for a slot category from the remaining pool
+  // Helper: find best player for a slot from the remaining pool
   function pickPlayer(
-    category: PositionCategory | undefined
+    category: PositionCategory | undefined,
+    slotLabel?: string
   ): Player | undefined {
     if (!category) return pickAnyPlayer();
 
-    // 1. Exact position match
-    for (const p of sortedPlayers) {
-      if (remaining.has(p.id) && p.position === category) {
-        remaining.delete(p.id);
-        return p;
-      }
-    }
-
-    // 2. Player without a position
-    for (const p of sortedPlayers) {
-      if (remaining.has(p.id) && !p.position) {
-        remaining.delete(p.id);
-        return p;
-      }
-    }
-
-    // 3. Related category
-    const related = RELATED_CATEGORIES[category] ?? [];
-    for (const rel of related) {
+    // 1. Exact position match (player primary_position === slot label)
+    if (slotLabel) {
       for (const p of sortedPlayers) {
-        if (remaining.has(p.id) && p.position === rel) {
+        if (remaining.has(p.id) && p.primary_position === slotLabel) {
           remaining.delete(p.id);
           return p;
         }
       }
     }
 
-    // 4. Any remaining player
+    // 2. Secondary position match (slot label in player's secondary_positions)
+    if (slotLabel) {
+      for (const p of sortedPlayers) {
+        if (remaining.has(p.id) && p.secondary_positions?.includes(slotLabel)) {
+          remaining.delete(p.id);
+          return p;
+        }
+      }
+    }
+
+    // 3. Same category match (player's primary_position is in same category as slot)
+    for (const p of sortedPlayers) {
+      if (remaining.has(p.id) && p.primary_position) {
+        const playerCategory = getCategory(p.primary_position);
+        if (playerCategory === category) {
+          remaining.delete(p.id);
+          return p;
+        }
+      }
+    }
+
+    // 4. Player without a position
+    for (const p of sortedPlayers) {
+      if (remaining.has(p.id) && !p.primary_position) {
+        remaining.delete(p.id);
+        return p;
+      }
+    }
+
+    // 5. Related category
+    const related = RELATED_CATEGORIES[category] ?? [];
+    for (const rel of related) {
+      for (const p of sortedPlayers) {
+        if (remaining.has(p.id) && p.primary_position) {
+          const playerCategory = getCategory(p.primary_position);
+          if (playerCategory === rel) {
+            remaining.delete(p.id);
+            return p;
+          }
+        }
+      }
+    }
+
+    // 6. Any remaining player
     return pickAnyPlayer();
   }
 
@@ -149,7 +178,7 @@ export function generateLineup(
   );
   if (keeperSlotIndex >= 0) {
     const slot = formationSlots[keeperSlotIndex];
-    const keeper = pickPlayer("goalkeeper");
+    const keeper = pickPlayer("goalkeeper", "K");
     if (keeper) {
       positions.push({
         player_id: keeper.id,
@@ -165,7 +194,7 @@ export function generateLineup(
     if (i === keeperSlotIndex) continue; // Already filled
     const slot = formationSlots[i];
     const category = getCategory(slot.position_label);
-    const player = pickPlayer(category);
+    const player = pickPlayer(category, slot.position_label);
     if (player) {
       positions.push({
         player_id: player.id,
@@ -185,22 +214,39 @@ export function generateLineup(
     let bestLabel: string | undefined;
     let bestCompat: SubstituteSuggestion["compatibility"] = "any";
 
+    const playerCategory = player.primary_position
+      ? getCategory(player.primary_position)
+      : undefined;
+
     for (const slot of formationSlots) {
       const slotCategory = getCategory(slot.position_label);
       if (!slotCategory) continue;
 
-      if (player.position === slotCategory) {
+      // Exact: player's primary position matches slot label
+      if (player.primary_position === slot.position_label) {
         bestLabel = slot.position_label;
         bestCompat = "exact";
         break;
       }
 
+      // Secondary: slot label in player's secondary positions
+      if (player.secondary_positions?.includes(slot.position_label)) {
+        bestLabel = slot.position_label;
+        bestCompat = "exact";
+        break;
+      }
+
+      // Same category
+      if (!bestLabel && playerCategory === slotCategory) {
+        bestLabel = slot.position_label;
+        bestCompat = "related";
+      }
+
+      // Related category
       if (
         !bestLabel &&
-        player.position &&
-        RELATED_CATEGORIES[slotCategory]?.includes(
-          player.position as PositionCategory
-        )
+        playerCategory &&
+        RELATED_CATEGORIES[slotCategory]?.includes(playerCategory)
       ) {
         bestLabel = slot.position_label;
         bestCompat = "related";
@@ -288,8 +334,8 @@ export function generateSubstitutionPlan(
     }
   }
 
-  // Check if there are multiple keepers (goalkeeper position)
-  const multipleKeepers = availablePlayers.filter((p) => p.position === "goalkeeper").length >= 2;
+  // Check if there are multiple keepers
+  const multipleKeepers = availablePlayers.filter((p) => p.primary_position === "K").length >= 2;
 
   // Build the full rotation pool (exclude keeper unless multiple keepers)
   const rotatingPlayers: string[] = multipleKeepers

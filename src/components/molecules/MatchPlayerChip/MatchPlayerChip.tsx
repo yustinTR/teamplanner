@@ -2,7 +2,7 @@
 
 import { X } from "lucide-react";
 import { Badge } from "@/components/atoms/Badge";
-import { POSITION_LABELS } from "@/lib/constants";
+import { DETAILED_POSITION_LABELS } from "@/lib/constants";
 
 interface MatchPlayerChipProps {
   name: string;
@@ -17,7 +17,7 @@ export function MatchPlayerChip({ name, position, onDelete }: MatchPlayerChipPro
       <Badge variant="default" label="Leen" />
       {position && (
         <span className="text-xs text-muted-foreground">
-          {POSITION_LABELS[position] ?? position}
+          {DETAILED_POSITION_LABELS[position] ?? position}
         </span>
       )}
       {onDelete && (

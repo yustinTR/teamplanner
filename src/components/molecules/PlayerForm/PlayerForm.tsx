@@ -8,15 +8,20 @@ import { FormField } from "@/components/molecules/FormField";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { POSITION_LABELS } from "@/lib/constants";
+import { POSITION_GROUPS, DETAILED_POSITION_LABELS, ROLE_LABELS } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 interface PlayerFormData {
   name: string;
-  position: string | null;
+  primary_position: string | null;
+  secondary_positions: string[];
+  role: string;
   jersey_number: number | null;
   notes: string | null;
 }
@@ -33,7 +38,22 @@ export function PlayerForm({
   submitLabel = "Opslaan",
 }: PlayerFormProps) {
   const [loading, setLoading] = useState(false);
-  const [position, setPosition] = useState<string>(defaultValues?.position ?? "");
+  const [role, setRole] = useState<string>(defaultValues?.role ?? "player");
+  const [primaryPosition, setPrimaryPosition] = useState<string>(
+    defaultValues?.primary_position ?? ""
+  );
+  const [secondaryPositions, setSecondaryPositions] = useState<string[]>(
+    defaultValues?.secondary_positions ?? []
+  );
+  const [showSecondary, setShowSecondary] = useState(
+    (defaultValues?.secondary_positions ?? []).length > 0
+  );
+
+  function toggleSecondary(pos: string) {
+    setSecondaryPositions((prev) =>
+      prev.includes(pos) ? prev.filter((p) => p !== pos) : [...prev, pos]
+    );
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,7 +63,9 @@ export function PlayerForm({
       const jerseyNum = formData.get("jersey_number") as string;
       await onSubmit({
         name: formData.get("name") as string,
-        position: position || null,
+        primary_position: role === "staff" ? null : primaryPosition || null,
+        secondary_positions: role === "staff" ? [] : secondaryPositions,
+        role,
         jersey_number: jerseyNum ? parseInt(jerseyNum, 10) : null,
         notes: (formData.get("notes") as string) || null,
       });
@@ -64,20 +86,94 @@ export function PlayerForm({
         />
       </FormField>
 
-      <FormField label="Positie" htmlFor="position">
-        <Select value={position} onValueChange={setPosition}>
-          <SelectTrigger className="min-h-[44px]">
-            <SelectValue placeholder="Kies een positie" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.entries(POSITION_LABELS).map(([value, label]) => (
-              <SelectItem key={value} value={value}>
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <FormField label="Rol" htmlFor="role">
+        <div className="flex gap-2">
+          {Object.entries(ROLE_LABELS).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setRole(value)}
+              className={cn(
+                "flex-1 min-h-[44px] rounded-md border px-3 py-2 text-sm font-medium transition-colors",
+                role === value
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-input bg-background hover:bg-accent"
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </FormField>
+
+      {role === "player" && (
+        <>
+          <FormField label="Hoofdpositie" htmlFor="primary_position">
+            <Select value={primaryPosition} onValueChange={setPrimaryPosition}>
+              <SelectTrigger className="min-h-[44px]">
+                <SelectValue placeholder="Kies een positie" />
+              </SelectTrigger>
+              <SelectContent>
+                {POSITION_GROUPS.map((group) => (
+                  <SelectGroup key={group.label}>
+                    <SelectLabel>{group.label}</SelectLabel>
+                    {group.positions.map((pos) => (
+                      <SelectItem key={pos} value={pos}>
+                        {pos} - {DETAILED_POSITION_LABELS[pos]}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormField>
+
+          <div>
+            <button
+              type="button"
+              onClick={() => setShowSecondary(!showSecondary)}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {showSecondary ? "Subposities verbergen" : "Subposities toevoegen"}
+              {secondaryPositions.length > 0 && ` (${secondaryPositions.length})`}
+            </button>
+
+            {showSecondary && (
+              <div className="mt-2 space-y-3">
+                {POSITION_GROUPS.map((group) => (
+                  <div key={group.label}>
+                    <p className="mb-1 text-xs font-medium text-muted-foreground">
+                      {group.label}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {group.positions.map((pos) => {
+                        const isPrimary = primaryPosition === pos;
+                        const isSelected = secondaryPositions.includes(pos);
+                        return (
+                          <button
+                            key={pos}
+                            type="button"
+                            disabled={isPrimary}
+                            onClick={() => toggleSecondary(pos)}
+                            className={cn(
+                              "min-h-[44px] min-w-[44px] rounded-md border px-3 py-2 text-sm transition-colors",
+                              isPrimary && "border-primary/30 bg-primary/10 text-primary/50 cursor-not-allowed",
+                              isSelected && !isPrimary && "border-primary bg-primary/10 text-primary font-medium",
+                              !isSelected && !isPrimary && "border-input hover:bg-accent"
+                            )}
+                          >
+                            {pos}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       <FormField label="Rugnummer" htmlFor="jersey_number">
         <Input

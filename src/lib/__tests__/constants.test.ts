@@ -1,21 +1,48 @@
 import { describe, it, expect } from "vitest";
 import {
   FORMATIONS,
+  FORMATIONS_11,
+  FORMATIONS_7,
   AVAILABILITY_LABELS,
   MATCH_STATUS_LABELS,
   POSITION_LABELS,
+  DETAILED_POSITION_LABELS,
+  POSITION_GROUPS,
+  POSITION_TO_CATEGORY,
+  ROLE_LABELS,
   HOME_AWAY_LABELS,
 } from "../constants";
 
-describe("FORMATIONS", () => {
-  const formationNames = Object.keys(FORMATIONS);
+describe("FORMATIONS_11", () => {
+  const formationNames = Object.keys(FORMATIONS_11);
 
   it("has at least one formation defined", () => {
     expect(formationNames.length).toBeGreaterThan(0);
   });
 
   it.each(formationNames)("%s has exactly 11 positions", (name) => {
-    expect(FORMATIONS[name]).toHaveLength(11);
+    expect(FORMATIONS_11[name]).toHaveLength(11);
+  });
+});
+
+describe("FORMATIONS_7", () => {
+  const formationNames = Object.keys(FORMATIONS_7);
+
+  it("has at least one formation defined", () => {
+    expect(formationNames.length).toBeGreaterThan(0);
+  });
+
+  it.each(formationNames)("%s has exactly 7 positions", (name) => {
+    expect(FORMATIONS_7[name]).toHaveLength(7);
+  });
+});
+
+describe("FORMATIONS (combined)", () => {
+  const formationNames = Object.keys(FORMATIONS);
+
+  it("includes both 11v11 and 7v7 formations", () => {
+    expect(formationNames).toContain("4-3-3");
+    expect(formationNames).toContain("2-3-1");
   });
 
   it.each(formationNames)(
@@ -77,12 +104,72 @@ describe("MATCH_STATUS_LABELS", () => {
   });
 });
 
-describe("POSITION_LABELS", () => {
-  it("contains the four main positions", () => {
-    expect(POSITION_LABELS).toHaveProperty("goalkeeper");
-    expect(POSITION_LABELS).toHaveProperty("defender");
-    expect(POSITION_LABELS).toHaveProperty("midfielder");
-    expect(POSITION_LABELS).toHaveProperty("forward");
+describe("DETAILED_POSITION_LABELS", () => {
+  it("contains all 14 detailed positions", () => {
+    const expected = ["K", "CB", "LB", "RB", "LWB", "RWB", "CM", "CDM", "CAM", "LM", "RM", "LW", "RW", "ST"];
+    for (const pos of expected) {
+      expect(DETAILED_POSITION_LABELS).toHaveProperty(pos);
+    }
+  });
+
+  it("has Dutch labels", () => {
+    expect(DETAILED_POSITION_LABELS.K).toBe("Keeper");
+    expect(DETAILED_POSITION_LABELS.ST).toBe("Spits");
+    expect(DETAILED_POSITION_LABELS.CB).toBe("Centrale Verdediger");
+  });
+});
+
+describe("POSITION_LABELS (backward compat)", () => {
+  it("is the same object as DETAILED_POSITION_LABELS", () => {
+    expect(POSITION_LABELS).toBe(DETAILED_POSITION_LABELS);
+  });
+});
+
+describe("POSITION_GROUPS", () => {
+  it("has 4 groups", () => {
+    expect(POSITION_GROUPS).toHaveLength(4);
+  });
+
+  it("covers all positions in DETAILED_POSITION_LABELS", () => {
+    const allPositions = POSITION_GROUPS.flatMap((g) => g.positions);
+    const labelPositions = Object.keys(DETAILED_POSITION_LABELS);
+    expect(allPositions.sort()).toEqual(labelPositions.sort());
+  });
+});
+
+describe("POSITION_TO_CATEGORY", () => {
+  it("maps every detailed position to a category", () => {
+    for (const pos of Object.keys(DETAILED_POSITION_LABELS)) {
+      expect(POSITION_TO_CATEGORY).toHaveProperty(pos);
+    }
+  });
+
+  it("maps K to goalkeeper", () => {
+    expect(POSITION_TO_CATEGORY.K).toBe("goalkeeper");
+  });
+
+  it("maps CB to defender", () => {
+    expect(POSITION_TO_CATEGORY.CB).toBe("defender");
+  });
+
+  it("maps CM to midfielder", () => {
+    expect(POSITION_TO_CATEGORY.CM).toBe("midfielder");
+  });
+
+  it("maps ST to forward", () => {
+    expect(POSITION_TO_CATEGORY.ST).toBe("forward");
+  });
+});
+
+describe("ROLE_LABELS", () => {
+  it("contains player and staff roles", () => {
+    expect(ROLE_LABELS).toHaveProperty("player");
+    expect(ROLE_LABELS).toHaveProperty("staff");
+  });
+
+  it("has Dutch labels", () => {
+    expect(ROLE_LABELS.player).toBe("Speler");
+    expect(ROLE_LABELS.staff).toBe("Teammanager");
   });
 });
 

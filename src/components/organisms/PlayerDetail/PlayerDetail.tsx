@@ -10,7 +10,7 @@ import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
 import { PlayerForm } from "@/components/molecules/PlayerForm";
-import { POSITION_LABELS } from "@/lib/constants";
+import { DETAILED_POSITION_LABELS, ROLE_LABELS } from "@/lib/constants";
 import {
   Sheet,
   SheetContent,
@@ -57,6 +57,8 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
     );
   }
 
+  const isStaff = player.role === "staff";
+
   return (
     <div className="p-4">
       <button
@@ -71,11 +73,15 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
         <Avatar src={player.photo_url} fallback={player.name} size="lg" />
         <div className="flex-1">
           <h1 className="text-xl font-semibold">{player.name}</h1>
-          <div className="mt-1 flex items-center gap-2">
-            {player.position && (
+          <div className="mt-1 flex flex-wrap items-center gap-2">
+            <Badge
+              variant="default"
+              label={ROLE_LABELS[player.role] ?? player.role}
+            />
+            {!isStaff && player.primary_position && (
               <Badge
                 variant="default"
-                label={POSITION_LABELS[player.position] ?? player.position}
+                label={DETAILED_POSITION_LABELS[player.primary_position] ?? player.primary_position}
               />
             )}
             {player.jersey_number != null && (
@@ -84,6 +90,18 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
               </span>
             )}
           </div>
+          {!isStaff && player.secondary_positions.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1">
+              {player.secondary_positions.map((pos) => (
+                <Badge
+                  key={pos}
+                  variant="default"
+                  label={DETAILED_POSITION_LABELS[pos] ?? pos}
+                  className="opacity-70"
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -111,7 +129,9 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
                 <PlayerForm
                   defaultValues={{
                     name: player.name,
-                    position: player.position,
+                    primary_position: player.primary_position,
+                    secondary_positions: player.secondary_positions,
+                    role: player.role,
                     jersey_number: player.jersey_number,
                     notes: player.notes,
                   }}
