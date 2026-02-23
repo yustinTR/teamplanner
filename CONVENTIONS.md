@@ -11,16 +11,16 @@
 
 ## Stack
 
-- **Framework:** Next.js 14+ (App Router)
+- **Framework:** Next.js 16 (App Router)
 - **Taal:** TypeScript (strict mode)
-- **Styling:** Tailwind CSS (mobile-first, min-width breakpoints)
+- **Styling:** Tailwind CSS v4 (mobile-first, CSS custom properties via PostCSS)
 - **UI Basis:** shadcn/ui (aanpasbaar, toegankelijk)
 - **State Management:** Zustand (client state) + TanStack React Query (server state)
 - **Database/Backend:** Supabase (Auth, PostgreSQL, Realtime, Storage, Edge Functions)
 - **Drag & Drop:** dnd-kit
 - **PWA:** Serwist (service worker, offline, installeerbaar)
 - **Hosting:** Vercel
-- **Testing:** Vitest + React Testing Library
+- **Testing:** Vitest + Storybook 10 + Playwright (browser tests)
 - **Icons:** Lucide React
 
 ## Architectuur: Atomic Design
@@ -29,11 +29,18 @@ Alle UI-componenten volgen Atomic Design in `src/components/`:
 
 ```
 src/components/
-├── atoms/           → Kleinste elementen (Button, Avatar, Badge, Input, Icon, Spinner, Card, Label, Toggle, Divider)
-├── molecules/       → Combinaties van atoms (PlayerChip, AvailabilityToggle, MatchScore, FormField, SearchBar, StatItem, DateTimePicker, EmptyState)
-├── organisms/       → Complexe secties met logica (PlayerList, MatchCard, AvailabilityGrid, LineupField, NavigationBar, MatchList, TeamHeader, NotificationBanner)
-├── templates/       → Pagina layouts zonder data (DashboardTemplate, MatchDetailTemplate, TeamTemplate)
-└── pages/           → Templates gevuld met data (verbonden aan app/ routes)
+├── atoms/           → 8 componenten: Button, Avatar, Badge, Input, Card, Spinner, EmptyState, Textarea
+├── molecules/       → 25 componenten: PlayerChip, AvailabilityToggle, AvailabilitySummary, MatchForm,
+│                      MatchScore, MatchStatusBadge, MatchPlayerForm, MatchPlayerChip, FormField,
+│                      FormationSelector, PitchPlayer, BenchPlayer, PlayerAvailabilityRow, PlayerForm,
+│                      PlayerMinutesBar, SubstitutionMomentCard, LoginForm, RegisterForm, TeamForm,
+│                      InviteLink, EventForm, AttendanceToggle, AttendanceSummary, EventTaskItem, EventTaskForm
+├── organisms/       → 17 componenten: AuthHydrator, NavigationBar, PlayerList, PlayerDetail, MatchCard,
+│                      MatchList, AvailabilityGrid, MyAvailability, LineupField, LineupView, ImportPreview,
+│                      SubstitutionPlan, EventCard, EventList, EventAttendanceGrid, EventTaskList, MyEventAttendance
+├── templates/       → Pagina layouts zonder data (nog niet in gebruik)
+├── pages/           → Data-connected pages (in app/ routes)
+└── ui/              → shadcn/ui primitives (avatar, badge, button, card, dialog, input, label, select, separator, sheet)
 ```
 
 ### Component Map Structuur
@@ -43,12 +50,11 @@ Elke component leeft in een eigen map:
 ```
 src/components/atoms/Button/
 ├── Button.tsx           → Component
-├── Button.test.tsx      → Tests
-├── Button.stories.tsx   → Storybook (optioneel)
+├── Button.stories.tsx   → Storybook stories (VERPLICHT)
 ├── index.ts             → Barrel export
 ```
 
-`index.ts` bevat altijd: `export { default } from './Button';` of named exports.
+`index.ts` bevat altijd named exports.
 
 ### Regels per niveau
 
@@ -61,51 +67,80 @@ src/components/atoms/Button/
 ## Folder Structuur
 
 ```
-app/                          → Next.js App Router pages
+src/app/                          → Next.js App Router pages
 ├── (auth)/
 │   ├── login/page.tsx
-│   └── register/page.tsx
-├── (main)/                   → Layout met bottom navigation
+│   ├── register/page.tsx
+│   └── forgot-password/page.tsx
+├── (main)/                       → Layout met bottom navigation
 │   ├── layout.tsx
-│   ├── page.tsx              → Dashboard
+│   ├── dashboard/page.tsx        → Dashboard (home)
 │   ├── matches/
 │   │   ├── page.tsx
 │   │   └── [id]/
 │   │       ├── page.tsx
 │   │       └── lineup/page.tsx
+│   ├── events/
+│   │   ├── page.tsx
+│   │   └── [id]/page.tsx
 │   ├── team/
 │   │   ├── page.tsx
 │   │   ├── players/[id]/page.tsx
-│   │   └── settings/page.tsx
+│   │   └── settings/
+│   │       ├── page.tsx
+│   │       └── import/page.tsx
+│   ├── create-team/page.tsx
 │   └── profile/page.tsx
-├── join/[code]/page.tsx
-├── layout.tsx                → Root layout (providers, fonts)
-└── globals.css
+├── auth/
+│   ├── callback/route.ts         → OAuth callback handler
+│   └── confirm/route.ts          → Email confirmation
+├── api/
+│   ├── og/route.tsx              → Dynamic OG image generation
+│   └── import-voetbal-nl/        → Voetbal.nl import API
+│       ├── route.ts
+│       ├── confirm/route.ts
+│       └── refresh/route.ts
+├── join/[code]/page.tsx          → Invite link handler
+├── reset-password/page.tsx       → Wachtwoord reset formulier
+├── layout.tsx                    → Root layout (providers, fonts)
+└── page.tsx                      → Landing/redirect page
 src/
-├── components/               → Atomic Design (zie boven)
-├── hooks/                    → Custom React hooks
+├── components/                   → Atomic Design (zie boven)
+├── hooks/                        → Custom React Query hooks
 │   ├── use-team.ts
 │   ├── use-matches.ts
+│   ├── use-match-players.ts
 │   ├── use-availability.ts
 │   ├── use-players.ts
-│   └── use-lineup.ts
+│   ├── use-lineup.ts
+│   ├── use-events.ts
+│   ├── use-event-attendance.ts
+│   └── use-event-tasks.ts
 ├── lib/
 │   ├── supabase/
-│   │   ├── client.ts         → Browser Supabase client
-│   │   ├── server.ts         → Server Supabase client
-│   │   ├── middleware.ts      → Auth middleware
-│   │   └── types.ts          → Generated database types
-│   ├── utils.ts              → Utility functies (cn(), formatDate(), etc.)
-│   └── constants.ts          → App-wide constants
-├── stores/                   → Zustand stores
-│   └── ui-store.ts
-├── types/                    → Gedeelde TypeScript types
+│   │   ├── client.ts             → Browser Supabase client
+│   │   ├── server.ts             → Server Supabase client
+│   │   ├── middleware.ts         → Auth middleware
+│   │   └── types.ts              → Generated database types
+│   ├── utils.ts                  → Utility functies (cn(), formatDate(), etc.)
+│   ├── constants.ts              → Formaties, labels, posities (6.5 KB)
+│   ├── lineup-generator.ts      → Auto-generatie van opstellingen
+│   ├── voetbal-nl-parser.ts     → Parser voor voetbal.nl import
+│   └── test/                     → Mock data factories & test utilities
+├── stores/                       → Zustand stores
+│   ├── auth-store.ts             → User, team, speler, isCoach status
+│   └── ui-store.ts               → UI state
+├── types/                        → Gedeelde TypeScript types
 │   ├── team.ts
 │   ├── match.ts
 │   ├── player.ts
-│   └── lineup.ts
+│   ├── availability.ts
+│   ├── match-player.ts
+│   ├── lineup.ts
+│   ├── event.ts
+│   └── index.ts                  → Barrel export
 └── styles/
-    └── tokens.css            → Design tokens als CSS custom properties
+    └── tokens.css                → Design tokens als CSS custom properties
 ```
 
 ## Naming Conventions
@@ -116,12 +151,12 @@ src/
 | Component mappen     | PascalCase         | `PlayerChip/`                 |
 | Componenten          | PascalCase         | `export function PlayerChip`  |
 | Hooks                | camelCase met use- | `useMatches`, `useAvailability` |
-| Zustand stores       | camelCase          | `useUiStore`                  |
+| Zustand stores       | camelCase          | `useAuthStore`                |
 | Types/Interfaces     | PascalCase         | `Player`, `MatchDetail`       |
 | CSS tokens           | kebab-case         | `--color-primary`             |
-| Supabase tabellen    | snake_case         | `match_availability`          |
+| Supabase tabellen    | snake_case         | `match_players`               |
 | Database kolommen    | snake_case         | `player_id`, `match_date`     |
-| API routes           | kebab-case         | `/api/send-notification`      |
+| API routes           | kebab-case         | `/api/import-voetbal-nl`      |
 
 ## Taal
 
@@ -136,10 +171,10 @@ src/
 Altijd mobile-first schrijven. Begin met het kleinste scherm (375px), voeg breakpoints toe voor groter:
 
 ```tsx
-// ✅ Correct — mobile-first
+// Correct — mobile-first
 <div className="px-4 py-3 sm:px-6 sm:py-4 md:px-8">
 
-// ❌ Fout — desktop-first
+// Fout — desktop-first
 <div className="px-8 py-4 max-sm:px-4 max-sm:py-3">
 ```
 
@@ -157,21 +192,21 @@ lg:       1024px → Desktop (optioneel, low priority)
 Gebruik altijd Tailwind classes die mappen naar de design tokens. Vermijd hardcoded waarden:
 
 ```tsx
-// ✅ Correct
+// Correct
 <p className="text-neutral-900">          → --color-neutral-900
 <div className="bg-primary">              → --color-primary
 <span className="text-sm">               → --text-small (14px)
 <div className="p-4">                     → --space-md (16px)
 <div className="rounded-xl">              → --radius-md (12px)
 
-// ❌ Fout
+// Fout
 <p className="text-[#111827]">
 <div className="p-[17px]">
 ```
 
-### Tailwind Config
+### Tailwind CSS v4
 
-Tokens staan gedefinieerd in `tailwind.config.ts` → `theme.extend`. Nooit Tailwind defaults overriden, altijd extenden.
+Design tokens staan gedefinieerd als CSS custom properties in `src/styles/tokens.css`. Er is **geen `tailwind.config.ts`** — Tailwind v4 wordt geconfigureerd via PostCSS (`postcss.config.mjs`) en CSS variabelen.
 
 ## TypeScript
 
@@ -347,11 +382,24 @@ chore: update dependencies
 Migraties staan in `supabase/migrations/` en worden aangemaakt via:
 
 ```bash
-supabase migration new [naam]
-# bijv: supabase migration new create_teams_table
+npx supabase migration new [naam]
+# bijv: npx supabase migration new create_teams_table
 ```
 
 Altijd in volgorde uitvoeren. Nooit bestaande migraties wijzigen.
+
+## Storybook & Testing
+
+**Elk component MOET een Storybook story file hebben (`Component.stories.tsx`).** Geen uitzonderingen. Dit is de primaire manier waarop componenten worden gedocumenteerd en getest.
+
+**Testing workflow (Vitest + Playwright browser):**
+- Stories worden automatisch als tests gedraaid via `@storybook/addon-vitest` met Playwright browser
+- `npm run test:stories` draait alle stories headless in Chromium
+- `npm run test:unit` draait unit tests (utils, constants, stores)
+- `npm run test` draait alles
+- De `a11y` addon controleert toegankelijkheid op elke story
+
+**Huidige status:** 49 story-bestanden, 8 atoms + 25 molecules + 17 organisms.
 
 ## Accessibility
 

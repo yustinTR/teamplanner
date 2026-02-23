@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-TeamPlanner is a mobile-first PWA for amateur football team management, replacing WhatsApp-based coordination. Coaches manage teams, matches, and lineups; players submit availability. Built for simplicity — amateur football, not enterprise software.
+TeamPlanner is a mobile-first PWA for amateur football team management, replacing WhatsApp-based coordination. Coaches manage teams, matches, lineups, and events; players submit availability. Built for simplicity — amateur football, not enterprise software.
 
-**Current status: Phase 0 — Setup & Design System complete.** See PROJECT_CONTEXT.md and CONVENTIONS.md for full specs.
+**Current status: MVP largely complete.** Core features (auth, team management, matches, availability, lineup editor, events, voetbal.nl import) are built. See PROJECT_CONTEXT.md and CONVENTIONS.md for full specs.
 
 ## Commands
 
@@ -15,7 +15,11 @@ npm run dev              # Start Next.js dev server
 npm run build            # Production build
 npm run lint             # ESLint
 npm run storybook        # Start Storybook dev server (port 6006)
-npx vitest               # Run all tests (Storybook stories via Playwright browser)
+npm run test             # Run all tests (unit + storybook)
+npm run test:unit        # Run unit tests only
+npm run test:stories     # Run Storybook tests only (Playwright browser)
+npm run test:watch       # Tests in watch mode
+npm run test:e2e         # E2E tests (Playwright)
 
 # Supabase
 npx supabase start       # Local Supabase
@@ -28,7 +32,7 @@ npx shadcn@latest add <component>  # Add shadcn component
 
 ## Tech Stack
 
-Next.js 16 (App Router) · TypeScript (strict) · Tailwind CSS v4 (mobile-first) · shadcn/ui · Zustand (client state) + TanStack React Query (server state) · Supabase (Auth, PostgreSQL, Realtime, Storage, Edge Functions) · Storybook 10 (component testing) · Vitest + Playwright (browser tests) · dnd-kit (drag & drop) · Serwist (PWA/service worker) · Lucide React · Deployed on Vercel
+Next.js 16 (App Router) · TypeScript (strict) · Tailwind CSS v4 (mobile-first, PostCSS) · shadcn/ui · Zustand (client state) + TanStack React Query (server state) · Supabase (Auth, PostgreSQL, Realtime, Storage, Edge Functions) · Storybook 10 (component testing) · Vitest + Playwright (browser tests) · dnd-kit (drag & drop) · Serwist (PWA/service worker) · Lucide React · Deployed on Vercel
 
 ## Architecture
 
@@ -36,9 +40,9 @@ Next.js 16 (App Router) · TypeScript (strict) · Tailwind CSS v4 (mobile-first)
 
 All UI components follow Atomic Design with strict rules per level:
 
-- **atoms/** — Pure presentation, no business logic, no API calls (Button, Avatar, Badge, Input, Card, Spinner, etc.)
-- **molecules/** — Combine atoms, may have local UI state, no API calls (PlayerChip, AvailabilityToggle, MatchScore, FormField, etc.)
-- **organisms/** — Own state, hooks, and API calls allowed (PlayerList, MatchCard, AvailabilityGrid, LineupField, NavigationBar, etc.)
+- **atoms/** — Pure presentation, no business logic, no API calls (Button, Avatar, Badge, Input, Card, Spinner, EmptyState, Textarea)
+- **molecules/** — Combine atoms, may have local UI state, no API calls (PlayerChip, AvailabilityToggle, AvailabilitySummary, MatchForm, MatchScore, MatchStatusBadge, MatchPlayerForm, MatchPlayerChip, FormField, FormationSelector, PitchPlayer, BenchPlayer, PlayerAvailabilityRow, PlayerForm, PlayerMinutesBar, SubstitutionMomentCard, LoginForm, RegisterForm, TeamForm, InviteLink, EventForm, AttendanceToggle, AttendanceSummary, EventTaskItem, EventTaskForm)
+- **organisms/** — Own state, hooks, and API calls allowed (AuthHydrator, NavigationBar, PlayerList, PlayerDetail, MatchCard, MatchList, AvailabilityGrid, MyAvailability, LineupField, LineupView, ImportPreview, SubstitutionPlan, EventCard, EventList, EventAttendanceGrid, EventTaskList, MyEventAttendance)
 - **templates/** — Layout/structure only, receive children/slots, no data fetching
 - **pages/** — Fetch data via hooks, pass to templates/organisms, connected to `app/` routes
 
@@ -53,22 +57,39 @@ Each component lives in its own PascalCase folder with `Component.tsx`, `Compone
 ### Routing (`app/`)
 
 ```
-app/(auth)/login, register     — Auth pages
-app/(main)/                    — Main layout with bottom nav
-  page.tsx                     — Dashboard
-  matches/, matches/[id]/      — Match list & detail
-  matches/[id]/lineup/         — Lineup editor
-  team/, team/players/[id]/    — Team & player management
-  team/settings/               — Team settings
-  profile/                     — User profile
-app/join/[code]/               — Invite link handler
+app/(auth)/login, register, forgot-password  — Auth pages
+app/reset-password                           — Password reset form
+app/(main)/                                  — Main layout with bottom nav
+  dashboard/                                 — Home/dashboard
+  matches/, matches/[id]/                    — Match list & detail
+  matches/[id]/lineup/                       — Lineup editor
+  events/, events/[id]/                      — Event list & detail
+  team/, team/players/[id]/                  — Team & player management
+  team/settings/, team/settings/import/      — Team settings & voetbal.nl import
+  create-team/                               — Create new team
+  profile/                                   — User profile
+app/join/[code]/                             — Invite link handler
+app/auth/callback, app/auth/confirm          — Auth handlers
+app/api/og/                                  — Dynamic OG image generation
+app/api/import-voetbal-nl/                   — Voetbal.nl import API
 ```
 
 ### Database (Supabase PostgreSQL)
 
-Tables: `teams`, `players`, `matches`, `availability` (status: available/unavailable/maybe), `lineups` (positions as JSONB: `[{player_id, x, y, position_label}]`).
+Tables: `teams` (with team_type, import_source), `players`, `matches`, `availability` (status: available/unavailable/maybe), `match_players` (selection, position, minutes), `lineups` (positions + substitution_plan as JSONB), `events`, `event_attendance`, `event_tasks`.
 
-Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can update own availability. Unregistered players (`user_id = NULL`) are managed by coach.
+Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can update own availability/attendance. Unregistered players (`user_id = NULL`) are managed by coach.
+
+### Hooks (`src/hooks/`)
+
+9 React Query hooks: `use-team`, `use-players`, `use-matches`, `use-match-players`, `use-availability`, `use-lineup`, `use-events`, `use-event-attendance`, `use-event-tasks`.
+
+### Utilities (`src/lib/`)
+
+- `utils.ts` — cn(), formatters, etc.
+- `constants.ts` — Formations (11v11 + 7v7), positions, labels
+- `lineup-generator.ts` — Auto-generate lineups based on formation
+- `voetbal-nl-parser.ts` — Parse voetbal.nl data for import
 
 ## Key Conventions
 
@@ -93,7 +114,7 @@ Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can upd
 
 - Always mobile-first (start at 375px, add `sm:`, `md:`, `lg:` breakpoints)
 - Use Tailwind classes mapped to design tokens — no hardcoded colors/spacing values
-- Tokens defined in `tailwind.config.ts` → `theme.extend` (extend only, never override defaults)
+- Tailwind CSS v4: tokens defined as CSS custom properties in `src/styles/tokens.css` (no `tailwind.config.ts`)
 - Use `class-variance-authority` (cva) for component variants
 - Touch targets minimum 44x44px
 
@@ -101,12 +122,12 @@ Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can upd
 
 - Strict mode, no `any` (use `unknown`)
 - Props as `interface`, not `type`
-- Shared types in `src/types/`
+- Shared types in `src/types/` (team, player, match, availability, match-player, lineup, event)
 - DB types generated via `supabase gen types typescript`
 
 ### Storybook & Testing
 
-**Every component MUST have a Storybook story file (`Component.stories.tsx`).** No exceptions. This is the primary way components are documented and tested.
+**Every component MUST have a Storybook story file (`Component.stories.tsx`).** No exceptions. This is the primary way components are documented and tested. Currently 49 story files across 8 atoms, 25 molecules, and 17 organisms.
 
 **Component folder structure:**
 ```
@@ -124,19 +145,21 @@ src/components/atoms/Button/
 
 **Testing workflow (Vitest + Playwright browser):**
 - Stories are automatically run as tests via `@storybook/addon-vitest` with Playwright browser
-- Run `npx vitest` to execute all story-based tests headlessly
+- Run `npm run test:stories` to execute all story-based tests headlessly
+- Run `npm run test:unit` for unit tests (utils, constants, stores)
+- Run `npm run test` for all tests
 - The `a11y` addon checks accessibility violations on every story
 
 **Pre-commit checklist — before every commit, verify:**
 1. `npm run build` — Production build succeeds without errors
 2. `npm run lint` — No ESLint errors
-3. `npx vitest run` — All Storybook tests pass (runs stories in Playwright headless browser)
+3. `npm run test` — All tests pass (unit + storybook in Playwright headless browser)
 4. Visually verify new/changed components in Storybook (`npm run storybook`)
 
 **Do NOT commit code that:**
 - Introduces components without stories
 - Breaks existing Storybook stories
-- Fails `npx vitest run`
+- Fails `npm run test`
 - Has TypeScript or lint errors
 
 ### Git

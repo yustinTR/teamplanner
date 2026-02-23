@@ -25,24 +25,25 @@ TeamPlanner lost dit op met één centrale plek voor het hele team.
 
 ## MVP Scope
 
-Het MVP bevat precies deze features:
+Het MVP bevat deze features:
 
-1. **Auth** — E-mail + magic link login via Supabase Auth
-2. **Teambeheer** — Team aanmaken, spelers toevoegen, invite links delen
+1. **Auth** — E-mail login + wachtwoord reset via Supabase Auth
+2. **Teambeheer** — Team aanmaken (met teamtype: senioren, junioren, G-team, 7v7), spelers toevoegen, invite links delen
 3. **Spelerprofielen** — Naam, positie, rugnummer, foto, notities (voor G-voetbal bijzonderheden)
 4. **Wedstrijdprogramma** — CRUD voor wedstrijden (datum, tegenstander, locatie, thuis/uit)
-5. **Beschikbaarheid** — Spelers geven ja/nee/misschien. Coach ziet overzichtsgrid
-6. **Opstelling maker** — Visueel drag & drop voetbalveld met formatie keuze
-7. **Push notificaties** — Herinneringen voor beschikbaarheid
-8. **PWA** — Installeerbaar, offline basis, homescreen icon
-
-Alles wat hier NIET in staat is V2. Bouw geen features die niet in deze lijst staan.
+5. **Beschikbaarheid** — Spelers geven ja/nee/misschien. Coach ziet realtime overzichtsgrid
+6. **Opstelling maker** — Visueel drag & drop voetbalveld met formatie keuze (inclusief 7v7 formaties)
+7. **Wisselschema** — Wisselmomenten plannen met speeltijdverdeling per speler
+8. **Evenementen** — Trainingen, toernooien en andere teamactiviteiten met aanwezigheid en taken
+9. **Voetbal.nl import** — Team- en spelergegevens importeren vanuit voetbal.nl
+10. **PWA** — Installeerbaar, offline basis, homescreen icon
 
 ## Database Tabellen
 
 ```sql
 -- teams: Het team
-teams (id, name, club_name, formation, invite_code, created_by, logo_url)
+teams (id, name, club_name, formation, invite_code, created_by, logo_url, import_source, team_type)
+-- team_type: 'senior' | 'junior_11' | 'junior_7' | 'g_team_11' | 'g_team_7'
 
 -- players: Spelers in een team
 players (id, team_id, user_id, name, position, jersey_number, photo_url, notes, is_active)
@@ -54,30 +55,46 @@ matches (id, team_id, opponent, match_date, location, home_away, status, score_h
 availability (id, player_id, match_id, status, responded_at)
 -- status: 'available' | 'unavailable' | 'maybe'
 
+-- match_players: Spelers gekoppeld aan een wedstrijd (selectie, posities, speeltijd)
+match_players (id, match_id, player_id, is_selected, position, minutes_played)
+
 -- lineups: Opstellingen per wedstrijd
-lineups (id, match_id, formation, positions)
+lineups (id, match_id, formation, positions, substitution_plan)
 -- positions: JSONB [{player_id, x, y, position_label}]
+-- substitution_plan: JSONB [{moment, substitutions: [{in, out}]}]
+
+-- events: Teamactiviteiten (training, toernooi, etc.)
+events (id, team_id, title, description, event_type, event_date, location, created_by)
+
+-- event_attendance: Aanwezigheid per speler per event
+event_attendance (id, event_id, player_id, status, responded_at)
+
+-- event_tasks: Taken gekoppeld aan een event
+event_tasks (id, event_id, title, assigned_to, is_completed)
 ```
 
 ## Rollen & Rechten
 
-- **Coach** (created_by van team): Volledige CRUD op team, spelers, wedstrijden, opstellingen
-- **Speler** (user_id in players): Kan eigen beschikbaarheid updaten, alles lezen
+- **Coach** (created_by van team): Volledige CRUD op team, spelers, wedstrijden, opstellingen, events
+- **Speler** (user_id in players): Kan eigen beschikbaarheid/aanwezigheid updaten, alles lezen
 - **Niet-geregistreerde speler** (user_id = NULL): Coach beheert hun beschikbaarheid
 
 ## User Flows
 
 ### Flow 1: Coach maakt team aan
-Register → Create Team (naam, club) → Krijgt invite link → Deelt in WhatsApp → Spelers joinen
+Register → Create Team (naam, club, teamtype) → Krijgt invite link → Deelt in WhatsApp → Spelers joinen
 
 ### Flow 2: Speler joint team
 Opent invite link → Register/Login → Automatisch gekoppeld aan team
 
 ### Flow 3: Beschikbaarheid (de killer feature)
-Coach maakt wedstrijd aan → Push notificatie naar spelers → Speler opent app → Tikt ja/nee/misschien → Coach ziet realtime grid updaten
+Coach maakt wedstrijd aan → Speler opent app → Tikt ja/nee/misschien → Coach ziet realtime grid updaten
 
 ### Flow 4: Opstelling maken
-Coach opent wedstrijd → Ziet wie beschikbaar is → Kiest formatie → Sleept spelers op het veld → Slaat op → Spelers kunnen opstelling bekijken
+Coach opent wedstrijd → Ziet wie beschikbaar is → Kiest formatie → Sleept spelers op het veld → Plant wisselmomenten → Slaat op → Spelers kunnen opstelling bekijken
+
+### Flow 5: Event organiseren
+Coach maakt event aan (training, toernooi) → Voegt taken toe → Spelers geven aanwezigheid door → Coach ziet overzicht
 
 ## Design Principes
 
@@ -93,6 +110,7 @@ Coach opent wedstrijd → Ziet wie beschikbaar is → Kiest formatie → Sleept 
 - **Next.js App Router** — Server components voor snelle initial load, client components voor interactiviteit
 - **Atomic Design** — Consistentie en herbruikbaarheid. Zie CONVENTIONS.md voor details.
 - **shadcn/ui als basis** — Niet als drop-in library, maar als startpunt dat we aanpassen aan ons design systeem
+- **Tailwind CSS v4** — CSS-native configuratie via PostCSS, design tokens als CSS custom properties (geen `tailwind.config.ts`)
 
 ## Wat NIET te doen
 
@@ -106,36 +124,57 @@ Coach opent wedstrijd → Ziet wie beschikbaar is → Kiest formatie → Sleept 
 ## Repo Structuur
 
 ```
-documents/sites/teamplanner/
-├── docs/
-│   └── teamplanner-project-documentatie.docx
-├── app/                    → Next.js app (pages + routes)
+teamplanner/
+├── .github/workflows/         → CI pipeline (lint, build, tests)
+├── .storybook/                → Storybook configuratie
+├── docs/                      → Project documentatie (.docx)
+├── e2e/                       → E2E tests (Playwright)
+├── public/                    → Static assets, PWA manifest, icons
+├── supabase/migrations/       → Database migraties (SQL)
 ├── src/
-│   ├── components/         → Atomic Design componenten
-│   ├── hooks/              → Custom React hooks
-│   ├── lib/                → Utilities, Supabase clients
-│   ├── stores/             → Zustand stores
-│   ├── types/              → TypeScript types
-│   └── styles/             → Design tokens CSS
-├── public/                 → Static assets, PWA manifest
-├── supabase/
-│   └── migrations/         → Database migraties
-├── CONVENTIONS.md          → Code standaarden (dit lezen!)
-├── PROJECT_CONTEXT.md      → Dit bestand
+│   ├── app/                   → Next.js App Router (pages + routes)
+│   │   ├── (auth)/            → Login, registratie, wachtwoord reset
+│   │   ├── (main)/            → Hoofdlayout met bottom navigation
+│   │   ├── api/               → API routes (OG image, voetbal.nl import)
+│   │   ├── auth/              → Auth callback & confirm handlers
+│   │   └── join/[code]/       → Invite link handler
+│   ├── components/            → Atomic Design componenten
+│   │   ├── atoms/             → 8 componenten (Button, Avatar, Badge, etc.)
+│   │   ├── molecules/         → 25 componenten (PlayerChip, MatchForm, EventForm, etc.)
+│   │   ├── organisms/         → 17 componenten (PlayerList, LineupField, EventList, etc.)
+│   │   └── ui/                → shadcn/ui primitives (Sheet, Dialog, Select, etc.)
+│   ├── hooks/                 → 9 React Query hooks
+│   ├── lib/                   → Utilities, Supabase clients, constants
+│   ├── stores/                → Zustand stores (auth-store, ui-store)
+│   ├── types/                 → TypeScript types (7 types + barrel export)
+│   └── styles/                → Design tokens CSS
+├── CLAUDE.md                  → AI-assistent instructies
+├── CONVENTIONS.md             → Code standaarden (dit lezen!)
+├── PROJECT_CONTEXT.md         → Dit bestand
 ├── package.json
-├── tailwind.config.ts
-├── tsconfig.json
-└── next.config.js
+├── next.config.ts
+├── postcss.config.mjs         → Tailwind CSS v4 PostCSS setup
+├── vitest.config.ts
+├── playwright.config.ts
+└── tsconfig.json
 ```
 
 ## Huidige Status
 
-🟡 **Fase 0 — Setup & Design System**
+**MVP grotendeels compleet.** Alle kernfunctionaliteit is gebouwd:
 
-Volgende stappen:
-1. Next.js project initialiseren
-2. Tailwind + shadcn/ui configureren
-3. Design tokens opzetten
-4. Supabase project aanmaken
-5. Database migraties schrijven
-6. Eerste atoms bouwen (Button, Avatar, Badge, Input, Card)
+- [x] Next.js project met App Router
+- [x] Tailwind CSS v4 + shadcn/ui + design tokens
+- [x] Supabase Auth (e-mail login, wachtwoord reset)
+- [x] Database schema met 9 migraties en RLS policies
+- [x] Atomic Design componenten (8 atoms, 25 molecules, 17 organisms)
+- [x] 49 Storybook stories met Playwright browser testing
+- [x] Wedstrijdbeheer met beschikbaarheid en opstellingen
+- [x] Drag & drop lineup editor met formatie-keuze (11v11 + 7v7)
+- [x] Wisselschema met speeltijdverdeling
+- [x] Evenementen systeem met aanwezigheid en taken
+- [x] Voetbal.nl import integratie
+- [x] Team types (senioren, junioren, G-team, 7v7)
+- [x] PWA configuratie met Serwist
+- [x] CI/CD pipeline (GitHub Actions)
+- [x] Landing page met OG image generatie
