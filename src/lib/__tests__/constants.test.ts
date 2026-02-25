@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   FORMATIONS,
   FORMATIONS_11,
+  FORMATIONS_8,
   FORMATIONS_7,
   AVAILABILITY_LABELS,
   MATCH_STATUS_LABELS,
@@ -27,6 +28,18 @@ describe("FORMATIONS_11", () => {
   });
 });
 
+describe("FORMATIONS_8", () => {
+  const formationNames = Object.keys(FORMATIONS_8);
+
+  it("has at least one formation defined", () => {
+    expect(formationNames.length).toBeGreaterThan(0);
+  });
+
+  it.each(formationNames)("%s has exactly 8 positions", (name) => {
+    expect(FORMATIONS_8[name]).toHaveLength(8);
+  });
+});
+
 describe("FORMATIONS_7", () => {
   const formationNames = Object.keys(FORMATIONS_7);
 
@@ -42,8 +55,9 @@ describe("FORMATIONS_7", () => {
 describe("FORMATIONS (combined)", () => {
   const formationNames = Object.keys(FORMATIONS);
 
-  it("includes both 11v11 and 7v7 formations", () => {
+  it("includes 11v11, 8v8, and 7v7 formations", () => {
     expect(formationNames).toContain("4-3-3");
+    expect(formationNames).toContain("3-3-1");
     expect(formationNames).toContain("2-3-1");
   });
 
@@ -198,9 +212,9 @@ describe("getFormationsForTeamType", () => {
     expect(result).toBe(FORMATIONS_7);
   });
 
-  it("returns 7v7 formations for g_team", () => {
+  it("returns 8v8 formations for g_team", () => {
     const result = getFormationsForTeamType("g_team");
-    expect(result).toBe(FORMATIONS_7);
+    expect(result).toBe(FORMATIONS_8);
   });
 
   it("returns 11v11 formations for unknown team type", () => {
@@ -218,8 +232,8 @@ describe("getDefaultFormation", () => {
     expect(getDefaultFormation("jo15_jo13")).toBe("2-3-1");
   });
 
-  it('returns "2-3-1" for g_team', () => {
-    expect(getDefaultFormation("g_team")).toBe("2-3-1");
+  it('returns "3-3-1" for g_team', () => {
+    expect(getDefaultFormation("g_team")).toBe("3-3-1");
   });
 
   it('returns "4-3-3" for unknown team type', () => {

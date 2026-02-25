@@ -14,7 +14,7 @@ export const TEAM_TYPE_CONFIG: Record<string, TeamTypeConfig> = {
   jo19_jo17: { label: "JO19 - JO17", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
   jo15_jo13: { label: "JO15 - JO13", halfMinutes: 30, halves: 2, fieldPlayers: 7 },
   jo11_jo9: { label: "JO11 - JO9", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
-  g_team: { label: "G-Team", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
+  g_team: { label: "G-Team", halfMinutes: 25, halves: 2, fieldPlayers: 8 },
   // Legacy values (still valid in DB, mapped to new configs)
   jo19_jo15: { label: "JO19 - JO15", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
   jo13_jo11: { label: "JO13 - JO11", halfMinutes: 30, halves: 2, fieldPlayers: 7 },
@@ -102,7 +102,51 @@ export const FORMATIONS_11: Record<string, Omit<LineupPosition, "player_id">[]> 
   ],
 };
 
-// 7v7 formations (JO15 en lager, G-team)
+// 8v8 formations (G-team)
+export const FORMATIONS_8: Record<string, Omit<LineupPosition, "player_id">[]> = {
+  "3-3-1": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 20, y: 72, position_label: "LB" },
+    { x: 50, y: 75, position_label: "CB" },
+    { x: 80, y: 72, position_label: "RB" },
+    { x: 20, y: 48, position_label: "LM" },
+    { x: 50, y: 45, position_label: "CM" },
+    { x: 80, y: 48, position_label: "RM" },
+    { x: 50, y: 20, position_label: "ST" },
+  ],
+  "2-4-1": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 30, y: 72, position_label: "CB" },
+    { x: 70, y: 72, position_label: "CB" },
+    { x: 15, y: 48, position_label: "LM" },
+    { x: 38, y: 50, position_label: "CM" },
+    { x: 62, y: 50, position_label: "CM" },
+    { x: 85, y: 48, position_label: "RM" },
+    { x: 50, y: 20, position_label: "ST" },
+  ],
+  "2-3-2": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 30, y: 72, position_label: "CB" },
+    { x: 70, y: 72, position_label: "CB" },
+    { x: 20, y: 48, position_label: "LM" },
+    { x: 50, y: 45, position_label: "CM" },
+    { x: 80, y: 48, position_label: "RM" },
+    { x: 35, y: 20, position_label: "ST" },
+    { x: 65, y: 20, position_label: "ST" },
+  ],
+  "3-2-2": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 20, y: 72, position_label: "LB" },
+    { x: 50, y: 75, position_label: "CB" },
+    { x: 80, y: 72, position_label: "RB" },
+    { x: 35, y: 48, position_label: "CM" },
+    { x: 65, y: 48, position_label: "CM" },
+    { x: 35, y: 20, position_label: "ST" },
+    { x: 65, y: 20, position_label: "ST" },
+  ],
+};
+
+// 7v7 formations (JO15 en lager)
 export const FORMATIONS_7: Record<string, Omit<LineupPosition, "player_id">[]> = {
   "2-3-1": [
     { x: 50, y: 92, position_label: "K" },
@@ -145,12 +189,16 @@ export const FORMATIONS_7: Record<string, Omit<LineupPosition, "player_id">[]> =
 // Combined lookup (for backward compatibility with lineup-generator)
 export const FORMATIONS: Record<string, Omit<LineupPosition, "player_id">[]> = {
   ...FORMATIONS_11,
+  ...FORMATIONS_8,
   ...FORMATIONS_7,
 };
 
 // Helper to get the right formations for a team type
 export function getFormationsForTeamType(teamType: string): Record<string, Omit<LineupPosition, "player_id">[]> {
   const config = TEAM_TYPE_CONFIG[teamType];
+  if (config && config.fieldPlayers === 8) {
+    return FORMATIONS_8;
+  }
   if (config && config.fieldPlayers <= 7) {
     return FORMATIONS_7;
   }
@@ -160,6 +208,9 @@ export function getFormationsForTeamType(teamType: string): Record<string, Omit<
 // Helper to get the default formation for a team type
 export function getDefaultFormation(teamType: string): string {
   const config = TEAM_TYPE_CONFIG[teamType];
+  if (config && config.fieldPlayers === 8) {
+    return "3-3-1";
+  }
   if (config && config.fieldPlayers <= 7) {
     return "2-3-1";
   }

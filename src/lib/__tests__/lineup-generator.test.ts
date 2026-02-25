@@ -410,19 +410,19 @@ describe("generateSubstitutionPlan", () => {
     }
   });
 
-  it("generates plan for 7v7 G-team with shorter intervals", () => {
+  it("generates plan for 8v8 G-team with shorter intervals", () => {
     const players: Player[] = [
       createMockPlayer({ id: "gk", primary_position: "K" }),
-      ...Array.from({ length: 9 }, (_, i) =>
+      ...Array.from({ length: 10 }, (_, i) =>
         createMockPlayer({ id: `p-${i}`, name: `Speler ${i}`, primary_position: "CM" })
       ),
     ];
     const avail = makeAvailability(players);
     const config = TEAM_TYPE_CONFIG["g_team"];
 
-    const result = generateSubstitutionPlan("2-3-1", players, avail, config);
+    const result = generateSubstitutionPlan("3-3-1", players, avail, config);
 
-    expect(result.positions).toHaveLength(7);
+    expect(result.positions).toHaveLength(8);
     expect(result.substitutes).toHaveLength(3);
     expect(result.substitutionPlan).not.toBeNull();
 
