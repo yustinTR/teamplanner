@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AuthHydrator } from "@/components/organisms/AuthHydrator";
@@ -59,6 +60,15 @@ export default async function MainLayout({ children }: MainLayoutProps) {
     <AuthHydrator user={user} team={team} player={playerQuery.data}>
       <div className="flex min-h-screen flex-col bg-neutral-50 pb-16">
         <main className="flex-1">{children}</main>
+        <footer className="flex items-center justify-center gap-3 py-6 text-xs text-muted-foreground/50">
+          <Link href="/voorwaarden" className="hover:text-muted-foreground">
+            Voorwaarden
+          </Link>
+          <span>·</span>
+          <Link href="/privacy" className="hover:text-muted-foreground">
+            Privacy
+          </Link>
+        </footer>
         <NavigationBar />
       </div>
     </AuthHydrator>
