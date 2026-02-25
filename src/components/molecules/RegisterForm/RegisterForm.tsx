@@ -15,8 +15,13 @@ export function RegisterForm({ next }: RegisterFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   async function handleRegister(formData: FormData) {
+    if (!agreed) {
+      setError("Je moet akkoord gaan met de voorwaarden en het privacybeleid.");
+      return;
+    }
     setError(null);
     setSuccess(null);
     setLoading(true);
@@ -83,6 +88,26 @@ export function RegisterForm({ next }: RegisterFormProps) {
           />
         </div>
 
+        <div className="flex items-start gap-2">
+          <input
+            id="terms"
+            type="checkbox"
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+            className="mt-1 size-4 shrink-0 rounded border-neutral-300 text-primary accent-primary"
+          />
+          <label htmlFor="terms" className="text-sm text-muted-foreground">
+            Ik ga akkoord met de{" "}
+            <Link href="/voorwaarden" className="font-medium text-primary hover:underline" target="_blank">
+              algemene voorwaarden
+            </Link>{" "}
+            en het{" "}
+            <Link href="/privacy" className="font-medium text-primary hover:underline" target="_blank">
+              privacybeleid
+            </Link>
+          </label>
+        </div>
+
         {error && (
           <div className="rounded-lg bg-danger-50 p-3 text-sm text-danger">
             {error}
@@ -94,7 +119,7 @@ export function RegisterForm({ next }: RegisterFormProps) {
           </div>
         )}
 
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full" disabled={loading || !agreed}>
           {loading ? "Bezig..." : "Account aanmaken"}
         </Button>
       </form>

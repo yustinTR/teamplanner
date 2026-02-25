@@ -45,6 +45,16 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
         <div className="rounded-2xl bg-white p-6 shadow-xl">
           {children}
         </div>
+
+        <div className="mt-6 flex items-center justify-center gap-3 text-xs text-white/40">
+          <Link href="/voorwaarden" className="hover:text-white/70">
+            Voorwaarden
+          </Link>
+          <span>·</span>
+          <Link href="/privacy" className="hover:text-white/70">
+            Privacy
+          </Link>
+        </div>
       </div>
     </main>
   );
