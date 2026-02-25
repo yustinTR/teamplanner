@@ -67,7 +67,10 @@ export async function updateSession(request: NextRequest) {
   // Redirect authenticated users away from auth pages
   if (user && (pathname === "/login" || pathname === "/register")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
+    const next = request.nextUrl.searchParams.get("next");
+    // Redirect to next param if it's a safe internal path
+    url.pathname = next && next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
+    url.search = "";
     return NextResponse.redirect(url);
   }
 

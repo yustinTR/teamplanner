@@ -420,6 +420,10 @@ export type Database = {
     }
     Functions: {
       get_my_team_ids: { Args: never; Returns: string[] }
+      join_team_by_invite_code: {
+        Args: { invite_code_input: string; user_name: string }
+        Returns: Json
+      }
     }
     Enums: {
       attendance_status: "coming" | "not_coming" | "maybe"

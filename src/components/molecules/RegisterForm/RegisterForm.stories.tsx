@@ -23,3 +23,9 @@ export default meta;
 type Story = StoryObj<typeof RegisterForm>;
 
 export const Default: Story = {};
+
+export const WithRedirect: Story = {
+  args: {
+    next: "/join/abc123",
+  },
+};

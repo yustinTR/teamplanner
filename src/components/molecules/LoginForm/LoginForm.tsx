@@ -7,7 +7,11 @@ import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Label } from "@/components/ui/label";
 
-export function LoginForm() {
+interface LoginFormProps {
+  next?: string;
+}
+
+export function LoginForm({ next }: LoginFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +25,10 @@ export function LoginForm() {
     setLoading(false);
   }
 
+  const registerHref = next
+    ? `/register?next=${encodeURIComponent(next)}`
+    : "/register";
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -31,6 +39,8 @@ export function LoginForm() {
       </div>
 
       <form action={handleLogin} className="space-y-4">
+        {next && <input type="hidden" name="next" value={next} />}
+
         <div className="space-y-2">
           <Label htmlFor="email">E-mailadres</Label>
           <Input
@@ -76,7 +86,7 @@ export function LoginForm() {
 
       <p className="text-center text-sm text-muted-foreground">
         Nog geen account?{" "}
-        <Link href="/register" className="font-medium text-primary hover:underline">
+        <Link href={registerHref} className="font-medium text-primary hover:underline">
           Registreren
         </Link>
       </p>
