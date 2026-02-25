@@ -10,20 +10,69 @@ interface OsrmResponse {
   routes: { duration: number }[];
 }
 
-async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
-  const query = `${address}, Nederland`;
+async function nominatimSearch(query: string): Promise<GeocodingResult[]> {
   const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`;
-
   const response = await fetch(url, {
     headers: { "User-Agent": "TeamPlanner/1.0" },
   });
+  if (!response.ok) return [];
+  return response.json();
+}
 
-  if (!response.ok) return null;
+// Voetbal.nl locations often have format "Sportpark X ClubName City"
+// where the club name breaks Nominatim geocoding.
+// This generates progressively simpler search queries as fallbacks.
+//
+// Example: "Sportpark Kerkpolder DVV Delft"
+//  1. "Sportpark Kerkpolder DVV Delft"       (original)
+//  2. "Sportpark Kerkpolder DVV, Delft"      (comma before last word = city hint)
+//  3. "Kerkpolder DVV Delft"                 (without "Sportpark")
+//  4. "Kerkpolder DVV, Delft"                (without "Sportpark" + city hint)
+//  5. "DVV Delft"                            (last two words — often club + city)
+function generateSearchVariants(address: string): string[] {
+  const variants: string[] = [address];
+  const words = address.split(/\s+/);
 
-  const results: GeocodingResult[] = await response.json();
-  if (results.length === 0) return null;
+  if (words.length < 3) return variants;
 
-  return { lat: parseFloat(results[0].lat), lng: parseFloat(results[0].lon) };
+  const lastWord = words[words.length - 1];
+  const allButLast = words.slice(0, -1).join(" ");
+
+  // Add comma before last word to help Nominatim identify the city
+  variants.push(`${allButLast}, ${lastWord}`);
+
+  // If starts with "Sportpark", try without it
+  const lower = address.toLowerCase();
+  if (lower.startsWith("sportpark ") && words.length >= 3) {
+    const withoutSportpark = words.slice(1).join(" ");
+    variants.push(withoutSportpark);
+
+    // Without "Sportpark" + comma before city
+    const withoutSpButLast = words.slice(1, -1).join(" ");
+    variants.push(`${withoutSpButLast}, ${lastWord}`);
+  }
+
+  // Last two words (often "ClubName City" — clubs are in OSM)
+  if (words.length >= 3) {
+    variants.push(words.slice(-2).join(" "));
+  }
+
+  // Deduplicate while preserving order
+  return [...new Set(variants)];
+}
+
+async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
+  const variants = generateSearchVariants(address);
+
+  for (const variant of variants) {
+    const query = `${variant}, Nederland`;
+    const results = await nominatimSearch(query);
+    if (results.length > 0) {
+      return { lat: parseFloat(results[0].lat), lng: parseFloat(results[0].lon) };
+    }
+  }
+
+  return null;
 }
 
 function roundUpTo5(minutes: number): number {
