@@ -7,7 +7,11 @@ import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Label } from "@/components/ui/label";
 
-export function RegisterForm() {
+interface RegisterFormProps {
+  next?: string;
+}
+
+export function RegisterForm({ next }: RegisterFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -26,6 +30,10 @@ export function RegisterForm() {
     setLoading(false);
   }
 
+  const loginHref = next
+    ? `/login?next=${encodeURIComponent(next)}`
+    : "/login";
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -36,6 +44,8 @@ export function RegisterForm() {
       </div>
 
       <form action={handleRegister} className="space-y-4">
+        {next && <input type="hidden" name="next" value={next} />}
+
         <div className="space-y-2">
           <Label htmlFor="name">Naam</Label>
           <Input
@@ -91,7 +101,7 @@ export function RegisterForm() {
 
       <p className="text-center text-sm text-muted-foreground">
         Al een account?{" "}
-        <Link href="/login" className="font-medium text-primary hover:underline">
+        <Link href={loginHref} className="font-medium text-primary hover:underline">
           Inloggen
         </Link>
       </p>

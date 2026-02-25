@@ -3,10 +3,18 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
+function getSafeRedirect(next: string | null): string {
+  if (!next) return "/dashboard";
+  // Only allow internal paths (prevent open redirect)
+  if (next.startsWith("/") && !next.startsWith("//")) return next;
+  return "/dashboard";
+}
+
 export async function loginWithPassword(formData: FormData) {
   const supabase = await createClient();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const next = formData.get("next") as string | null;
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
@@ -17,7 +25,7 @@ export async function loginWithPassword(formData: FormData) {
     return { error: "Ongeldige inloggegevens. Probeer het opnieuw." };
   }
 
-  redirect("/dashboard");
+  redirect(getSafeRedirect(next));
 }
 
 export async function register(formData: FormData) {
@@ -25,13 +33,20 @@ export async function register(formData: FormData) {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const next = formData.get("next") as string | null;
+  const safeNext = getSafeRedirect(next);
+
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const emailRedirectTo = next
+    ? `${baseUrl}/auth/callback?next=${encodeURIComponent(safeNext)}`
+    : `${baseUrl}/auth/callback`;
 
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: { name },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/auth/callback`,
+      emailRedirectTo,
     },
   });
 
@@ -50,7 +65,7 @@ export async function register(formData: FormData) {
     };
   }
 
-  redirect("/dashboard");
+  redirect(safeNext);
 }
 
 export async function resetPassword(formData: FormData) {

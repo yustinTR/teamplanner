@@ -299,7 +299,7 @@ export function generateSubstitutionPlan(
   const benchSize = totalPlayers - fieldSlots;
 
   // Determine number of substitution moments
-  const isGTeam = teamTypeConfig.fieldPlayers <= 7;
+  const isGTeam = teamTypeConfig.fieldPlayers <= 8;
   const maxMoments = isGTeam ? Math.floor(totalMinutes / 8) : Math.floor(totalMinutes / 10);
   const numMoments = Math.min(Math.ceil(totalPlayers / benchSize) - 1, maxMoments, 6);
 
