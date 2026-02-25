@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { cn, formatMatchDate, formatDateShort, toDatetimeLocal, getInviteUrl } from "../utils";
+import { cn, formatMatchDate, formatDateShort, toDatetimeLocal, getInviteUrl, calculateGatheringTime, formatTime } from "../utils";
 
 describe("cn", () => {
   it("merges class names", () => {
@@ -69,6 +69,45 @@ describe("toDatetimeLocal", () => {
     const iso = localDate.toISOString();
     const result = toDatetimeLocal(iso);
     expect(result).toBe("2026-06-20T14:30");
+  });
+});
+
+describe("calculateGatheringTime", () => {
+  it("subtracts default minutes from match date", () => {
+    const result = calculateGatheringTime("2026-03-15T14:00:00Z", 60);
+    expect(result.toISOString()).toBe("2026-03-15T13:00:00.000Z");
+  });
+
+  it("subtracts default minutes plus travel time", () => {
+    const result = calculateGatheringTime("2026-03-15T14:00:00Z", 60, 30);
+    expect(result.toISOString()).toBe("2026-03-15T12:30:00.000Z");
+  });
+
+  it("handles null travel time as zero", () => {
+    const result = calculateGatheringTime("2026-03-15T14:00:00Z", 60, null);
+    expect(result.toISOString()).toBe("2026-03-15T13:00:00.000Z");
+  });
+
+  it("handles zero default minutes", () => {
+    const result = calculateGatheringTime("2026-03-15T14:00:00Z", 0);
+    expect(result.toISOString()).toBe("2026-03-15T14:00:00.000Z");
+  });
+
+  it("handles large total offset", () => {
+    const result = calculateGatheringTime("2026-03-15T14:00:00Z", 120, 45);
+    expect(result.toISOString()).toBe("2026-03-15T11:15:00.000Z");
+  });
+});
+
+describe("formatTime", () => {
+  it("formats a Date object to HH:mm", () => {
+    const result = formatTime(new Date("2026-03-15T14:30:00Z"));
+    expect(result).toMatch(/\d{2}:\d{2}/);
+  });
+
+  it("formats an ISO string to HH:mm", () => {
+    const result = formatTime("2026-03-15T14:30:00Z");
+    expect(result).toMatch(/\d{2}:\d{2}/);
   });
 });
 

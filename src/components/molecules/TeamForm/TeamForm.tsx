@@ -14,9 +14,17 @@ import {
 import { TEAM_TYPE_LABELS, ACTIVE_TEAM_TYPES } from "@/lib/constants";
 import type { TeamType } from "@/types";
 
+interface TeamFormData {
+  name: string;
+  club_name: string;
+  team_type: TeamType;
+  default_gathering_minutes: number;
+  home_address: string | null;
+}
+
 interface TeamFormProps {
-  defaultValues?: { name?: string; club_name?: string; team_type?: TeamType };
-  onSubmit: (data: { name: string; club_name: string; team_type: TeamType }) => Promise<void>;
+  defaultValues?: Partial<TeamFormData>;
+  onSubmit: (data: TeamFormData) => Promise<void>;
   submitLabel?: string;
 }
 
@@ -33,6 +41,8 @@ export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: T
         name: formData.get("name") as string,
         club_name: formData.get("club_name") as string,
         team_type: teamType,
+        default_gathering_minutes: parseInt(formData.get("default_gathering_minutes") as string, 10) || 60,
+        home_address: (formData.get("home_address") as string) || null,
       });
     } finally {
       setLoading(false);
@@ -76,6 +86,34 @@ export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: T
             ))}
           </SelectContent>
         </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="default_gathering_minutes">Verzamelen voor wedstrijd (minuten)</Label>
+        <Input
+          id="default_gathering_minutes"
+          name="default_gathering_minutes"
+          type="number"
+          min={0}
+          max={180}
+          defaultValue={defaultValues?.default_gathering_minutes ?? 60}
+        />
+        <p className="text-xs text-muted-foreground">
+          Hoeveel minuten voor de aftrap moeten spelers aanwezig zijn?
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="home_address">Thuislocatie</Label>
+        <Input
+          id="home_address"
+          name="home_address"
+          placeholder="bijv. Sportpark De Toekomst, Amsterdam"
+          defaultValue={defaultValues?.home_address ?? undefined}
+        />
+        <p className="text-xs text-muted-foreground">
+          Wordt gebruikt om reistijd naar uitwedstrijden te berekenen.
+        </p>
       </div>
 
       <Button type="submit" className="w-full" disabled={loading}>

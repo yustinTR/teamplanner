@@ -36,6 +36,24 @@ export function toDatetimeLocal(isoString: string): string {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
+export function calculateGatheringTime(
+  matchDate: string,
+  defaultMinutes: number,
+  travelMinutes?: number | null,
+): Date {
+  const date = new Date(matchDate);
+  const totalMinutes = defaultMinutes + (travelMinutes ?? 0);
+  return new Date(date.getTime() - totalMinutes * 60 * 1000);
+}
+
+export function formatTime(dateOrString: Date | string): string {
+  const date = typeof dateOrString === "string" ? new Date(dateOrString) : dateOrString;
+  return date.toLocaleTimeString("nl-NL", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export function getInviteUrl(inviteCode: string): string {
   const baseUrl = typeof window !== "undefined"
     ? window.location.origin

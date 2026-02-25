@@ -263,6 +263,7 @@ export type Database = {
       matches: {
         Row: {
           created_at: string
+          gathering_time: string | null
           home_away: Database["public"]["Enums"]["home_away"]
           id: string
           location: string | null
@@ -273,9 +274,11 @@ export type Database = {
           score_home: number | null
           status: Database["public"]["Enums"]["match_status"]
           team_id: string
+          travel_time_minutes: number | null
         }
         Insert: {
           created_at?: string
+          gathering_time?: string | null
           home_away?: Database["public"]["Enums"]["home_away"]
           id?: string
           location?: string | null
@@ -286,9 +289,11 @@ export type Database = {
           score_home?: number | null
           status?: Database["public"]["Enums"]["match_status"]
           team_id: string
+          travel_time_minutes?: number | null
         }
         Update: {
           created_at?: string
+          gathering_time?: string | null
           home_away?: Database["public"]["Enums"]["home_away"]
           id?: string
           location?: string | null
@@ -299,6 +304,7 @@ export type Database = {
           score_home?: number | null
           status?: Database["public"]["Enums"]["match_status"]
           team_id?: string
+          travel_time_minutes?: number | null
         }
         Relationships: [
           {
@@ -368,7 +374,9 @@ export type Database = {
           club_name: string | null
           created_at: string
           created_by: string
+          default_gathering_minutes: number
           formation: string | null
+          home_address: string | null
           id: string
           import_club_abbrev: string | null
           import_team_id: number | null
@@ -384,7 +392,9 @@ export type Database = {
           club_name?: string | null
           created_at?: string
           created_by: string
+          default_gathering_minutes?: number
           formation?: string | null
+          home_address?: string | null
           id?: string
           import_club_abbrev?: string | null
           import_team_id?: number | null
@@ -400,7 +410,9 @@ export type Database = {
           club_name?: string | null
           created_at?: string
           created_by?: string
+          default_gathering_minutes?: number
           formation?: string | null
+          home_address?: string | null
           id?: string
           import_club_abbrev?: string | null
           import_team_id?: number | null

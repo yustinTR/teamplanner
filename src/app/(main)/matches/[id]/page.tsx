@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, MapPin, Clock, XCircle, ClipboardList, UserPlus } from "lucide-react";
+import { ArrowLeft, Pencil, MapPin, Clock, XCircle, ClipboardList, UserPlus, Users } from "lucide-react";
 import Link from "next/link";
 import { useMatch, useUpdateMatch, useCancelMatch } from "@/hooks/use-matches";
 import { useAuthStore } from "@/stores/auth-store";
@@ -16,7 +16,7 @@ import { AvailabilityGrid } from "@/components/organisms/AvailabilityGrid";
 import { MatchPlayerForm } from "@/components/molecules/MatchPlayerForm";
 import { MatchPlayerChip } from "@/components/molecules/MatchPlayerChip";
 import { useMatchPlayers, useCreateMatchPlayer, useDeleteMatchPlayer } from "@/hooks/use-match-players";
-import { formatMatchDate } from "@/lib/utils";
+import { formatMatchDate, calculateGatheringTime, formatTime } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
 import {
   Sheet,
@@ -42,7 +42,7 @@ interface MatchDetailPageProps {
 export default function MatchDetailPage({ params }: MatchDetailPageProps) {
   const { id } = use(params);
   const router = useRouter();
-  const { isCoach } = useAuthStore();
+  const { isCoach, currentTeam } = useAuthStore();
   const { data: match, isLoading } = useMatch(id);
   const updateMatch = useUpdateMatch();
   const cancelMatch = useCancelMatch();
@@ -68,6 +68,16 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
       </div>
     );
   }
+
+  const defaultGatheringMinutes = currentTeam?.default_gathering_minutes ?? 60;
+  const gatheringTime = match.gathering_time
+    ? new Date(match.gathering_time)
+    : calculateGatheringTime(
+        match.match_date,
+        defaultGatheringMinutes,
+        match.travel_time_minutes,
+      );
+  const isUpcoming = match.status === "upcoming";
 
   return (
     <div>
@@ -105,6 +115,15 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
             <Clock className="size-4" />
             {formatMatchDate(match.match_date)}
           </p>
+          {isUpcoming && (
+            <p className="flex items-center gap-2">
+              <Users className="size-4" />
+              Verzamelen: {formatTime(gatheringTime)}
+              {match.home_away === "away" && match.travel_time_minutes
+                ? ` (incl. ${match.travel_time_minutes} min reistijd)`
+                : null}
+            </p>
+          )}
           {match.location && (
             <p className="flex items-center gap-2">
               <MapPin className="size-4" />
@@ -213,7 +232,11 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
                       location: match.location,
                       home_away: match.home_away,
                       notes: match.notes,
+                      gathering_time: match.gathering_time,
+                      travel_time_minutes: match.travel_time_minutes,
                     }}
+                    defaultGatheringMinutes={defaultGatheringMinutes}
+                    homeAddress={currentTeam?.home_address}
                     onSubmit={async (data) => {
                       await updateMatch.mutateAsync({ id: match.id, ...data });
                       setEditOpen(false);

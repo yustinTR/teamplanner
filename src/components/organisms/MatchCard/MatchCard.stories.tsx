@@ -14,6 +14,8 @@ const baseMatch: Match = {
   score_away: null,
   notes: null,
   created_at: "2026-01-01T00:00:00Z",
+  gathering_time: null,
+  travel_time_minutes: null,
 };
 
 const meta: Meta<typeof MatchCard> = {
@@ -35,6 +37,7 @@ type Story = StoryObj<typeof MatchCard>;
 export const Upcoming: Story = {
   args: {
     match: baseMatch,
+    defaultGatheringMinutes: 60,
     onClick: () => console.log("clicked"),
   },
 };
@@ -67,5 +70,29 @@ export const Away: Story = {
       opponent: "SV De Adelaar",
       location: "Sportpark Het Zuiden",
     },
+    defaultGatheringMinutes: 60,
+  },
+};
+
+export const AwayWithTravelTime: Story = {
+  args: {
+    match: {
+      ...baseMatch,
+      home_away: "away",
+      opponent: "SV De Adelaar",
+      location: "Sportpark Het Zuiden",
+      travel_time_minutes: 35,
+    },
+    defaultGatheringMinutes: 60,
+  },
+};
+
+export const WithGatheringOverride: Story = {
+  args: {
+    match: {
+      ...baseMatch,
+      gathering_time: "2026-03-15T12:30:00Z",
+    },
+    defaultGatheringMinutes: 60,
   },
 };
