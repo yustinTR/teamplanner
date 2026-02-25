@@ -6,6 +6,7 @@ import { Input } from "@/components/atoms/Input";
 import { Textarea } from "@/components/atoms/Textarea";
 import { FormField } from "@/components/molecules/FormField";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
+import { toDatetimeLocal } from "@/lib/utils";
 import type { HomeAway } from "@/types";
 
 interface MatchFormData {
@@ -37,7 +38,7 @@ export function MatchForm({
       const formData = new FormData(e.currentTarget);
       await onSubmit({
         opponent: formData.get("opponent") as string,
-        match_date: formData.get("match_date") as string,
+        match_date: new Date(formData.get("match_date") as string).toISOString(),
         location: (formData.get("location") as string) || null,
         home_away: homeAway,
         notes: (formData.get("notes") as string) || null,
@@ -64,7 +65,7 @@ export function MatchForm({
           id="match_date"
           name="match_date"
           type="datetime-local"
-          defaultValue={defaultValues?.match_date?.slice(0, 16)}
+          defaultValue={defaultValues?.match_date ? toDatetimeLocal(defaultValues.match_date) : undefined}
           required
         />
       </FormField>

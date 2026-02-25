@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Label } from "@/components/ui/label";
+import { toDatetimeLocal } from "@/lib/utils";
 
 interface EventFormData {
   title: string;
@@ -71,7 +72,7 @@ export function EventForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: 
             id="ev-date"
             name="event_date"
             type="datetime-local"
-            defaultValue={defaultValues?.event_date?.slice(0, 16)}
+            defaultValue={defaultValues?.event_date ? toDatetimeLocal(defaultValues.event_date) : undefined}
             required
           />
         </div>
@@ -81,7 +82,7 @@ export function EventForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: 
             id="ev-end-date"
             name="end_date"
             type="datetime-local"
-            defaultValue={defaultValues?.end_date?.slice(0, 16)}
+            defaultValue={defaultValues?.end_date ? toDatetimeLocal(defaultValues.end_date) : undefined}
           />
         </div>
       </div>

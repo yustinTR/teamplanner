@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { cn, formatMatchDate, formatDateShort, getInviteUrl } from "../utils";
+import { cn, formatMatchDate, formatDateShort, toDatetimeLocal, getInviteUrl } from "../utils";
 
 describe("cn", () => {
   it("merges class names", () => {
@@ -45,6 +45,30 @@ describe("formatDateShort", () => {
   it("includes time", () => {
     const result = formatDateShort("2026-06-20T18:30:00Z");
     expect(result).toMatch(/\d{2}:\d{2}/);
+  });
+});
+
+describe("toDatetimeLocal", () => {
+  it("converts an ISO UTC string to local datetime-local format", () => {
+    const result = toDatetimeLocal("2026-03-15T14:00:00Z");
+    // Should return YYYY-MM-DDTHH:MM format
+    expect(result).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/);
+  });
+
+  it("produces a value that round-trips correctly", () => {
+    const original = "2026-06-20T18:30:00.000Z";
+    const local = toDatetimeLocal(original);
+    // Converting local back to ISO should give the same UTC time
+    const roundTripped = new Date(local).toISOString();
+    expect(roundTripped).toBe(original);
+  });
+
+  it("preserves local time representation", () => {
+    // Create a date in local time and convert to ISO, then back
+    const localDate = new Date(2026, 5, 20, 14, 30); // June 20, 2026 14:30 local
+    const iso = localDate.toISOString();
+    const result = toDatetimeLocal(iso);
+    expect(result).toBe("2026-06-20T14:30");
   });
 });
 
