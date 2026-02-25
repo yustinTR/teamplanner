@@ -267,6 +267,12 @@ export default function LandingPage() {
               <Link href="/register" className="hover:text-white">
                 Registreren
               </Link>
+              <Link href="/voorwaarden" className="hover:text-white">
+                Voorwaarden
+              </Link>
+              <Link href="/privacy" className="hover:text-white">
+                Privacy
+              </Link>
             </nav>
           </div>
         </div>
