@@ -23,6 +23,8 @@ export function createMockTeam(overrides?: Partial<Team>): Team {
     formation: "4-3-3",
     team_type: "senioren",
     logo_url: null,
+    default_gathering_minutes: 60,
+    home_address: null,
     import_club_abbrev: null,
     import_team_id: null,
     import_team_name: null,
@@ -69,6 +71,8 @@ export function createMockMatch(overrides?: Partial<Match>): Match {
     score_home: null,
     score_away: null,
     notes: null,
+    gathering_time: null,
+    travel_time_minutes: null,
     created_at: "2026-01-01T00:00:00Z",
     ...overrides,
   };

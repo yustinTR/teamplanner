@@ -66,6 +66,11 @@ export function MatchList() {
     );
   }
 
+  const matchFormProps = {
+    defaultGatheringMinutes: currentTeam?.default_gathering_minutes,
+    homeAddress: currentTeam?.home_address,
+  };
+
   if (!matches?.length) {
     return (
       <EmptyState
@@ -87,6 +92,7 @@ export function MatchList() {
                 </SheetHeader>
                 <div className="px-4 pb-4">
                   <MatchForm
+                    {...matchFormProps}
                     submitLabel="Toevoegen"
                     onSubmit={async (data) => {
                       if (!currentTeam) return;
@@ -171,6 +177,7 @@ export function MatchList() {
               </SheetHeader>
               <div className="px-4 pb-4">
                 <MatchForm
+                  {...matchFormProps}
                   submitLabel="Toevoegen"
                   onSubmit={async (data) => {
                     if (!currentTeam) return;
@@ -198,6 +205,7 @@ export function MatchList() {
               <MatchCard
                 key={match.id}
                 match={match}
+                defaultGatheringMinutes={currentTeam?.default_gathering_minutes ?? 60}
                 onClick={() => router.push(`/matches/${match.id}`)}
               />
             ))}

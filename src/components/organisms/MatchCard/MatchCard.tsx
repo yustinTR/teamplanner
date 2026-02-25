@@ -1,7 +1,7 @@
-import { MapPin, Clock } from "lucide-react";
+import { MapPin, Clock, Users } from "lucide-react";
 import { MatchStatusBadge } from "@/components/molecules/MatchStatusBadge";
 import { MatchScore } from "@/components/molecules/MatchScore";
-import { formatDateShort } from "@/lib/utils";
+import { formatDateShort, calculateGatheringTime, formatTime } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
 import type { Match } from "@/types";
 import { cn } from "@/lib/utils";
@@ -10,10 +10,24 @@ interface MatchCardProps {
   match: Match;
   onClick?: () => void;
   className?: string;
+  defaultGatheringMinutes?: number;
 }
 
-export function MatchCard({ match, onClick, className }: MatchCardProps) {
+export function MatchCard({ match, onClick, className, defaultGatheringMinutes = 60 }: MatchCardProps) {
   const Component = onClick ? "button" : "div";
+  const isUpcoming = match.status === "upcoming";
+
+  const gatheringTime = isUpcoming
+    ? match.gathering_time
+      ? formatTime(match.gathering_time)
+      : formatTime(
+          calculateGatheringTime(
+            match.match_date,
+            defaultGatheringMinutes,
+            match.travel_time_minutes,
+          )
+        )
+    : null;
 
   return (
     <Component
@@ -42,11 +56,17 @@ export function MatchCard({ match, onClick, className }: MatchCardProps) {
           </div>
         </div>
 
-        <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
             <Clock className="size-3.5" />
             {formatDateShort(match.match_date)}
           </span>
+          {isUpcoming && gatheringTime && (
+            <span className="flex items-center gap-1">
+              <Users className="size-3.5" />
+              Verzamelen {gatheringTime}
+            </span>
+          )}
           {match.location && (
             <span className="flex items-center gap-1">
               <MapPin className="size-3.5" />
