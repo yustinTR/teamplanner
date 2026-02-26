@@ -7,7 +7,7 @@ const meta: Meta<typeof FaqSection> = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <div className="max-w-2xl p-4">
+      <div className="-m-4">
         <Story />
       </div>
     ),

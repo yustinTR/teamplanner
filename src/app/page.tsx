@@ -286,36 +286,69 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-neutral-900 py-8">
+      <footer className="border-t bg-neutral-900 py-10">
         <div className="mx-auto max-w-4xl px-4">
-          <div className="flex flex-col items-center gap-4 text-center">
-            <div className="flex items-center gap-2 text-white">
-              <Image
-                src="/icons/icon-192x192.svg"
-                alt="MyTeamPlanner"
-                width={28}
-                height={28}
-                className="rounded-md"
-              />
-              <span className="font-semibold">MyTeamPlanner</span>
+          <div className="grid gap-8 sm:grid-cols-3">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2 text-white">
+                <Image
+                  src="/icons/icon-192x192.svg"
+                  alt="MyTeamPlanner"
+                  width={28}
+                  height={28}
+                  className="rounded-md"
+                />
+                <span className="font-semibold">MyTeamPlanner</span>
+              </div>
+              <p className="mt-2 text-sm text-neutral-400">
+                De gratis teamplanner voor amateurvoetbal in Nederland.
+              </p>
             </div>
-            <p className="text-sm text-neutral-400">
-              De gratis teamplanner voor amateurvoetbal in Nederland.
-            </p>
-            <nav className="flex gap-6 text-sm text-neutral-400">
-              <Link href="/login" className="hover:text-white">
-                Inloggen
-              </Link>
-              <Link href="/register" className="hover:text-white">
-                Registreren
-              </Link>
-              <Link href="/voorwaarden" className="hover:text-white">
-                Voorwaarden
-              </Link>
-              <Link href="/privacy" className="hover:text-white">
-                Privacy
-              </Link>
-            </nav>
+
+            {/* Features */}
+            <div>
+              <h3 className="text-sm font-semibold text-white">Functies</h3>
+              <nav className="mt-3 flex flex-col gap-2 text-sm text-neutral-400">
+                <Link href="/features/wedstrijden" className="hover:text-white">
+                  Wedstrijden
+                </Link>
+                <Link
+                  href="/features/beschikbaarheid"
+                  className="hover:text-white"
+                >
+                  Beschikbaarheid
+                </Link>
+                <Link
+                  href="/features/opstellingen"
+                  className="hover:text-white"
+                >
+                  Opstellingen
+                </Link>
+                <Link href="/features/trainingen" className="hover:text-white">
+                  Trainingen
+                </Link>
+              </nav>
+            </div>
+
+            {/* Links */}
+            <div>
+              <h3 className="text-sm font-semibold text-white">Links</h3>
+              <nav className="mt-3 flex flex-col gap-2 text-sm text-neutral-400">
+                <Link href="/login" className="hover:text-white">
+                  Inloggen
+                </Link>
+                <Link href="/register" className="hover:text-white">
+                  Registreren
+                </Link>
+                <Link href="/voorwaarden" className="hover:text-white">
+                  Voorwaarden
+                </Link>
+                <Link href="/privacy" className="hover:text-white">
+                  Privacy
+                </Link>
+              </nav>
+            </div>
           </div>
         </div>
       </footer>
