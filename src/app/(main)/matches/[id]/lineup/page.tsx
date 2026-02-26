@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { LineupField } from "@/components/organisms/LineupField";
 import { LineupView } from "@/components/organisms/LineupView";
+import { OnboardingHint } from "@/components/molecules/OnboardingHint";
 
 interface LineupPageProps {
   params: Promise<{ id: string }>;
@@ -27,6 +28,16 @@ export default function LineupPage({ params }: LineupPageProps) {
       </button>
 
       <h1 className="mb-4 text-2xl font-semibold">Opstelling</h1>
+
+      {isCoach && (
+        <div className="mb-4">
+          <OnboardingHint
+            hintKey="lineup_editor"
+            title="Opstelling maken"
+            description="Sleep spelers naar het veld om je opstelling te maken. Kies eerst een formatie rechtsboven."
+          />
+        </div>
+      )}
 
       {isCoach ? (
         <LineupField matchId={id} />

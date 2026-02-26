@@ -17,6 +17,7 @@ import { AvailabilityGrid } from "@/components/organisms/AvailabilityGrid";
 import { MatchPlayerForm } from "@/components/molecules/MatchPlayerForm";
 import { MatchPlayerChip } from "@/components/molecules/MatchPlayerChip";
 import { MatchStatsEditor } from "@/components/organisms/MatchStatsEditor";
+import { OnboardingHint } from "@/components/molecules/OnboardingHint";
 import { useMatchPlayers, useCreateMatchPlayer, useDeleteMatchPlayer } from "@/hooks/use-match-players";
 import { formatMatchDate, calculateGatheringTime, formatTime } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
@@ -149,6 +150,15 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
           </div>
         )}
 
+        {isCoach && (
+          <OnboardingHint
+            hintKey="availability_grid"
+            title="Beschikbaarheid"
+            description="Spelers kunnen hun beschikbaarheid doorgeven via de app. Deel de uitnodigingslink zodat ze zelf kunnen reageren."
+            icon={Users}
+          />
+        )}
+
         <div className="rounded-xl bg-white p-4 shadow-md">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Beschikbaarheid</h2>
@@ -164,6 +174,11 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
 
         {match.status === "completed" && isCoach && (
           <div className="rounded-xl bg-white p-4 shadow-md">
+            <OnboardingHint
+              hintKey="match_stats"
+              title="Statistieken invullen"
+              description="Vul doelpunten en assists in bij de wedstrijdstatistieken om spelerdata op te bouwen."
+            />
             <h2 className="mb-3 text-lg font-semibold">
               Wedstrijdstatistieken
             </h2>
