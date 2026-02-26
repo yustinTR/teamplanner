@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Users, Settings, Plus, ClipboardList, ChevronRight, Clock, Target, Trophy } from "lucide-react";
+import { Calendar, Users, Settings, Plus, ClipboardList, ChevronRight, Clock, Target, Trophy, PartyPopper } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/atoms/Button";
 import { TopPlayerCard } from "@/components/molecules/TopPlayerCard";
@@ -122,7 +122,22 @@ export default function DashboardPage() {
             <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-neutral-900">Training</h3>
               <p className="text-sm text-muted-foreground">
-                Trainingsplannen en evenementen
+                Trainingsplannen en oefeningen
+              </p>
+            </div>
+            <ChevronRight className="size-5 text-neutral-400" />
+          </div>
+        </Link>
+
+        <Link href="/events">
+          <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-success-100">
+              <PartyPopper className="size-6 text-success-700" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-neutral-900">Evenementen</h3>
+              <p className="text-sm text-muted-foreground">
+                Teamactiviteiten en evenementen
               </p>
             </div>
             <ChevronRight className="size-5 text-neutral-400" />
