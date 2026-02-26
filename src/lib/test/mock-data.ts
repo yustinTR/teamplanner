@@ -1,4 +1,4 @@
-import type { Team, Player, Match, Availability, AvailabilityWithPlayer, MatchPlayer, Event, EventAttendance, EventTask } from "@/types";
+import type { Team, Player, Match, Availability, AvailabilityWithPlayer, MatchPlayer, Event, EventAttendance, EventTask, Exercise, TrainingPlan, TrainingPlanExercise } from "@/types";
 import type { LineupPosition } from "@/types/lineup";
 import type { User } from "@supabase/supabase-js";
 
@@ -202,6 +202,61 @@ export function createMockEventTask(overrides?: Partial<EventTask>): EventTask {
   };
 }
 
+// --- Exercise ---
+
+export function createMockExercise(overrides?: Partial<Exercise>): Exercise {
+  const id = overrides?.id ?? uid();
+  return {
+    id,
+    title: "Rondo 4 tegen 2",
+    description: "Vier spelers spelen de bal rond terwijl twee verdedigers proberen te onderscheppen.",
+    category: "warming_up",
+    difficulty: "basis",
+    team_types: ["senioren", "jo19_jo17"],
+    min_players: 6,
+    max_players: 12,
+    duration_minutes: 10,
+    setup_instructions: "Maak een cirkel van ca. 8x8 meter.",
+    variations: "Verklein het veld voor meer druk.",
+    video_url: null,
+    is_published: true,
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
+    ...overrides,
+  };
+}
+
+// --- Training Plan ---
+
+export function createMockTrainingPlan(overrides?: Partial<TrainingPlan>): TrainingPlan {
+  const id = overrides?.id ?? uid();
+  return {
+    id,
+    team_id: "team-001",
+    event_id: null,
+    title: "Passing & positiespel",
+    notes: null,
+    total_duration_minutes: 75,
+    created_by: "user-coach-001",
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
+    ...overrides,
+  };
+}
+
+// --- Training Plan Exercise ---
+
+export function createMockTrainingPlanExercise(overrides?: Partial<TrainingPlanExercise>): TrainingPlanExercise {
+  const id = overrides?.id ?? uid();
+  return {
+    id,
+    plan_id: "plan-001",
+    exercise_id: "ex-001",
+    sort_order: 0,
+    ...overrides,
+  };
+}
+
 // --- Pre-built arrays ---
 
 export const MOCK_TEAM = createMockTeam({ id: "team-001", created_by: "user-coach-001" });
@@ -219,6 +274,19 @@ export const MOCK_MATCHES: Match[] = [
   createMockMatch({ id: "match-001", opponent: "FC Vooruit", match_date: "2026-03-15T14:00:00Z", status: "upcoming", team_id: "team-001" }),
   createMockMatch({ id: "match-002", opponent: "SV De Adelaar", match_date: "2026-03-08T14:00:00Z", status: "completed", score_home: 3, score_away: 1, team_id: "team-001" }),
   createMockMatch({ id: "match-003", opponent: "VV Oranje", match_date: "2026-04-05T14:00:00Z", status: "upcoming", home_away: "away", team_id: "team-001" }),
+];
+
+export const MOCK_EXERCISES: Exercise[] = [
+  createMockExercise({ id: "ex-001", title: "Rondo 4 tegen 2", category: "warming_up", difficulty: "basis", duration_minutes: 10, min_players: 6, max_players: 12 }),
+  createMockExercise({ id: "ex-002", title: "Passing in driehoek", category: "passing", difficulty: "basis", duration_minutes: 10, min_players: 3, max_players: 12 }),
+  createMockExercise({ id: "ex-003", title: "Positiespel 4v4+2", category: "positiespel", difficulty: "gemiddeld", duration_minutes: 15, min_players: 10, max_players: 14 }),
+  createMockExercise({ id: "ex-004", title: "1 tegen 1 verdedigen", category: "verdedigen", difficulty: "basis", duration_minutes: 10, min_players: 4, max_players: 12 }),
+  createMockExercise({ id: "ex-005", title: "Afwerken uit de draai", category: "afwerken", difficulty: "gemiddeld", duration_minutes: 12, min_players: 4, max_players: 10 }),
+];
+
+export const MOCK_TRAINING_PLANS: TrainingPlan[] = [
+  createMockTrainingPlan({ id: "plan-001", title: "Passing & positiespel", total_duration_minutes: 75 }),
+  createMockTrainingPlan({ id: "plan-002", title: "Verdedigende training", total_duration_minutes: 60, notes: "Focus op 1v1 en schuiven" }),
 ];
 
 export const MOCK_AVAILABILITY: AvailabilityWithPlayer[] = [

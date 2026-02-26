@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -27,12 +28,12 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
       <div className="relative z-10 w-full max-w-sm px-4">
         {/* Logo / Brand — links back to landing page */}
         <Link href="/" className="mb-8 block text-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/icons/icon-192x192.svg"
             alt="MyTeamPlanner logo"
             width={64}
             height={64}
+            priority
             className="mx-auto mb-3 rounded-2xl"
           />
           <h1 className="text-2xl font-bold text-white">MyTeamPlanner</h1>

@@ -1,15 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export const metadata = {
-  title: "Privacybeleid - MyTeamPlanner",
+export const metadata: Metadata = {
+  title: "Privacybeleid",
+  description:
+    "Privacybeleid van MyTeamPlanner. Lees hoe wij omgaan met je persoonsgegevens conform de AVG.",
+  alternates: {
+    canonical: "https://myteamplanner.nl/privacy",
+  },
 };
 
 export default function PrivacyPage() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-8">
       <Link
-        href="/register"
+        href="/"
         className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-4" />

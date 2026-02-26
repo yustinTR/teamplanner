@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <defs>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4ade80" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="400" height="200" rx="16" fill="url(#grass)"/>
+  <!-- Running figures in circle (rondo) -->
+  <!-- Center circle -->
+  <circle cx="200" cy="100" r="55" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="6 4" fill="none" opacity="0.4"/>
+  <!-- Player dots running around the circle -->
+  <g fill="#16a34a">
+    <!-- Runner 1 - top -->
+    <g transform="translate(200,42)">
+      <circle r="8" fill="#16a34a" opacity="0.9"/>
+      <line x1="-4" y1="8" x2="-8" y2="20" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="4" y1="8" x2="8" y2="20" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="0" y1="8" x2="0" y2="18" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <!-- Arm motion lines -->
+      <line x1="-6" y1="12" x2="-12" y2="8" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="6" y1="12" x2="12" y2="16" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <!-- Runner 2 - right -->
+    <g transform="translate(258,100)">
+      <circle r="8" fill="#16a34a" opacity="0.9"/>
+      <line x1="-4" y1="8" x2="-8" y2="20" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="4" y1="8" x2="8" y2="20" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="0" y1="8" x2="0" y2="18" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <!-- Runner 3 - bottom -->
+    <g transform="translate(200,158)">
+      <circle r="8" fill="#16a34a" opacity="0.9"/>
+      <line x1="-4" y1="8" x2="-8" y2="20" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="4" y1="8" x2="8" y2="20" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="0" y1="8" x2="0" y2="18" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <!-- Runner 4 - left -->
+    <g transform="translate(142,100)">
+      <circle r="8" fill="#16a34a" opacity="0.9"/>
+      <line x1="-4" y1="8" x2="-8" y2="20" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="4" y1="8" x2="8" y2="20" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="0" y1="8" x2="0" y2="18" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </g>
+  <!-- Motion trails -->
+  <path d="M175,50 Q150,75 145,100" stroke="#16a34a" stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.3"/>
+  <path d="M250,75 Q260,90 258,110" stroke="#16a34a" stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.3"/>
+  <path d="M225,152 Q245,140 255,115" stroke="#16a34a" stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.3"/>
+  <!-- Ball -->
+  <circle cx="200" cy="100" r="6" fill="white" stroke="#16a34a" stroke-width="1.5"/>
+  <path d="M197,97 L200,94 L203,97 L202,101 L198,101Z" fill="#16a34a" opacity="0.5"/>
+</svg>

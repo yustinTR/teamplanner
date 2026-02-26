@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <defs>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ea580c" stop-opacity="0.06"/>
+    </linearGradient>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 L2,4Z" fill="#ea580c" opacity="0.6"/>
+    </marker>
+  </defs>
+  <rect width="400" height="200" rx="16" fill="url(#grass)"/>
+  <!-- Goal -->
+  <rect x="160" y="8" width="80" height="6" rx="3" fill="#ea580c" opacity="0.4"/>
+  <rect x="170" y="14" width="60" height="20" rx="4" stroke="#ea580c" stroke-width="1.5" fill="none" opacity="0.3"/>
+  <!-- Goalkeeper -->
+  <circle cx="200" cy="38" r="8" fill="#64748b" opacity="0.5"/>
+  <!-- Attacking players -->
+  <g fill="#ea580c">
+    <!-- Striker -->
+    <circle cx="200" cy="75" r="10" opacity="0.85"/>
+    <!-- Left winger -->
+    <circle cx="120" cy="110" r="10" opacity="0.85"/>
+    <!-- Right winger -->
+    <circle cx="280" cy="110" r="10" opacity="0.85"/>
+    <!-- Midfielder -->
+    <circle cx="200" cy="145" r="10" opacity="0.85"/>
+  </g>
+  <!-- Attack arrows pointing up toward goal -->
+  <g stroke="#ea580c" stroke-width="2" fill="none" opacity="0.5">
+    <!-- Striker run -->
+    <path d="M200,65 L200,48" marker-end="url(#arrowOrange)"/>
+    <!-- Left wing run -->
+    <path d="M128,102 Q145,70 168,45" marker-end="url(#arrowOrange)"/>
+    <!-- Right wing run -->
+    <path d="M272,102 Q255,70 232,45" marker-end="url(#arrowOrange)"/>
+    <!-- Through pass from midfield -->
+    <path d="M200,135 L200,85" marker-end="url(#arrowOrange)"/>
+  </g>
+  <!-- Ball -->
+  <circle cx="200" cy="155" r="6" fill="white" stroke="#ea580c" stroke-width="1.5"/>
+  <path d="M197.5,152.5 L200,150 L202.5,152.5 L202,156 L198,156Z" fill="#ea580c" opacity="0.4"/>
+  <!-- Speed lines -->
+  <g stroke="#ea580c" stroke-width="0.8" opacity="0.2">
+    <line x1="195" y1="80" x2="195" y2="90"/>
+    <line x1="205" y1="80" x2="205" y2="90"/>
+    <line x1="115" y1="118" x2="110" y2="125"/>
+    <line x1="285" y1="118" x2="290" y2="125"/>
+  </g>
+</svg>

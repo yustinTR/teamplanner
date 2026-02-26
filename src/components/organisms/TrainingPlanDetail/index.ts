@@ -1,0 +1,1 @@
+export { TrainingPlanDetail } from "./TrainingPlanDetail";

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { updatePassword } from "@/app/(auth)/actions";
 import { Button } from "@/components/atoms/Button";
@@ -30,12 +31,12 @@ export default function ResetPasswordPage() {
 
       <div className="relative z-10 w-full max-w-sm px-4">
         <div className="mb-8 text-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/icons/icon-192x192.svg"
             alt="MyTeamPlanner logo"
             width={64}
             height={64}
+            priority
             className="mx-auto mb-3 rounded-2xl"
           />
           <h1 className="text-2xl font-bold text-white">MyTeamPlanner</h1>
