@@ -39,7 +39,7 @@ const steps = [
 export default function BeschikbaarheidPage() {
   return (
     <div className="min-h-screen">
-      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 px-4 pb-16 pt-12">
+      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 px-4 pb-16 pt-20">
         <div className="mx-auto max-w-3xl text-center">
           <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-white/10">
             <Users className="size-8 text-white" />
