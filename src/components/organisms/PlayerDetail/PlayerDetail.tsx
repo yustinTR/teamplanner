@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Pencil, UserMinus } from "lucide-react";
+import { SkillsRadar } from "@/components/molecules/SkillsRadar";
+import { SkillsEditor } from "@/components/molecules/SkillsEditor";
+import type { PlayerSkills } from "@/lib/constants";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlayer, useUpdatePlayer, useDeactivatePlayer } from "@/hooks/use-players";
 import { Avatar } from "@/components/atoms/Avatar";
@@ -41,6 +44,7 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
   const deactivatePlayer = useDeactivatePlayer();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [skillsOpen, setSkillsOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -110,6 +114,53 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
         <div className="mt-4">
           <h2 className="text-sm font-medium text-muted-foreground">Notities</h2>
           <p className="mt-1 text-sm">{player.notes}</p>
+        </div>
+      )}
+
+      {!isStaff && (
+        <div className="mt-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-medium text-muted-foreground">
+              Vaardigheden
+            </h2>
+            {isCoach && (
+              <Sheet open={skillsOpen} onOpenChange={setSkillsOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <Pencil className="mr-1 size-3.5" />
+                    {Object.keys((player.skills as PlayerSkills) ?? {}).length > 0
+                      ? "Bewerken"
+                      : "Beoordelen"}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>Vaardigheden beoordelen</SheetTitle>
+                  </SheetHeader>
+                  <div className="px-4 pb-4">
+                    <SkillsEditor
+                      skills={(player.skills as PlayerSkills) ?? {}}
+                      onSave={async (skills) => {
+                        await updatePlayer.mutateAsync({
+                          id: player.id,
+                          skills: skills as unknown as typeof player.skills,
+                        });
+                        setSkillsOpen(false);
+                      }}
+                      isSaving={updatePlayer.isPending}
+                    />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            )}
+          </div>
+          {Object.keys((player.skills as PlayerSkills) ?? {}).length > 0 ? (
+            <SkillsRadar skills={(player.skills as PlayerSkills) ?? {}} />
+          ) : (
+            <p className="mt-2 text-sm text-muted-foreground">
+              Nog geen vaardigheden beoordeeld.
+            </p>
+          )}
         </div>
       )}
 

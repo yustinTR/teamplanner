@@ -1,0 +1,1 @@
+export { SkillsRadar } from "./SkillsRadar";

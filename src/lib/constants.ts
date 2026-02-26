@@ -310,3 +310,25 @@ export const HOME_AWAY_LABELS: Record<string, string> = {
   home: "Thuis",
   away: "Uit",
 };
+
+// --- Player skills ---
+
+export interface PlayerSkillDef {
+  key: string;
+  label: string;
+}
+
+export const PLAYER_SKILLS: PlayerSkillDef[] = [
+  { key: "speed", label: "Snelheid" },
+  { key: "strength", label: "Kracht" },
+  { key: "technique", label: "Techniek" },
+  { key: "passing", label: "Passing" },
+  { key: "dribbling", label: "Dribbelen" },
+  { key: "heading", label: "Koppen" },
+  { key: "defending", label: "Verdedigen" },
+  { key: "positioning", label: "Positiespel" },
+  { key: "finishing", label: "Afwerken" },
+  { key: "stamina", label: "Conditie" },
+];
+
+export type PlayerSkills = Record<string, number>;
