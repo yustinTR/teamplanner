@@ -76,7 +76,7 @@ const faqItems = [
   {
     question: "Werkt het ook voor jeugdteams en G-teams?",
     answer:
-      "Ja, met aangepaste formaties voor 7v7, grote touch targets en oefeningen per niveau. Speciaal geschikt voor jeugd- en G-voetbal.",
+      "Ja, met aangepaste formaties voor 7v7 en 8v8, grote touch targets en oefeningen per niveau. Speciaal geschikt voor jeugd- en G-voetbal.",
   },
   {
     question: "Moet ik iets installeren?",

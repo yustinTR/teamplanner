@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 const solutions = [
-  "Kies uit formaties voor 11v11 en 7v7 (ook voor jeugd en G-teams)",
+  "Kies uit formaties voor 11v11, 8v8 en 7v7 (ook voor jeugd en G-teams)",
   "Sleep spelers naar hun positie op het voetbalveld",
   "Plan wisselmomenten en zie automatisch hoeveel minuten elke speler speelt",
   "Eerlijke speeltijdverdeling over het seizoen — cruciaal bij jeugd en G-voetbal",
