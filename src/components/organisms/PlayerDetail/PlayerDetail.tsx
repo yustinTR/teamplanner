@@ -10,6 +10,7 @@ import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
 import { PlayerForm } from "@/components/molecules/PlayerForm";
+import { PlayerStatsSection } from "@/components/organisms/PlayerStatsSection";
 import { DETAILED_POSITION_LABELS, ROLE_LABELS } from "@/lib/constants";
 import {
   Sheet,
@@ -109,6 +110,15 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
         <div className="mt-4">
           <h2 className="text-sm font-medium text-muted-foreground">Notities</h2>
           <p className="mt-1 text-sm">{player.notes}</p>
+        </div>
+      )}
+
+      {!isStaff && (
+        <div className="mt-4">
+          <PlayerStatsSection
+            playerId={player.id}
+            teamId={player.team_id}
+          />
         </div>
       )}
 

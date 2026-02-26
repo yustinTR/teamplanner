@@ -1,4 +1,4 @@
-import type { Team, Player, Match, Availability, AvailabilityWithPlayer, MatchPlayer, Event, EventAttendance, EventTask, Exercise, TrainingPlan, TrainingPlanExercise } from "@/types";
+import type { Team, Player, Match, Availability, AvailabilityWithPlayer, MatchPlayer, Event, EventAttendance, EventTask, Exercise, TrainingPlan, TrainingPlanExercise, MatchStats } from "@/types";
 import type { LineupPosition } from "@/types/lineup";
 import type { User } from "@supabase/supabase-js";
 
@@ -253,6 +253,24 @@ export function createMockTrainingPlanExercise(overrides?: Partial<TrainingPlanE
     plan_id: "plan-001",
     exercise_id: "ex-001",
     sort_order: 0,
+    ...overrides,
+  };
+}
+
+// --- Match Stats ---
+
+export function createMockMatchStats(overrides?: Partial<MatchStats>): MatchStats {
+  const id = overrides?.id ?? uid();
+  return {
+    id,
+    match_id: "match-001",
+    player_id: "player-001",
+    goals: 0,
+    assists: 0,
+    yellow_cards: 0,
+    red_cards: 0,
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
     ...overrides,
   };
 }

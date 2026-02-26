@@ -2,9 +2,60 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Users, Settings, Plus, ClipboardList, ChevronRight } from "lucide-react";
+import { Calendar, Users, Settings, Plus, ClipboardList, ChevronRight, Clock, Target, Trophy, PartyPopper } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/atoms/Button";
+import { TopPlayerCard } from "@/components/molecules/TopPlayerCard";
+import { useTeamSeasonStats } from "@/hooks/use-player-stats";
+
+function SeasonHighlights({ teamId }: { teamId: string }) {
+  const { data: stats } = useTeamSeasonStats(teamId);
+
+  if (!stats?.length) return null;
+
+  const hasPlayed = stats.some((s) => s.matchesPlayed > 0);
+  if (!hasPlayed) return null;
+
+  const mostMinutes = stats.reduce((a, b) =>
+    b.totalMinutes > a.totalMinutes ? b : a
+  );
+  const topScorer = stats.reduce((a, b) => (b.goals > a.goals ? b : a));
+  const mostMatches = stats.reduce((a, b) =>
+    b.matchesPlayed > a.matchesPlayed ? b : a
+  );
+
+  return (
+    <div className="space-y-3 px-4 pb-4">
+      <h2 className="text-sm font-medium text-muted-foreground">
+        Seizoensoverzicht
+      </h2>
+      {mostMinutes.totalMinutes > 0 && (
+        <TopPlayerCard
+          title="Meeste minuten"
+          playerName={mostMinutes.playerName}
+          value={`${mostMinutes.totalMinutes} min`}
+          icon={Clock}
+        />
+      )}
+      {topScorer.goals > 0 && (
+        <TopPlayerCard
+          title="Topscorer"
+          playerName={topScorer.playerName}
+          value={`${topScorer.goals} ${topScorer.goals === 1 ? "goal" : "goals"}`}
+          icon={Target}
+        />
+      )}
+      {mostMatches.matchesPlayed > 0 && (
+        <TopPlayerCard
+          title="Meeste wedstrijden"
+          playerName={mostMatches.playerName}
+          value={`${mostMatches.matchesPlayed}`}
+          icon={Trophy}
+        />
+      )}
+    </div>
+  );
+}
 
 export default function DashboardPage() {
   const { currentTeam, isCoach, currentPlayer } = useAuthStore();
@@ -71,7 +122,22 @@ export default function DashboardPage() {
             <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-neutral-900">Training</h3>
               <p className="text-sm text-muted-foreground">
-                Trainingsplannen en evenementen
+                Trainingsplannen en oefeningen
+              </p>
+            </div>
+            <ChevronRight className="size-5 text-neutral-400" />
+          </div>
+        </Link>
+
+        <Link href="/events">
+          <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-success-100">
+              <PartyPopper className="size-6 text-success-700" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-neutral-900">Evenementen</h3>
+              <p className="text-sm text-muted-foreground">
+                Teamactiviteiten en evenementen
               </p>
             </div>
             <ChevronRight className="size-5 text-neutral-400" />
@@ -110,6 +176,8 @@ export default function DashboardPage() {
           </Link>
         )}
       </div>
+
+      <SeasonHighlights teamId={currentTeam.id} />
     </div>
   );
 }

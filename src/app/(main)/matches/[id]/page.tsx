@@ -2,11 +2,12 @@
 
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, MapPin, Clock, XCircle, ClipboardList, UserPlus, Users } from "lucide-react";
+import { ArrowLeft, Pencil, MapPin, Clock, XCircle, CheckCircle, ClipboardList, UserPlus, Users } from "lucide-react";
 import Link from "next/link";
 import { useMatch, useUpdateMatch, useCancelMatch } from "@/hooks/use-matches";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/atoms/Button";
+import { Input } from "@/components/atoms/Input";
 import { Spinner } from "@/components/atoms/Spinner";
 import { MatchStatusBadge } from "@/components/molecules/MatchStatusBadge";
 import { MatchScore } from "@/components/molecules/MatchScore";
@@ -15,6 +16,7 @@ import { MyAvailability } from "@/components/organisms/MyAvailability";
 import { AvailabilityGrid } from "@/components/organisms/AvailabilityGrid";
 import { MatchPlayerForm } from "@/components/molecules/MatchPlayerForm";
 import { MatchPlayerChip } from "@/components/molecules/MatchPlayerChip";
+import { MatchStatsEditor } from "@/components/organisms/MatchStatsEditor";
 import { useMatchPlayers, useCreateMatchPlayer, useDeleteMatchPlayer } from "@/hooks/use-match-players";
 import { formatMatchDate, calculateGatheringTime, formatTime } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
@@ -51,6 +53,9 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
   const deleteMatchPlayer = useDeleteMatchPlayer();
   const [editOpen, setEditOpen] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
+  const [completeOpen, setCompleteOpen] = useState(false);
+  const [scoreHome, setScoreHome] = useState(0);
+  const [scoreAway, setScoreAway] = useState(0);
   const [leenOpen, setLeenOpen] = useState(false);
 
   if (isLoading) {
@@ -157,6 +162,15 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
           <AvailabilityGrid matchId={match.id} />
         </div>
 
+        {match.status === "completed" && isCoach && (
+          <div className="rounded-xl bg-white p-4 shadow-md">
+            <h2 className="mb-3 text-lg font-semibold">
+              Wedstrijdstatistieken
+            </h2>
+            <MatchStatsEditor matchId={match.id} />
+          </div>
+        )}
+
         {/* Leen-spelers section */}
         {match.status === "upcoming" && (
           <div className="rounded-xl bg-white p-4 shadow-md">
@@ -245,6 +259,69 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
                 </div>
               </SheetContent>
             </Sheet>
+
+            <Dialog open={completeOpen} onOpenChange={(open) => {
+              setCompleteOpen(open);
+              if (!open) { setScoreHome(0); setScoreAway(0); }
+            }}>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  <CheckCircle className="size-4" />
+                  Afronden
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Wedstrijd afronden</DialogTitle>
+                  <DialogDescription>
+                    Vul de eindstand in om de wedstrijd als gespeeld te markeren.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex items-end gap-4">
+                  <div className="flex-1 space-y-1">
+                    <label className="text-sm font-medium">
+                      {match.home_away === "home" ? currentTeam?.name ?? "Thuis" : match.opponent}
+                    </label>
+                    <Input
+                      type="number"
+                      min={0}
+                      value={scoreHome}
+                      onChange={(e) => setScoreHome(Number(e.target.value))}
+                    />
+                  </div>
+                  <span className="pb-2 text-lg font-bold text-muted-foreground">–</span>
+                  <div className="flex-1 space-y-1">
+                    <label className="text-sm font-medium">
+                      {match.home_away === "away" ? currentTeam?.name ?? "Uit" : match.opponent}
+                    </label>
+                    <Input
+                      type="number"
+                      min={0}
+                      value={scoreAway}
+                      onChange={(e) => setScoreAway(Number(e.target.value))}
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setCompleteOpen(false)}>
+                    Annuleren
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      await updateMatch.mutateAsync({
+                        id: match.id,
+                        status: "completed",
+                        score_home: scoreHome,
+                        score_away: scoreAway,
+                      });
+                      setCompleteOpen(false);
+                    }}
+                  >
+                    Afronden
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
 
             <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
               <DialogTrigger asChild>
