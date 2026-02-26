@@ -11,6 +11,7 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
+import { FaqSection } from "@/components/molecules/FaqSection";
 
 export const metadata: Metadata = {
   title: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
@@ -28,6 +29,7 @@ const features = [
     description:
       "Plan wedstrijden, importeer programma's van je club en houd de stand bij.",
     color: "bg-primary-100 text-primary-700",
+    href: "/features/wedstrijden",
   },
   {
     icon: Users,
@@ -35,6 +37,7 @@ const features = [
     description:
       "Spelers geven met een tik aan of ze er zijn. Geen eindeloze WhatsApp-berichten meer.",
     color: "bg-success-100 text-success-700",
+    href: "/features/beschikbaarheid",
   },
   {
     icon: ClipboardList,
@@ -42,13 +45,48 @@ const features = [
     description:
       "Sleep spelers naar het veld. Automatisch wisselschema met eerlijke speeltijd.",
     color: "bg-warning-100 text-warning-700",
+    href: "/features/opstellingen",
   },
   {
     icon: PartyPopper,
-    title: "Evenementen",
+    title: "Trainingen & Evenementen",
     description:
-      "Organiseer toernooien, feestjes en teamuitjes. Met takenlijst en aanwezigheid.",
+      "Kant-en-klare trainingsoefeningen en teamactiviteiten organiseren.",
     color: "bg-danger-100 text-danger-700",
+    href: "/features/trainingen",
+  },
+];
+
+const faqItems = [
+  {
+    question: "Is MyTeamPlanner echt gratis?",
+    answer:
+      "Ja, MyTeamPlanner is volledig gratis. Geen creditcard nodig, geen verborgen kosten. Alle functies zijn beschikbaar voor iedereen.",
+  },
+  {
+    question: "Hoe werkt de beschikbaarheid?",
+    answer:
+      "Spelers geven met één tik aan of ze beschikbaar, afwezig of misschien kunnen. De coach ziet een realtime overzicht van het hele team.",
+  },
+  {
+    question: "Kan ik opstellingen maken met drag & drop?",
+    answer:
+      "Ja, kies een formatie en sleep spelers naar hun positie op het veld. Je kunt ook een wisselschema maken met automatische speeltijdverdeling.",
+  },
+  {
+    question: "Werkt het ook voor jeugdteams en G-teams?",
+    answer:
+      "Ja, met aangepaste formaties voor 7v7, grote touch targets en oefeningen per niveau. Speciaal geschikt voor jeugd- en G-voetbal.",
+  },
+  {
+    question: "Moet ik iets installeren?",
+    answer:
+      "Nee, MyTeamPlanner is een web-app die je kunt toevoegen aan je homescreen. Werkt op elke telefoon, geen app store nodig.",
+  },
+  {
+    question: "Hoe nodig ik mijn team uit?",
+    answer:
+      "Deel de uitnodigingslink via WhatsApp. Spelers klikken op de link, maken een account aan en zijn direct gekoppeld aan je team.",
   },
 ];
 
@@ -130,7 +168,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-4xl px-4">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-neutral-900 sm:text-3xl">
-              Alles wat je team nodig heeft
+              De complete teamplanner voor amateurvoetbal
             </h2>
             <p className="mt-2 text-muted-foreground">
               Geen WhatsApp-chaos meer. Alles geregeld in een app.
@@ -139,9 +177,10 @@ export default function LandingPage() {
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {features.map((feature) => (
-              <div
+              <Link
                 key={feature.title}
-                className="rounded-2xl border border-neutral-100 bg-neutral-50 p-6"
+                href={feature.href}
+                className="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 transition-shadow hover:shadow-md"
               >
                 <div
                   className={`inline-flex size-12 items-center justify-center rounded-xl ${feature.color}`}
@@ -154,7 +193,7 @@ export default function LandingPage() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {feature.description}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -165,7 +204,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-4xl px-4">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-neutral-900 sm:text-3xl">
-              In 3 stappen klaar
+              In 3 stappen je team organiseren
             </h2>
           </div>
 
@@ -223,6 +262,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ section */}
+      <FaqSection items={faqItems} />
 
       {/* CTA section */}
       <section className="bg-gradient-to-r from-primary-800 to-primary-600 py-16">
