@@ -14,6 +14,7 @@ async function nominatimSearch(query: string): Promise<GeocodingResult[]> {
   const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`;
   const response = await fetch(url, {
     headers: { "User-Agent": "TeamPlanner/1.0" },
+    next: { revalidate: 86400 },
   });
   if (!response.ok) return [];
   return response.json();
@@ -130,7 +131,9 @@ export async function POST(request: Request) {
   try {
     const routeUrl = `https://router.project-osrm.org/route/v1/driving/${fromCoords.lng},${fromCoords.lat};${toCoords.lng},${toCoords.lat}?overview=false`;
 
-    const routeResponse = await fetch(routeUrl);
+    const routeResponse = await fetch(routeUrl, {
+      next: { revalidate: 3600 },
+    });
     if (!routeResponse.ok) {
       return NextResponse.json(
         { error: "Kon de route niet berekenen." },

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
@@ -84,12 +85,12 @@ export default function LandingPage() {
 
         <div className="relative mx-auto max-w-4xl px-4 pb-20 pt-16 text-center">
           {/* Logo */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/icons/icon-192x192.svg"
             alt="MyTeamPlanner logo"
             width={80}
             height={80}
+            priority
             className="mx-auto mb-6 rounded-2xl"
           />
 
@@ -247,8 +248,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-4xl px-4">
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="flex items-center gap-2 text-white">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="/icons/icon-192x192.svg"
                 alt="MyTeamPlanner"
                 width={28}

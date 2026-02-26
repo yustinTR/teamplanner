@@ -16,33 +16,32 @@ export default async function MainLayout({ children }: MainLayoutProps) {
     redirect("/");
   }
 
-  // Find team where user is coach or player
-  const { data: teamAsCoach } = await supabase
-    .from("teams")
-    .select("*")
-    .eq("created_by", user.id)
-    .limit(1)
-    .single();
-
-  let team = teamAsCoach;
-
-  if (!team) {
-    const { data: playerRecord } = await supabase
+  // Find team where user is coach or player — run both lookups in parallel
+  const [{ data: teamAsCoach }, { data: playerRecord }] = await Promise.all([
+    supabase
+      .from("teams")
+      .select("*")
+      .eq("created_by", user.id)
+      .limit(1)
+      .single(),
+    supabase
       .from("players")
       .select("team_id")
       .eq("user_id", user.id)
       .eq("is_active", true)
       .limit(1)
-      .single();
+      .single(),
+  ]);
 
-    if (playerRecord) {
-      const { data: playerTeam } = await supabase
-        .from("teams")
-        .select("*")
-        .eq("id", playerRecord.team_id)
-        .single();
-      team = playerTeam;
-    }
+  let team = teamAsCoach;
+
+  if (!team && playerRecord) {
+    const { data: playerTeam } = await supabase
+      .from("teams")
+      .select("*")
+      .eq("id", playerRecord.team_id)
+      .single();
+    team = playerTeam;
   }
 
   // Find current player record

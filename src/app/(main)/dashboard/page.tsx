@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Users, Settings, Plus, PartyPopper, ChevronRight } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
@@ -11,8 +12,7 @@ export default function DashboardPage() {
   if (!currentTeam) {
     return (
       <div className="flex flex-col items-center justify-center p-4 py-20">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/icons/icon-192x192.svg"
           alt="MyTeamPlanner logo"
           width={80}
