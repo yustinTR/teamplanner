@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export const metadata = {
-  title: "Algemene Voorwaarden - MyTeamPlanner",
+export const metadata: Metadata = {
+  title: "Algemene Voorwaarden",
+  description:
+    "Algemene voorwaarden van MyTeamPlanner, de gratis teamplanner voor amateurvoetbal.",
+  alternates: {
+    canonical: "https://myteamplanner.nl/voorwaarden",
+  },
 };
 
 export default function VoorwaardenPage() {

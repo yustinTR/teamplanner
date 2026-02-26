@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export const metadata = {
-  title: "Privacybeleid - MyTeamPlanner",
+export const metadata: Metadata = {
+  title: "Privacybeleid",
+  description:
+    "Privacybeleid van MyTeamPlanner. Lees hoe wij omgaan met je persoonsgegevens conform de AVG.",
+  alternates: {
+    canonical: "https://myteamplanner.nl/privacy",
+  },
 };
 
 export default function PrivacyPage() {
