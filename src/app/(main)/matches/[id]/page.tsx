@@ -15,6 +15,7 @@ import { MyAvailability } from "@/components/organisms/MyAvailability";
 import { AvailabilityGrid } from "@/components/organisms/AvailabilityGrid";
 import { MatchPlayerForm } from "@/components/molecules/MatchPlayerForm";
 import { MatchPlayerChip } from "@/components/molecules/MatchPlayerChip";
+import { MatchStatsEditor } from "@/components/organisms/MatchStatsEditor";
 import { useMatchPlayers, useCreateMatchPlayer, useDeleteMatchPlayer } from "@/hooks/use-match-players";
 import { formatMatchDate, calculateGatheringTime, formatTime } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
@@ -156,6 +157,15 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
           </div>
           <AvailabilityGrid matchId={match.id} />
         </div>
+
+        {match.status === "completed" && isCoach && (
+          <div className="rounded-xl bg-white p-4 shadow-md">
+            <h2 className="mb-3 text-lg font-semibold">
+              Wedstrijdstatistieken
+            </h2>
+            <MatchStatsEditor matchId={match.id} />
+          </div>
+        )}
 
         {/* Leen-spelers section */}
         {match.status === "upcoming" && (

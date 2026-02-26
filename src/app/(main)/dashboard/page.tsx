@@ -2,9 +2,60 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Users, Settings, Plus, ClipboardList, ChevronRight } from "lucide-react";
+import { Calendar, Users, Settings, Plus, ClipboardList, ChevronRight, Clock, Target, Trophy } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/atoms/Button";
+import { TopPlayerCard } from "@/components/molecules/TopPlayerCard";
+import { useTeamSeasonStats } from "@/hooks/use-player-stats";
+
+function SeasonHighlights({ teamId }: { teamId: string }) {
+  const { data: stats } = useTeamSeasonStats(teamId);
+
+  if (!stats?.length) return null;
+
+  const hasPlayed = stats.some((s) => s.matchesPlayed > 0);
+  if (!hasPlayed) return null;
+
+  const mostMinutes = stats.reduce((a, b) =>
+    b.totalMinutes > a.totalMinutes ? b : a
+  );
+  const topScorer = stats.reduce((a, b) => (b.goals > a.goals ? b : a));
+  const mostMatches = stats.reduce((a, b) =>
+    b.matchesPlayed > a.matchesPlayed ? b : a
+  );
+
+  return (
+    <div className="space-y-3 px-4 pb-4">
+      <h2 className="text-sm font-medium text-muted-foreground">
+        Seizoensoverzicht
+      </h2>
+      {mostMinutes.totalMinutes > 0 && (
+        <TopPlayerCard
+          title="Meeste minuten"
+          playerName={mostMinutes.playerName}
+          value={`${mostMinutes.totalMinutes} min`}
+          icon={Clock}
+        />
+      )}
+      {topScorer.goals > 0 && (
+        <TopPlayerCard
+          title="Topscorer"
+          playerName={topScorer.playerName}
+          value={`${topScorer.goals} ${topScorer.goals === 1 ? "goal" : "goals"}`}
+          icon={Target}
+        />
+      )}
+      {mostMatches.matchesPlayed > 0 && (
+        <TopPlayerCard
+          title="Meeste wedstrijden"
+          playerName={mostMatches.playerName}
+          value={`${mostMatches.matchesPlayed}`}
+          icon={Trophy}
+        />
+      )}
+    </div>
+  );
+}
 
 export default function DashboardPage() {
   const { currentTeam, isCoach, currentPlayer } = useAuthStore();
@@ -110,6 +161,8 @@ export default function DashboardPage() {
           </Link>
         )}
       </div>
+
+      <SeasonHighlights teamId={currentTeam.id} />
     </div>
   );
 }

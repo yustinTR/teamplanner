@@ -35,3 +35,9 @@ export type {
   TrainingPlanExerciseWithExercise,
   TrainingPlanWithExercises,
 } from "./training";
+export type {
+  MatchStats,
+  MatchStatsInsert,
+  MatchStatsUpdate,
+  PlayerSeasonStats,
+} from "./match-stats";
