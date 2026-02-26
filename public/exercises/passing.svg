@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <defs>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#2563eb" stop-opacity="0.06"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" rx="16" fill="url(#grass)"/>
+  <!-- Triangle passing pattern -->
+  <polygon points="130,140 270,140 200,50" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="8 4" fill="none" opacity="0.25"/>
+  <!-- Pass arrows -->
+  <g stroke="#2563eb" stroke-width="2" fill="none" opacity="0.6">
+    <!-- Bottom left to top -->
+    <path d="M145,130 Q165,90 192,60" marker-end="url(#arrowBlue)"/>
+    <!-- Top to bottom right -->
+    <path d="M210,58 Q240,85 260,128" marker-end="url(#arrowBlue)"/>
+    <!-- Bottom right to bottom left -->
+    <path d="M258,148 Q200,165 145,148" marker-end="url(#arrowBlue)"/>
+  </g>
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 L2,4Z" fill="#2563eb" opacity="0.6"/>
+    </marker>
+  </defs>
+  <!-- Player 1 - bottom left -->
+  <g transform="translate(130,145)">
+    <circle r="10" fill="#2563eb" opacity="0.85"/>
+    <circle r="5" fill="white" opacity="0.9"/>
+  </g>
+  <!-- Player 2 - top -->
+  <g transform="translate(200,45)">
+    <circle r="10" fill="#2563eb" opacity="0.85"/>
+    <circle r="5" fill="white" opacity="0.9"/>
+  </g>
+  <!-- Player 3 - bottom right -->
+  <g transform="translate(270,145)">
+    <circle r="10" fill="#2563eb" opacity="0.85"/>
+    <circle r="5" fill="white" opacity="0.9"/>
+  </g>
+  <!-- Ball along path -->
+  <circle cx="175" cy="88" r="5" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M173,86 L175,84 L177,86 L176.5,89 L173.5,89Z" fill="#2563eb" opacity="0.4"/>
+</svg>

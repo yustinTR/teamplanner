@@ -190,6 +190,60 @@ export type Database = {
           },
         ]
       }
+      exercises: {
+        Row: {
+          category: Database["public"]["Enums"]["exercise_category"]
+          created_at: string
+          description: string
+          difficulty: Database["public"]["Enums"]["exercise_difficulty"]
+          duration_minutes: number
+          id: string
+          is_published: boolean
+          max_players: number | null
+          min_players: number | null
+          setup_instructions: string | null
+          team_types: string[] | null
+          title: string
+          updated_at: string
+          variations: string | null
+          video_url: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["exercise_category"]
+          created_at?: string
+          description: string
+          difficulty?: Database["public"]["Enums"]["exercise_difficulty"]
+          duration_minutes: number
+          id?: string
+          is_published?: boolean
+          max_players?: number | null
+          min_players?: number | null
+          setup_instructions?: string | null
+          team_types?: string[] | null
+          title: string
+          updated_at?: string
+          variations?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["exercise_category"]
+          created_at?: string
+          description?: string
+          difficulty?: Database["public"]["Enums"]["exercise_difficulty"]
+          duration_minutes?: number
+          id?: string
+          is_published?: boolean
+          max_players?: number | null
+          min_players?: number | null
+          setup_instructions?: string | null
+          team_types?: string[] | null
+          title?: string
+          updated_at?: string
+          variations?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
       lineups: {
         Row: {
           created_at: string
@@ -426,6 +480,93 @@ export type Database = {
         }
         Relationships: []
       }
+      training_plan_exercises: {
+        Row: {
+          exercise_id: string
+          id: string
+          plan_id: string
+          sort_order: number
+        }
+        Insert: {
+          exercise_id: string
+          id?: string
+          plan_id: string
+          sort_order: number
+        }
+        Update: {
+          exercise_id?: string
+          id?: string
+          plan_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_plan_exercises_exercise_id_fkey"
+            columns: ["exercise_id"]
+            isOneToOne: false
+            referencedRelation: "exercises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_plan_exercises_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "training_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_plans: {
+        Row: {
+          created_at: string
+          created_by: string
+          event_id: string | null
+          id: string
+          notes: string | null
+          team_id: string
+          title: string
+          total_duration_minutes: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          event_id?: string | null
+          id?: string
+          notes?: string | null
+          team_id: string
+          title: string
+          total_duration_minutes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          event_id?: string | null
+          id?: string
+          notes?: string | null
+          team_id?: string
+          title?: string
+          total_duration_minutes?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_plans_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_plans_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -440,6 +581,15 @@ export type Database = {
     Enums: {
       attendance_status: "coming" | "not_coming" | "maybe"
       availability_status: "available" | "unavailable" | "maybe"
+      exercise_category:
+        | "warming_up"
+        | "passing"
+        | "positiespel"
+        | "verdedigen"
+        | "aanvallen"
+        | "conditie"
+        | "afwerken"
+      exercise_difficulty: "basis" | "gemiddeld" | "gevorderd"
       home_away: "home" | "away"
       match_status: "upcoming" | "completed" | "cancelled"
       team_type:
@@ -580,6 +730,16 @@ export const Constants = {
     Enums: {
       attendance_status: ["coming", "not_coming", "maybe"],
       availability_status: ["available", "unavailable", "maybe"],
+      exercise_category: [
+        "warming_up",
+        "passing",
+        "positiespel",
+        "verdedigen",
+        "aanvallen",
+        "conditie",
+        "afwerken",
+      ],
+      exercise_difficulty: ["basis", "gemiddeld", "gevorderd"],
       home_away: ["home", "away"],
       match_status: ["upcoming", "completed", "cancelled"],
       team_type: [

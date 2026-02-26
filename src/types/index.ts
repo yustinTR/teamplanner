@@ -21,3 +21,17 @@ export type {
   EventTaskUpdate,
   EventAttendanceWithPlayer,
 } from "./event";
+export type {
+  Exercise,
+  ExerciseInsert,
+  ExerciseCategory,
+  ExerciseDifficulty,
+  ExerciseFilters,
+  TrainingPlan,
+  TrainingPlanInsert,
+  TrainingPlanUpdate,
+  TrainingPlanExercise,
+  TrainingPlanExerciseInsert,
+  TrainingPlanExerciseWithExercise,
+  TrainingPlanWithExercises,
+} from "./training";

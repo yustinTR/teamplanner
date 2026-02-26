@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Users, Settings, Plus, PartyPopper, ChevronRight } from "lucide-react";
+import { Calendar, Users, Settings, Plus, ClipboardList, ChevronRight } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/atoms/Button";
 
@@ -63,15 +63,15 @@ export default function DashboardPage() {
           </div>
         </Link>
 
-        <Link href="/events">
+        <Link href="/trainingen">
           <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
             <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-warning-100">
-              <PartyPopper className="size-6 text-warning-700" />
+              <ClipboardList className="size-6 text-warning-700" />
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="font-semibold text-neutral-900">Evenementen</h3>
+              <h3 className="font-semibold text-neutral-900">Training</h3>
               <p className="text-sm text-muted-foreground">
-                Toernooien, feesten en meer
+                Trainingsplannen en evenementen
               </p>
             </div>
             <ChevronRight className="size-5 text-neutral-400" />

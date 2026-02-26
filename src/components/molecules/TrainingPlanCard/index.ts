@@ -1,0 +1,1 @@
+export { TrainingPlanCard } from "./TrainingPlanCard";

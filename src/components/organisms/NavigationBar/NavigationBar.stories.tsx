@@ -38,11 +38,11 @@ export const MatchesActive: Story = {
   },
 };
 
-export const EventsActive: Story = {
+export const TrainingActive: Story = {
   parameters: {
     nextjs: {
       navigation: {
-        pathname: "/events",
+        pathname: "/trainingen",
       },
     },
   },

@@ -12,6 +12,10 @@ import {
   POSITION_TO_CATEGORY,
   ROLE_LABELS,
   HOME_AWAY_LABELS,
+  EXERCISE_CATEGORY_LABELS,
+  EXERCISE_DIFFICULTY_LABELS,
+  EXERCISE_DURATION_OPTIONS,
+  EXERCISE_PLAYER_COUNT_OPTIONS,
   getFormationsForTeamType,
   getDefaultFormation,
 } from "../constants";
@@ -238,5 +242,87 @@ describe("getDefaultFormation", () => {
 
   it('returns "4-3-3" for unknown team type', () => {
     expect(getDefaultFormation("unknown")).toBe("4-3-3");
+  });
+});
+
+// --- Exercise constants ---
+
+describe("EXERCISE_CATEGORY_LABELS", () => {
+  const expectedCategories = [
+    "warming_up",
+    "passing",
+    "positiespel",
+    "verdedigen",
+    "aanvallen",
+    "conditie",
+    "afwerken",
+  ];
+
+  it("contains all 7 categories", () => {
+    expect(Object.keys(EXERCISE_CATEGORY_LABELS)).toHaveLength(7);
+  });
+
+  it.each(expectedCategories)("has label for %s", (category) => {
+    expect(EXERCISE_CATEGORY_LABELS).toHaveProperty(category);
+    expect(typeof EXERCISE_CATEGORY_LABELS[category]).toBe("string");
+    expect(EXERCISE_CATEGORY_LABELS[category].length).toBeGreaterThan(0);
+  });
+
+  it("has Dutch labels", () => {
+    expect(EXERCISE_CATEGORY_LABELS.warming_up).toBe("Warming-up");
+    expect(EXERCISE_CATEGORY_LABELS.passing).toBe("Passing");
+    expect(EXERCISE_CATEGORY_LABELS.verdedigen).toBe("Verdedigen");
+    expect(EXERCISE_CATEGORY_LABELS.afwerken).toBe("Afwerken");
+  });
+});
+
+describe("EXERCISE_DIFFICULTY_LABELS", () => {
+  const expectedDifficulties = ["basis", "gemiddeld", "gevorderd"];
+
+  it("contains all 3 difficulties", () => {
+    expect(Object.keys(EXERCISE_DIFFICULTY_LABELS)).toHaveLength(3);
+  });
+
+  it.each(expectedDifficulties)("has label for %s", (difficulty) => {
+    expect(EXERCISE_DIFFICULTY_LABELS).toHaveProperty(difficulty);
+    expect(typeof EXERCISE_DIFFICULTY_LABELS[difficulty]).toBe("string");
+  });
+
+  it("has Dutch labels", () => {
+    expect(EXERCISE_DIFFICULTY_LABELS.basis).toBe("Basis");
+    expect(EXERCISE_DIFFICULTY_LABELS.gemiddeld).toBe("Gemiddeld");
+    expect(EXERCISE_DIFFICULTY_LABELS.gevorderd).toBe("Gevorderd");
+  });
+});
+
+describe("EXERCISE_DURATION_OPTIONS", () => {
+  it("contains multiple duration options", () => {
+    expect(EXERCISE_DURATION_OPTIONS.length).toBeGreaterThan(0);
+  });
+
+  it("all options are positive numbers", () => {
+    EXERCISE_DURATION_OPTIONS.forEach((d) => {
+      expect(d).toBeGreaterThan(0);
+    });
+  });
+
+  it("options are in ascending order", () => {
+    for (let i = 1; i < EXERCISE_DURATION_OPTIONS.length; i++) {
+      expect(EXERCISE_DURATION_OPTIONS[i]).toBeGreaterThan(EXERCISE_DURATION_OPTIONS[i - 1]);
+    }
+  });
+});
+
+describe("EXERCISE_PLAYER_COUNT_OPTIONS", () => {
+  it("contains multiple player count options", () => {
+    expect(EXERCISE_PLAYER_COUNT_OPTIONS.length).toBeGreaterThan(0);
+  });
+
+  it("each option has label, min, and max", () => {
+    EXERCISE_PLAYER_COUNT_OPTIONS.forEach((opt) => {
+      expect(typeof opt.label).toBe("string");
+      expect(opt.min).toBeGreaterThan(0);
+      expect(opt.max).toBeGreaterThanOrEqual(opt.min);
+    });
   });
 });

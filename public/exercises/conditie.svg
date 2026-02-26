@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <defs>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#0891b2" stop-opacity="0.06"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" rx="16" fill="url(#grass)"/>
+  <!-- Heart rate line -->
+  <path d="M40,100 L100,100 L115,65 L130,130 L145,55 L160,140 L175,100 L360,100" stroke="#0891b2" stroke-width="2.5" fill="none" opacity="0.35"/>
+  <!-- Sprint lanes -->
+  <g stroke="#0891b2" stroke-width="1" stroke-dasharray="4 4" opacity="0.2">
+    <line x1="80" y1="50" x2="320" y2="50"/>
+    <line x1="80" y1="100" x2="320" y2="100"/>
+    <line x1="80" y1="150" x2="320" y2="150"/>
+  </g>
+  <!-- Cone markers -->
+  <g fill="#0891b2" opacity="0.5">
+    <polygon points="90,48 95,38 100,48" />
+    <polygon points="160,48 165,38 170,48" />
+    <polygon points="230,48 235,38 240,48" />
+    <polygon points="300,48 305,38 310,48" />
+  </g>
+  <!-- Runner 1 - sprinting -->
+  <g transform="translate(140,82)">
+    <circle r="9" fill="#0891b2" opacity="0.85"/>
+    <line x1="-5" y1="9" x2="-12" y2="24" stroke="#0891b2" stroke-width="2" stroke-linecap="round"/>
+    <line x1="5" y1="9" x2="12" y2="20" stroke="#0891b2" stroke-width="2" stroke-linecap="round"/>
+    <line x1="0" y1="9" x2="0" y2="19" stroke="#0891b2" stroke-width="2" stroke-linecap="round"/>
+    <line x1="-5" y1="14" x2="-12" y2="10" stroke="#0891b2" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="5" y1="14" x2="12" y2="18" stroke="#0891b2" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <!-- Runner 2 -->
+  <g transform="translate(220,130)">
+    <circle r="9" fill="#0891b2" opacity="0.65"/>
+    <line x1="-5" y1="9" x2="-10" y2="22" stroke="#0891b2" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+    <line x1="5" y1="9" x2="10" y2="22" stroke="#0891b2" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+    <line x1="0" y1="9" x2="0" y2="19" stroke="#0891b2" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+  </g>
+  <!-- Runner 3 -->
+  <g transform="translate(280,78)">
+    <circle r="9" fill="#0891b2" opacity="0.5"/>
+    <line x1="-5" y1="9" x2="-12" y2="24" stroke="#0891b2" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="5" y1="9" x2="8" y2="22" stroke="#0891b2" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="0" y1="9" x2="0" y2="19" stroke="#0891b2" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  </g>
+  <!-- Sprint arrows -->
+  <g stroke="#0891b2" stroke-width="1.5" opacity="0.3">
+    <line x1="150" y1="80" x2="160" y2="80"/>
+    <line x1="157" y1="77" x2="160" y2="80"/>
+    <line x1="157" y1="83" x2="160" y2="80"/>
+    <line x1="230" y1="128" x2="240" y2="128"/>
+    <line x1="237" y1="125" x2="240" y2="128"/>
+    <line x1="237" y1="131" x2="240" y2="128"/>
+  </g>
+  <!-- Stopwatch icon -->
+  <g transform="translate(52,140)">
+    <circle r="16" stroke="#0891b2" stroke-width="2" fill="none" opacity="0.4"/>
+    <line x1="0" y1="0" x2="0" y2="-10" stroke="#0891b2" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+    <line x1="0" y1="0" x2="7" y2="-3" stroke="#0891b2" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="-3" y1="-18" x2="3" y2="-18" stroke="#0891b2" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  </g>
+</svg>

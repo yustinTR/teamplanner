@@ -267,6 +267,34 @@ export const POSITION_TO_CATEGORY: Record<string, string> = {
   ST: "forward",
 };
 
+// --- Exercise configuration ---
+
+export const EXERCISE_CATEGORY_LABELS: Record<string, string> = {
+  warming_up: "Warming-up",
+  passing: "Passing",
+  positiespel: "Positiespel",
+  verdedigen: "Verdedigen",
+  aanvallen: "Aanvallen",
+  conditie: "Conditie",
+  afwerken: "Afwerken",
+};
+
+export const EXERCISE_DIFFICULTY_LABELS: Record<string, string> = {
+  basis: "Basis",
+  gemiddeld: "Gemiddeld",
+  gevorderd: "Gevorderd",
+};
+
+export const EXERCISE_DURATION_OPTIONS = [5, 10, 12, 15, 20] as const;
+
+export const EXERCISE_PLAYER_COUNT_OPTIONS = [
+  { label: "Klein (3-6)", min: 3, max: 6 },
+  { label: "Middel (7-12)", min: 7, max: 12 },
+  { label: "Groot (13+)", min: 13, max: 24 },
+] as const;
+
+// --- Role labels ---
+
 export const ROLE_LABELS: Record<string, string> = {
   player: "Speler",
   staff: "Teammanager",
