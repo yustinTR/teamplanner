@@ -1,21 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
+import path from "path";
 
-/**
- * E2E tests for TeamPlanner.
- *
- * Runs against the hosted Supabase instance. Uses the service_role key
- * to create/manage test users without email confirmation.
- *
- * Required env vars (set as GitHub Secrets for CI):
- *   SUPABASE_SERVICE_ROLE_KEY  — admin key for user management
- *
- * Already available from .env.local:
- *   NEXT_PUBLIC_SUPABASE_URL
- *   NEXT_PUBLIC_SUPABASE_ANON_KEY
- *
- * Run locally:  SUPABASE_SERVICE_ROLE_KEY=... npm run test:e2e
- * Run in CI:    Secrets are injected automatically
- */
+// Load .env.local so Playwright tests have access to all env vars
+dotenv.config({ path: path.resolve(__dirname, ".env.local") });
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: false,
