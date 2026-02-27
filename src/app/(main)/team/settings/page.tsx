@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Download } from "lucide-react";
@@ -8,11 +9,18 @@ import { useUpdateTeam } from "@/hooks/use-team";
 import { Button } from "@/components/atoms/Button";
 import { TeamForm } from "@/components/molecules/TeamForm";
 import { InviteLink } from "@/components/molecules/InviteLink";
+import { markInviteVisited } from "@/lib/onboarding";
 
 export default function TeamSettingsPage() {
   const router = useRouter();
   const { currentTeam, isCoach } = useAuthStore();
   const updateTeam = useUpdateTeam();
+
+  useEffect(() => {
+    if (isCoach) {
+      markInviteVisited();
+    }
+  }, [isCoach]);
 
   if (!currentTeam) {
     return (

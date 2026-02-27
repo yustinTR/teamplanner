@@ -4,6 +4,7 @@ import { Printer } from "lucide-react";
 import { Button } from "@/components/atoms/Button";
 import { SubstitutionMomentCard } from "@/components/molecules/SubstitutionMomentCard";
 import { PlayerMinutesBar } from "@/components/molecules/PlayerMinutesBar";
+import { OnboardingHint } from "@/components/molecules/OnboardingHint";
 import type { SubstitutionPlan as SubstitutionPlanType } from "@/types";
 
 interface SubstitutionPlanProps {
@@ -17,6 +18,11 @@ export function SubstitutionPlan({ plan }: SubstitutionPlanProps) {
 
   return (
     <div className="space-y-4">
+      <OnboardingHint
+        hintKey="substitution_plan"
+        title="Wisselschema"
+        description="Plan wisselmomenten en zie automatisch hoeveel minuten elke speler speelt."
+      />
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold">
           Wisselschema ({plan.teamType} &middot; {plan.totalMinutes} min)

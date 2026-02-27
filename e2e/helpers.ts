@@ -10,8 +10,8 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-export const TEST_EMAIL = "e2e-test@teamplanner.test";
-export const TEST_PASSWORD = "E2eTestPassword2026!";
+export const TEST_EMAIL = process.env.TEST_EMAIL;
+export const TEST_PASSWORD = process.env.TEST_PASSWORD;
 
 /**
  * Admin client (service_role) — bypasses RLS, can manage users.
@@ -128,10 +128,10 @@ export async function ensureTestPlayers(
   if (existing && existing.length >= count) return existing;
 
   const positions = [
-    "goalkeeper", "defender", "defender", "defender", "defender",
-    "midfielder", "midfielder", "midfielder",
-    "forward", "forward", "forward",
-    "goalkeeper", "defender", "midfielder",
+    "K", "CB", "LB", "RB", "CB",
+    "CM", "CM", "CDM",
+    "LW", "ST", "RW",
+    "K", "CB", "CM",
   ];
   const names = [
     "Jan de Keeper", "Piet Achter", "Klaas Achter", "Willem Achter",
@@ -147,7 +147,7 @@ export async function ensureTestPlayers(
     const newPlayers = Array.from({ length: toCreate }, (_, i) => ({
       team_id: teamId,
       name: names[currentCount + i] ?? `Speler ${currentCount + i + 1}`,
-      position: positions[currentCount + i] ?? "midfielder",
+      primary_position: positions[currentCount + i] ?? "CM",
       jersey_number: currentCount + i + 1,
     }));
     await admin.from("players").insert(newPlayers);

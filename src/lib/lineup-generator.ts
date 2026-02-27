@@ -15,6 +15,7 @@ export function matchPlayerToPlayer(mp: MatchPlayer): Player {
     jersey_number: null,
     photo_url: null,
     notes: null,
+    skills: {},
     is_active: true,
     created_at: mp.created_at,
   };
