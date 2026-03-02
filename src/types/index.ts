@@ -1,4 +1,4 @@
-export type { Team, TeamInsert, TeamUpdate, TeamType } from "./team";
+export type { Team, TeamInsert, TeamUpdate, TeamType, TeamMembership } from "./team";
 export type { Player, PlayerInsert, PlayerUpdate } from "./player";
 export type { Match, MatchInsert, MatchUpdate, MatchStatus, HomeAway } from "./match";
 export type {

@@ -27,7 +27,7 @@ export default function TeamPage() {
         )}
       </div>
 
-      <div className="-mt-2 px-4 pb-4">
+      <div className="px-4 pb-4">
         <PlayerList />
       </div>
     </div>

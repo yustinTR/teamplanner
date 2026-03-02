@@ -24,7 +24,7 @@ export default function ExerciseDetailPage({
         </Link>
         <h1 className="text-2xl font-bold text-white">Oefening</h1>
       </div>
-      <div className="-mt-2 px-4 pb-4">
+      <div className="px-4 pb-4">
         <ExerciseDetail exerciseId={id} />
       </div>
     </div>

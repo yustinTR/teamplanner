@@ -13,6 +13,7 @@ describe("auth-store", () => {
     expect(state.currentTeam).toBeNull();
     expect(state.currentPlayer).toBeNull();
     expect(state.isCoach).toBe(false);
+    expect(state.myTeams).toEqual([]);
   });
 
   describe("setUser", () => {
@@ -72,11 +73,38 @@ describe("auth-store", () => {
     });
   });
 
+  describe("setMyTeams", () => {
+    it("sets my teams array", () => {
+      const team1 = createMockTeam({ id: "t1", name: "Team A" });
+      const team2 = createMockTeam({ id: "t2", name: "Team B" });
+      const memberships = [
+        { team: team1, role: "coach" as const, playerId: null },
+        { team: team2, role: "player" as const, playerId: "p1" },
+      ];
+
+      useAuthStore.getState().setMyTeams(memberships);
+      expect(useAuthStore.getState().myTeams).toEqual(memberships);
+    });
+
+    it("replaces existing teams", () => {
+      const team1 = createMockTeam({ id: "t1" });
+      useAuthStore.getState().setMyTeams([{ team: team1, role: "coach", playerId: null }]);
+
+      const team2 = createMockTeam({ id: "t2" });
+      useAuthStore.getState().setMyTeams([{ team: team2, role: "player", playerId: "p1" }]);
+
+      expect(useAuthStore.getState().myTeams).toHaveLength(1);
+      expect(useAuthStore.getState().myTeams[0].team.id).toBe("t2");
+    });
+  });
+
   describe("reset", () => {
     it("resets all state to initial values", () => {
+      const team = createMockTeam();
       useAuthStore.getState().setUser(createMockUser());
-      useAuthStore.getState().setCurrentTeam(createMockTeam());
+      useAuthStore.getState().setCurrentTeam(team);
       useAuthStore.getState().setCurrentPlayer(createMockPlayer());
+      useAuthStore.getState().setMyTeams([{ team, role: "coach", playerId: null }]);
 
       useAuthStore.getState().reset();
 
@@ -85,6 +113,7 @@ describe("auth-store", () => {
       expect(state.currentTeam).toBeNull();
       expect(state.currentPlayer).toBeNull();
       expect(state.isCoach).toBe(false);
+      expect(state.myTeams).toEqual([]);
     });
   });
 });
