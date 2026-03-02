@@ -16,6 +16,7 @@ export function matchPlayerToPlayer(mp: MatchPlayer): Player {
     photo_url: null,
     notes: null,
     skills: {},
+    skills_version: 1,
     is_active: true,
     created_at: mp.created_at,
   };

@@ -14,10 +14,23 @@ import { FormationSelector } from "@/components/molecules/FormationSelector";
 import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
-import { FORMATIONS, TEAM_TYPE_CONFIG, getFormationsForTeamType, getDefaultFormation } from "@/lib/constants";
+import { FORMATIONS, TEAM_TYPE_CONFIG, getFormationsForTeamType, getDefaultFormation, type PlayerSkills } from "@/lib/constants";
 import { generateSubstitutionPlan, type SubstituteSuggestion, matchPlayerToPlayer } from "@/lib/lineup-generator";
+import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
 import { SubstitutionPlanEditor } from "@/components/organisms/SubstitutionPlanEditor";
 import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan } from "@/types";
+
+function getPlayerCardProps(player: Player, positionLabel: string) {
+  const rawSkills = (player.skills as PlayerSkills) ?? {};
+  if (!hasEafcSkills(rawSkills)) return {};
+  const eafcSkills = ensureEafcFormat(rawSkills);
+  const overall = calculateOverallRating(eafcSkills, positionLabel);
+  return {
+    overall,
+    cardTier: getCardTier(overall),
+    photoUrl: player.photo_url,
+  };
+}
 
 interface LineupFieldProps {
   matchId: string;
@@ -240,6 +253,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
                     x={50}
                     y={50}
                     draggable
+                    {...getPlayerCardProps(player, slot.position_label)}
                   />
                 ) : (
                   <div className="flex size-10 items-center justify-center rounded-full border-2 border-dashed border-white/60 bg-white/10 text-xs text-white/80">

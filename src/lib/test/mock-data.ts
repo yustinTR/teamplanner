@@ -51,6 +51,7 @@ export function createMockPlayer(overrides?: Partial<Player>): Player {
     photo_url: null,
     notes: null,
     skills: {},
+    skills_version: 1,
     is_active: true,
     created_at: "2026-01-01T00:00:00Z",
     ...overrides,
