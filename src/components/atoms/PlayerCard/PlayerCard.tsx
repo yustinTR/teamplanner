@@ -42,6 +42,22 @@ const tierInlineStyles: Record<CardTier, React.CSSProperties> = {
   },
 };
 
+// --- Shimmer overlay for gold cards ---
+
+function GoldShimmer() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]"
+      aria-hidden="true"
+    >
+      <div
+        className="absolute -left-full top-0 h-full w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/25 to-transparent"
+        style={{ animation: "shimmer 3s ease-in-out infinite" }}
+      />
+    </div>
+  );
+}
+
 // --- Props ---
 
 interface PlayerCardProps extends VariantProps<typeof cardVariants> {
@@ -177,6 +193,7 @@ function MediumCard({
       <span className="max-w-full truncate px-1 text-center text-[10px] leading-tight">
         {name}
       </span>
+      {tier === "gold" && <GoldShimmer />}
     </div>
   );
 }
@@ -249,6 +266,7 @@ function LargeCard({
           <StatRow label="FYS" value={stats.phy} />
         </div>
       )}
+      {tier === "gold" && <GoldShimmer />}
     </div>
   );
 }
