@@ -16,7 +16,7 @@ import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
 import { FORMATIONS, TEAM_TYPE_CONFIG, getFormationsForTeamType, getDefaultFormation } from "@/lib/constants";
 import { generateSubstitutionPlan, type SubstituteSuggestion, matchPlayerToPlayer } from "@/lib/lineup-generator";
-import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
+import { SubstitutionPlanEditor } from "@/components/organisms/SubstitutionPlanEditor";
 import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan } from "@/types";
 
 interface LineupFieldProps {
@@ -52,6 +52,9 @@ export function LineupField({ matchId }: LineupFieldProps) {
       setPositions(
         (existingLineup.positions as unknown as LineupPosition[]) ?? []
       );
+      if (existingLineup.substitution_plan) {
+        setSubstitutionPlan(existingLineup.substitution_plan as unknown as SubstitutionPlan);
+      }
     }
   });
 
@@ -298,9 +301,16 @@ export function LineupField({ matchId }: LineupFieldProps) {
           </div>
         )}
 
-        {/* Substitution Plan */}
-        {substitutionPlan && (
-          <SubstitutionPlanView plan={substitutionPlan} />
+        {/* Substitution Plan Editor */}
+        {(substitutionPlan || benchPlayers.length > 0) && positions.some(p => p.player_id) && (
+          <SubstitutionPlanEditor
+            substitutionPlan={substitutionPlan}
+            positions={positions.filter(p => p.player_id)}
+            benchPlayers={benchPlayers}
+            playerMap={playerMap}
+            teamType={teamType}
+            onChange={(plan) => { setSubstitutionPlan(plan); setHasChanges(true); }}
+          />
         )}
 
         {hasChanges && (

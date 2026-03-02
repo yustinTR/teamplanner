@@ -485,3 +485,75 @@ export function generateSubstitutionPlan(
     },
   };
 }
+
+// --- Recalculate player minutes from manual substitution moments ---
+
+export function recalculatePlayerMinutes(
+  substitutionMoments: SubstitutionMoment[],
+  startingFieldIds: string[],
+  allPlayerNames: Map<string, string>,
+  totalMinutes: number
+): SubstitutionPlan["playerMinutes"] {
+  // Collect all player IDs involved
+  const allPlayerIds = new Set(startingFieldIds);
+  for (const moment of substitutionMoments) {
+    for (const p of moment.in) allPlayerIds.add(p.player_id);
+    for (const p of moment.out) allPlayerIds.add(p.player_id);
+  }
+
+  // Initialize periods: field players start at 0, bench players empty
+  const fieldSet = new Set(startingFieldIds);
+  const playerPeriods = new Map<string, { start: number; end: number }[]>();
+  for (const pid of allPlayerIds) {
+    if (fieldSet.has(pid)) {
+      playerPeriods.set(pid, [{ start: 0, end: -1 }]);
+    } else {
+      playerPeriods.set(pid, []);
+    }
+  }
+
+  // Process moments sorted by minute
+  const sorted = [...substitutionMoments].sort((a, b) => a.minute - b.minute);
+  for (const moment of sorted) {
+    for (let i = 0; i < moment.out.length; i++) {
+      const outId = moment.out[i].player_id;
+      const inId = moment.in[i]?.player_id;
+
+      // Close period for outgoing player
+      const outPeriods = playerPeriods.get(outId) ?? [];
+      const lastOut = outPeriods[outPeriods.length - 1];
+      if (lastOut && lastOut.end === -1) lastOut.end = moment.minute;
+
+      // Open period for incoming player
+      if (inId) {
+        const inPeriods = playerPeriods.get(inId) ?? [];
+        inPeriods.push({ start: moment.minute, end: -1 });
+        playerPeriods.set(inId, inPeriods);
+      }
+    }
+  }
+
+  // Close all open periods at full time
+  for (const [, periods] of playerPeriods) {
+    const last = periods[periods.length - 1];
+    if (last && last.end === -1) last.end = totalMinutes;
+  }
+
+  // Calculate totals
+  const playerMinutes = [...allPlayerIds].map((pid) => {
+    const periods = playerPeriods.get(pid) ?? [];
+    const total = periods.reduce((sum, p) => sum + (p.end - p.start), 0);
+    return {
+      player_id: pid,
+      name: allPlayerNames.get(pid) ?? "?",
+      totalMinutes: total,
+      percentage: totalMinutes > 0 ? Math.round((total / totalMinutes) * 100) : 0,
+      periods,
+    };
+  });
+
+  // Sort by least played first
+  playerMinutes.sort((a, b) => a.totalMinutes - b.totalMinutes);
+
+  return playerMinutes;
+}

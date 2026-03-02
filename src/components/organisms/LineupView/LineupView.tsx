@@ -9,7 +9,8 @@ import { Spinner } from "@/components/atoms/Spinner";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { ClipboardList } from "lucide-react";
 import { FORMATIONS } from "@/lib/constants";
-import type { LineupPosition } from "@/types";
+import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
+import type { LineupPosition, SubstitutionPlan as SubstitutionPlanType } from "@/types";
 
 interface LineupViewProps {
   matchId: string;
@@ -89,6 +90,10 @@ export function LineupView({ matchId }: LineupViewProps) {
           );
         })}
       </div>
+
+      {lineup.substitution_plan && (
+        <SubstitutionPlanView plan={lineup.substitution_plan as unknown as SubstitutionPlanType} />
+      )}
     </div>
   );
 }
