@@ -48,7 +48,7 @@ export function AvailabilityToggle({ value, onChange, disabled }: AvailabilityTo
             disabled={disabled}
             whileTap={{ scale: 0.95 }}
             animate={isActive ? { scale: [1, 1.05, 1] } : {}}
-            transition={spring.snappy}
+            transition={isActive ? { scale: { duration: 0.3, ease: "easeInOut" } } : spring.snappy}
             className={cn(
               "flex min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
               isActive
