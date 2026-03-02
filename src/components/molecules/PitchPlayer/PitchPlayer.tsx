@@ -1,8 +1,10 @@
 "use client";
 
 import { useDraggable } from "@dnd-kit/core";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { PlayerCard } from "@/components/atoms/PlayerCard";
+import { spring } from "@/lib/animations";
 import type { CardTier } from "@/lib/player-rating";
 
 interface PitchPlayerProps {
@@ -52,10 +54,20 @@ export function PitchPlayer({
       className={cn(
         "absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center",
         draggable && "cursor-grab touch-none",
-        isDragging && "z-50 cursor-grabbing opacity-80"
+        isDragging && "z-50 cursor-grabbing"
       )}
       {...(draggable ? { ...listeners, ...attributes } : {})}
     >
+      <motion.div
+        animate={{
+          scale: isDragging ? 1.15 : 1,
+          filter: isDragging
+            ? "drop-shadow(0 8px 16px rgba(0,0,0,0.2))"
+            : "drop-shadow(0 0 0 rgba(0,0,0,0))",
+        }}
+        transition={spring.snappy}
+        className="flex flex-col items-center"
+      >
       {showCard ? (
         <PlayerCard
           name={name}
@@ -81,6 +93,7 @@ export function PitchPlayer({
           </span>
         </>
       )}
+      </motion.div>
     </div>
   );
 }
