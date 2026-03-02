@@ -26,7 +26,8 @@ interface PlayerInfo {
 export function aggregatePlayerStats(
   players: PlayerInfo[],
   lineups: LineupRow[],
-  matchStats: MatchStatsRow[]
+  matchStats: MatchStatsRow[],
+  defaultMatchMinutes = 90
 ): PlayerSeasonStats[] {
   return players.map((player) => {
     let matchesPlayed = 0;
@@ -50,8 +51,8 @@ export function aggregatePlayerStats(
         const positions = lineup.positions as unknown as Array<{ player_id: string }>;
         if (positions.some((p) => p.player_id === player.id)) {
           matchesPlayed++;
-          // Estimate full match minutes from plan or default (90 min)
-          totalMinutes += plan?.totalMinutes ?? 90;
+          // Estimate full match minutes from plan or team-type default
+          totalMinutes += plan?.totalMinutes ?? defaultMatchMinutes;
         }
       }
     }
