@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { motion } from "framer-motion";
 import { Wand2 } from "lucide-react";
+import { staggerContainer, staggerItem, spring } from "@/lib/animations";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlayers } from "@/hooks/use-players";
 import { useAvailability } from "@/hooks/use-availability";
@@ -10,6 +12,7 @@ import { useMatchPlayers } from "@/hooks/use-match-players";
 import { useLineup, useSaveLineup } from "@/hooks/use-lineup";
 import { PitchPlayer } from "@/components/molecules/PitchPlayer";
 import { BenchPlayer } from "@/components/molecules/BenchPlayer";
+import { AnimatedList, AnimatedListItem } from "@/components/atoms/AnimatedList";
 import { FormationSelector } from "@/components/molecules/FormationSelector";
 import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
@@ -270,18 +273,19 @@ export function LineupField({ matchId }: LineupFieldProps) {
           <h3 className="mb-2 text-sm font-medium text-muted-foreground">
             Bank ({benchPlayers.length})
           </h3>
-          <div className="grid grid-cols-2 gap-2">
+          <AnimatedList className="grid grid-cols-2 gap-2">
             {benchPlayers.map((player) => (
-              <BenchPlayer
-                key={player.id}
-                id={player.id}
-                name={player.name}
-                jerseyNumber={player.jersey_number}
-                photoUrl={player.photo_url}
-                draggable
-              />
+              <AnimatedListItem key={player.id}>
+                <BenchPlayer
+                  id={player.id}
+                  name={player.name}
+                  jerseyNumber={player.jersey_number}
+                  photoUrl={player.photo_url}
+                  draggable
+                />
+              </AnimatedListItem>
             ))}
-          </div>
+          </AnimatedList>
         </div>
 
         {/* Substitute suggestions */}
@@ -328,13 +332,19 @@ export function LineupField({ matchId }: LineupFieldProps) {
         )}
 
         {hasChanges && (
-          <Button
-            className="w-full"
-            onClick={handleSave}
-            disabled={saveLineup.isPending}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={spring.bouncy}
           >
-            {saveLineup.isPending ? "Opslaan..." : "Opstelling opslaan"}
-          </Button>
+            <Button
+              className="w-full"
+              onClick={handleSave}
+              disabled={saveLineup.isPending}
+            >
+              {saveLineup.isPending ? "Opslaan..." : "Opstelling opslaan"}
+            </Button>
+          </motion.div>
         )}
       </div>
     </DndContext>
