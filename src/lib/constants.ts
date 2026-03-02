@@ -14,7 +14,7 @@ export const TEAM_TYPE_CONFIG: Record<string, TeamTypeConfig> = {
   jo19_jo17: { label: "JO19 - JO17", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
   jo15_jo13: { label: "JO15 - JO13", halfMinutes: 30, halves: 2, fieldPlayers: 7 },
   jo11_jo9: { label: "JO11 - JO9", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
-  g_team: { label: "G-Team", halfMinutes: 25, halves: 2, fieldPlayers: 8 },
+  g_team: { label: "G-Team", halfMinutes: 30, halves: 2, fieldPlayers: 8 },
   // Legacy values (still valid in DB, mapped to new configs)
   jo19_jo15: { label: "JO19 - JO15", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
   jo13_jo11: { label: "JO13 - JO11", halfMinutes: 30, halves: 2, fieldPlayers: 7 },
