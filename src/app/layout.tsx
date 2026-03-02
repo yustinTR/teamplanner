@@ -113,6 +113,8 @@ export default function RootLayout({
   return (
     <html lang="nl">
       <head>
+        <link rel="dns-prefetch" href="https://zonxfimxwqgpgycblvcg.supabase.co" />
+        <link rel="preconnect" href="https://zonxfimxwqgpgycblvcg.supabase.co" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ClipboardList, ArrowRight, Check } from "lucide-react";
+import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Opstelling maken met drag & drop",
@@ -89,6 +89,30 @@ export default function OpstellingenPage() {
                 <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related features */}
+      <section className="bg-white px-4 py-16">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="text-center text-2xl font-bold text-neutral-900">Bekijk ook</h2>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <Link href="/features/wedstrijden" className="rounded-xl border border-neutral-100 bg-neutral-50 p-5 transition-shadow hover:shadow-md">
+              <Calendar className="size-5 text-primary-600" />
+              <h3 className="mt-2 text-sm font-semibold text-neutral-900">Wedstrijden</h3>
+              <p className="mt-1 text-xs text-muted-foreground">Wedstrijden plannen en scores bijhouden</p>
+            </Link>
+            <Link href="/features/beschikbaarheid" className="rounded-xl border border-neutral-100 bg-neutral-50 p-5 transition-shadow hover:shadow-md">
+              <Users className="size-5 text-primary-600" />
+              <h3 className="mt-2 text-sm font-semibold text-neutral-900">Beschikbaarheid</h3>
+              <p className="mt-1 text-xs text-muted-foreground">Spelers geven met een tik aan of ze er zijn</p>
+            </Link>
+            <Link href="/features/trainingen" className="rounded-xl border border-neutral-100 bg-neutral-50 p-5 transition-shadow hover:shadow-md">
+              <Dumbbell className="size-5 text-primary-600" />
+              <h3 className="mt-2 text-sm font-semibold text-neutral-900">Trainingen</h3>
+              <p className="mt-1 text-xs text-muted-foreground">Kant-en-klare oefeningen en trainingsplannen</p>
+            </Link>
           </div>
         </div>
       </section>
