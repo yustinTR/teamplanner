@@ -50,7 +50,8 @@ export function aggregatePlayerStats(
         const positions = lineup.positions as unknown as Array<{ player_id: string }>;
         if (positions.some((p) => p.player_id === player.id)) {
           matchesPlayed++;
-          // No minutes data available from positions
+          // Estimate full match minutes from plan or default (90 min)
+          totalMinutes += plan?.totalMinutes ?? 90;
         }
       }
     }
