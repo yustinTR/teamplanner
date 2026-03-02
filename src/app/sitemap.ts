@@ -1,75 +1,73 @@
 import type { MetadataRoute } from "next";
-import { getAllSlugs } from "@/lib/blog";
+import { blogPosts } from "@/lib/blog";
 
 const siteUrl = "https://myteamplanner.nl";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const blogSlugs = getAllSlugs();
-
   return [
     {
       url: siteUrl,
-      lastModified: new Date(),
+      lastModified: "2026-03-02",
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${siteUrl}/login`,
-      lastModified: new Date(),
+      lastModified: "2026-02-19",
       changeFrequency: "monthly",
       priority: 0.5,
     },
     {
       url: `${siteUrl}/register`,
-      lastModified: new Date(),
+      lastModified: "2026-02-19",
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${siteUrl}/voorwaarden`,
-      lastModified: new Date(),
+      lastModified: "2026-02-19",
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${siteUrl}/privacy`,
-      lastModified: new Date(),
+      lastModified: "2026-02-19",
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${siteUrl}/features/beschikbaarheid`,
-      lastModified: new Date(),
+      lastModified: "2026-03-02",
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/features/opstellingen`,
-      lastModified: new Date(),
+      lastModified: "2026-03-02",
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/features/wedstrijden`,
-      lastModified: new Date(),
+      lastModified: "2026-03-02",
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/features/trainingen`,
-      lastModified: new Date(),
+      lastModified: "2026-03-02",
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: "2026-03-02",
       changeFrequency: "weekly",
       priority: 0.7,
     },
-    ...blogSlugs.map((slug) => ({
-      url: `${siteUrl}/blog/${slug}`,
-      lastModified: new Date(),
+    ...blogPosts.map((post) => ({
+      url: `${siteUrl}/blog/${post.slug}`,
+      lastModified: post.date,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),

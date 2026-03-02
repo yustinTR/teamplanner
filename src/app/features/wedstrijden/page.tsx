@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://myteamplanner.nl/features/wedstrijden",
   },
+  openGraph: {
+    title: "Wedstrijdbeheer voor amateurvoetbal",
+    description: "Plan wedstrijden, importeer van voetbal.nl, houd scores bij en bekijk statistieken.",
+    url: "https://myteamplanner.nl/features/wedstrijden",
+  },
 };
 
 const solutions = [

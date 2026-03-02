@@ -18,7 +18,7 @@ export default function BlogPage() {
       <section className="bg-white px-4 pb-12 pt-16">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
-            Blog
+            Tips voor amateurvoetbalcoaches
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
             Praktische tips en artikelen voor amateurvoetbalcoaches.

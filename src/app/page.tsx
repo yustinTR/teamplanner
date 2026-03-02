@@ -12,6 +12,7 @@ import {
   Zap,
 } from "lucide-react";
 import { FaqSection } from "@/components/molecules/FaqSection";
+import { MarketingFooter } from "@/components/organisms/MarketingFooter";
 
 export const metadata: Metadata = {
   title: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
@@ -133,12 +134,11 @@ export default function LandingPage() {
           />
 
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            MyTeamPlanner
+            De gratis teamplanner voor amateurvoetbal
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">
-            De gratis teamplanner voor amateurvoetbal. Wedstrijden plannen,
-            beschikbaarheid bijhouden en opstellingen maken — allemaal op
-            een plek.
+            Wedstrijden plannen, beschikbaarheid bijhouden en opstellingen
+            maken — allemaal op een plek. Speciaal voor coaches en spelers.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -285,76 +285,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t bg-neutral-900 py-10">
-        <div className="mx-auto max-w-4xl px-4">
-          <div className="grid gap-8 sm:grid-cols-3">
-            {/* Brand */}
-            <div>
-              <div className="flex items-center gap-2 text-white">
-                <Image
-                  src="/icons/icon-192x192.svg"
-                  alt="MyTeamPlanner"
-                  width={28}
-                  height={28}
-                  className="rounded-md"
-                />
-                <span className="font-semibold">MyTeamPlanner</span>
-              </div>
-              <p className="mt-2 text-sm text-neutral-400">
-                De gratis teamplanner voor amateurvoetbal in Nederland.
-              </p>
-            </div>
-
-            {/* Features */}
-            <div>
-              <h3 className="text-sm font-semibold text-white">Functies</h3>
-              <nav className="mt-3 flex flex-col gap-2 text-sm text-neutral-400">
-                <Link href="/features/wedstrijden" className="hover:text-white">
-                  Wedstrijden
-                </Link>
-                <Link
-                  href="/features/beschikbaarheid"
-                  className="hover:text-white"
-                >
-                  Beschikbaarheid
-                </Link>
-                <Link
-                  href="/features/opstellingen"
-                  className="hover:text-white"
-                >
-                  Opstellingen
-                </Link>
-                <Link href="/features/trainingen" className="hover:text-white">
-                  Trainingen
-                </Link>
-              </nav>
-            </div>
-
-            {/* Links */}
-            <div>
-              <h3 className="text-sm font-semibold text-white">Links</h3>
-              <nav className="mt-3 flex flex-col gap-2 text-sm text-neutral-400">
-                <Link href="/blog" className="hover:text-white">
-                  Blog
-                </Link>
-                <Link href="/login" className="hover:text-white">
-                  Inloggen
-                </Link>
-                <Link href="/register" className="hover:text-white">
-                  Registreren
-                </Link>
-                <Link href="/voorwaarden" className="hover:text-white">
-                  Voorwaarden
-                </Link>
-                <Link href="/privacy" className="hover:text-white">
-                  Privacy
-                </Link>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   );
 }

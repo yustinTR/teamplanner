@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://myteamplanner.nl/features/beschikbaarheid",
   },
+  openGraph: {
+    title: "Beschikbaarheid bijhouden voor je voetbalteam",
+    description: "Nooit meer vragen wie er kan spelen. Spelers geven met één tik hun beschikbaarheid door.",
+    url: "https://myteamplanner.nl/features/beschikbaarheid",
+  },
 };
 
 const solutions = [
