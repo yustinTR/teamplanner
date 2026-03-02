@@ -459,6 +459,7 @@ export type Database = {
           role: string
           secondary_positions: string[]
           skills: Json | null
+          skills_version: number
           team_id: string
           user_id: string | null
         }
@@ -474,6 +475,7 @@ export type Database = {
           role?: string
           secondary_positions?: string[]
           skills?: Json | null
+          skills_version?: number
           team_id: string
           user_id?: string | null
         }
@@ -489,6 +491,7 @@ export type Database = {
           role?: string
           secondary_positions?: string[]
           skills?: Json | null
+          skills_version?: number
           team_id?: string
           user_id?: string | null
         }

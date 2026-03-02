@@ -311,7 +311,7 @@ export const HOME_AWAY_LABELS: Record<string, string> = {
   away: "Uit",
 };
 
-// --- Player skills ---
+// --- Player skills (legacy v1, kept for backward compat) ---
 
 export interface PlayerSkillDef {
   key: string;
@@ -332,3 +332,83 @@ export const PLAYER_SKILLS: PlayerSkillDef[] = [
 ];
 
 export type PlayerSkills = Record<string, number>;
+
+// --- EAFC-style attributes (v2) ---
+
+export interface AttributeDef {
+  key: string;
+  label: string;
+}
+
+export interface AttributeCategory {
+  key: string;
+  label: string;
+  labelShort: string;
+  attributes: AttributeDef[];
+}
+
+export const EAFC_ATTRIBUTE_CATEGORIES: AttributeCategory[] = [
+  {
+    key: "pace", label: "Snelheid", labelShort: "SNE",
+    attributes: [
+      { key: "acceleration", label: "Acceleratie" },
+      { key: "sprint_speed", label: "Sprintsnelheid" },
+    ],
+  },
+  {
+    key: "shooting", label: "Schieten", labelShort: "SCH",
+    attributes: [
+      { key: "att_positioning", label: "Aanv. positie" },
+      { key: "finishing", label: "Afwerken" },
+      { key: "shot_power", label: "Schotkracht" },
+      { key: "volleys", label: "Volleys" },
+      { key: "penalties", label: "Strafschop" },
+    ],
+  },
+  {
+    key: "passing", label: "Passen", labelShort: "PAS",
+    attributes: [
+      { key: "vision", label: "Overzicht" },
+      { key: "crossing", label: "Voorzet" },
+      { key: "fk_accuracy", label: "Vrije trap" },
+      { key: "short_passing", label: "Korte pass" },
+      { key: "long_passing", label: "Lange pass" },
+      { key: "curve", label: "Effect" },
+    ],
+  },
+  {
+    key: "dribbling", label: "Dribbelen", labelShort: "DRI",
+    attributes: [
+      { key: "agility", label: "Behendigheid" },
+      { key: "balance", label: "Balans" },
+      { key: "reactions", label: "Reacties" },
+      { key: "ball_control", label: "Balcontrole" },
+      { key: "dribbling", label: "Dribbelen" },
+      { key: "composure", label: "Kalmte" },
+    ],
+  },
+  {
+    key: "defending", label: "Verdedigen", labelShort: "VER",
+    attributes: [
+      { key: "interceptions", label: "Onderschepping" },
+      { key: "heading_accuracy", label: "Koppen" },
+      { key: "def_awareness", label: "Verd. bewustzijn" },
+      { key: "stand_tackle", label: "Staand tackle" },
+      { key: "slide_tackle", label: "Sliding" },
+    ],
+  },
+  {
+    key: "physical", label: "Fysiek", labelShort: "FYS",
+    attributes: [
+      { key: "jumping", label: "Springen" },
+      { key: "strength", label: "Kracht" },
+      { key: "stamina", label: "Conditie" },
+      { key: "aggression", label: "Agressie" },
+    ],
+  },
+];
+
+// All EAFC attribute keys for quick lookup
+export const EAFC_ATTRIBUTE_KEYS = EAFC_ATTRIBUTE_CATEGORIES.flatMap(
+  (cat) => cat.attributes.map((a) => a.key)
+);

@@ -46,3 +46,19 @@ export const MultipleSwaps: Story = {
     },
   },
 };
+
+export const WithActions: Story = {
+  args: {
+    moment: {
+      minute: 25,
+      out: [
+        { player_id: "p1", name: "Jan de Vries", position_label: "CM" },
+      ],
+      in: [
+        { player_id: "p2", name: "Pieter Bakker", position_label: "CM" },
+      ],
+    },
+    onEdit: () => console.log("Edit"),
+    onDelete: () => console.log("Delete"),
+  },
+};

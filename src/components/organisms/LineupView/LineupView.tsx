@@ -7,9 +7,24 @@ import { useAuthStore } from "@/stores/auth-store";
 import { matchPlayerToPlayer } from "@/lib/lineup-generator";
 import { Spinner } from "@/components/atoms/Spinner";
 import { EmptyState } from "@/components/atoms/EmptyState";
+import { PitchPlayer } from "@/components/molecules/PitchPlayer";
 import { ClipboardList } from "lucide-react";
-import { FORMATIONS } from "@/lib/constants";
-import type { LineupPosition } from "@/types";
+import { FORMATIONS, type PlayerSkills } from "@/lib/constants";
+import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
+import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
+import type { LineupPosition, SubstitutionPlan as SubstitutionPlanType, Player } from "@/types";
+
+function getPlayerCardProps(player: Player, positionLabel: string) {
+  const rawSkills = (player.skills as PlayerSkills) ?? {};
+  if (!hasEafcSkills(rawSkills)) return {};
+  const eafcSkills = ensureEafcFormat(rawSkills);
+  const overall = calculateOverallRating(eafcSkills, positionLabel);
+  return {
+    overall,
+    cardTier: getCardTier(overall),
+    photoUrl: player.photo_url,
+  };
+}
 
 interface LineupViewProps {
   matchId: string;
@@ -65,30 +80,34 @@ export function LineupView({ matchId }: LineupViewProps) {
           );
           const player = pos ? playerMap.get(pos.player_id) : null;
 
-          return (
+          return player ? (
+            <PitchPlayer
+              key={index}
+              id={`view-${player.id}`}
+              name={player.name}
+              jerseyNumber={player.jersey_number}
+              positionLabel={slot.position_label}
+              x={slot.x}
+              y={slot.y}
+              {...getPlayerCardProps(player, slot.position_label)}
+            />
+          ) : (
             <div
               key={index}
               className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
               style={{ left: `${slot.x}%`, top: `${slot.y}%` }}
             >
-              {player ? (
-                <>
-                  <div className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-primary text-xs font-bold text-primary-foreground shadow-md">
-                    {player.jersey_number ?? slot.position_label}
-                  </div>
-                  <span className="mt-0.5 max-w-[60px] truncate text-center text-[10px] font-medium text-white drop-shadow-md">
-                    {player.name}
-                  </span>
-                </>
-              ) : (
-                <div className="flex size-10 items-center justify-center rounded-full border-2 border-dashed border-white/60 bg-white/10 text-xs text-white/80">
-                  {slot.position_label}
-                </div>
-              )}
+              <div className="flex size-10 items-center justify-center rounded-full border-2 border-dashed border-white/60 bg-white/10 text-xs text-white/80">
+                {slot.position_label}
+              </div>
             </div>
           );
         })}
       </div>
+
+      {lineup.substitution_plan && (
+        <SubstitutionPlanView plan={lineup.substitution_plan as unknown as SubstitutionPlanType} />
+      )}
     </div>
   );
 }

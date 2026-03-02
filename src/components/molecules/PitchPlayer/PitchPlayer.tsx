@@ -2,6 +2,8 @@
 
 import { useDraggable } from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
+import { PlayerCard } from "@/components/atoms/PlayerCard";
+import type { CardTier } from "@/lib/player-rating";
 
 interface PitchPlayerProps {
   id: string;
@@ -11,6 +13,9 @@ interface PitchPlayerProps {
   x: number;
   y: number;
   draggable?: boolean;
+  overall?: number | null;
+  cardTier?: CardTier | null;
+  photoUrl?: string | null;
 }
 
 export function PitchPlayer({
@@ -21,6 +26,9 @@ export function PitchPlayer({
   x,
   y,
   draggable = false,
+  overall,
+  cardTier,
+  photoUrl,
 }: PitchPlayerProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id,
@@ -35,6 +43,8 @@ export function PitchPlayer({
       : undefined,
   };
 
+  const showCard = overall != null && cardTier != null;
+
   return (
     <div
       ref={setNodeRef}
@@ -46,17 +56,31 @@ export function PitchPlayer({
       )}
       {...(draggable ? { ...listeners, ...attributes } : {})}
     >
-      <div
-        className={cn(
-          "flex size-10 items-center justify-center rounded-full border-2 border-white bg-primary text-xs font-bold text-primary-foreground shadow-md",
-          isDragging && "ring-2 ring-primary ring-offset-2"
-        )}
-      >
-        {jerseyNumber ?? positionLabel}
-      </div>
-      <span className="mt-0.5 max-w-[60px] truncate text-center text-[10px] font-medium text-white drop-shadow-md">
-        {name}
-      </span>
+      {showCard ? (
+        <PlayerCard
+          name={name}
+          position={positionLabel}
+          overall={overall}
+          tier={cardTier}
+          photoUrl={photoUrl}
+          size="sm"
+          className={cn(isDragging && "ring-2 ring-primary ring-offset-1")}
+        />
+      ) : (
+        <>
+          <div
+            className={cn(
+              "flex size-10 items-center justify-center rounded-full border-2 border-white bg-primary text-xs font-bold text-primary-foreground shadow-md",
+              isDragging && "ring-2 ring-primary ring-offset-2"
+            )}
+          >
+            {jerseyNumber ?? positionLabel}
+          </div>
+          <span className="mt-0.5 max-w-[60px] truncate text-center text-[10px] font-medium text-white drop-shadow-md">
+            {name}
+          </span>
+        </>
+      )}
     </div>
   );
 }

@@ -14,10 +14,23 @@ import { FormationSelector } from "@/components/molecules/FormationSelector";
 import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
-import { FORMATIONS, TEAM_TYPE_CONFIG, getFormationsForTeamType, getDefaultFormation } from "@/lib/constants";
+import { FORMATIONS, TEAM_TYPE_CONFIG, getFormationsForTeamType, getDefaultFormation, type PlayerSkills } from "@/lib/constants";
 import { generateSubstitutionPlan, type SubstituteSuggestion, matchPlayerToPlayer } from "@/lib/lineup-generator";
-import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
+import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
+import { SubstitutionPlanEditor } from "@/components/organisms/SubstitutionPlanEditor";
 import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan } from "@/types";
+
+function getPlayerCardProps(player: Player, positionLabel: string) {
+  const rawSkills = (player.skills as PlayerSkills) ?? {};
+  if (!hasEafcSkills(rawSkills)) return {};
+  const eafcSkills = ensureEafcFormat(rawSkills);
+  const overall = calculateOverallRating(eafcSkills, positionLabel);
+  return {
+    overall,
+    cardTier: getCardTier(overall),
+    photoUrl: player.photo_url,
+  };
+}
 
 interface LineupFieldProps {
   matchId: string;
@@ -52,6 +65,9 @@ export function LineupField({ matchId }: LineupFieldProps) {
       setPositions(
         (existingLineup.positions as unknown as LineupPosition[]) ?? []
       );
+      if (existingLineup.substitution_plan) {
+        setSubstitutionPlan(existingLineup.substitution_plan as unknown as SubstitutionPlan);
+      }
     }
   });
 
@@ -237,6 +253,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
                     x={50}
                     y={50}
                     draggable
+                    {...getPlayerCardProps(player, slot.position_label)}
                   />
                 ) : (
                   <div className="flex size-10 items-center justify-center rounded-full border-2 border-dashed border-white/60 bg-white/10 text-xs text-white/80">
@@ -298,9 +315,16 @@ export function LineupField({ matchId }: LineupFieldProps) {
           </div>
         )}
 
-        {/* Substitution Plan */}
-        {substitutionPlan && (
-          <SubstitutionPlanView plan={substitutionPlan} />
+        {/* Substitution Plan Editor */}
+        {(substitutionPlan || benchPlayers.length > 0) && positions.some(p => p.player_id) && (
+          <SubstitutionPlanEditor
+            substitutionPlan={substitutionPlan}
+            positions={positions.filter(p => p.player_id)}
+            benchPlayers={benchPlayers}
+            playerMap={playerMap}
+            teamType={teamType}
+            onChange={(plan) => { setSubstitutionPlan(plan); setHasChanges(true); }}
+          />
         )}
 
         {hasChanges && (

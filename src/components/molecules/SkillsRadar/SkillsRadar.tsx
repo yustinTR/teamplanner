@@ -7,17 +7,20 @@ import {
   Radar,
   ResponsiveContainer,
 } from "recharts";
-import { PLAYER_SKILLS, type PlayerSkills } from "@/lib/constants";
+import { EAFC_ATTRIBUTE_CATEGORIES, type PlayerSkills } from "@/lib/constants";
+import { ensureEafcFormat, calculateCategoryAverage } from "@/lib/player-rating";
 
 interface SkillsRadarProps {
   skills: PlayerSkills;
 }
 
 export function SkillsRadar({ skills }: SkillsRadarProps) {
-  const data = PLAYER_SKILLS.map((skill) => ({
-    skill: skill.label,
-    value: skills[skill.key] ?? 0,
-    fullMark: 10,
+  const eafcSkills = ensureEafcFormat(skills);
+
+  const data = EAFC_ATTRIBUTE_CATEGORIES.map((cat) => ({
+    skill: cat.labelShort,
+    value: calculateCategoryAverage(eafcSkills, cat),
+    fullMark: 99,
   }));
 
   return (
@@ -26,7 +29,7 @@ export function SkillsRadar({ skills }: SkillsRadarProps) {
         <PolarGrid stroke="var(--color-neutral-200)" />
         <PolarAngleAxis
           dataKey="skill"
-          tick={{ fill: "var(--color-neutral-600)", fontSize: 11 }}
+          tick={{ fill: "var(--color-neutral-600)", fontSize: 12, fontWeight: 600 }}
         />
         <Radar
           name="Vaardigheden"

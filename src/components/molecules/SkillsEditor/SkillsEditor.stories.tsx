@@ -17,7 +17,36 @@ const meta: Meta<typeof SkillsEditor> = {
 export default meta;
 type Story = StoryObj<typeof SkillsEditor>;
 
+const eafcSkills = {
+  acceleration: 80, sprint_speed: 78,
+  att_positioning: 85, finishing: 88, shot_power: 82, volleys: 75, penalties: 72,
+  vision: 70, crossing: 68, fk_accuracy: 60, short_passing: 75, long_passing: 65, curve: 70,
+  agility: 82, balance: 78, reactions: 80, ball_control: 85, dribbling: 83, composure: 78,
+  interceptions: 40, heading_accuracy: 65, def_awareness: 42, stand_tackle: 35, slide_tackle: 30,
+  jumping: 72, strength: 70, stamina: 78, aggression: 65,
+};
+
 export const Default: Story = {
+  args: {
+    skills: eafcSkills,
+    position: "ST",
+    onSave: (skills) => {
+      console.log("Saved skills:", skills);
+    },
+  },
+};
+
+export const Empty: Story = {
+  args: {
+    skills: {},
+    position: "CM",
+    onSave: (skills) => {
+      console.log("Saved skills:", skills);
+    },
+  },
+};
+
+export const OldFormat: Story = {
   args: {
     skills: {
       speed: 7,
@@ -31,15 +60,7 @@ export const Default: Story = {
       finishing: 8,
       stamina: 7,
     },
-    onSave: (skills) => {
-      console.log("Saved skills:", skills);
-    },
-  },
-};
-
-export const Empty: Story = {
-  args: {
-    skills: {},
+    position: "ST",
     onSave: (skills) => {
       console.log("Saved skills:", skills);
     },
@@ -48,10 +69,8 @@ export const Empty: Story = {
 
 export const Saving: Story = {
   args: {
-    skills: {
-      speed: 7,
-      technique: 8,
-    },
+    skills: eafcSkills,
+    position: "ST",
     onSave: () => new Promise(() => {}),
     isSaving: true,
   },

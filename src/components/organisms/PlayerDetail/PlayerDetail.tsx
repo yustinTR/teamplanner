@@ -5,10 +5,13 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Pencil, UserMinus } from "lucide-react";
 import { SkillsRadar } from "@/components/molecules/SkillsRadar";
 import { SkillsEditor } from "@/components/molecules/SkillsEditor";
+import { PlayerCardDisplay } from "@/components/molecules/PlayerCardDisplay";
+import { PhotoUpload } from "@/components/molecules/PhotoUpload";
 import type { PlayerSkills } from "@/lib/constants";
+import { hasEafcSkills } from "@/lib/player-rating";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlayer, useUpdatePlayer, useDeactivatePlayer } from "@/hooks/use-players";
-import { Avatar } from "@/components/atoms/Avatar";
+import { useUploadPlayerPhoto } from "@/hooks/use-player-photo";
 import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
@@ -38,10 +41,11 @@ interface PlayerDetailProps {
 
 export function PlayerDetail({ playerId }: PlayerDetailProps) {
   const router = useRouter();
-  const { isCoach } = useAuthStore();
+  const { isCoach, currentTeam } = useAuthStore();
   const { data: player, isLoading } = usePlayer(playerId);
   const updatePlayer = useUpdatePlayer();
   const deactivatePlayer = useDeactivatePlayer();
+  const uploadPhoto = useUploadPlayerPhoto();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [skillsOpen, setSkillsOpen] = useState(false);
@@ -63,6 +67,8 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
   }
 
   const isStaff = player.role === "staff";
+  const skills = (player.skills as PlayerSkills) ?? {};
+  const playerHasSkills = hasEafcSkills(skills);
 
   return (
     <div className="p-4">
@@ -74,41 +80,75 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
         Terug
       </button>
 
-      <div className="flex items-start gap-4">
-        <Avatar src={player.photo_url} fallback={player.name} size="lg" />
-        <div className="flex-1">
-          <h1 className="text-xl font-semibold">{player.name}</h1>
-          <div className="mt-1 flex flex-wrap items-center gap-2">
-            <Badge
-              variant="default"
-              label={ROLE_LABELS[player.role] ?? player.role}
-            />
-            {!isStaff && player.primary_position && (
-              <Badge
-                variant="default"
-                label={DETAILED_POSITION_LABELS[player.primary_position] ?? player.primary_position}
-              />
-            )}
-            {player.jersey_number != null && (
-              <span className="text-sm text-muted-foreground">
-                #{player.jersey_number}
-              </span>
-            )}
-          </div>
-          {!isStaff && player.secondary_positions.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {player.secondary_positions.map((pos) => (
-                <Badge
-                  key={pos}
-                  variant="default"
-                  label={DETAILED_POSITION_LABELS[pos] ?? pos}
-                  className="opacity-70"
-                />
-              ))}
-            </div>
+      {/* Hero: FUT card or fallback */}
+      {!isStaff && playerHasSkills ? (
+        <div className="flex flex-col items-center gap-3">
+          <PlayerCardDisplay
+            player={player}
+            teamName={currentTeam?.name}
+            size="lg"
+          />
+          {player.jersey_number != null && (
+            <span className="text-sm text-muted-foreground">
+              #{player.jersey_number}
+            </span>
           )}
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-col items-center gap-3">
+          {isCoach ? (
+            <PhotoUpload
+              currentPhotoUrl={player.photo_url}
+              playerName={player.name}
+              onUpload={(file) => {
+                uploadPhoto.mutate({
+                  playerId: player.id,
+                  teamId: player.team_id,
+                  file,
+                });
+              }}
+              isUploading={uploadPhoto.isPending}
+            />
+          ) : (
+            <div className="flex size-20 items-center justify-center rounded-full bg-neutral-100 text-lg font-semibold text-neutral-500">
+              {player.name.split(" ").map(p => p[0]).join("").slice(0, 2).toUpperCase()}
+            </div>
+          )}
+          <div className="text-center">
+            <h1 className="text-xl font-semibold">{player.name}</h1>
+            <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+              <Badge
+                variant="default"
+                label={ROLE_LABELS[player.role] ?? player.role}
+              />
+              {!isStaff && player.primary_position && (
+                <Badge
+                  variant="default"
+                  label={DETAILED_POSITION_LABELS[player.primary_position] ?? player.primary_position}
+                />
+              )}
+              {player.jersey_number != null && (
+                <span className="text-sm text-muted-foreground">
+                  #{player.jersey_number}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!isStaff && player.secondary_positions.length > 0 && (
+        <div className="mt-3 flex flex-wrap justify-center gap-1">
+          {player.secondary_positions.map((pos) => (
+            <Badge
+              key={pos}
+              variant="default"
+              label={DETAILED_POSITION_LABELS[pos] ?? pos}
+              className="opacity-70"
+            />
+          ))}
+        </div>
+      )}
 
       {player.notes && (
         <div className="mt-4">
@@ -128,9 +168,7 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="sm">
                     <Pencil className="mr-1 size-3.5" />
-                    {Object.keys((player.skills as PlayerSkills) ?? {}).length > 0
-                      ? "Bewerken"
-                      : "Beoordelen"}
+                    {playerHasSkills ? "Bewerken" : "Beoordelen"}
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
@@ -139,11 +177,13 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
                   </SheetHeader>
                   <div className="px-4 pb-4">
                     <SkillsEditor
-                      skills={(player.skills as PlayerSkills) ?? {}}
-                      onSave={async (skills) => {
+                      skills={skills}
+                      position={player.primary_position}
+                      onSave={async (newSkills) => {
                         await updatePlayer.mutateAsync({
                           id: player.id,
-                          skills: skills as unknown as typeof player.skills,
+                          skills: newSkills as unknown as typeof player.skills,
+                          skills_version: 2,
                         });
                         setSkillsOpen(false);
                       }}
@@ -154,8 +194,8 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
               </Sheet>
             )}
           </div>
-          {Object.keys((player.skills as PlayerSkills) ?? {}).length > 0 ? (
-            <SkillsRadar skills={(player.skills as PlayerSkills) ?? {}} />
+          {playerHasSkills ? (
+            <SkillsRadar skills={skills} />
           ) : (
             <p className="mt-2 text-sm text-muted-foreground">
               Nog geen vaardigheden beoordeeld.
