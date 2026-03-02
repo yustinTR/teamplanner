@@ -8,6 +8,7 @@ import { Button } from "@/components/atoms/Button";
 import { Spinner } from "@/components/atoms/Spinner";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { EventCard } from "@/components/organisms/EventCard";
+import { AnimatedList, AnimatedListItem } from "@/components/atoms/AnimatedList";
 import { EventForm } from "@/components/molecules/EventForm";
 import {
   Sheet,
@@ -75,15 +76,18 @@ export function EventList() {
           description="Er zijn nog geen evenementen gepland."
         />
       ) : (
-        events.map((event) => (
-          <EventCard
-            key={event.id}
-            id={event.id}
-            title={event.title}
-            eventDate={event.event_date}
-            location={event.location}
-          />
-        ))
+        <AnimatedList className="space-y-4">
+          {events.map((event) => (
+            <AnimatedListItem key={event.id}>
+              <EventCard
+                id={event.id}
+                title={event.title}
+                eventDate={event.event_date}
+                location={event.location}
+              />
+            </AnimatedListItem>
+          ))}
+        </AnimatedList>
       )}
     </div>
   );

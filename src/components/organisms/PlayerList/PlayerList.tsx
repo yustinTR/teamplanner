@@ -10,6 +10,7 @@ import { PlayerForm } from "@/components/molecules/PlayerForm";
 import { Button } from "@/components/atoms/Button";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { Spinner } from "@/components/atoms/Spinner";
+import { AnimatedList, AnimatedListItem } from "@/components/atoms/AnimatedList";
 import {
   Sheet,
   SheetContent,
@@ -109,19 +110,20 @@ export function PlayerList() {
         )}
       </div>
 
-      <div className="divide-y">
+      <AnimatedList className="divide-y">
         {players.map((player) => (
-          <PlayerChip
-            key={player.id}
-            name={player.name}
-            photoUrl={player.photo_url}
-            primaryPosition={player.primary_position}
-            role={player.role}
-            jerseyNumber={player.jersey_number}
-            onClick={() => router.push(`/team/players/${player.id}`)}
-          />
+          <AnimatedListItem key={player.id}>
+            <PlayerChip
+              name={player.name}
+              photoUrl={player.photo_url}
+              primaryPosition={player.primary_position}
+              role={player.role}
+              jerseyNumber={player.jersey_number}
+              onClick={() => router.push(`/team/players/${player.id}`)}
+            />
+          </AnimatedListItem>
         ))}
-      </div>
+      </AnimatedList>
     </div>
   );
 }

@@ -10,6 +10,7 @@ import { Button } from "@/components/atoms/Button";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { Spinner } from "@/components/atoms/Spinner";
 import { MatchForm } from "@/components/molecules/MatchForm";
+import { AnimatedList, AnimatedListItem } from "@/components/atoms/AnimatedList";
 import {
   Sheet,
   SheetContent,
@@ -200,16 +201,17 @@ export function MatchList() {
           <h2 className="mb-2 text-sm font-medium capitalize text-muted-foreground">
             {month}
           </h2>
-          <div className="space-y-2">
+          <AnimatedList className="space-y-2">
             {monthMatches.map((match) => (
-              <MatchCard
-                key={match.id}
-                match={match}
-                defaultGatheringMinutes={currentTeam?.default_gathering_minutes ?? 60}
-                onClick={() => router.push(`/matches/${match.id}`)}
-              />
+              <AnimatedListItem key={match.id}>
+                <MatchCard
+                  match={match}
+                  defaultGatheringMinutes={currentTeam?.default_gathering_minutes ?? 60}
+                  onClick={() => router.push(`/matches/${match.id}`)}
+                />
+              </AnimatedListItem>
             ))}
-          </div>
+          </AnimatedList>
         </div>
       ))}
     </div>
