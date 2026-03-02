@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { AnimatedList, AnimatedListItem } from "./AnimatedList";
 
 const meta: Meta<typeof AnimatedList> = {

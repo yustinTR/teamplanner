@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { motion } from "framer-motion";
 import { Wand2 } from "lucide-react";
-import { staggerContainer, staggerItem, spring } from "@/lib/animations";
+import { spring } from "@/lib/animations";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlayers } from "@/hooks/use-players";
 import { useAvailability } from "@/hooks/use-availability";
