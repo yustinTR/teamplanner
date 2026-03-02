@@ -18,7 +18,7 @@ export interface BlogSection {
 export const blogPosts: BlogPost[] = [
   {
     slug: "opstelling-7-tegen-7-voetbal",
-    title: "Opstelling 7 tegen 7 voetbal: de beste formaties en tips",
+    title: "Opstelling 7 tegen 7: formaties en tips",
     description:
       "Welke formaties werken het beste bij 7 tegen 7? Van 2-3-1 tot 3-2-1 — ontdek de beste opstellingen voor jeugdvoetbal met praktische tips voor coaches.",
     date: "2026-02-28",
@@ -66,7 +66,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "wisselschema-jeugdvoetbal",
-    title: "Wisselschema jeugdvoetbal: eerlijke speeltijd voor iedereen",
+    title: "Wisselschema jeugdvoetbal: eerlijk wisselen",
     description:
       "Hoe maak je een eerlijk wisselschema voor je jeugdteam? Praktische tips en een stapsgewijze aanpak voor coaches die elke speler evenveel speeltijd willen geven.",
     date: "2026-02-25",
@@ -107,7 +107,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "team-managen-als-voetbaltrainer",
-    title: "Team managen als voetbaltrainer: van WhatsApp naar overzicht",
+    title: "Team managen als voetbaltrainer",
     description:
       "Herkenbaar? Eindeloze WhatsApp-berichten over wie er kan spelen. Ontdek hoe je als amateurvoetbalcoach je team efficiënt beheert met een teamplanner.",
     date: "2026-02-20",
@@ -148,7 +148,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "beschikbaarheid-bijhouden-voetbalteam",
-    title: "Beschikbaarheid bijhouden van je voetbalteam: zo doe je dat",
+    title: "Beschikbaarheid bijhouden voetbalteam",
     description:
       "Stop met WhatsApp-berichten tellen. Leer hoe je de beschikbaarheid van je voetbalteam bijhoudt met een simpele tool die automatisch herinneringen stuurt.",
     date: "2026-02-15",
@@ -188,7 +188,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "gratis-voetbal-app-voor-je-team",
-    title: "Gratis voetbal app voor je team: alles wat een coach nodig heeft",
+    title: "Gratis voetbal app voor je team",
     description:
       "Op zoek naar een gratis app voor je amateurvoetbalteam? MyTeamPlanner biedt wedstrijdbeheer, opstellingen, beschikbaarheid en meer — zonder kosten.",
     date: "2026-02-10",
@@ -229,7 +229,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "voetbal-training-oefeningen",
-    title: "Voetbal training oefeningen: 79+ kant-en-klare oefeningen",
+    title: "Voetbal training oefeningen: 79+ ideeën",
     description:
       "Geen inspiratie voor de training? Blader door 79+ voetbaloefeningen gefilterd op niveau, thema en spelersaantal. Van warming-up tot tactische sessies.",
     date: "2026-02-05",

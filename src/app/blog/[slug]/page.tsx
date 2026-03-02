@@ -52,8 +52,36 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     .filter((p) => p.slug !== post.slug)
     .slice(0, 3);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    url: `https://myteamplanner.nl/blog/${post.slug}`,
+    inLanguage: "nl",
+    author: {
+      "@type": "Organization",
+      name: "MyTeamPlanner",
+      url: "https://myteamplanner.nl",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "MyTeamPlanner",
+      url: "https://myteamplanner.nl",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://myteamplanner.nl/icons/icon-192x192.svg",
+      },
+    },
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <article className="px-4 pb-16 pt-12">
         <div className="mx-auto max-w-2xl">
           {/* Back link */}

@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://myteamplanner.nl/features/opstellingen",
   },
+  openGraph: {
+    title: "Opstelling maken met drag & drop",
+    description: "Maak visuele voetbalopstellingen met drag & drop. Kies een formatie en plan wisselmomenten.",
+    url: "https://myteamplanner.nl/features/opstellingen",
+  },
 };
 
 const solutions = [

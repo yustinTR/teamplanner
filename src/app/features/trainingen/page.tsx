@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://myteamplanner.nl/features/trainingen",
   },
+  openGraph: {
+    title: "Trainingsplannen met kant-en-klare oefeningen",
+    description: "Stel in 2 minuten een trainingsplan samen uit 79+ voetbaloefeningen. Gefilterd op niveau en thema.",
+    url: "https://myteamplanner.nl/features/trainingen",
+  },
 };
 
 const solutions = [
