@@ -1,16 +1,21 @@
 "use client";
 
+import { useRef } from "react";
 import { useLineup } from "@/hooks/use-lineup";
 import { usePlayers } from "@/hooks/use-players";
 import { useMatchPlayers } from "@/hooks/use-match-players";
+import { useAvailability } from "@/hooks/use-availability";
 import { useAuthStore } from "@/stores/auth-store";
 import { matchPlayerToPlayer } from "@/lib/lineup-generator";
 import { Spinner } from "@/components/atoms/Spinner";
 import { EmptyState } from "@/components/atoms/EmptyState";
+import { Button } from "@/components/atoms/Button";
 import { PitchPlayer } from "@/components/molecules/PitchPlayer";
-import { ClipboardList } from "lucide-react";
+import { ShareLineupCard } from "@/components/molecules/ShareLineupCard";
+import { ClipboardList, Share2 } from "lucide-react";
 import { FORMATIONS, type PlayerSkills } from "@/lib/constants";
-import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
+import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills, type CardTier } from "@/lib/player-rating";
+import { useShareImage } from "@/hooks/use-share-image";
 import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
 import type { LineupPosition, SubstitutionPlan as SubstitutionPlanType, Player } from "@/types";
 
@@ -28,13 +33,18 @@ function getPlayerCardProps(player: Player, positionLabel: string) {
 
 interface LineupViewProps {
   matchId: string;
+  matchOpponent?: string;
+  matchDate?: string;
 }
 
-export function LineupView({ matchId }: LineupViewProps) {
+export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProps) {
+  const shareRef = useRef<HTMLDivElement>(null);
+  const { share, isGenerating } = useShareImage();
   const { currentTeam } = useAuthStore();
   const { data: lineup, isLoading } = useLineup(matchId);
   const { data: players } = usePlayers(currentTeam?.id);
   const { data: matchPlayersData } = useMatchPlayers(matchId);
+  const { data: availability } = useAvailability(matchId);
 
   if (isLoading) {
     return (
@@ -61,9 +71,57 @@ export function LineupView({ matchId }: LineupViewProps) {
   const allPlayers = [...(players ?? []), ...matchPlayersList];
   const playerMap = new Map(allPlayers.map((p) => [p.id, p]));
 
+  // Build share player data
+  const positionPlayerIds = new Set(positions.map((p) => p.player_id));
+  const sharePlayers = positions.map((pos) => {
+    const player = playerMap.get(pos.player_id);
+    const slot = formationSlots.find((s) => s.x === pos.x && s.y === pos.y);
+    const posLabel = slot?.position_label ?? "";
+    let cardProps: { overall?: number; cardTier?: CardTier } = {};
+    if (player) {
+      const rawSkills = (player.skills as PlayerSkills) ?? {};
+      if (hasEafcSkills(rawSkills)) {
+        const eafcSkills = ensureEafcFormat(rawSkills);
+        const overall = calculateOverallRating(eafcSkills, posLabel);
+        cardProps = { overall, cardTier: getCardTier(overall) };
+      }
+    }
+    return {
+      name: player?.name ?? "?",
+      positionLabel: posLabel,
+      x: pos.x,
+      y: pos.y,
+      overall: cardProps.overall ?? null,
+      cardTier: cardProps.cardTier ?? null,
+    };
+  });
+
+  // Build bench names: available players not in the starting lineup
+  const availablePlayers = (availability ?? []).filter(
+    (a) => a.status === "available" && !positionPlayerIds.has(a.player_id)
+  );
+  const benchPlayerNames = availablePlayers
+    .map((a) => a.players?.name)
+    .filter((name): name is string => !!name);
+
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground">Formatie: {formation}</p>
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">Formatie: {formation}</p>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1.5"
+          onClick={() =>
+            shareRef.current &&
+            share(shareRef.current, `opstelling-${matchId}`)
+          }
+          disabled={isGenerating || !matchOpponent}
+        >
+          <Share2 className="size-4" />
+          {isGenerating ? "Genereren..." : "Delen"}
+        </Button>
+      </div>
 
       <div className="relative aspect-[68/105] w-full overflow-hidden rounded-lg bg-green-600">
         {/* Field markings */}
@@ -107,6 +165,22 @@ export function LineupView({ matchId }: LineupViewProps) {
 
       {lineup.substitution_plan && (
         <SubstitutionPlanView plan={lineup.substitution_plan as unknown as SubstitutionPlanType} />
+      )}
+
+      {/* Hidden share card for html2canvas */}
+      {matchOpponent && matchDate && (
+        <div className="fixed -left-[9999px] top-0">
+          <div ref={shareRef}>
+            <ShareLineupCard
+              teamName={currentTeam?.name ?? "Team"}
+              opponent={matchOpponent}
+              matchDate={matchDate}
+              formation={formation}
+              players={sharePlayers}
+              benchNames={benchPlayerNames}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { Home, Calendar, ClipboardList, Users, UserCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { spring } from "@/lib/animations";
 
 const navItems = [
   { href: "/dashboard", label: "Home", icon: Home },
@@ -36,13 +38,15 @@ export function NavigationBar() {
                   : "text-neutral-400 hover:text-neutral-600"
               )}
             >
-              <div
-                className={cn(
-                  "flex size-8 items-center justify-center rounded-full transition-colors",
-                  isActive && "bg-primary-100"
+              <div className="relative flex size-8 items-center justify-center rounded-full">
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className="absolute inset-0 rounded-full bg-primary-100"
+                    transition={spring.smooth}
+                  />
                 )}
-              >
-                <item.icon className={cn("size-5", isActive && "text-primary-700")} />
+                <item.icon className={cn("relative size-5", isActive && "text-primary-700")} />
               </div>
               <span>{item.label}</span>
             </Link>

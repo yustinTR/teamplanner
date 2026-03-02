@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { Wand2 } from "lucide-react";
+import { useRef, useState } from "react";
+import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors, useDroppable } from "@dnd-kit/core";
+import { motion } from "framer-motion";
+import { Share2, Wand2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { spring } from "@/lib/animations";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlayers } from "@/hooks/use-players";
 import { useAvailability } from "@/hooks/use-availability";
@@ -10,6 +13,7 @@ import { useMatchPlayers } from "@/hooks/use-match-players";
 import { useLineup, useSaveLineup } from "@/hooks/use-lineup";
 import { PitchPlayer } from "@/components/molecules/PitchPlayer";
 import { BenchPlayer } from "@/components/molecules/BenchPlayer";
+import { AnimatedList, AnimatedListItem } from "@/components/atoms/AnimatedList";
 import { FormationSelector } from "@/components/molecules/FormationSelector";
 import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
@@ -18,7 +22,9 @@ import { FORMATIONS, TEAM_TYPE_CONFIG, getFormationsForTeamType, getDefaultForma
 import { generateSubstitutionPlan, type SubstituteSuggestion, matchPlayerToPlayer } from "@/lib/lineup-generator";
 import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
 import { SubstitutionPlanEditor } from "@/components/organisms/SubstitutionPlanEditor";
-import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan } from "@/types";
+import { ShareLineupCard } from "@/components/molecules/ShareLineupCard";
+import { useShareImage } from "@/hooks/use-share-image";
+import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan, Availability, MatchPlayer, Team } from "@/types";
 
 function getPlayerCardProps(player: Player, positionLabel: string) {
   const rawSkills = (player.skills as PlayerSkills) ?? {};
@@ -34,15 +40,71 @@ function getPlayerCardProps(player: Player, positionLabel: string) {
 
 interface LineupFieldProps {
   matchId: string;
+  matchOpponent?: string;
+  matchDate?: string;
 }
 
-export function LineupField({ matchId }: LineupFieldProps) {
+// Outer component: fetches data and shows loading state.
+// Inner editor only mounts after data is loaded, so useState initializers
+// get the correct values from existingLineup.
+export function LineupField({ matchId, matchOpponent, matchDate }: LineupFieldProps) {
   const { currentTeam } = useAuthStore();
   const { data: players, isLoading: playersLoading } = usePlayers(currentTeam?.id);
   const { data: availability } = useAvailability(matchId);
   const { data: matchPlayersData } = useMatchPlayers(matchId);
   const { data: existingLineup, isLoading: lineupLoading } = useLineup(matchId);
+
+  if (playersLoading || lineupLoading) {
+    return (
+      <div className="flex justify-center py-12">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  return (
+    <LineupFieldEditor
+      matchId={matchId}
+      matchOpponent={matchOpponent}
+      matchDate={matchDate}
+      currentTeam={currentTeam ?? null}
+      players={players ?? []}
+      availability={availability ?? []}
+      matchPlayersData={matchPlayersData ?? []}
+      existingLineup={existingLineup ?? null}
+    />
+  );
+}
+
+interface LineupFieldEditorProps {
+  matchId: string;
+  matchOpponent?: string;
+  matchDate?: string;
+  currentTeam: Team | null;
+  players: Player[];
+  availability: Availability[];
+  matchPlayersData: MatchPlayer[];
+  existingLineup: {
+    formation: string | null;
+    positions: unknown;
+    substitution_plan: unknown;
+  } | null;
+}
+
+function LineupFieldEditor({
+  matchId,
+  matchOpponent,
+  matchDate,
+  currentTeam,
+  players,
+  availability,
+  matchPlayersData,
+  existingLineup,
+}: LineupFieldEditorProps) {
   const saveLineup = useSaveLineup();
+  const shareRef = useRef<HTMLDivElement>(null);
+  const { share, isGenerating } = useShareImage();
+  const [isSaved, setIsSaved] = useState(!!existingLineup);
 
   const teamType = currentTeam?.team_type ?? "senioren";
   const defaultFormation = getDefaultFormation(teamType);
@@ -56,20 +118,9 @@ export function LineupField({ matchId }: LineupFieldProps) {
   );
   const [hasChanges, setHasChanges] = useState(false);
   const [substitutes, setSubstitutes] = useState<SubstituteSuggestion[]>([]);
-  const [substitutionPlan, setSubstitutionPlan] = useState<SubstitutionPlan | null>(null);
-
-  // Update state when lineup loads
-  useState(() => {
-    if (existingLineup) {
-      setFormation(existingLineup.formation ?? defaultFormation);
-      setPositions(
-        (existingLineup.positions as unknown as LineupPosition[]) ?? []
-      );
-      if (existingLineup.substitution_plan) {
-        setSubstitutionPlan(existingLineup.substitution_plan as unknown as SubstitutionPlan);
-      }
-    }
-  });
+  const [substitutionPlan, setSubstitutionPlan] = useState<SubstitutionPlan | null>(
+    () => (existingLineup?.substitution_plan as unknown as SubstitutionPlan) ?? null
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -83,23 +134,23 @@ export function LineupField({ matchId }: LineupFieldProps) {
   // Available players for the bench
   const availablePlayerIds = new Set(
     availability
-      ?.filter((a) => a.status === "available" || a.status === "maybe")
-      .map((a) => a.player_id) ?? []
+      .filter((a) => a.status === "available" || a.status === "maybe")
+      .map((a) => a.player_id)
   );
 
   const assignedPlayerIds = new Set(positions.map((p) => p.player_id));
 
   // Convert match players to Player-like objects for the bench
-  const matchPlayersList: Player[] = (matchPlayersData ?? []).map(matchPlayerToPlayer);
+  const matchPlayersList: Player[] = matchPlayersData.map(matchPlayerToPlayer);
 
   const benchPlayers = [
-    ...(players ?? []).filter(
+    ...players.filter(
       (p) => availablePlayerIds.has(p.id) && !assignedPlayerIds.has(p.id) && p.role !== "staff"
     ),
     ...matchPlayersList.filter((p) => !assignedPlayerIds.has(p.id)),
   ];
 
-  const allPlayersForMap: Player[] = [...(players ?? []), ...matchPlayersList];
+  const allPlayersForMap: Player[] = [...players, ...matchPlayersList];
   const playerMap = new Map(allPlayersForMap.map((p) => [p.id, p]));
 
   const formationSlots = FORMATIONS[formation] ?? teamFormations[defaultFormation];
@@ -120,7 +171,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
 
   function handleAutoLineup() {
     const availablePlayers = [
-      ...(players ?? []).filter((p) => availablePlayerIds.has(p.id) && p.role !== "staff"),
+      ...players.filter((p) => availablePlayerIds.has(p.id) && p.role !== "staff"),
       ...matchPlayersList,
     ];
 
@@ -129,7 +180,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
     const result = generateSubstitutionPlan(
       formation,
       availablePlayers,
-      (availability ?? []) as AvailabilityWithPlayer[],
+      availability as AvailabilityWithPlayer[],
       config
     );
     setPositions(result.positions);
@@ -196,15 +247,53 @@ export function LineupField({ matchId }: LineupFieldProps) {
       substitutionPlan,
     });
     setHasChanges(false);
+    setIsSaved(true);
   }
 
-  if (playersLoading || lineupLoading) {
-    return (
-      <div className="flex justify-center py-12">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
+  // Build share data
+  const sharePlayers = positions
+    .filter((p) => p.player_id)
+    .map((pos) => {
+      const player = playerMap.get(pos.player_id);
+      const slot = formationSlots.find(
+        (s) => s.x === pos.x && s.y === pos.y
+      );
+      const posLabel = slot?.position_label ?? pos.position_label ?? "";
+      let cardProps: {
+        overall?: number;
+        cardTier?: ReturnType<typeof getCardTier>;
+      } = {};
+      if (player) {
+        const rawSkills = (player.skills as PlayerSkills) ?? {};
+        if (hasEafcSkills(rawSkills)) {
+          const eafcSkills = ensureEafcFormat(rawSkills);
+          const overall = calculateOverallRating(eafcSkills, posLabel);
+          cardProps = { overall, cardTier: getCardTier(overall) };
+        }
+      }
+      return {
+        name: player?.name ?? "?",
+        positionLabel: posLabel,
+        x: pos.x,
+        y: pos.y,
+        overall: cardProps.overall ?? null,
+        cardTier: cardProps.cardTier ?? null,
+      };
+    });
+
+  const benchPlayerNames = benchPlayers.map(
+    (p) => p.name.split(" ").pop() ?? p.name
+  );
+
+  const shareSubstitutions =
+    substitutionPlan?.substitutionMoments?.map((m) => ({
+      minute: m.minute,
+      changes: m.out.map((outP, i) => ({
+        outName: outP.name,
+        inName: m.in[i]?.name ?? "?",
+        position: outP.position_label,
+      })),
+    })) ?? [];
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
@@ -216,7 +305,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
             size="sm"
             className="shrink-0 gap-1.5"
             onClick={handleAutoLineup}
-            disabled={!players?.length}
+            disabled={!players.length}
           >
             <Wand2 className="size-4" />
             Auto
@@ -270,18 +359,19 @@ export function LineupField({ matchId }: LineupFieldProps) {
           <h3 className="mb-2 text-sm font-medium text-muted-foreground">
             Bank ({benchPlayers.length})
           </h3>
-          <div className="grid grid-cols-2 gap-2">
+          <AnimatedList className="grid grid-cols-2 gap-2">
             {benchPlayers.map((player) => (
-              <BenchPlayer
-                key={player.id}
-                id={player.id}
-                name={player.name}
-                jerseyNumber={player.jersey_number}
-                photoUrl={player.photo_url}
-                draggable
-              />
+              <AnimatedListItem key={player.id}>
+                <BenchPlayer
+                  id={player.id}
+                  name={player.name}
+                  jerseyNumber={player.jersey_number}
+                  photoUrl={player.photo_url}
+                  draggable
+                />
+              </AnimatedListItem>
             ))}
-          </div>
+          </AnimatedList>
         </div>
 
         {/* Substitute suggestions */}
@@ -328,13 +418,57 @@ export function LineupField({ matchId }: LineupFieldProps) {
         )}
 
         {hasChanges && (
-          <Button
-            className="w-full"
-            onClick={handleSave}
-            disabled={saveLineup.isPending}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={spring.bouncy}
           >
-            {saveLineup.isPending ? "Opslaan..." : "Opstelling opslaan"}
-          </Button>
+            <Button
+              className="w-full"
+              onClick={handleSave}
+              disabled={saveLineup.isPending}
+            >
+              {saveLineup.isPending ? "Opslaan..." : "Opstelling opslaan"}
+            </Button>
+          </motion.div>
+        )}
+
+        {isSaved && !hasChanges && positions.some((p) => p.player_id) && matchOpponent && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={spring.bouncy}
+          >
+            <Button
+              variant="outline"
+              className="w-full gap-2"
+              onClick={() =>
+                shareRef.current &&
+                share(shareRef.current, `opstelling-${matchId}`)
+              }
+              disabled={isGenerating}
+            >
+              <Share2 className="size-4" />
+              {isGenerating ? "Genereren..." : "Deel opstelling"}
+            </Button>
+          </motion.div>
+        )}
+
+        {/* Hidden share card */}
+        {matchOpponent && matchDate && (
+          <div className="fixed -left-[9999px] top-0">
+            <div ref={shareRef}>
+              <ShareLineupCard
+                teamName={currentTeam?.name ?? "Team"}
+                opponent={matchOpponent}
+                matchDate={matchDate}
+                formation={formation}
+                players={sharePlayers}
+                benchNames={benchPlayerNames}
+                substitutions={shareSubstitutions}
+              />
+            </div>
+          </div>
         )}
       </div>
     </DndContext>
@@ -342,8 +476,6 @@ export function LineupField({ matchId }: LineupFieldProps) {
 }
 
 // Simple droppable zone component
-import { useDroppable } from "@dnd-kit/core";
-
 function DropZone({
   id,
   x,
@@ -370,5 +502,3 @@ function DropZone({
     </div>
   );
 }
-
-import { cn } from "@/lib/utils";

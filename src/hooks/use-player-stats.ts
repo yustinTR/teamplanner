@@ -4,6 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import type { PlayerSeasonStats } from "@/types";
 import { aggregatePlayerStats } from "@/lib/player-stats-utils";
+import { TEAM_TYPE_CONFIG } from "@/lib/constants";
+
+function getDefaultMatchMinutes(teamType: string | null | undefined): number {
+  const config = teamType ? TEAM_TYPE_CONFIG[teamType] : undefined;
+  return config ? config.halfMinutes * config.halves : 90;
+}
 
 export function usePlayerSeasonStats(
   playerId: string | undefined,
@@ -13,6 +19,13 @@ export function usePlayerSeasonStats(
   return useQuery({
     queryKey: ["player-stats", playerId, teamId],
     queryFn: async (): Promise<PlayerSeasonStats | null> => {
+      const { data: team } = await supabase
+        .from("teams")
+        .select("team_type")
+        .eq("id", teamId!)
+        .single();
+      const defaultMinutes = getDefaultMatchMinutes(team?.team_type);
+
       const { data: player } = await supabase
         .from("players")
         .select("name")
@@ -43,7 +56,7 @@ export function usePlayerSeasonStats(
 
       const { data: lineups } = await supabase
         .from("lineups")
-        .select("match_id, substitution_plan")
+        .select("match_id, substitution_plan, positions")
         .in("match_id", matchIds);
 
       const { data: stats } = await supabase
@@ -55,7 +68,8 @@ export function usePlayerSeasonStats(
       const results = aggregatePlayerStats(
         [{ id: playerId!, name: player.name }],
         lineups ?? [],
-        stats ?? []
+        stats ?? [],
+        defaultMinutes
       );
       return results[0] ?? null;
     },
@@ -68,6 +82,13 @@ export function useTeamSeasonStats(teamId: string | undefined) {
   return useQuery({
     queryKey: ["player-stats", "team", teamId],
     queryFn: async (): Promise<PlayerSeasonStats[]> => {
+      const { data: team } = await supabase
+        .from("teams")
+        .select("team_type")
+        .eq("id", teamId!)
+        .single();
+      const defaultMinutes = getDefaultMatchMinutes(team?.team_type);
+
       const { data: players } = await supabase
         .from("players")
         .select("id, name")
@@ -98,7 +119,7 @@ export function useTeamSeasonStats(teamId: string | undefined) {
 
       const { data: lineups } = await supabase
         .from("lineups")
-        .select("match_id, substitution_plan")
+        .select("match_id, substitution_plan, positions")
         .in("match_id", matchIds);
 
       const { data: allStats } = await supabase
@@ -109,7 +130,8 @@ export function useTeamSeasonStats(teamId: string | undefined) {
       return aggregatePlayerStats(
         players,
         lineups ?? [],
-        allStats ?? []
+        allStats ?? [],
+        defaultMinutes
       );
     },
     enabled: !!teamId,

@@ -1,8 +1,8 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, MapPin, Clock, XCircle, CheckCircle, ClipboardList, UserPlus, Users } from "lucide-react";
+import { ArrowLeft, Pencil, MapPin, Clock, XCircle, CheckCircle, ClipboardList, UserPlus, Users, Share2, Copy } from "lucide-react";
 import Link from "next/link";
 import { useMatch, useUpdateMatch, useCancelMatch } from "@/hooks/use-matches";
 import { useAuthStore } from "@/stores/auth-store";
@@ -19,6 +19,9 @@ import { MatchPlayerChip } from "@/components/molecules/MatchPlayerChip";
 import { MatchStatsEditor } from "@/components/organisms/MatchStatsEditor";
 import { OnboardingHint } from "@/components/molecules/OnboardingHint";
 import { useMatchPlayers, useCreateMatchPlayer, useDeleteMatchPlayer } from "@/hooks/use-match-players";
+import { useMatchStats } from "@/hooks/use-match-stats";
+import { ShareMatchReport } from "@/components/molecules/ShareMatchReport";
+import { useShareImage } from "@/hooks/use-share-image";
 import { formatMatchDate, calculateGatheringTime, formatTime } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
 import {
@@ -58,6 +61,22 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
   const [scoreHome, setScoreHome] = useState(0);
   const [scoreAway, setScoreAway] = useState(0);
   const [leenOpen, setLeenOpen] = useState(false);
+  const reportRef = useRef<HTMLDivElement>(null);
+  const { share: shareImage, isGenerating } = useShareImage();
+  const { data: matchStats } = useMatchStats(match?.status === "completed" ? id : undefined);
+
+  const reportStats = (matchStats ?? [])
+    .map((s) => ({
+      playerName: s.players?.name ?? "Onbekend",
+      goals: s.goals ?? 0,
+      assists: s.assists ?? 0,
+      yellow_cards: s.yellow_cards ?? 0,
+      red_cards: s.red_cards ?? 0,
+    }))
+    .filter(
+      (s) =>
+        s.goals > 0 || s.assists > 0 || s.yellow_cards > 0 || s.red_cards > 0
+    );
 
   if (isLoading) {
     return (
@@ -108,11 +127,19 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
         </div>
 
         {match.status === "completed" && (
-          <div className="mt-2">
+          <div className="mt-2 flex items-center gap-2">
             <MatchScore
               scoreHome={match.score_home}
               scoreAway={match.score_away}
             />
+            {isCoach && (
+              <button
+                onClick={() => { setScoreHome(match.score_home ?? 0); setScoreAway(match.score_away ?? 0); setCompleteOpen(true); }}
+                className="rounded-full p-1 text-white/60 hover:bg-white/10 hover:text-white"
+              >
+                <Pencil className="size-3.5" />
+              </button>
+            )}
           </div>
         )}
 
@@ -172,6 +199,18 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
           <AvailabilityGrid matchId={match.id} />
         </div>
 
+        {isCoach && match.status === "upcoming" && new Date(match.match_date) < new Date() && (
+          <div className="rounded-xl bg-white p-4 shadow-md">
+            <p className="mb-3 text-sm text-muted-foreground">
+              Deze wedstrijd is al geweest. Vul de score in om hem af te ronden.
+            </p>
+            <Button className="w-full gap-2" onClick={() => { setScoreHome(0); setScoreAway(0); setCompleteOpen(true); }}>
+              <CheckCircle className="size-4" />
+              Score invullen
+            </Button>
+          </div>
+        )}
+
         {match.status === "completed" && isCoach && (
           <div className="rounded-xl bg-white p-4 shadow-md">
             <OnboardingHint
@@ -183,6 +222,88 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
               Wedstrijdstatistieken
             </h2>
             <MatchStatsEditor matchId={match.id} />
+          </div>
+        )}
+
+        {match.status === "completed" && (
+          <div className="rounded-xl bg-white p-4 shadow-md">
+            <h2 className="mb-3 text-lg font-semibold">Verslag delen</h2>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="flex-1 gap-2"
+                onClick={() => {
+                  const homeName =
+                    match.home_away === "home"
+                      ? (currentTeam?.name ?? "Thuis")
+                      : match.opponent;
+                  const awayName =
+                    match.home_away === "away"
+                      ? (currentTeam?.name ?? "Uit")
+                      : match.opponent;
+                  const lines = [
+                    `${homeName} ${match.score_home} - ${match.score_away} ${awayName}`,
+                    formatMatchDate(match.match_date),
+                    "",
+                  ];
+                  const goals = reportStats.filter((s) => s.goals > 0);
+                  if (goals.length) {
+                    lines.push("Doelpunten:");
+                    goals.forEach((s) =>
+                      lines.push(
+                        `  ${s.playerName}${s.goals > 1 ? ` (${s.goals}x)` : ""}`
+                      )
+                    );
+                    lines.push("");
+                  }
+                  const assists = reportStats.filter((s) => s.assists > 0);
+                  if (assists.length) {
+                    lines.push("Assists:");
+                    assists.forEach((s) =>
+                      lines.push(
+                        `  ${s.playerName}${s.assists > 1 ? ` (${s.assists}x)` : ""}`
+                      )
+                    );
+                    lines.push("");
+                  }
+                  lines.push("myteamplanner.nl");
+                  navigator.clipboard.writeText(lines.join("\n"));
+                }}
+              >
+                <Copy className="size-4" />
+                Kopieer tekst
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 gap-2"
+                onClick={() =>
+                  reportRef.current &&
+                  shareImage(
+                    reportRef.current,
+                    `verslag-${match.opponent}`
+                  )
+                }
+                disabled={isGenerating}
+              >
+                <Share2 className="size-4" />
+                {isGenerating ? "Genereren..." : "Deel afbeelding"}
+              </Button>
+            </div>
+
+            {/* Hidden report card for image generation */}
+            <div className="fixed -left-[9999px] top-0">
+              <div ref={reportRef}>
+                <ShareMatchReport
+                  teamName={currentTeam?.name ?? "Team"}
+                  opponent={match.opponent}
+                  homeAway={match.home_away}
+                  matchDate={match.match_date}
+                  scoreHome={match.score_home ?? 0}
+                  scoreAway={match.score_away ?? 0}
+                  stats={reportStats}
+                />
+              </div>
+            </div>
           </div>
         )}
 
@@ -275,68 +396,10 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
               </SheetContent>
             </Sheet>
 
-            <Dialog open={completeOpen} onOpenChange={(open) => {
-              setCompleteOpen(open);
-              if (!open) { setScoreHome(0); setScoreAway(0); }
-            }}>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <CheckCircle className="size-4" />
-                  Afronden
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Wedstrijd afronden</DialogTitle>
-                  <DialogDescription>
-                    Vul de eindstand in om de wedstrijd als gespeeld te markeren.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex items-end gap-4">
-                  <div className="flex-1 space-y-1">
-                    <label className="text-sm font-medium">
-                      {match.home_away === "home" ? currentTeam?.name ?? "Thuis" : match.opponent}
-                    </label>
-                    <Input
-                      type="number"
-                      min={0}
-                      value={scoreHome}
-                      onChange={(e) => setScoreHome(Number(e.target.value))}
-                    />
-                  </div>
-                  <span className="pb-2 text-lg font-bold text-muted-foreground">–</span>
-                  <div className="flex-1 space-y-1">
-                    <label className="text-sm font-medium">
-                      {match.home_away === "away" ? currentTeam?.name ?? "Uit" : match.opponent}
-                    </label>
-                    <Input
-                      type="number"
-                      min={0}
-                      value={scoreAway}
-                      onChange={(e) => setScoreAway(Number(e.target.value))}
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setCompleteOpen(false)}>
-                    Annuleren
-                  </Button>
-                  <Button
-                    onClick={async () => {
-                      await updateMatch.mutateAsync({
-                        id: match.id,
-                        status: "completed",
-                        score_home: scoreHome,
-                        score_away: scoreAway,
-                      });
-                      setCompleteOpen(false);
-                    }}
-                  >
-                    Afronden
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <Button variant="outline" className="gap-2" onClick={() => { setScoreHome(0); setScoreAway(0); setCompleteOpen(true); }}>
+              <CheckCircle className="size-4" />
+              Afronden
+            </Button>
 
             <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
               <DialogTrigger asChild>
@@ -371,6 +434,68 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
             </Dialog>
           </div>
         )}
+
+        {/* Score complete/edit dialog — rendered outside status guard so both upcoming and completed can use it */}
+        <Dialog open={completeOpen} onOpenChange={(open) => {
+          setCompleteOpen(open);
+          if (!open) { setScoreHome(0); setScoreAway(0); }
+        }}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                {match.status === "completed" ? "Score bewerken" : "Wedstrijd afronden"}
+              </DialogTitle>
+              <DialogDescription>
+                {match.status === "completed"
+                  ? "Pas de score aan."
+                  : "Vul de eindstand in om de wedstrijd als gespeeld te markeren."}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex items-end gap-4">
+              <div className="flex-1 space-y-1">
+                <label className="text-sm font-medium">
+                  {match.home_away === "home" ? currentTeam?.name ?? "Thuis" : match.opponent}
+                </label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={scoreHome}
+                  onChange={(e) => setScoreHome(Number(e.target.value))}
+                />
+              </div>
+              <span className="pb-2 text-lg font-bold text-muted-foreground">–</span>
+              <div className="flex-1 space-y-1">
+                <label className="text-sm font-medium">
+                  {match.home_away === "away" ? currentTeam?.name ?? "Uit" : match.opponent}
+                </label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={scoreAway}
+                  onChange={(e) => setScoreAway(Number(e.target.value))}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setCompleteOpen(false)}>
+                Annuleren
+              </Button>
+              <Button
+                onClick={async () => {
+                  await updateMatch.mutateAsync({
+                    id: match.id,
+                    ...(match.status !== "completed" && { status: "completed" as const }),
+                    score_home: scoreHome,
+                    score_away: scoreAway,
+                  });
+                  setCompleteOpen(false);
+                }}
+              >
+                {match.status === "completed" ? "Opslaan" : "Afronden"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

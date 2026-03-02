@@ -10,6 +10,7 @@ import { Button } from "@/components/atoms/Button";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { Spinner } from "@/components/atoms/Spinner";
 import { MatchForm } from "@/components/molecules/MatchForm";
+import { AnimatedList, AnimatedListItem } from "@/components/atoms/AnimatedList";
 import {
   Sheet,
   SheetContent,
@@ -17,17 +18,27 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import type { Match } from "@/types";
 
-function groupByMonth(matches: Match[]): Record<string, Match[]> {
+function groupByMonth(matches: Match[]): [string, Match[]][] {
   const groups: Record<string, Match[]> = {};
+  const order: string[] = [];
   for (const match of matches) {
     const date = new Date(match.match_date);
     const key = date.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
-    if (!groups[key]) groups[key] = [];
+    if (!groups[key]) {
+      groups[key] = [];
+      order.push(key);
+    }
     groups[key].push(match);
   }
-  return groups;
+  return order.map((key) => [key, groups[key]]);
 }
 
 export function MatchList() {
@@ -112,7 +123,7 @@ export function MatchList() {
     );
   }
 
-  // Sort: upcoming first, then by date
+  // Split: upcoming ascending by date, past descending by date
   const now = new Date().toISOString();
   const upcoming = matches.filter(
     (m) => m.status === "upcoming" && m.match_date >= now
@@ -122,8 +133,29 @@ export function MatchList() {
   );
   past.reverse();
 
-  const sortedMatches = [...upcoming, ...past];
-  const grouped = groupByMonth(sortedMatches);
+  const upcomingGrouped = groupByMonth(upcoming);
+  const pastGrouped = groupByMonth(past);
+
+  function renderMatchGroups(groups: [string, Match[]][]) {
+    return groups.map(([month, monthMatches]) => (
+      <div key={month} className="mb-6">
+        <h2 className="mb-2 text-sm font-medium capitalize text-muted-foreground">
+          {month}
+        </h2>
+        <AnimatedList className="space-y-2">
+          {monthMatches.map((match) => (
+            <AnimatedListItem key={match.id}>
+              <MatchCard
+                match={match}
+                defaultGatheringMinutes={currentTeam?.default_gathering_minutes ?? 60}
+                onClick={() => router.push(`/matches/${match.id}`)}
+              />
+            </AnimatedListItem>
+          ))}
+        </AnimatedList>
+      </div>
+    ));
+  }
 
   return (
     <div>
@@ -171,47 +203,64 @@ export function MatchList() {
                   Toevoegen
                 </Button>
               </SheetTrigger>
-            <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
-              <SheetHeader>
-                <SheetTitle>Wedstrijd toevoegen</SheetTitle>
-              </SheetHeader>
-              <div className="px-4 pb-4">
-                <MatchForm
-                  {...matchFormProps}
-                  submitLabel="Toevoegen"
-                  onSubmit={async (data) => {
-                    if (!currentTeam) return;
-                    await createMatch.mutateAsync({
-                      ...data,
-                      team_id: currentTeam.id,
-                    });
-                    setSheetOpen(false);
-                  }}
-                />
-              </div>
-            </SheetContent>
+              <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+                <SheetHeader>
+                  <SheetTitle>Wedstrijd toevoegen</SheetTitle>
+                </SheetHeader>
+                <div className="px-4 pb-4">
+                  <MatchForm
+                    {...matchFormProps}
+                    submitLabel="Toevoegen"
+                    onSubmit={async (data) => {
+                      if (!currentTeam) return;
+                      await createMatch.mutateAsync({
+                        ...data,
+                        team_id: currentTeam.id,
+                      });
+                      setSheetOpen(false);
+                    }}
+                  />
+                </div>
+              </SheetContent>
             </Sheet>
           </div>
         )}
       </div>
 
-      {Object.entries(grouped).map(([month, monthMatches]) => (
-        <div key={month} className="mb-6">
-          <h2 className="mb-2 text-sm font-medium capitalize text-muted-foreground">
-            {month}
-          </h2>
-          <div className="space-y-2">
-            {monthMatches.map((match) => (
-              <MatchCard
-                key={match.id}
-                match={match}
-                defaultGatheringMinutes={currentTeam?.default_gathering_minutes ?? 60}
-                onClick={() => router.push(`/matches/${match.id}`)}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
+      <Tabs defaultValue="upcoming">
+        <TabsList className="w-full">
+          <TabsTrigger value="upcoming" className="flex-1">
+            Aankomend ({upcoming.length})
+          </TabsTrigger>
+          <TabsTrigger value="played" className="flex-1">
+            Gespeeld ({past.length})
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="upcoming" className="mt-4">
+          {upcoming.length === 0 ? (
+            <EmptyState
+              icon={Calendar}
+              title="Geen aankomende wedstrijden"
+              description="Geen aankomende wedstrijden."
+            />
+          ) : (
+            renderMatchGroups(upcomingGrouped)
+          )}
+        </TabsContent>
+
+        <TabsContent value="played" className="mt-4">
+          {past.length === 0 ? (
+            <EmptyState
+              icon={Calendar}
+              title="Geen gespeelde wedstrijden"
+              description="Nog geen gespeelde wedstrijden."
+            />
+          ) : (
+            renderMatchGroups(pastGrouped)
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

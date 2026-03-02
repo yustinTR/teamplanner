@@ -427,7 +427,7 @@ describe("generateSubstitutionPlan", () => {
     expect(result.substitutionPlan).not.toBeNull();
 
     const plan = result.substitutionPlan!;
-    expect(plan.totalMinutes).toBe(50); // 25 * 2
+    expect(plan.totalMinutes).toBe(60); // 30 * 2
     expect(plan.teamType).toBe("G-Team");
     expect(plan.substitutionMoments.length).toBeGreaterThan(0);
   });

@@ -12,6 +12,7 @@ interface MatchStatsRow {
 interface LineupRow {
   match_id: string;
   substitution_plan: unknown;
+  positions?: unknown;
 }
 
 interface PlayerInfo {
@@ -25,20 +26,34 @@ interface PlayerInfo {
 export function aggregatePlayerStats(
   players: PlayerInfo[],
   lineups: LineupRow[],
-  matchStats: MatchStatsRow[]
+  matchStats: MatchStatsRow[],
+  defaultMatchMinutes = 90
 ): PlayerSeasonStats[] {
   return players.map((player) => {
     let matchesPlayed = 0;
     let totalMinutes = 0;
 
     for (const lineup of lineups) {
+      // Try playerMinutes first (has minutes data)
       const plan =
         lineup.substitution_plan as unknown as SubstitutionPlan | null;
-      if (!plan?.playerMinutes) continue;
-      const pm = plan.playerMinutes.find((p) => p.player_id === player.id);
-      if (pm && pm.totalMinutes > 0) {
-        matchesPlayed++;
-        totalMinutes += pm.totalMinutes;
+      if (plan?.playerMinutes) {
+        const pm = plan.playerMinutes.find((p) => p.player_id === player.id);
+        if (pm && pm.totalMinutes > 0) {
+          matchesPlayed++;
+          totalMinutes += pm.totalMinutes;
+          continue;
+        }
+      }
+
+      // Fallback: check positions
+      if (lineup.positions) {
+        const positions = lineup.positions as unknown as Array<{ player_id: string }>;
+        if (positions.some((p) => p.player_id === player.id)) {
+          matchesPlayed++;
+          // Estimate full match minutes from plan or team-type default
+          totalMinutes += plan?.totalMinutes ?? defaultMatchMinutes;
+        }
       }
     }
 

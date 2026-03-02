@@ -4,6 +4,7 @@ import { use } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
+import { useMatch } from "@/hooks/use-matches";
 import { LineupField } from "@/components/organisms/LineupField";
 import { LineupView } from "@/components/organisms/LineupView";
 import { OnboardingHint } from "@/components/molecules/OnboardingHint";
@@ -16,6 +17,7 @@ export default function LineupPage({ params }: LineupPageProps) {
   const { id } = use(params);
   const router = useRouter();
   const { isCoach } = useAuthStore();
+  const { data: match } = useMatch(id);
 
   return (
     <div className="p-4">
@@ -40,9 +42,17 @@ export default function LineupPage({ params }: LineupPageProps) {
       )}
 
       {isCoach ? (
-        <LineupField matchId={id} />
+        <LineupField
+          matchId={id}
+          matchOpponent={match?.opponent}
+          matchDate={match?.match_date}
+        />
       ) : (
-        <LineupView matchId={id} />
+        <LineupView
+          matchId={id}
+          matchOpponent={match?.opponent}
+          matchDate={match?.match_date}
+        />
       )}
     </div>
   );

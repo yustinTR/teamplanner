@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { ArrowLeft, Pencil, UserMinus } from "lucide-react";
+import { spring, slideUp } from "@/lib/animations";
 import { SkillsRadar } from "@/components/molecules/SkillsRadar";
 import { SkillsEditor } from "@/components/molecules/SkillsEditor";
 import { PlayerCardDisplay } from "@/components/molecules/PlayerCardDisplay";
@@ -82,7 +84,12 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
 
       {/* Hero: FUT card or fallback */}
       {!isStaff && playerHasSkills ? (
-        <div className="flex flex-col items-center gap-3">
+        <motion.div
+          className="flex flex-col items-center gap-3"
+          initial={{ opacity: 0, scale: 0.9, y: -20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={spring.bouncy}
+        >
           <PlayerCardDisplay
             player={player}
             teamName={currentTeam?.name}
@@ -93,9 +100,14 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
               #{player.jersey_number}
             </span>
           )}
-        </div>
+        </motion.div>
       ) : (
-        <div className="flex flex-col items-center gap-3">
+        <motion.div
+          className="flex flex-col items-center gap-3"
+          initial={{ opacity: 0, scale: 0.9, y: -20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={spring.bouncy}
+        >
           {isCoach ? (
             <PhotoUpload
               currentPhotoUrl={player.photo_url}
@@ -134,7 +146,7 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {!isStaff && player.secondary_positions.length > 0 && (
@@ -158,7 +170,12 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
       )}
 
       {!isStaff && (
-        <div className="mt-6">
+        <motion.div
+          className="mt-6"
+          variants={slideUp}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-medium text-muted-foreground">
               Vaardigheden
@@ -201,16 +218,21 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
               Nog geen vaardigheden beoordeeld.
             </p>
           )}
-        </div>
+        </motion.div>
       )}
 
       {!isStaff && (
-        <div className="mt-4">
+        <motion.div
+          className="mt-4"
+          variants={slideUp}
+          initial="hidden"
+          animate="visible"
+        >
           <PlayerStatsSection
             playerId={player.id}
             teamId={player.team_id}
           />
-        </div>
+        </motion.div>
       )}
 
       {isCoach && (

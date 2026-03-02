@@ -39,6 +39,7 @@ export function MatchStatsForm({
     })
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   function updateRow(
     playerId: string,
@@ -57,6 +58,8 @@ export function MatchStatsForm({
     setIsSubmitting(true);
     try {
       await onSubmit(rows);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
     } finally {
       setIsSubmitting(false);
     }
@@ -135,9 +138,9 @@ export function MatchStatsForm({
         </p>
       )}
 
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-full" disabled={isSubmitting || saved}>
         {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
-        Opslaan
+        {saved ? "Opgeslagen!" : "Opslaan"}
       </Button>
     </form>
   );

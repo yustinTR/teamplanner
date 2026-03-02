@@ -12,7 +12,7 @@ const cardVariants = cva(
   {
     variants: {
       size: {
-        sm: "w-12 rounded-sm",
+        sm: "w-16 rounded-sm",
         md: "w-20 rounded-md",
         lg: "w-40 rounded-lg",
       },
@@ -41,6 +41,22 @@ const tierInlineStyles: Record<CardTier, React.CSSProperties> = {
     color: "#3d1e00",
   },
 };
+
+// --- Shimmer overlay for gold cards ---
+
+function GoldShimmer() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]"
+      aria-hidden="true"
+    >
+      <div
+        className="absolute -left-full top-0 h-full w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/25 to-transparent"
+        style={{ animation: "shimmer 3s ease-in-out infinite" }}
+      />
+    </div>
+  );
+}
 
 // --- Props ---
 
@@ -125,11 +141,11 @@ function SmallCard({
       style={tierInlineStyles[tier]}
     >
       <div className="flex items-baseline gap-0.5">
-        <span className="text-[11px] leading-tight">{overall}</span>
+        <span className="text-xs leading-tight">{overall}</span>
       </div>
-      <span className="text-[8px] leading-tight opacity-80">{position}</span>
-      <span className="mt-auto max-w-full truncate px-0.5 text-[7px] leading-tight opacity-90">
-        {name.split(" ").pop()}
+      <span className="text-[9px] leading-tight opacity-80">{position}</span>
+      <span className="mt-auto max-w-full truncate px-0.5 text-[8px] leading-tight opacity-90">
+        {name}
       </span>
     </div>
   );
@@ -177,6 +193,7 @@ function MediumCard({
       <span className="max-w-full truncate px-1 text-center text-[10px] leading-tight">
         {name}
       </span>
+      {tier === "gold" && <GoldShimmer />}
     </div>
   );
 }
@@ -249,6 +266,7 @@ function LargeCard({
           <StatRow label="FYS" value={stats.phy} />
         </div>
       )}
+      {tier === "gold" && <GoldShimmer />}
     </div>
   );
 }
