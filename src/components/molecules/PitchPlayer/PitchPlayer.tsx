@@ -88,7 +88,7 @@ export function PitchPlayer({
           >
             {jerseyNumber ?? positionLabel}
           </div>
-          <span className="mt-0.5 max-w-[60px] truncate text-center text-[10px] font-medium text-white drop-shadow-md">
+          <span className="mt-0.5 max-w-[80px] truncate text-center text-[10px] font-medium text-white drop-shadow-md">
             {name}
           </span>
         </>

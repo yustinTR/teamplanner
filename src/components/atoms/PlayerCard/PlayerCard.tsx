@@ -12,7 +12,7 @@ const cardVariants = cva(
   {
     variants: {
       size: {
-        sm: "w-12 rounded-sm",
+        sm: "w-16 rounded-sm",
         md: "w-20 rounded-md",
         lg: "w-40 rounded-lg",
       },
@@ -141,11 +141,11 @@ function SmallCard({
       style={tierInlineStyles[tier]}
     >
       <div className="flex items-baseline gap-0.5">
-        <span className="text-[11px] leading-tight">{overall}</span>
+        <span className="text-xs leading-tight">{overall}</span>
       </div>
-      <span className="text-[8px] leading-tight opacity-80">{position}</span>
-      <span className="mt-auto max-w-full truncate px-0.5 text-[7px] leading-tight opacity-90">
-        {name.split(" ").pop()}
+      <span className="text-[9px] leading-tight opacity-80">{position}</span>
+      <span className="mt-auto max-w-full truncate px-0.5 text-[8px] leading-tight opacity-90">
+        {name}
       </span>
     </div>
   );

@@ -222,15 +222,15 @@ export function ShareLineupCard({
               <>
                 <div
                   style={{
-                    width: 40,
-                    height: 40,
+                    width: 44,
+                    height: 44,
                     borderRadius: "50%",
                     border: "2px solid #ffffff",
                     background: "#1a56db",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: 700,
                     color: "#ffffff",
                     boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
@@ -241,7 +241,7 @@ export function ShareLineupCard({
                 <span
                   style={{
                     marginTop: 2,
-                    maxWidth: 64,
+                    maxWidth: 90,
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
@@ -252,7 +252,7 @@ export function ShareLineupCard({
                     textShadow: "0 1px 3px rgba(0,0,0,0.5)",
                   }}
                 >
-                  {player.name.split(" ").pop()}
+                  {player.name}
                 </span>
               </>
             )}
