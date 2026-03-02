@@ -1,8 +1,43 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 interface JoinPageProps {
   params: Promise<{ code: string }>;
+}
+
+export async function generateMetadata({ params }: JoinPageProps): Promise<Metadata> {
+  const { code } = await params;
+  const supabase = await createClient();
+
+  // Try to fetch team name — may fail if RLS blocks anonymous access
+  const { data: team } = await supabase
+    .from("teams")
+    .select("name")
+    .eq("invite_code", code)
+    .limit(1)
+    .single();
+
+  const teamName = team?.name;
+  const title = teamName
+    ? `Word lid van ${teamName}!`
+    : "Je bent uitgenodigd!";
+  const description = teamName
+    ? `Je bent uitgenodigd om lid te worden van ${teamName} op MyTeamPlanner. Meld je gratis aan en doe mee.`
+    : "Een teamgenoot heeft je uitgenodigd om mee te doen op MyTeamPlanner. Meld je gratis aan.";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://myteamplanner.nl/join/${code}`,
+      siteName: "MyTeamPlanner",
+      images: [{ url: "/api/og", width: 1200, height: 630 }],
+    },
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function JoinPage({ params }: JoinPageProps) {
