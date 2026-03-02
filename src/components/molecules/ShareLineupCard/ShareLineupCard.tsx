@@ -10,6 +10,11 @@ interface SharePlayer {
   cardTier?: CardTier | null;
 }
 
+interface SubstitutionDisplay {
+  minute: number;
+  changes: { outName: string; inName: string; position: string }[];
+}
+
 interface ShareLineupCardProps {
   teamName: string;
   opponent: string;
@@ -17,6 +22,7 @@ interface ShareLineupCardProps {
   formation: string;
   players: SharePlayer[];
   benchNames: string[];
+  substitutions?: SubstitutionDisplay[];
   className?: string;
 }
 
@@ -27,6 +33,7 @@ export function ShareLineupCard({
   formation,
   players,
   benchNames,
+  substitutions,
   className,
 }: ShareLineupCardProps) {
   const date = new Date(matchDate);
@@ -265,6 +272,55 @@ export function ShareLineupCard({
         >
           Bank: {benchNames.join(", ")}
         </p>
+      )}
+
+      {/* Substitutions */}
+      {substitutions && substitutions.length > 0 && (
+        <div style={{ marginTop: 16 }}>
+          <h3
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: "rgba(255,255,255,0.6)",
+              marginBottom: 8,
+            }}
+          >
+            Wissels
+          </h3>
+          {substitutions.map((sub, i) => (
+            <div key={i} style={{ marginBottom: 8 }}>
+              <span
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "rgba(255,255,255,0.5)",
+                }}
+              >
+                {sub.minute}&apos;
+              </span>
+              {sub.changes.map((change, j) => (
+                <div
+                  key={j}
+                  style={{
+                    fontSize: 12,
+                    color: "rgba(255,255,255,0.7)",
+                    marginLeft: 8,
+                  }}
+                >
+                  <span style={{ color: "#ef4444" }}>
+                    ↓ {change.outName}
+                  </span>{" "}
+                  <span style={{ color: "rgba(255,255,255,0.4)" }}>
+                    ({change.position})
+                  </span>{" "}
+                  <span style={{ color: "#22c55e" }}>
+                    ↑ {change.inName}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       )}
 
       {/* Footer */}

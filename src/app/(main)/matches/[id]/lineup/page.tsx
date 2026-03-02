@@ -42,7 +42,11 @@ export default function LineupPage({ params }: LineupPageProps) {
       )}
 
       {isCoach ? (
-        <LineupField matchId={id} />
+        <LineupField
+          matchId={id}
+          matchOpponent={match?.opponent}
+          matchDate={match?.match_date}
+        />
       ) : (
         <LineupView
           matchId={id}
