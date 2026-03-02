@@ -177,8 +177,15 @@ export function SubstitutionPlanEditor({
     window.print();
   }
 
+  // Suggest a minute for new moments based on existing ones
+  const suggestedMinute = moments.length > 0
+    ? Math.min(Math.max(...moments.map((m) => m.minute)) + 5, totalMinutes - 1)
+    : 0;
+
   // Get field/bench for the form context (initial values)
-  const formMinute = editingIndex !== null ? moments[editingIndex]?.minute ?? 1 : 1;
+  const formMinute = editingIndex !== null
+    ? moments[editingIndex]?.minute ?? 1
+    : suggestedMinute || 1;
   const { field: formField, bench: formBench } = getFieldAndBenchAtMinute(
     formMinute,
     editingIndex ?? undefined
@@ -258,11 +265,17 @@ export function SubstitutionPlanEditor({
           </SheetHeader>
           <div className="px-4 pb-4">
             <SubstitutionMomentForm
-              key={editingIndex ?? "new"}
+              key={editingIndex ?? `new-${suggestedMinute}`}
               fieldPlayers={formField}
               benchPlayers={formBench}
               totalMinutes={totalMinutes}
-              defaultValues={editingIndex !== null ? moments[editingIndex] : undefined}
+              defaultValues={
+                editingIndex !== null
+                  ? moments[editingIndex]
+                  : suggestedMinute > 0
+                    ? { minute: suggestedMinute, out: [], in: [] }
+                    : undefined
+              }
               onSubmit={handleFormSubmit}
               onCancel={() => {
                 setSheetOpen(false);
