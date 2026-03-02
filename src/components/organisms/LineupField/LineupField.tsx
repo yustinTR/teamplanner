@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors, useDroppable } from "@dnd-kit/core";
 import { motion } from "framer-motion";
 import { Wand2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { spring } from "@/lib/animations";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlayers } from "@/hooks/use-players";
@@ -21,7 +22,7 @@ import { FORMATIONS, TEAM_TYPE_CONFIG, getFormationsForTeamType, getDefaultForma
 import { generateSubstitutionPlan, type SubstituteSuggestion, matchPlayerToPlayer } from "@/lib/lineup-generator";
 import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
 import { SubstitutionPlanEditor } from "@/components/organisms/SubstitutionPlanEditor";
-import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan } from "@/types";
+import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan, Availability, MatchPlayer, Team } from "@/types";
 
 function getPlayerCardProps(player: Player, positionLabel: string) {
   const rawSkills = (player.skills as PlayerSkills) ?? {};
@@ -39,12 +40,57 @@ interface LineupFieldProps {
   matchId: string;
 }
 
+// Outer component: fetches data and shows loading state.
+// Inner editor only mounts after data is loaded, so useState initializers
+// get the correct values from existingLineup.
 export function LineupField({ matchId }: LineupFieldProps) {
   const { currentTeam } = useAuthStore();
   const { data: players, isLoading: playersLoading } = usePlayers(currentTeam?.id);
   const { data: availability } = useAvailability(matchId);
   const { data: matchPlayersData } = useMatchPlayers(matchId);
   const { data: existingLineup, isLoading: lineupLoading } = useLineup(matchId);
+
+  if (playersLoading || lineupLoading) {
+    return (
+      <div className="flex justify-center py-12">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  return (
+    <LineupFieldEditor
+      matchId={matchId}
+      currentTeam={currentTeam ?? null}
+      players={players ?? []}
+      availability={availability ?? []}
+      matchPlayersData={matchPlayersData ?? []}
+      existingLineup={existingLineup ?? null}
+    />
+  );
+}
+
+interface LineupFieldEditorProps {
+  matchId: string;
+  currentTeam: Team | null;
+  players: Player[];
+  availability: Availability[];
+  matchPlayersData: MatchPlayer[];
+  existingLineup: {
+    formation: string | null;
+    positions: unknown;
+    substitution_plan: unknown;
+  } | null;
+}
+
+function LineupFieldEditor({
+  matchId,
+  currentTeam,
+  players,
+  availability,
+  matchPlayersData,
+  existingLineup,
+}: LineupFieldEditorProps) {
   const saveLineup = useSaveLineup();
 
   const teamType = currentTeam?.team_type ?? "senioren";
@@ -59,20 +105,9 @@ export function LineupField({ matchId }: LineupFieldProps) {
   );
   const [hasChanges, setHasChanges] = useState(false);
   const [substitutes, setSubstitutes] = useState<SubstituteSuggestion[]>([]);
-  const [substitutionPlan, setSubstitutionPlan] = useState<SubstitutionPlan | null>(null);
-
-  // Update state when lineup loads
-  useState(() => {
-    if (existingLineup) {
-      setFormation(existingLineup.formation ?? defaultFormation);
-      setPositions(
-        (existingLineup.positions as unknown as LineupPosition[]) ?? []
-      );
-      if (existingLineup.substitution_plan) {
-        setSubstitutionPlan(existingLineup.substitution_plan as unknown as SubstitutionPlan);
-      }
-    }
-  });
+  const [substitutionPlan, setSubstitutionPlan] = useState<SubstitutionPlan | null>(
+    () => (existingLineup?.substitution_plan as unknown as SubstitutionPlan) ?? null
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -86,23 +121,23 @@ export function LineupField({ matchId }: LineupFieldProps) {
   // Available players for the bench
   const availablePlayerIds = new Set(
     availability
-      ?.filter((a) => a.status === "available" || a.status === "maybe")
-      .map((a) => a.player_id) ?? []
+      .filter((a) => a.status === "available" || a.status === "maybe")
+      .map((a) => a.player_id)
   );
 
   const assignedPlayerIds = new Set(positions.map((p) => p.player_id));
 
   // Convert match players to Player-like objects for the bench
-  const matchPlayersList: Player[] = (matchPlayersData ?? []).map(matchPlayerToPlayer);
+  const matchPlayersList: Player[] = matchPlayersData.map(matchPlayerToPlayer);
 
   const benchPlayers = [
-    ...(players ?? []).filter(
+    ...players.filter(
       (p) => availablePlayerIds.has(p.id) && !assignedPlayerIds.has(p.id) && p.role !== "staff"
     ),
     ...matchPlayersList.filter((p) => !assignedPlayerIds.has(p.id)),
   ];
 
-  const allPlayersForMap: Player[] = [...(players ?? []), ...matchPlayersList];
+  const allPlayersForMap: Player[] = [...players, ...matchPlayersList];
   const playerMap = new Map(allPlayersForMap.map((p) => [p.id, p]));
 
   const formationSlots = FORMATIONS[formation] ?? teamFormations[defaultFormation];
@@ -123,7 +158,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
 
   function handleAutoLineup() {
     const availablePlayers = [
-      ...(players ?? []).filter((p) => availablePlayerIds.has(p.id) && p.role !== "staff"),
+      ...players.filter((p) => availablePlayerIds.has(p.id) && p.role !== "staff"),
       ...matchPlayersList,
     ];
 
@@ -132,7 +167,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
     const result = generateSubstitutionPlan(
       formation,
       availablePlayers,
-      (availability ?? []) as AvailabilityWithPlayer[],
+      availability as AvailabilityWithPlayer[],
       config
     );
     setPositions(result.positions);
@@ -201,14 +236,6 @@ export function LineupField({ matchId }: LineupFieldProps) {
     setHasChanges(false);
   }
 
-  if (playersLoading || lineupLoading) {
-    return (
-      <div className="flex justify-center py-12">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
-
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div className="space-y-4">
@@ -219,7 +246,7 @@ export function LineupField({ matchId }: LineupFieldProps) {
             size="sm"
             className="shrink-0 gap-1.5"
             onClick={handleAutoLineup}
-            disabled={!players?.length}
+            disabled={!players.length}
           >
             <Wand2 className="size-4" />
             Auto
@@ -352,8 +379,6 @@ export function LineupField({ matchId }: LineupFieldProps) {
 }
 
 // Simple droppable zone component
-import { useDroppable } from "@dnd-kit/core";
-
 function DropZone({
   id,
   x,
@@ -380,5 +405,3 @@ function DropZone({
     </div>
   );
 }
-
-import { cn } from "@/lib/utils";
