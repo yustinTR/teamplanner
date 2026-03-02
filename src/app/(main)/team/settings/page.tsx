@@ -36,7 +36,7 @@ export default function TeamSettingsPage() {
         <div className="bg-gradient-to-r from-primary-800 to-primary-600 px-4 pb-6 pt-5">
           <h1 className="text-2xl font-bold text-white">Teaminstellingen</h1>
         </div>
-        <div className="-mt-2 px-4 pb-4">
+        <div className="px-4 pb-4">
           <div className="rounded-xl bg-white p-5 shadow-md">
             <h2 className="mb-2 text-lg font-medium">Uitnodigingslink</h2>
             <InviteLink inviteCode={currentTeam.invite_code} />
@@ -52,7 +52,7 @@ export default function TeamSettingsPage() {
         <h1 className="text-2xl font-bold text-white">Teaminstellingen</h1>
       </div>
 
-      <div className="-mt-2 px-4 pb-4">
+      <div className="px-4 pb-4">
         <div className="mx-auto max-w-sm space-y-4">
           <div className="rounded-xl bg-white p-5 shadow-md">
             <TeamForm

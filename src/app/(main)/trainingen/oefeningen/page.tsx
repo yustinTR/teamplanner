@@ -17,7 +17,7 @@ export default function OefeningenPage() {
         </Link>
         <h1 className="text-2xl font-bold text-white">Oefeningen</h1>
       </div>
-      <div className="-mt-2 px-4 pb-4">
+      <div className="px-4 pb-4">
         <ExerciseList />
       </div>
     </div>
