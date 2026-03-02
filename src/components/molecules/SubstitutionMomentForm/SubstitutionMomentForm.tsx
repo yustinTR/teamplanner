@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
@@ -27,6 +27,7 @@ interface SubstitutionMomentFormProps {
   defaultValues?: SubstitutionMoment;
   onSubmit: (moment: SubstitutionMoment) => void;
   onCancel: () => void;
+  getPlayersAtMinute?: (minute: number) => { field: PlayerOption[]; bench: PlayerOption[] };
 }
 
 interface SwapPair {
@@ -41,6 +42,7 @@ export function SubstitutionMomentForm({
   defaultValues,
   onSubmit,
   onCancel,
+  getPlayersAtMinute,
 }: SubstitutionMomentFormProps) {
   const [minute, setMinute] = useState(defaultValues?.minute ?? 0);
   const [swaps, setSwaps] = useState<SwapPair[]>(() => {
@@ -53,9 +55,35 @@ export function SubstitutionMomentForm({
     return [{ outId: "", inId: "" }];
   });
 
+  // Dynamically compute field/bench based on minute (accounts for prior substitutions)
+  const { field: dynamicField, bench: dynamicBench } = useMemo(() => {
+    if (getPlayersAtMinute && minute > 0) {
+      return getPlayersAtMinute(minute);
+    }
+    return { field: fieldPlayers, bench: benchPlayers };
+  }, [getPlayersAtMinute, minute, fieldPlayers, benchPlayers]);
+
   // Collect already-selected IDs so each player can only be picked once
   const selectedOutIds = new Set(swaps.map((s) => s.outId).filter(Boolean));
   const selectedInIds = new Set(swaps.map((s) => s.inId).filter(Boolean));
+
+  function handleMinuteChange(newMinute: number) {
+    setMinute(newMinute);
+    // Reset swap selections when minute changes, since available players change
+    if (getPlayersAtMinute) {
+      setSwaps((prev) =>
+        prev.map((s) => {
+          const { field, bench } = getPlayersAtMinute(newMinute > 0 ? newMinute : 1);
+          const fieldIds = new Set(field.map((p) => p.id));
+          const benchIds = new Set(bench.map((p) => p.id));
+          return {
+            outId: fieldIds.has(s.outId) ? s.outId : "",
+            inId: benchIds.has(s.inId) ? s.inId : "",
+          };
+        })
+      );
+    }
+  }
 
   function handleSwapChange(index: number, field: "outId" | "inId", value: string) {
     setSwaps((prev) => prev.map((s, i) => (i === index ? { ...s, [field]: value } : s)));
@@ -69,8 +97,8 @@ export function SubstitutionMomentForm({
     setSwaps((prev) => prev.filter((_, i) => i !== index));
   }
 
-  const allFieldPlayers = [...fieldPlayers];
-  const allBenchPlayers = [...benchPlayers];
+  const allFieldPlayers = [...dynamicField];
+  const allBenchPlayers = [...dynamicBench];
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -118,7 +146,7 @@ export function SubstitutionMomentForm({
           min={1}
           max={totalMinutes - 1}
           value={minute || ""}
-          onChange={(e) => setMinute(Number(e.target.value))}
+          onChange={(e) => handleMinuteChange(Number(e.target.value))}
           required
         />
       </div>

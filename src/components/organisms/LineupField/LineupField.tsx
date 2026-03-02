@@ -433,24 +433,30 @@ function LineupFieldEditor({
           </motion.div>
         )}
 
-        {isSaved && !hasChanges && positions.some((p) => p.player_id) && matchOpponent && (
+        {isSaved && !hasChanges && positions.some((p) => p.player_id) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={spring.bouncy}
+            className="space-y-2"
           >
-            <Button
-              variant="outline"
-              className="w-full gap-2"
-              onClick={() =>
-                shareRef.current &&
-                share(shareRef.current, `opstelling-${matchId}`)
-              }
-              disabled={isGenerating}
-            >
-              <Share2 className="size-4" />
-              {isGenerating ? "Genereren..." : "Deel opstelling"}
-            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              Opstelling opgeslagen. Sleep spelers om te wijzigen.
+            </p>
+            {matchOpponent && (
+              <Button
+                variant="outline"
+                className="w-full gap-2"
+                onClick={() =>
+                  shareRef.current &&
+                  share(shareRef.current, `opstelling-${matchId}`)
+                }
+                disabled={isGenerating}
+              >
+                <Share2 className="size-4" />
+                {isGenerating ? "Genereren..." : "Deel opstelling"}
+              </Button>
+            )}
           </motion.div>
         )}
 

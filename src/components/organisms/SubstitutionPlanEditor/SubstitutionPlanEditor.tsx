@@ -177,12 +177,17 @@ export function SubstitutionPlanEditor({
     window.print();
   }
 
-  // Get field/bench for the form context
+  // Get field/bench for the form context (initial values)
   const formMinute = editingIndex !== null ? moments[editingIndex]?.minute ?? 1 : 1;
   const { field: formField, bench: formBench } = getFieldAndBenchAtMinute(
     formMinute,
     editingIndex ?? undefined
   );
+
+  // Callback for dynamic field/bench when minute changes in the form
+  function getPlayersAtMinute(atMinute: number) {
+    return getFieldAndBenchAtMinute(atMinute, editingIndex ?? undefined);
+  }
 
   return (
     <div className="space-y-4">
@@ -263,6 +268,7 @@ export function SubstitutionPlanEditor({
                 setSheetOpen(false);
                 setEditingIndex(null);
               }}
+              getPlayersAtMinute={getPlayersAtMinute}
             />
           </div>
         </SheetContent>
