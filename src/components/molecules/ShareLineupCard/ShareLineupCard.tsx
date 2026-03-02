@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { PlayerCard } from "@/components/atoms/PlayerCard";
 import type { CardTier } from "@/lib/player-rating";
 
@@ -43,35 +42,166 @@ export function ShareLineupCard({
 
   return (
     <div
-      className={cn(
-        "flex w-[540px] flex-col overflow-hidden rounded-2xl bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-900 p-6 text-white",
-        className
-      )}
+      className={className}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: 540,
+        overflow: "hidden",
+        borderRadius: 16,
+        background: "linear-gradient(to bottom, #1a1a2e, #16213e, #0f3460)",
+        padding: 24,
+        color: "#ffffff",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+      }}
     >
       {/* Header */}
-      <div className="mb-4 text-center">
-        <h2 className="text-2xl font-bold">{teamName}</h2>
-        <p className="mt-0.5 text-base text-white/70">vs. {opponent}</p>
-        <p className="mt-0.5 text-sm text-white/50">
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <h2
+          style={{
+            fontSize: 28,
+            fontWeight: 800,
+            margin: 0,
+            letterSpacing: -0.5,
+          }}
+        >
+          {teamName}
+        </h2>
+        <p
+          style={{
+            fontSize: 16,
+            color: "rgba(255,255,255,0.7)",
+            marginTop: 4,
+          }}
+        >
+          vs. {opponent}
+        </p>
+        <p
+          style={{
+            fontSize: 13,
+            color: "rgba(255,255,255,0.45)",
+            marginTop: 4,
+          }}
+        >
           {dateStr} · {timeStr} · {formation}
         </p>
       </div>
 
       {/* Pitch */}
-      <div className="relative aspect-[68/105] w-full overflow-hidden rounded-xl bg-green-600">
-        {/* Field markings */}
-        <div className="absolute inset-3 rounded-md border-2 border-white/40" />
-        <div className="absolute inset-x-3 top-1/2 h-px -translate-y-1/2 bg-white/40" />
-        <div className="absolute left-1/2 top-1/2 size-24 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/40" />
-        <div className="absolute inset-x-[20%] top-3 h-[18%] border-2 border-t-0 border-white/40" />
-        <div className="absolute inset-x-[20%] bottom-3 h-[18%] border-2 border-b-0 border-white/40" />
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "68/105",
+          borderRadius: 12,
+          background:
+            "linear-gradient(180deg, #2d8a4e 0%, #1e6b3a 30%, #1e6b3a 70%, #2d8a4e 100%)",
+          overflow: "hidden",
+        }}
+      >
+        {/* Pitch stripes (subtle mowing pattern) */}
+        {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+          <div
+            key={`stripe-${i}`}
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: `${i * 15}%`,
+              height: "15%",
+              background:
+                i % 2 === 0 ? "rgba(255,255,255,0.03)" : "transparent",
+            }}
+          />
+        ))}
+
+        {/* Outer boundary */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 12,
+            borderRadius: 4,
+            border: "2px solid rgba(255,255,255,0.35)",
+          }}
+        />
+        {/* Halfway line */}
+        <div
+          style={{
+            position: "absolute",
+            left: 12,
+            right: 12,
+            top: "50%",
+            height: 1,
+            background: "rgba(255,255,255,0.35)",
+            transform: "translateY(-50%)",
+          }}
+        />
+        {/* Center circle */}
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: 96,
+            height: 96,
+            borderRadius: "50%",
+            border: "2px solid rgba(255,255,255,0.35)",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+        {/* Center dot */}
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: 6,
+            height: 6,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.35)",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+        {/* Top penalty area */}
+        <div
+          style={{
+            position: "absolute",
+            left: "20%",
+            right: "20%",
+            top: 12,
+            height: "18%",
+            borderLeft: "2px solid rgba(255,255,255,0.35)",
+            borderRight: "2px solid rgba(255,255,255,0.35)",
+            borderBottom: "2px solid rgba(255,255,255,0.35)",
+          }}
+        />
+        {/* Bottom penalty area */}
+        <div
+          style={{
+            position: "absolute",
+            left: "20%",
+            right: "20%",
+            bottom: 12,
+            height: "18%",
+            borderLeft: "2px solid rgba(255,255,255,0.35)",
+            borderRight: "2px solid rgba(255,255,255,0.35)",
+            borderTop: "2px solid rgba(255,255,255,0.35)",
+          }}
+        />
 
         {/* Players */}
         {players.map((player, i) => (
           <div
             key={i}
-            className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
-            style={{ left: `${player.x}%`, top: `${player.y}%` }}
+            style={{
+              position: "absolute",
+              left: `${player.x}%`,
+              top: `${player.y}%`,
+              transform: "translate(-50%, -50%)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
             {player.overall != null && player.cardTier != null ? (
               <PlayerCard
@@ -83,10 +213,38 @@ export function ShareLineupCard({
               />
             ) : (
               <>
-                <div className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-primary text-xs font-bold text-white shadow-md">
+                <div
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
+                    border: "2px solid #ffffff",
+                    background: "#1a56db",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: "#ffffff",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+                  }}
+                >
                   {player.positionLabel}
                 </div>
-                <span className="mt-0.5 max-w-[60px] truncate text-center text-[10px] font-medium text-white drop-shadow-md">
+                <span
+                  style={{
+                    marginTop: 2,
+                    maxWidth: 64,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    textAlign: "center",
+                    fontSize: 10,
+                    fontWeight: 600,
+                    color: "#ffffff",
+                    textShadow: "0 1px 3px rgba(0,0,0,0.5)",
+                  }}
+                >
                   {player.name.split(" ").pop()}
                 </span>
               </>
@@ -97,13 +255,29 @@ export function ShareLineupCard({
 
       {/* Bench */}
       {benchNames.length > 0 && (
-        <p className="mt-3 text-center text-sm text-white/60">
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: 13,
+            color: "rgba(255,255,255,0.5)",
+            marginTop: 12,
+          }}
+        >
           Bank: {benchNames.join(", ")}
         </p>
       )}
 
       {/* Footer */}
-      <div className="mt-4 border-t border-white/10 pt-3 text-center text-xs text-white/30">
+      <div
+        style={{
+          marginTop: 16,
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+          paddingTop: 12,
+          textAlign: "center",
+          fontSize: 11,
+          color: "rgba(255,255,255,0.25)",
+        }}
+      >
         myteamplanner.nl
       </div>
     </div>

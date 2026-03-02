@@ -1,5 +1,3 @@
-import { cn } from "@/lib/utils";
-
 interface StatEntry {
   playerName: string;
   goals: number;
@@ -50,36 +48,84 @@ export function ShareMatchReport({
 
   return (
     <div
-      className={cn(
-        "flex w-[540px] flex-col overflow-hidden rounded-2xl bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-900 p-6 text-white",
-        className
-      )}
+      className={className}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: 540,
+        overflow: "hidden",
+        borderRadius: 16,
+        background: "linear-gradient(to bottom, #1a1a2e, #16213e, #0f3460)",
+        padding: 24,
+        color: "#ffffff",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+      }}
     >
       {/* Date */}
-      <p className="text-center text-sm text-white/50">
+      <p
+        style={{
+          textAlign: "center",
+          fontSize: 13,
+          color: "rgba(255,255,255,0.45)",
+        }}
+      >
         {dateStr} · {timeStr}
       </p>
 
       {/* Score */}
-      <div className="my-4 text-center">
-        <div className="flex items-center justify-center gap-4">
-          <span className="text-lg font-semibold">{homeName}</span>
-          <span className="text-4xl font-bold tabular-nums">
+      <div style={{ textAlign: "center", margin: "16px 0" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 16,
+          }}
+        >
+          <span style={{ fontSize: 18, fontWeight: 600 }}>{homeName}</span>
+          <span
+            style={{
+              fontSize: 40,
+              fontWeight: 800,
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
             {scoreHome} - {scoreAway}
           </span>
-          <span className="text-lg font-semibold">{awayName}</span>
+          <span style={{ fontSize: 18, fontWeight: 600 }}>{awayName}</span>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="space-y-3 border-t border-white/10 pt-4">
+      <div
+        style={{
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+          paddingTop: 16,
+        }}
+      >
         {goalScorers.length > 0 && (
-          <div>
-            <h3 className="mb-1 text-xs font-medium uppercase tracking-wider text-white/40">
+          <div style={{ marginBottom: 12 }}>
+            <h3
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: 1.5,
+                color: "rgba(255,255,255,0.35)",
+                marginBottom: 4,
+              }}
+            >
               Doelpunten
             </h3>
             {goalScorers.map((s) => (
-              <p key={s.playerName} className="text-sm text-white/80">
+              <p
+                key={s.playerName}
+                style={{
+                  fontSize: 14,
+                  color: "rgba(255,255,255,0.8)",
+                  margin: "2px 0",
+                }}
+              >
                 {s.playerName} {s.goals > 1 ? `(${s.goals}x)` : ""}
               </p>
             ))}
@@ -87,12 +133,28 @@ export function ShareMatchReport({
         )}
 
         {assistMakers.length > 0 && (
-          <div>
-            <h3 className="mb-1 text-xs font-medium uppercase tracking-wider text-white/40">
+          <div style={{ marginBottom: 12 }}>
+            <h3
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: 1.5,
+                color: "rgba(255,255,255,0.35)",
+                marginBottom: 4,
+              }}
+            >
               Assists
             </h3>
             {assistMakers.map((s) => (
-              <p key={s.playerName} className="text-sm text-white/80">
+              <p
+                key={s.playerName}
+                style={{
+                  fontSize: 14,
+                  color: "rgba(255,255,255,0.8)",
+                  margin: "2px 0",
+                }}
+              >
                 {s.playerName} {s.assists > 1 ? `(${s.assists}x)` : ""}
               </p>
             ))}
@@ -100,17 +162,32 @@ export function ShareMatchReport({
         )}
 
         {(yellowCards.length > 0 || redCards.length > 0) && (
-          <div>
-            <h3 className="mb-1 text-xs font-medium uppercase tracking-wider text-white/40">
+          <div style={{ marginBottom: 12 }}>
+            <h3
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: 1.5,
+                color: "rgba(255,255,255,0.35)",
+                marginBottom: 4,
+              }}
+            >
               Kaarten
             </h3>
             {yellowCards.map((s) => (
-              <p key={`y-${s.playerName}`} className="text-sm text-yellow-400">
+              <p
+                key={`y-${s.playerName}`}
+                style={{ fontSize: 14, color: "#facc15", margin: "2px 0" }}
+              >
                 {s.playerName}
               </p>
             ))}
             {redCards.map((s) => (
-              <p key={`r-${s.playerName}`} className="text-sm text-red-400">
+              <p
+                key={`r-${s.playerName}`}
+                style={{ fontSize: 14, color: "#ef4444", margin: "2px 0" }}
+              >
                 {s.playerName}
               </p>
             ))}
@@ -121,14 +198,29 @@ export function ShareMatchReport({
           assistMakers.length === 0 &&
           yellowCards.length === 0 &&
           redCards.length === 0 && (
-            <p className="text-center text-sm text-white/40">
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: 14,
+                color: "rgba(255,255,255,0.35)",
+              }}
+            >
               Geen statistieken ingevuld.
             </p>
           )}
       </div>
 
       {/* Footer */}
-      <div className="mt-4 border-t border-white/10 pt-3 text-center text-xs text-white/30">
+      <div
+        style={{
+          marginTop: 16,
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+          paddingTop: 12,
+          textAlign: "center",
+          fontSize: 11,
+          color: "rgba(255,255,255,0.25)",
+        }}
+      >
         myteamplanner.nl
       </div>
     </div>
