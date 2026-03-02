@@ -23,9 +23,10 @@ export function PlayerStatsSection({
     );
   }
 
-  if (!stats || stats.matchesPlayed === 0) {
-    return null;
-  }
+  if (!stats) return null;
+
+  const hasStats = stats.matchesPlayed > 0 || stats.goals > 0 || stats.assists > 0 || stats.yellowCards > 0 || stats.redCards > 0;
+  if (!hasStats) return null;
 
   return (
     <div>

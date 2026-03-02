@@ -43,7 +43,7 @@ export function usePlayerSeasonStats(
 
       const { data: lineups } = await supabase
         .from("lineups")
-        .select("match_id, substitution_plan")
+        .select("match_id, substitution_plan, positions")
         .in("match_id", matchIds);
 
       const { data: stats } = await supabase
@@ -98,7 +98,7 @@ export function useTeamSeasonStats(teamId: string | undefined) {
 
       const { data: lineups } = await supabase
         .from("lineups")
-        .select("match_id, substitution_plan")
+        .select("match_id, substitution_plan, positions")
         .in("match_id", matchIds);
 
       const { data: allStats } = await supabase
