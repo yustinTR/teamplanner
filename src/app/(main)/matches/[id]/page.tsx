@@ -1,8 +1,8 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, MapPin, Clock, XCircle, CheckCircle, ClipboardList, UserPlus, Users } from "lucide-react";
+import { ArrowLeft, Pencil, MapPin, Clock, XCircle, CheckCircle, ClipboardList, UserPlus, Users, Share2, Copy } from "lucide-react";
 import Link from "next/link";
 import { useMatch, useUpdateMatch, useCancelMatch } from "@/hooks/use-matches";
 import { useAuthStore } from "@/stores/auth-store";
@@ -19,6 +19,9 @@ import { MatchPlayerChip } from "@/components/molecules/MatchPlayerChip";
 import { MatchStatsEditor } from "@/components/organisms/MatchStatsEditor";
 import { OnboardingHint } from "@/components/molecules/OnboardingHint";
 import { useMatchPlayers, useCreateMatchPlayer, useDeleteMatchPlayer } from "@/hooks/use-match-players";
+import { useMatchStats } from "@/hooks/use-match-stats";
+import { ShareMatchReport } from "@/components/molecules/ShareMatchReport";
+import { useShareImage } from "@/hooks/use-share-image";
 import { formatMatchDate, calculateGatheringTime, formatTime } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
 import {
@@ -58,6 +61,22 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
   const [scoreHome, setScoreHome] = useState(0);
   const [scoreAway, setScoreAway] = useState(0);
   const [leenOpen, setLeenOpen] = useState(false);
+  const reportRef = useRef<HTMLDivElement>(null);
+  const { share: shareImage, isGenerating } = useShareImage();
+  const { data: matchStats } = useMatchStats(match?.status === "completed" ? id : undefined);
+
+  const reportStats = (matchStats ?? [])
+    .map((s) => ({
+      playerName: s.players?.name ?? "Onbekend",
+      goals: s.goals ?? 0,
+      assists: s.assists ?? 0,
+      yellow_cards: s.yellow_cards ?? 0,
+      red_cards: s.red_cards ?? 0,
+    }))
+    .filter(
+      (s) =>
+        s.goals > 0 || s.assists > 0 || s.yellow_cards > 0 || s.red_cards > 0
+    );
 
   if (isLoading) {
     return (
@@ -203,6 +222,88 @@ export default function MatchDetailPage({ params }: MatchDetailPageProps) {
               Wedstrijdstatistieken
             </h2>
             <MatchStatsEditor matchId={match.id} />
+          </div>
+        )}
+
+        {match.status === "completed" && (
+          <div className="rounded-xl bg-white p-4 shadow-md">
+            <h2 className="mb-3 text-lg font-semibold">Verslag delen</h2>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="flex-1 gap-2"
+                onClick={() => {
+                  const homeName =
+                    match.home_away === "home"
+                      ? (currentTeam?.name ?? "Thuis")
+                      : match.opponent;
+                  const awayName =
+                    match.home_away === "away"
+                      ? (currentTeam?.name ?? "Uit")
+                      : match.opponent;
+                  const lines = [
+                    `${homeName} ${match.score_home} - ${match.score_away} ${awayName}`,
+                    formatMatchDate(match.match_date),
+                    "",
+                  ];
+                  const goals = reportStats.filter((s) => s.goals > 0);
+                  if (goals.length) {
+                    lines.push("Doelpunten:");
+                    goals.forEach((s) =>
+                      lines.push(
+                        `  ${s.playerName}${s.goals > 1 ? ` (${s.goals}x)` : ""}`
+                      )
+                    );
+                    lines.push("");
+                  }
+                  const assists = reportStats.filter((s) => s.assists > 0);
+                  if (assists.length) {
+                    lines.push("Assists:");
+                    assists.forEach((s) =>
+                      lines.push(
+                        `  ${s.playerName}${s.assists > 1 ? ` (${s.assists}x)` : ""}`
+                      )
+                    );
+                    lines.push("");
+                  }
+                  lines.push("myteamplanner.nl");
+                  navigator.clipboard.writeText(lines.join("\n"));
+                }}
+              >
+                <Copy className="size-4" />
+                Kopieer tekst
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 gap-2"
+                onClick={() =>
+                  reportRef.current &&
+                  shareImage(
+                    reportRef.current,
+                    `verslag-${match.opponent}`
+                  )
+                }
+                disabled={isGenerating}
+              >
+                <Share2 className="size-4" />
+                {isGenerating ? "Genereren..." : "Deel afbeelding"}
+              </Button>
+            </div>
+
+            {/* Hidden report card for image generation */}
+            <div className="fixed -left-[9999px] top-0">
+              <div ref={reportRef}>
+                <ShareMatchReport
+                  teamName={currentTeam?.name ?? "Team"}
+                  opponent={match.opponent}
+                  homeAway={match.home_away}
+                  matchDate={match.match_date}
+                  scoreHome={match.score_home ?? 0}
+                  scoreAway={match.score_away ?? 0}
+                  stats={reportStats}
+                />
+              </div>
+            </div>
           </div>
         )}
 
