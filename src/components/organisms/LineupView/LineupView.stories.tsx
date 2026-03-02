@@ -39,3 +39,11 @@ export const Default: Story = {
     matchId: "match-001",
   },
 };
+
+export const WithShareButton: Story = {
+  args: {
+    matchId: "match-001",
+    matchOpponent: "FC Tegenstander",
+    matchDate: "2026-03-07T14:30:00",
+  },
+};
