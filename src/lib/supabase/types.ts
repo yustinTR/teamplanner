@@ -655,6 +655,10 @@ export type Database = {
     }
     Functions: {
       get_my_team_ids: { Args: never; Returns: string[] }
+      get_team_by_invite_code: {
+        Args: { invite_code_input: string }
+        Returns: Json
+      }
       join_team_by_invite_code: {
         Args: { invite_code_input: string; user_name: string }
         Returns: Json

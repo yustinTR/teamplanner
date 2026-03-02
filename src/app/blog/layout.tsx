@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export default function FeaturesLayout({
+export default function BlogLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -10,9 +10,9 @@ export default function FeaturesLayout({
   return (
     <>
       {/* Header */}
-      <header className="absolute inset-x-0 top-0 z-10">
+      <header className="border-b bg-white">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-4">
-          <Link href="/" className="flex items-center gap-2 text-white">
+          <Link href="/" className="flex items-center gap-2">
             <Image
               src="/icons/icon-192x192.svg"
               alt="MyTeamPlanner"
@@ -20,11 +20,11 @@ export default function FeaturesLayout({
               height={32}
               className="rounded-lg"
             />
-            <span className="font-semibold">MyTeamPlanner</span>
+            <span className="font-semibold text-neutral-900">MyTeamPlanner</span>
           </Link>
           <Link
             href="/register"
-            className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg bg-white/10 px-4 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+            className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg bg-primary-600 px-4 text-sm font-medium text-white transition-colors hover:bg-primary-700"
           >
             Gratis starten
             <ArrowRight className="size-4" />
@@ -57,51 +57,21 @@ export default function FeaturesLayout({
             <div>
               <h3 className="text-sm font-semibold text-white">Functies</h3>
               <nav className="mt-3 flex flex-col gap-2 text-sm text-neutral-400">
-                <Link
-                  href="/features/wedstrijden"
-                  className="hover:text-white"
-                >
-                  Wedstrijden
-                </Link>
-                <Link
-                  href="/features/beschikbaarheid"
-                  className="hover:text-white"
-                >
-                  Beschikbaarheid
-                </Link>
-                <Link
-                  href="/features/opstellingen"
-                  className="hover:text-white"
-                >
-                  Opstellingen
-                </Link>
-                <Link
-                  href="/features/trainingen"
-                  className="hover:text-white"
-                >
-                  Trainingen
-                </Link>
+                <Link href="/features/wedstrijden" className="hover:text-white">Wedstrijden</Link>
+                <Link href="/features/beschikbaarheid" className="hover:text-white">Beschikbaarheid</Link>
+                <Link href="/features/opstellingen" className="hover:text-white">Opstellingen</Link>
+                <Link href="/features/trainingen" className="hover:text-white">Trainingen</Link>
               </nav>
             </div>
 
             <div>
               <h3 className="text-sm font-semibold text-white">Links</h3>
               <nav className="mt-3 flex flex-col gap-2 text-sm text-neutral-400">
-                <Link href="/blog" className="hover:text-white">
-                  Blog
-                </Link>
-                <Link href="/login" className="hover:text-white">
-                  Inloggen
-                </Link>
-                <Link href="/register" className="hover:text-white">
-                  Registreren
-                </Link>
-                <Link href="/voorwaarden" className="hover:text-white">
-                  Voorwaarden
-                </Link>
-                <Link href="/privacy" className="hover:text-white">
-                  Privacy
-                </Link>
+                <Link href="/blog" className="hover:text-white">Blog</Link>
+                <Link href="/login" className="hover:text-white">Inloggen</Link>
+                <Link href="/register" className="hover:text-white">Registreren</Link>
+                <Link href="/voorwaarden" className="hover:text-white">Voorwaarden</Link>
+                <Link href="/privacy" className="hover:text-white">Privacy</Link>
               </nav>
             </div>
           </div>
