@@ -39,32 +39,34 @@ export function SocialProof({ teamCount, quotes }: SocialProofProps) {
           )}
         </div>
 
-        <motion.div
-          variants={staggerContainer(0.1)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="flex gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0"
-        >
-          {quotes.map((item) => (
-            <motion.div
-              key={item.name}
-              variants={staggerItem}
-              className="w-[280px] shrink-0 rounded-xl border border-neutral-200 bg-white p-5 sm:w-auto"
-            >
-              <Quote className="mb-2 size-5 text-primary-300" />
-              <p className="text-sm italic leading-relaxed text-neutral-700">
-                &ldquo;{item.quote}&rdquo;
-              </p>
-              <div className="mt-3">
-                <p className="text-sm font-semibold text-neutral-900">
-                  {item.name}
+        {quotes.length > 0 && (
+          <motion.div
+            variants={staggerContainer(0.1)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="flex justify-center gap-4"
+          >
+            {quotes.map((item) => (
+              <motion.div
+                key={item.name}
+                variants={staggerItem}
+                className="max-w-md rounded-xl border border-neutral-200 bg-white p-5"
+              >
+                <Quote className="mb-2 size-5 text-primary-300" />
+                <p className="text-sm italic leading-relaxed text-neutral-700">
+                  &ldquo;{item.quote}&rdquo;
                 </p>
-                <p className="text-xs text-muted-foreground">{item.team}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+                <div className="mt-3">
+                  <p className="text-sm font-semibold text-neutral-900">
+                    {item.name}
+                  </p>
+                  <p className="text-xs text-muted-foreground">{item.team}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   );

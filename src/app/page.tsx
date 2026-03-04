@@ -119,20 +119,10 @@ const features = [
 
 const coachQuotes = [
   {
-    quote: "Eindelijk weet ik op donderdag al wie er zaterdag kan spelen.",
-    name: "Coach Willem",
-    team: "Be Fair 5",
-  },
-  {
     quote:
-      "Mijn spelers vinden het geweldig dat ze de opstelling in de app kunnen zien.",
-    name: "Trainer Karin",
-    team: "VV Drieberg JO13",
-  },
-  {
-    quote: "Het wisselschema bespaart me elke week minstens een kwartier.",
-    name: "Coach Martijn",
-    team: "DSVP G1",
+      "Eindelijk weet ik op donderdag al wie er zaterdag kan spelen. Het bespaart me enorm veel WhatsApp-berichten.",
+    name: "Yustin Troost",
+    team: "Trainer G2 Be Fair",
   },
 ];
 

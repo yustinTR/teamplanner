@@ -7,9 +7,9 @@ import { spring } from "@/lib/animations";
 type DemoStep = "availability" | "lineup" | "ready";
 
 const STEP_DURATIONS: Record<DemoStep, number> = {
-  availability: 2000,
-  lineup: 2000,
-  ready: 1500,
+  availability: 4000,
+  lineup: 4000,
+  ready: 3000,
 };
 
 const STEPS: DemoStep[] = ["availability", "lineup", "ready"];
@@ -109,132 +109,146 @@ function PhoneFrame({ children }: { children: React.ReactNode }) {
 }
 
 // --- Demo data ---
+// Matches real app: Avatar (initials) + name + Badge (pill with label)
 
 const DEMO_PLAYERS = [
-  { name: "Daan", status: "available" as const },
-  { name: "Sem", status: "available" as const },
-  { name: "Luca", status: "unavailable" as const },
-  { name: "Finn", status: "available" as const },
-  { name: "Jesse", status: "maybe" as const },
-  { name: "Milan", status: "available" as const },
+  { name: "Daan V.", status: "available" as const },
+  { name: "Sem B.", status: "available" as const },
+  { name: "Luca M.", status: "unavailable" as const },
+  { name: "Finn D.", status: "available" as const },
+  { name: "Jesse K.", status: "maybe" as const },
+  { name: "Milan R.", status: "available" as const },
 ];
 
-const STATUS_COLORS = {
-  available: "bg-success text-white",
-  unavailable: "bg-danger text-white",
-  maybe: "bg-warning text-white",
+const STATUS_BADGE = {
+  available: { bg: "bg-success/10", text: "text-success", label: "Beschikbaar" },
+  unavailable: { bg: "bg-danger/10", text: "text-danger", label: "Afwezig" },
+  maybe: { bg: "bg-warning/10", text: "text-warning", label: "Misschien" },
 };
 
-const STATUS_LABELS = {
-  available: "Ja",
-  unavailable: "Nee",
-  maybe: "?",
-};
-
+// Matches real LineupView: bg-green-600, border-white/40, size-10 primary dots
 const FORMATION_POSITIONS = [
-  { x: 50, y: 90, name: "Sem" },
-  { x: 20, y: 72, name: "Finn" },
-  { x: 40, y: 75, name: "Milan" },
-  { x: 60, y: 75, name: "Luca" },
-  { x: 80, y: 72, name: "Daan" },
-  { x: 30, y: 50, name: "Jesse" },
-  { x: 50, y: 45, name: "Tim" },
-  { x: 70, y: 50, name: "Noah" },
-  { x: 25, y: 25, name: "Luuk" },
-  { x: 50, y: 20, name: "Jayden" },
-  { x: 75, y: 25, name: "Max" },
+  { x: 50, y: 90, label: "K", name: "Sem" },
+  { x: 20, y: 72, label: "LV", name: "Finn" },
+  { x: 40, y: 75, label: "CV", name: "Milan" },
+  { x: 60, y: 75, label: "CV", name: "Luca" },
+  { x: 80, y: 72, label: "RV", name: "Daan" },
+  { x: 30, y: 50, label: "CM", name: "Jesse" },
+  { x: 50, y: 45, label: "CM", name: "Tim" },
+  { x: 70, y: 50, label: "CM", name: "Noah" },
+  { x: 25, y: 25, label: "LA", name: "Luuk" },
+  { x: 50, y: 20, label: "SA", name: "Jayden" },
+  { x: 75, y: 25, label: "RA", name: "Max" },
 ];
 
 // --- Step 1: Availability ---
+// Mirrors: AvailabilitySummary (dots + counts) + PlayerAvailabilityRow (Avatar + name + Badge)
 
 function AvailabilityStep() {
   return (
     <div className="flex h-full flex-col px-3 pt-8">
-      <div className="mb-3 rounded-lg bg-primary-50 px-3 py-2">
-        <p className="text-[10px] font-semibold text-primary-800">
-          Zat 8 mrt — vs FC Hoorn
+      {/* Match header */}
+      <div className="mb-2 rounded-lg border border-neutral-100 bg-white px-3 py-2 shadow-sm">
+        <p className="text-[10px] font-semibold text-neutral-900">
+          vs FC Hoorn
         </p>
+        <p className="text-[8px] text-muted-foreground">Za 8 mrt · 14:30</p>
       </div>
 
-      <div className="space-y-1.5">
-        {DEMO_PLAYERS.map((player, i) => (
-          <motion.div
-            key={player.name}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.2, ...spring.smooth }}
-            className="flex items-center justify-between rounded-lg bg-neutral-50 px-2.5 py-1.5"
-          >
-            <div className="flex items-center gap-2">
-              <div className="flex size-6 items-center justify-center rounded-full bg-neutral-200 text-[8px] font-medium text-neutral-600">
-                {player.name.charAt(0)}
-              </div>
-              <span className="text-[11px] font-medium text-neutral-800">
-                {player.name}
-              </span>
-            </div>
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: i * 0.2 + 0.15, ...spring.bouncy }}
-              className={`flex size-6 items-center justify-center rounded-full text-[9px] font-bold ${STATUS_COLORS[player.status]}`}
-            >
-              {STATUS_LABELS[player.status]}
-            </motion.div>
-          </motion.div>
-        ))}
-      </div>
-
+      {/* Availability summary — mirrors AvailabilitySummary atom */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="mt-3 text-center"
+        transition={{ delay: 1.8 }}
+        className="mb-2 flex items-center gap-2.5 px-0.5 text-[9px] text-neutral-500"
       >
-        <p className="text-[11px] font-semibold text-primary-700">
-          4/6 beschikbaar
-        </p>
+        <span className="flex items-center gap-1">
+          <span className="size-1.5 rounded-full bg-success" />4
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="size-1.5 rounded-full bg-danger" />1
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="size-1.5 rounded-full bg-warning" />1
+        </span>
       </motion.div>
+
+      {/* Player rows — mirrors PlayerAvailabilityRow */}
+      <div className="space-y-0.5">
+        {DEMO_PLAYERS.map((player, i) => (
+          <motion.div
+            key={player.name}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.3, ...spring.smooth }}
+            className="flex items-center gap-2 py-1"
+          >
+            {/* Avatar — mirrors Avatar atom with initials */}
+            <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[7px] font-medium text-neutral-600">
+              {player.name
+                .split(" ")
+                .map((p) => p[0])
+                .join("")}
+            </div>
+            {/* Name */}
+            <span className="flex-1 truncate text-[10px] text-neutral-900">
+              {player.name}
+            </span>
+            {/* Badge — mirrors Badge atom */}
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.3 + 0.2, ...spring.snappy }}
+              className={`rounded-full px-1.5 py-0.5 text-[7px] font-medium ${STATUS_BADGE[player.status].bg} ${STATUS_BADGE[player.status].text}`}
+            >
+              {STATUS_BADGE[player.status].label}
+            </motion.span>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
 
 // --- Step 2: Lineup ---
+// Mirrors: LineupView with bg-green-600, border-white/40 markings,
+// size-10 bg-primary dots with border-white, name below
 
 function LineupStep() {
   return (
-    <div className="relative h-full w-full overflow-hidden bg-gradient-to-b from-emerald-600 to-emerald-700 pt-7">
-      <div className="mb-2 px-3">
-        <p className="text-[10px] font-semibold text-white/90">
-          Opstelling 4-3-3
-        </p>
+    <div className="flex h-full flex-col pt-7">
+      {/* Header */}
+      <div className="mb-1 flex items-center justify-between px-3">
+        <p className="text-[10px] text-muted-foreground">Formatie: 4-3-3</p>
       </div>
 
-      <div className="relative mx-2 flex-1">
-        <div className="absolute left-1/2 top-[45%] size-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/20" />
-        <div className="absolute left-2 right-2 top-[45%] h-px bg-white/20" />
-        <div className="absolute bottom-2 left-1/2 h-10 w-24 -translate-x-1/2 border border-b-0 border-white/20" />
-        <div className="absolute left-1/2 top-2 h-10 w-24 -translate-x-1/2 border border-t-0 border-white/20" />
+      {/* Pitch — mirrors LineupView: aspect-[68/105] bg-green-600 */}
+      <div className="relative mx-2 flex-1 overflow-hidden rounded-lg bg-green-600">
+        {/* Field markings — exact match with LineupView */}
+        <div className="absolute inset-1.5 rounded border border-white/40" />
+        <div className="absolute inset-x-1.5 top-1/2 h-px -translate-y-1/2 bg-white/40" />
+        <div className="absolute left-1/2 top-1/2 size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40" />
+        <div className="absolute inset-x-[20%] top-1.5 h-[18%] border border-t-0 border-white/40" />
+        <div className="absolute inset-x-[20%] bottom-1.5 h-[18%] border border-b-0 border-white/40" />
 
+        {/* Player dots — mirrors PitchPlayer: bg-primary rounded-full border-white */}
         {FORMATION_POSITIONS.map((pos, i) => (
           <motion.div
             key={pos.name}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.08, ...spring.bouncy }}
-            className="absolute flex flex-col items-center"
-            style={{
-              left: `${pos.x}%`,
-              top: `${pos.y}%`,
-              transform: "translate(-50%, -50%)",
-            }}
+            transition={{ delay: i * 0.12, ...spring.bouncy }}
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
           >
-            <div className="flex size-5 items-center justify-center rounded-full bg-white text-[7px] font-bold text-emerald-800 shadow-sm">
-              {pos.name.charAt(0)}
+            <div className="flex flex-col items-center">
+              <div className="flex size-5 items-center justify-center rounded-full border border-white bg-primary text-[6px] font-bold text-primary-foreground shadow-md">
+                {pos.label}
+              </div>
+              <span className="mt-0.5 text-[5px] font-medium text-white drop-shadow-md">
+                {pos.name}
+              </span>
             </div>
-            <span className="mt-0.5 text-[6px] font-medium text-white/80">
-              {pos.name}
-            </span>
           </motion.div>
         ))}
       </div>
@@ -243,55 +257,75 @@ function LineupStep() {
 }
 
 // --- Step 3: Ready ---
+// Same pitch as LineupStep but static, with share button
 
 function ReadyStep() {
   return (
-    <div className="relative h-full w-full overflow-hidden bg-gradient-to-b from-emerald-600 to-emerald-700 pt-7">
-      <div className="mb-2 px-3">
-        <p className="text-[10px] font-semibold text-white/90">
-          Opstelling 4-3-3
-        </p>
+    <div className="flex h-full flex-col pt-7">
+      <div className="mb-1 flex items-center justify-between px-3">
+        <p className="text-[10px] text-muted-foreground">Formatie: 4-3-3</p>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="flex items-center gap-0.5 text-[9px] text-muted-foreground"
+        >
+          <svg
+            className="size-2.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8m-4-6l-4-4m0 0L8 6m4-4v13"
+            />
+          </svg>
+          Delen
+        </motion.div>
       </div>
 
-      <div className="relative mx-2 flex-1">
-        <div className="absolute left-1/2 top-[45%] size-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/20" />
-        <div className="absolute left-2 right-2 top-[45%] h-px bg-white/20" />
-        <div className="absolute bottom-2 left-1/2 h-10 w-24 -translate-x-1/2 border border-b-0 border-white/20" />
-        <div className="absolute left-1/2 top-2 h-10 w-24 -translate-x-1/2 border border-t-0 border-white/20" />
+      <div className="relative mx-2 flex-1 overflow-hidden rounded-lg bg-green-600">
+        <div className="absolute inset-1.5 rounded border border-white/40" />
+        <div className="absolute inset-x-1.5 top-1/2 h-px -translate-y-1/2 bg-white/40" />
+        <div className="absolute left-1/2 top-1/2 size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40" />
+        <div className="absolute inset-x-[20%] top-1.5 h-[18%] border border-t-0 border-white/40" />
+        <div className="absolute inset-x-[20%] bottom-1.5 h-[18%] border border-b-0 border-white/40" />
 
         {FORMATION_POSITIONS.map((pos) => (
           <div
             key={pos.name}
-            className="absolute flex flex-col items-center"
-            style={{
-              left: `${pos.x}%`,
-              top: `${pos.y}%`,
-              transform: "translate(-50%, -50%)",
-            }}
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
           >
-            <div className="flex size-5 items-center justify-center rounded-full bg-white text-[7px] font-bold text-emerald-800 shadow-sm">
-              {pos.name.charAt(0)}
+            <div className="flex flex-col items-center">
+              <div className="flex size-5 items-center justify-center rounded-full border border-white bg-primary text-[6px] font-bold text-primary-foreground shadow-md">
+                {pos.label}
+              </div>
+              <span className="mt-0.5 text-[5px] font-medium text-white drop-shadow-md">
+                {pos.name}
+              </span>
             </div>
-            <span className="mt-0.5 text-[6px] font-medium text-white/80">
-              {pos.name}
-            </span>
           </div>
         ))}
       </div>
 
+      {/* Pulsing share prompt */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 5 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, ...spring.smooth }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2"
+        transition={{ delay: 0.6, ...spring.smooth }}
+        className="px-3 py-2 text-center"
       >
-        <motion.div
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-          className="rounded-full bg-white px-4 py-1.5 text-[10px] font-semibold text-emerald-800 shadow-lg"
+        <motion.p
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="text-[9px] font-medium text-primary"
         >
-          Delen met team
-        </motion.div>
+          Klaar om te delen met je team!
+        </motion.p>
       </motion.div>
     </div>
   );
