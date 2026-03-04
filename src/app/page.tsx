@@ -302,7 +302,7 @@ export default async function LandingPage() {
                   <div className="mx-auto mb-3 flex w-fit items-center gap-2 rounded-lg bg-white px-3 py-1.5 shadow-sm">
                     <Users className="size-4 text-primary-600" />
                     <span className="text-xs font-medium text-neutral-700">
-                      VV Drieberg JO13
+                      FC Oranje JO13
                     </span>
                   </div>
                 ),
@@ -315,7 +315,7 @@ export default async function LandingPage() {
                 illustration: (
                   <div className="mx-auto mb-3 w-fit rounded-lg bg-[#dcf8c6] px-3 py-2 text-left shadow-sm">
                     <p className="text-[10px] font-medium text-neutral-800">
-                      Doe mee met VV Drieberg JO13!
+                      Doe mee met FC Oranje JO13!
                     </p>
                     <p className="text-[9px] text-blue-600 underline">
                       myteamplanner.nl/join/abc123
