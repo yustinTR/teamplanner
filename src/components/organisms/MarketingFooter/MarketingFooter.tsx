@@ -10,7 +10,7 @@ export function MarketingFooter() {
             <Link href="/" className="flex items-center gap-2 text-white">
               <Image
                 src="/icons/icon-192x192.svg"
-                alt="MyTeamPlanner"
+                alt=""
                 width={28}
                 height={28}
                 className="rounded-md"
