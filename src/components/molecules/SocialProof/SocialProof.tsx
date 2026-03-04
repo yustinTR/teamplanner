@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 import { NumberCounter } from "@/components/atoms/NumberCounter";
 import { staggerContainer, staggerItem } from "@/lib/animations";
+import { createClient } from "@/lib/supabase/client";
 
 interface CoachQuote {
   quote: string;
@@ -12,13 +14,25 @@ interface CoachQuote {
 }
 
 interface SocialProofProps {
-  teamCount: number;
   quotes: CoachQuote[];
+  initialTeamCount?: number;
 }
 
 const MIN_TEAMS_FOR_COUNT = 5;
 
-export function SocialProof({ teamCount, quotes }: SocialProofProps) {
+export function SocialProof({ quotes, initialTeamCount }: SocialProofProps) {
+  const [teamCount, setTeamCount] = useState(initialTeamCount ?? 0);
+
+  useEffect(() => {
+    if (initialTeamCount !== undefined) return;
+    const supabase = createClient();
+    supabase
+      .from("teams")
+      .select("*", { count: "exact", head: true })
+      .then(({ count }) => {
+        if (count !== null) setTeamCount(count);
+      });
+  }, [initialTeamCount]);
   return (
     <section className="bg-neutral-50 py-12">
       <div className="mx-auto max-w-4xl px-4">

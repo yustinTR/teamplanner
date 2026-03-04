@@ -23,30 +23,45 @@ TeamPlanner lost dit op met één centrale plek voor het hele team.
 2. **Spelers** — geven beschikbaarheid door, bekijken opstellingen
 3. **Ouders/verzorgers** (v2) — read-only view voor jeugd- en G-voetbalteams
 
-## MVP Scope
+## Features
 
-Het MVP bevat deze features:
+### MVP (compleet)
 
 1. **Auth** — E-mail login + wachtwoord reset via Supabase Auth
 2. **Teambeheer** — Team aanmaken (met teamtype: senioren, junioren, G-team, 7v7), spelers toevoegen, invite links delen
-3. **Spelerprofielen** — Naam, positie, rugnummer, foto, notities (voor G-voetbal bijzonderheden)
-4. **Wedstrijdprogramma** — CRUD voor wedstrijden (datum, tegenstander, locatie, thuis/uit)
-5. **Beschikbaarheid** — Spelers geven ja/nee/misschien. Coach ziet realtime overzichtsgrid
-6. **Opstelling maker** — Visueel drag & drop voetbalveld met formatie keuze (inclusief 7v7 formaties)
-7. **Wisselschema** — Wisselmomenten plannen met speeltijdverdeling per speler
-8. **Evenementen** — Trainingen, toernooien en andere teamactiviteiten met aanwezigheid en taken
-9. **Voetbal.nl import** — Team- en spelergegevens importeren vanuit voetbal.nl
-10. **PWA** — Installeerbaar, offline basis, homescreen icon
+3. **Multi-team support** — Gebruikers kunnen lid zijn van meerdere teams, team switcher in de header
+4. **Spelerprofielen** — Naam, positie, rugnummer, foto, notities (voor G-voetbal bijzonderheden)
+5. **Speler vaardigheden** — 10 skills (1-10) met radardiagram, bewerkbaar door coach
+6. **Speler ratings** — FUT-stijl spelerskaarten (brons/zilver/goud) met overall rating
+7. **Wedstrijdprogramma** — CRUD met tabs (aankomend/gespeeld), score editing, match stats (goals, assists, kaarten)
+8. **Beschikbaarheid** — Spelers geven ja/nee/misschien. Coach ziet realtime overzichtsgrid
+9. **Opstelling maker** — Visueel drag & drop voetbalveld met formatie keuze (inclusief 7v7 formaties)
+10. **Wisselschema** — Wisselmomenten plannen met speeltijdverdeling per speler
+11. **Evenementen** — Trainingen, toernooien en andere teamactiviteiten met aanwezigheid en taken
+12. **Trainingen** — Oefeningen-bibliotheek met filters (niveau, thema, spelersaantal) + trainingsplannen
+13. **Voetbal.nl import** — Team- en spelergegevens importeren vanuit voetbal.nl
+14. **PWA** — Installeerbaar, offline basis, homescreen icon
+
+### Growth features (compleet)
+
+15. **Onboarding** — Setup-checklist op dashboard + inline hints bij complexe features
+16. **Animaties** — Framer Motion door de hele app: staggered lists, skeleton loaders, spring physics
+17. **Image sharing** — Lineup en match report delen als PNG via Web Share API
+18. **Blog** — 6 SEO-artikelen over voetbal teammanagement
+19. **Feature pages** — 4 standalone SEO-pagina's per kernfeature
+20. **FAQ** — met schema.org structured data op de landing page
 
 ## Database Tabellen
 
 ```sql
 -- teams: Het team
-teams (id, name, club_name, formation, invite_code, created_by, logo_url, import_source, team_type)
+teams (id, name, club_name, formation, invite_code, created_by, logo_url, import_source, team_type, default_gathering_minutes)
 -- team_type: 'senior' | 'junior_11' | 'junior_7' | 'g_team_11' | 'g_team_7'
 
 -- players: Spelers in een team
-players (id, team_id, user_id, name, position, jersey_number, photo_url, notes, is_active)
+players (id, team_id, user_id, name, position, detailed_position, role, jersey_number, photo_url, notes, is_active, skills, skills_version)
+-- skills: JSONB {speed, strength, technique, passing, dribbling, heading, defending, positioning, finishing, stamina}
+-- role: 'player' | 'goalkeeper' | 'staff'
 
 -- matches: Wedstrijden
 matches (id, team_id, opponent, match_date, location, home_away, status, score_home, score_away, notes)
@@ -57,6 +72,9 @@ availability (id, player_id, match_id, status, responded_at)
 
 -- match_players: Spelers gekoppeld aan een wedstrijd (selectie, posities, speeltijd)
 match_players (id, match_id, player_id, is_selected, position, minutes_played)
+
+-- match_stats: Wedstrijdstatistieken per speler
+match_stats (id, match_id, player_id, goals, assists, yellow_cards, red_cards)
 
 -- lineups: Opstellingen per wedstrijd
 lineups (id, match_id, formation, positions, substitution_plan)
@@ -71,13 +89,20 @@ event_attendance (id, event_id, player_id, status, responded_at)
 
 -- event_tasks: Taken gekoppeld aan een event
 event_tasks (id, event_id, title, assigned_to, is_completed)
+
+-- exercises: Oefeningen-bibliotheek
+exercises (id, title, description, category, level, min_players, max_players, duration_minutes, setup_instructions, variations, video_url)
+
+-- exercise_categories: Categorieën voor oefeningen
+exercise_categories (id, name, slug)
 ```
 
 ## Rollen & Rechten
 
-- **Coach** (created_by van team): Volledige CRUD op team, spelers, wedstrijden, opstellingen, events
+- **Coach** (created_by van team): Volledige CRUD op team, spelers, wedstrijden, opstellingen, events, trainingsplannen
 - **Speler** (user_id in players): Kan eigen beschikbaarheid/aanwezigheid updaten, alles lezen
 - **Niet-geregistreerde speler** (user_id = NULL): Coach beheert hun beschikbaarheid
+- **Multi-team**: Gebruikers kunnen lid zijn van meerdere teams (als coach en/of speler), team switcher in de header
 
 ## User Flows
 
@@ -111,6 +136,9 @@ Coach maakt event aan (training, toernooi) → Voegt taken toe → Spelers geven
 - **Atomic Design** — Consistentie en herbruikbaarheid. Zie CONVENTIONS.md voor details.
 - **shadcn/ui als basis** — Niet als drop-in library, maar als startpunt dat we aanpassen aan ons design systeem
 - **Tailwind CSS v4** — CSS-native configuratie via PostCSS, design tokens als CSS custom properties (geen `tailwind.config.ts`)
+- **Framer Motion** — Spring physics animaties door de hele app, staggered lists, skeleton loaders
+- **Recharts** — Radar charts voor speler vaardigheden
+- **html2canvas-pro** — DOM-to-PNG rendering voor image sharing via Web Share API
 
 ## Wat NIET te doen
 
@@ -127,26 +155,32 @@ Coach maakt event aan (training, toernooi) → Voegt taken toe → Spelers geven
 teamplanner/
 ├── .github/workflows/         → CI pipeline (lint, build, tests)
 ├── .storybook/                → Storybook configuratie
-├── docs/                      → Project documentatie (.docx)
+├── docs/                      → Project documentatie & design archief
+│   ├── plans/                 → 14 design & implementatie documenten (archief)
+│   └── teamplanner-project-documentatie.docx
 ├── e2e/                       → E2E tests (Playwright)
 ├── public/                    → Static assets, PWA manifest, icons
-├── supabase/migrations/       → Database migraties (SQL)
+├── supabase/migrations/       → Database migraties (17 SQL bestanden)
 ├── src/
 │   ├── app/                   → Next.js App Router (pages + routes)
 │   │   ├── (auth)/            → Login, registratie, wachtwoord reset
-│   │   ├── (main)/            → Hoofdlayout met bottom navigation
-│   │   ├── api/               → API routes (OG image, voetbal.nl import)
+│   │   ├── (main)/            → Hoofdlayout met bottom navigation + team switcher
+│   │   ├── api/               → API routes (OG image, voetbal.nl import, travel time)
 │   │   ├── auth/              → Auth callback & confirm handlers
-│   │   └── join/[code]/       → Invite link handler
-│   ├── components/            → Atomic Design componenten
-│   │   ├── atoms/             → 8 componenten (Button, Avatar, Badge, etc.)
-│   │   ├── molecules/         → 25 componenten (PlayerChip, MatchForm, EventForm, etc.)
-│   │   ├── organisms/         → 17 componenten (PlayerList, LineupField, EventList, etc.)
-│   │   └── ui/                → shadcn/ui primitives (Sheet, Dialog, Select, etc.)
-│   ├── hooks/                 → 9 React Query hooks
-│   ├── lib/                   → Utilities, Supabase clients, constants
+│   │   ├── blog/              → Blog (6 SEO artikelen)
+│   │   ├── features/          → 4 SEO feature pagina's
+│   │   ├── join/[code]/       → Invite link handler (met OG metadata)
+│   │   ├── privacy/           → Privacyverklaring
+│   │   └── voorwaarden/       → Algemene voorwaarden
+│   ├── components/            → Atomic Design componenten (83 stories)
+│   │   ├── atoms/             → 12 componenten
+│   │   ├── molecules/         → 45 componenten
+│   │   ├── organisms/         → 26 componenten
+│   │   └── ui/                → 13 shadcn/ui primitives
+│   ├── hooks/                 → 16 React Query hooks
+│   ├── lib/                   → 9 utility modules + Supabase clients
 │   ├── stores/                → Zustand stores (auth-store, ui-store)
-│   ├── types/                 → TypeScript types (7 types + barrel export)
+│   ├── types/                 → TypeScript types (9 types + barrel export)
 │   └── styles/                → Design tokens CSS
 ├── CLAUDE.md                  → AI-assistent instructies
 ├── CONVENTIONS.md             → Code standaarden (dit lezen!)
@@ -161,20 +195,34 @@ teamplanner/
 
 ## Huidige Status
 
-**MVP grotendeels compleet.** Alle kernfunctionaliteit is gebouwd:
+**MVP compleet + growth features gebouwd.** Alle functionaliteit is live:
 
+### MVP
 - [x] Next.js project met App Router
 - [x] Tailwind CSS v4 + shadcn/ui + design tokens
 - [x] Supabase Auth (e-mail login, wachtwoord reset)
-- [x] Database schema met 9 migraties en RLS policies
-- [x] Atomic Design componenten (8 atoms, 25 molecules, 17 organisms)
-- [x] 49 Storybook stories met Playwright browser testing
-- [x] Wedstrijdbeheer met beschikbaarheid en opstellingen
+- [x] Database schema met 17 migraties en RLS policies
+- [x] Atomic Design componenten (12 atoms, 45 molecules, 26 organisms)
+- [x] 83 Storybook stories met Playwright browser testing
+- [x] Multi-team support met team switcher
+- [x] Wedstrijdbeheer met tabs, score editing en match stats
+- [x] Beschikbaarheid met realtime grid
 - [x] Drag & drop lineup editor met formatie-keuze (11v11 + 7v7)
 - [x] Wisselschema met speeltijdverdeling
+- [x] Speler vaardigheden (radar chart) en FUT-stijl spelerskaarten
 - [x] Evenementen systeem met aanwezigheid en taken
+- [x] Trainingen: oefeningen-bibliotheek + trainingsplannen
 - [x] Voetbal.nl import integratie
 - [x] Team types (senioren, junioren, G-team, 7v7)
 - [x] PWA configuratie met Serwist
 - [x] CI/CD pipeline (GitHub Actions)
-- [x] Landing page met OG image generatie
+
+### Growth
+- [x] Landing page met FAQ + schema.org structured data
+- [x] 4 SEO feature pagina's met interne links
+- [x] Blog met 6 SEO-artikelen
+- [x] OG metadata op invite links (WhatsApp preview)
+- [x] Image sharing: lineup en match report als PNG (Web Share API)
+- [x] Onboarding: setup-checklist + inline hints
+- [x] Framer Motion animaties door de hele app
+- [x] Privacy & voorwaarden pagina's

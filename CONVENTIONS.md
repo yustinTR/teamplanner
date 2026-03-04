@@ -29,18 +29,20 @@ Alle UI-componenten volgen Atomic Design in `src/components/`:
 
 ```
 src/components/
-├── atoms/           → 8 componenten: Button, Avatar, Badge, Input, Card, Spinner, EmptyState, Textarea
-├── molecules/       → 25 componenten: PlayerChip, AvailabilityToggle, AvailabilitySummary, MatchForm,
-│                      MatchScore, MatchStatusBadge, MatchPlayerForm, MatchPlayerChip, FormField,
-│                      FormationSelector, PitchPlayer, BenchPlayer, PlayerAvailabilityRow, PlayerForm,
-│                      PlayerMinutesBar, SubstitutionMomentCard, LoginForm, RegisterForm, TeamForm,
-│                      InviteLink, EventForm, AttendanceToggle, AttendanceSummary, EventTaskItem, EventTaskForm
-├── organisms/       → 17 componenten: AuthHydrator, NavigationBar, PlayerList, PlayerDetail, MatchCard,
-│                      MatchList, AvailabilityGrid, MyAvailability, LineupField, LineupView, ImportPreview,
-│                      SubstitutionPlan, EventCard, EventList, EventAttendanceGrid, EventTaskList, MyEventAttendance
+├── atoms/           → 12 componenten: AnimatedList, Avatar, Badge, Button, Card, EmptyState, Input,
+│                      NumberCounter, PlayerCard, Skeleton, Spinner, Textarea
+├── molecules/       → 45 componenten incl. PlayerChip, AvailabilityToggle, MatchForm, FormationSelector,
+│                      PitchPlayer, BenchPlayer, SkillsRadar, SkillsEditor, OnboardingChecklist,
+│                      OnboardingHint, ShareLineupCard, ShareMatchReport, TeamSwitcher, ExerciseCard,
+│                      TrainingPlanCard, FaqSection, PlayerCardDisplay, PhotoUpload, en meer
+├── organisms/       → 26 componenten incl. AuthHydrator, NavigationBar, PlayerList, PlayerDetail,
+│                      MatchCard, MatchList, AvailabilityGrid, LineupField, LineupView, SubstitutionPlan,
+│                      EventList, ExerciseList, TrainingPlanList, MatchStatsEditor, PlayerStatsSection,
+│                      MarketingHeader, MarketingFooter, en meer
 ├── templates/       → Pagina layouts zonder data (nog niet in gebruik)
 ├── pages/           → Data-connected pages (in app/ routes)
-└── ui/              → shadcn/ui primitives (avatar, badge, button, card, dialog, input, label, select, separator, sheet)
+└── ui/              → shadcn/ui primitives (accordion, avatar, badge, button, card, dialog, input, label,
+                       select, separator, sheet, slider, tabs)
 ```
 
 ### Component Map Structuur
@@ -72,23 +74,28 @@ src/app/                          → Next.js App Router pages
 │   ├── login/page.tsx
 │   ├── register/page.tsx
 │   └── forgot-password/page.tsx
-├── (main)/                       → Layout met bottom navigation
+├── (main)/                       → Layout met bottom navigation + team switcher
 │   ├── layout.tsx
-│   ├── dashboard/page.tsx        → Dashboard (home)
+│   ├── dashboard/page.tsx        → Dashboard (home) met onboarding checklist
 │   ├── matches/
-│   │   ├── page.tsx
+│   │   ├── page.tsx              → Match list met tabs (aankomend/gespeeld)
 │   │   └── [id]/
-│   │       ├── page.tsx
+│   │       ├── page.tsx          → Match detail (score editing, sharing)
 │   │       └── lineup/page.tsx
 │   ├── events/
 │   │   ├── page.tsx
 │   │   └── [id]/page.tsx
 │   ├── team/
 │   │   ├── page.tsx
-│   │   ├── players/[id]/page.tsx
+│   │   ├── players/[id]/page.tsx → Speler detail met skills radar
 │   │   └── settings/
 │   │       ├── page.tsx
 │   │       └── import/page.tsx
+│   ├── trainingen/
+│   │   ├── page.tsx              → Training plans overzicht
+│   │   ├── oefeningen/page.tsx   → Oefeningen bibliotheek
+│   │   │   └── [id]/page.tsx     → Oefening detail
+│   │   └── plannen/[id]/page.tsx → Trainingsplan detail
 │   ├── create-team/page.tsx
 │   └── profile/page.tsx
 ├── auth/
@@ -96,26 +103,34 @@ src/app/                          → Next.js App Router pages
 │   └── confirm/route.ts          → Email confirmation
 ├── api/
 │   ├── og/route.tsx              → Dynamic OG image generation
-│   └── import-voetbal-nl/        → Voetbal.nl import API
-│       ├── route.ts
-│       ├── confirm/route.ts
-│       └── refresh/route.ts
-├── join/[code]/page.tsx          → Invite link handler
+│   ├── import-voetbal-nl/        → Voetbal.nl import API
+│   │   ├── route.ts
+│   │   ├── confirm/route.ts
+│   │   └── refresh/route.ts
+│   └── travel-time/route.ts      → Reistijd berekening
+├── blog/
+│   ├── page.tsx                  → Blog overzicht (6 SEO artikelen)
+│   └── [slug]/page.tsx           → Blog artikel
+├── features/
+│   ├── beschikbaarheid/page.tsx  → Feature pagina
+│   ├── opstellingen/page.tsx     → Feature pagina
+│   ├── trainingen/page.tsx       → Feature pagina
+│   └── wedstrijden/page.tsx      → Feature pagina
+├── join/[code]/page.tsx          → Invite link handler (met OG metadata)
+├── privacy/page.tsx              → Privacyverklaring
+├── voorwaarden/page.tsx          → Algemene voorwaarden
 ├── reset-password/page.tsx       → Wachtwoord reset formulier
 ├── layout.tsx                    → Root layout (providers, fonts)
-└── page.tsx                      → Landing/redirect page
+└── page.tsx                      → Landing page
 src/
 ├── components/                   → Atomic Design (zie boven)
-├── hooks/                        → Custom React Query hooks
-│   ├── use-team.ts
-│   ├── use-matches.ts
-│   ├── use-match-players.ts
-│   ├── use-availability.ts
-│   ├── use-players.ts
-│   ├── use-lineup.ts
-│   ├── use-events.ts
-│   ├── use-event-attendance.ts
-│   └── use-event-tasks.ts
+├── hooks/                        → 16 Custom React Query hooks
+│   ├── use-team.ts, use-players.ts, use-matches.ts
+│   ├── use-match-players.ts, use-match-stats.ts, use-availability.ts
+│   ├── use-lineup.ts, use-events.ts, use-event-attendance.ts, use-event-tasks.ts
+│   ├── use-exercises.ts, use-training-plans.ts, use-training-plan-exercises.ts
+│   ├── use-player-stats.ts, use-player-photo.ts
+│   └── use-share-image.ts       → html2canvas + Web Share API
 ├── lib/
 │   ├── supabase/
 │   │   ├── client.ts             → Browser Supabase client
@@ -123,21 +138,22 @@ src/
 │   │   ├── middleware.ts         → Auth middleware
 │   │   └── types.ts              → Generated database types
 │   ├── utils.ts                  → Utility functies (cn(), formatDate(), etc.)
-│   ├── constants.ts              → Formaties, labels, posities (6.5 KB)
+│   ├── constants.ts              → Formaties, labels, posities, player skills
+│   ├── animations.ts            → Framer Motion spring presets, transition variants
 │   ├── lineup-generator.ts      → Auto-generatie van opstellingen
 │   ├── voetbal-nl-parser.ts     → Parser voor voetbal.nl import
+│   ├── player-rating.ts         → Overall rating & card tier berekening
+│   ├── player-stats-utils.ts    → Speler statistieken aggregatie
+│   ├── onboarding.ts            → localStorage helpers voor onboarding
+│   ├── blog.ts                  → Blog content en metadata
 │   └── test/                     → Mock data factories & test utilities
 ├── stores/                       → Zustand stores
-│   ├── auth-store.ts             → User, team, speler, isCoach status
+│   ├── auth-store.ts             → User, myTeams[], currentTeam, speler, isCoach
 │   └── ui-store.ts               → UI state
 ├── types/                        → Gedeelde TypeScript types
-│   ├── team.ts
-│   ├── match.ts
-│   ├── player.ts
-│   ├── availability.ts
-│   ├── match-player.ts
-│   ├── lineup.ts
-│   ├── event.ts
+│   ├── team.ts, player.ts, match.ts, availability.ts
+│   ├── match-player.ts, match-stats.ts, lineup.ts
+│   ├── event.ts, training.ts
 │   └── index.ts                  → Barrel export
 └── styles/
     └── tokens.css                → Design tokens als CSS custom properties
@@ -399,7 +415,7 @@ Altijd in volgorde uitvoeren. Nooit bestaande migraties wijzigen.
 - `npm run test` draait alles
 - De `a11y` addon controleert toegankelijkheid op elke story
 
-**Huidige status:** 49 story-bestanden, 8 atoms + 25 molecules + 17 organisms.
+**Huidige status:** 83 story-bestanden, 12 atoms + 45 molecules + 26 organisms.
 
 ## Accessibility
 

@@ -40,16 +40,6 @@ export async function updateSession(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
-  // Landing page: authenticated users go to dashboard, unauthenticated see landing
-  if (pathname === "/") {
-    if (user) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/dashboard";
-      return NextResponse.redirect(url);
-    }
-    return supabaseResponse;
-  }
-
   // Dashboard requires auth
   if (pathname.startsWith("/dashboard") && !user) {
     const url = request.nextUrl.clone();

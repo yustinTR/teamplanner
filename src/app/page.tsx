@@ -15,7 +15,7 @@ import { MarketingFooter } from "@/components/organisms/MarketingFooter";
 import { HeroDemo } from "@/components/molecules/HeroDemo";
 import { SocialProof } from "@/components/molecules/SocialProof";
 import { StickyCta } from "@/components/molecules/StickyCta";
-import { createClient } from "@/lib/supabase/server";
+import { AuthRedirect } from "@/components/molecules/AuthRedirect";
 
 export const metadata: Metadata = {
   title: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
@@ -177,15 +177,11 @@ const benefits = [
   },
 ];
 
-export default async function LandingPage() {
-  // Fetch team count for social proof
-  const supabase = await createClient();
-  const { count: teamCount } = await supabase
-    .from("teams")
-    .select("*", { count: "exact", head: true });
+export default function LandingPage() {
 
   return (
     <div className="min-h-screen">
+      <AuthRedirect />
       {/* Hero section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
         {/* Football pitch pattern */}
@@ -250,7 +246,7 @@ export default async function LandingPage() {
       </section>
 
       {/* Social proof */}
-      <SocialProof teamCount={teamCount ?? 0} quotes={coachQuotes} />
+      <SocialProof quotes={coachQuotes} />
 
       {/* Features section */}
       <section className="bg-white py-16" id="functies">

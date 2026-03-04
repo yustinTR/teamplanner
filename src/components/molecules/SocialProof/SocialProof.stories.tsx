@@ -28,14 +28,14 @@ type Story = StoryObj<typeof SocialProof>;
 
 export const WithTeamCount: Story = {
   args: {
-    teamCount: 23,
     quotes: DEMO_QUOTES,
+    initialTeamCount: 23,
   },
 };
 
 export const FewTeams: Story = {
   args: {
-    teamCount: 3,
     quotes: DEMO_QUOTES,
+    initialTeamCount: 3,
   },
 };

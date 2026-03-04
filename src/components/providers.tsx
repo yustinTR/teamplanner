@@ -55,7 +55,7 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Analytics />
+      {process.env.NEXT_PUBLIC_VERCEL_ENV && <Analytics />}
       <OfflineBanner />
       {children}
     </QueryClientProvider>

@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-TeamPlanner is a mobile-first PWA for amateur football team management, replacing WhatsApp-based coordination. Coaches manage teams, matches, lineups, and events; players submit availability. Built for simplicity — amateur football, not enterprise software.
+TeamPlanner is a mobile-first PWA for amateur football team management, replacing WhatsApp-based coordination. Coaches manage teams, matches, lineups, events, and training plans; players submit availability. Built for simplicity — amateur football, not enterprise software.
 
-**Current status: MVP largely complete.** Core features (auth, team management, matches, availability, lineup editor, events, voetbal.nl import) are built. See PROJECT_CONTEXT.md and CONVENTIONS.md for full specs.
+**Current status: MVP complete + growth features.** Core features are built: auth, multi-team support, matches with score editing, availability, lineup editor with image sharing, events, player skills/ratings, training exercises library, onboarding, blog, SEO feature pages, voetbal.nl import, and Framer Motion animations throughout. See PROJECT_CONTEXT.md and CONVENTIONS.md for full specs.
 
 ## Commands
 
@@ -33,7 +33,7 @@ npx shadcn@latest add <component>  # Add shadcn component
 
 ## Tech Stack
 
-Next.js 16 (App Router) · TypeScript (strict) · Tailwind CSS v4 (mobile-first, PostCSS) · shadcn/ui · Zustand (client state) + TanStack React Query (server state) · Supabase (Auth, PostgreSQL, Realtime, Storage, Edge Functions) · Storybook 10 (component testing) · Vitest + Playwright (browser tests) · dnd-kit (drag & drop) · Serwist (PWA/service worker) · Lucide React · Deployed on Vercel
+Next.js 16 (App Router) · TypeScript (strict) · Tailwind CSS v4 (mobile-first, PostCSS) · shadcn/ui · Zustand (client state) + TanStack React Query (server state) · Supabase (Auth, PostgreSQL, Realtime, Storage, Edge Functions) · Storybook 10 (component testing) · Vitest + Playwright (browser tests) · dnd-kit (drag & drop) · Framer Motion (animations) · Recharts (radar charts) · html2canvas-pro (image sharing) · Serwist (PWA/service worker) · Lucide React · Deployed on Vercel
 
 ## Architecture
 
@@ -41,9 +41,9 @@ Next.js 16 (App Router) · TypeScript (strict) · Tailwind CSS v4 (mobile-first,
 
 All UI components follow Atomic Design with strict rules per level:
 
-- **atoms/** — Pure presentation, no business logic, no API calls (Button, Avatar, Badge, Input, Card, Spinner, EmptyState, Textarea)
-- **molecules/** — Combine atoms, may have local UI state, no API calls (PlayerChip, AvailabilityToggle, AvailabilitySummary, MatchForm, MatchScore, MatchStatusBadge, MatchPlayerForm, MatchPlayerChip, FormField, FormationSelector, PitchPlayer, BenchPlayer, PlayerAvailabilityRow, PlayerForm, PlayerMinutesBar, SubstitutionMomentCard, LoginForm, RegisterForm, TeamForm, InviteLink, EventForm, AttendanceToggle, AttendanceSummary, EventTaskItem, EventTaskForm)
-- **organisms/** — Own state, hooks, and API calls allowed (AuthHydrator, NavigationBar, PlayerList, PlayerDetail, MatchCard, MatchList, AvailabilityGrid, MyAvailability, LineupField, LineupView, ImportPreview, SubstitutionPlan, EventCard, EventList, EventAttendanceGrid, EventTaskList, MyEventAttendance)
+- **atoms/** — Pure presentation, no business logic, no API calls (12 components: AnimatedList, Avatar, Badge, Button, Card, EmptyState, Input, NumberCounter, PlayerCard, Skeleton, Spinner, Textarea)
+- **molecules/** — Combine atoms, may have local UI state, no API calls (45 components including PlayerChip, AvailabilityToggle, MatchForm, FormationSelector, PitchPlayer, BenchPlayer, SkillsRadar, SkillsEditor, OnboardingChecklist, OnboardingHint, ShareLineupCard, ShareMatchReport, TeamSwitcher, ExerciseCard, TrainingPlanCard, FaqSection, PlayerCardDisplay, PhotoUpload, and more)
+- **organisms/** — Own state, hooks, and API calls allowed (26 components including AuthHydrator, NavigationBar, PlayerList, PlayerDetail, MatchCard, MatchList, AvailabilityGrid, LineupField, LineupView, SubstitutionPlan, EventList, ExerciseList, TrainingPlanList, MatchStatsEditor, PlayerStatsSection, MarketingHeader, MarketingFooter, and more)
 - **templates/** — Layout/structure only, receive children/slots, no data fetching
 - **pages/** — Fetch data via hooks, pass to templates/organisms, connected to `app/` routes
 
@@ -60,37 +60,49 @@ Each component lives in its own PascalCase folder with `Component.tsx`, `Compone
 ```
 app/(auth)/login, register, forgot-password  — Auth pages
 app/reset-password                           — Password reset form
-app/(main)/                                  — Main layout with bottom nav
-  dashboard/                                 — Home/dashboard
-  matches/, matches/[id]/                    — Match list & detail
+app/(main)/                                  — Main layout with bottom nav + team switcher
+  dashboard/                                 — Home/dashboard with onboarding checklist
+  matches/, matches/[id]/                    — Match list (tabs) & detail (score editing, sharing)
   matches/[id]/lineup/                       — Lineup editor
   events/, events/[id]/                      — Event list & detail
-  team/, team/players/[id]/                  — Team & player management
+  team/, team/players/[id]/                  — Team & player management (skills radar)
   team/settings/, team/settings/import/      — Team settings & voetbal.nl import
+  trainingen/                                — Training plans overview
+  trainingen/oefeningen/, oefeningen/[id]/   — Exercise library & detail
+  trainingen/plannen/[id]/                   — Training plan detail
   create-team/                               — Create new team
   profile/                                   — User profile
-app/join/[code]/                             — Invite link handler
+app/join/[code]/                             — Invite link handler (with OG metadata)
+app/features/beschikbaarheid, opstellingen, wedstrijden, trainingen — SEO feature pages
+app/blog/, blog/[slug]/                      — Blog with 6 SEO articles
+app/privacy/, app/voorwaarden/               — Legal pages
 app/auth/callback, app/auth/confirm          — Auth handlers
 app/api/og/                                  — Dynamic OG image generation
 app/api/import-voetbal-nl/                   — Voetbal.nl import API
+app/api/travel-time/                         — Travel time calculation API
 ```
 
 ### Database (Supabase PostgreSQL)
 
-Tables: `teams` (with team_type, import_source), `players`, `matches`, `availability` (status: available/unavailable/maybe), `match_players` (selection, position, minutes), `lineups` (positions + substitution_plan as JSONB), `events`, `event_attendance`, `event_tasks`.
+Tables: `teams` (with team_type, import_source, default_gathering_minutes), `players` (with skills JSONB, role, detailed_position), `matches`, `availability` (status: available/unavailable/maybe), `match_players` (selection, position, minutes), `match_stats` (goals, assists, yellow/red cards), `lineups` (positions + substitution_plan as JSONB), `events`, `event_attendance`, `event_tasks`, `exercises` (training exercises library), `exercise_categories`.
 
-Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can update own availability/attendance. Unregistered players (`user_id = NULL`) are managed by coach.
+Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can update own availability/attendance. Unregistered players (`user_id = NULL`) are managed by coach. Users can belong to multiple teams (multi-team support).
 
 ### Hooks (`src/hooks/`)
 
-9 React Query hooks: `use-team`, `use-players`, `use-matches`, `use-match-players`, `use-availability`, `use-lineup`, `use-events`, `use-event-attendance`, `use-event-tasks`.
+16 React Query hooks: `use-team`, `use-players`, `use-matches`, `use-match-players`, `use-match-stats`, `use-availability`, `use-lineup`, `use-events`, `use-event-attendance`, `use-event-tasks`, `use-exercises`, `use-training-plans`, `use-training-plan-exercises`, `use-player-stats`, `use-player-photo`, `use-share-image`.
 
 ### Utilities (`src/lib/`)
 
 - `utils.ts` — cn(), formatters, etc.
-- `constants.ts` — Formations (11v11 + 7v7), positions, labels
+- `constants.ts` — Formations (11v11 + 7v7), positions, labels, player skills
+- `animations.ts` — Framer Motion spring presets, transition variants, stagger helpers
 - `lineup-generator.ts` — Auto-generate lineups based on formation
 - `voetbal-nl-parser.ts` — Parse voetbal.nl data for import
+- `player-rating.ts` — Player overall rating & card tier calculation
+- `player-stats-utils.ts` — Player statistics aggregation
+- `onboarding.ts` — localStorage helpers for onboarding checklist & hints
+- `blog.ts` — Blog article content and metadata
 
 ## Key Conventions
 
@@ -123,12 +135,12 @@ Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can upd
 
 - Strict mode, no `any` (use `unknown`)
 - Props as `interface`, not `type`
-- Shared types in `src/types/` (team, player, match, availability, match-player, lineup, event)
+- Shared types in `src/types/` (team, player, match, availability, match-player, match-stats, lineup, event, training)
 - DB types generated via `supabase gen types typescript`
 
 ### Storybook & Testing
 
-**Every component MUST have a Storybook story file (`Component.stories.tsx`).** No exceptions. This is the primary way components are documented and tested. Currently 49 story files across 8 atoms, 25 molecules, and 17 organisms.
+**Every component MUST have a Storybook story file (`Component.stories.tsx`).** No exceptions. This is the primary way components are documented and tested. Currently 83 story files across 12 atoms, 45 molecules, and 26 organisms.
 
 **Component folder structure:**
 ```
