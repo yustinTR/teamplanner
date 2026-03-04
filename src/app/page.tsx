@@ -221,16 +221,23 @@ export default async function LandingPage() {
                   Maak je team aan
                   <ArrowRight className="size-5" />
                 </Link>
-                <a
-                  href="#functies"
-                  className="inline-flex items-center gap-1 text-sm font-medium text-white/70 transition-colors hover:text-white"
+                <Link
+                  href="/login"
+                  className="inline-flex min-h-[48px] items-center rounded-xl border border-white/30 px-8 text-base font-medium text-white transition-colors hover:bg-white/10"
                 >
-                  Bekijk hoe het werkt ↓
-                </a>
+                  Inloggen
+                </Link>
               </div>
 
               <p className="mt-3 text-xs text-white/40">
                 Gratis · Geen creditcard · Klaar in 30 seconden
+                <span className="mx-1.5">·</span>
+                <a
+                  href="#functies"
+                  className="underline transition-colors hover:text-white/60"
+                >
+                  Bekijk hoe het werkt ↓
+                </a>
               </p>
             </div>
 
