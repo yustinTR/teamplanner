@@ -13,7 +13,6 @@ import { useMatchPlayers } from "@/hooks/use-match-players";
 import { useLineup, useSaveLineup } from "@/hooks/use-lineup";
 import { PitchPlayer } from "@/components/molecules/PitchPlayer";
 import { BenchPlayer } from "@/components/molecules/BenchPlayer";
-import { AnimatedList, AnimatedListItem } from "@/components/atoms/AnimatedList";
 import { FormationSelector } from "@/components/molecules/FormationSelector";
 import { Badge } from "@/components/atoms/Badge";
 import { Button } from "@/components/atoms/Button";
@@ -194,25 +193,43 @@ function LineupFieldEditor({
     if (!over) return;
 
     const dragId = String(active.id);
-    const dropSlotIndex = Number(over.id);
+    const dropId = String(over.id);
+
+    // Dropped on the bench — remove from field
+    if (dropId === "bench") {
+      if (dragId.startsWith("bench-")) return; // already on bench
+      const newPositions = positions.filter((p) => p.player_id !== dragId);
+      setPositions(newPositions);
+      setHasChanges(true);
+      return;
+    }
+
+    const dropSlotIndex = Number(dropId);
     if (isNaN(dropSlotIndex)) return;
 
     const slot = formationSlots[dropSlotIndex];
     if (!slot) return;
 
-    // Get the player ID
+    // Get the player ID and source position
     let playerId: string;
+    let sourcePosition: { x: number; y: number; position_label: string } | null = null;
     if (dragId.startsWith("bench-")) {
       playerId = dragId.replace("bench-", "");
     } else {
-      // Moving from one position to another
       const existingPos = positions.find((p) => p.player_id === dragId);
       if (!existingPos) return;
       playerId = existingPos.player_id;
+      sourcePosition = { x: existingPos.x, y: existingPos.y, position_label: existingPos.position_label };
     }
 
     const newPositions = [...positions];
-    // Remove from existing position if already assigned
+
+    // Find who is already in the target slot (for swapping)
+    const targetOccupant = newPositions.find(
+      (p) => p.x === slot.x && p.y === slot.y && p.player_id && p.player_id !== playerId
+    );
+
+    // Remove dragged player from current position
     const existingIndex = newPositions.findIndex(
       (p) => p.player_id === playerId
     );
@@ -220,7 +237,7 @@ function LineupFieldEditor({
       newPositions.splice(existingIndex, 1);
     }
 
-    // Remove anyone already in this slot
+    // Remove target occupant from target slot
     const slotIndex = newPositions.findIndex(
       (p) => p.x === slot.x && p.y === slot.y
     );
@@ -228,12 +245,23 @@ function LineupFieldEditor({
       newPositions.splice(slotIndex, 1);
     }
 
+    // Place dragged player in target slot
     newPositions.push({
       player_id: playerId,
       x: slot.x,
       y: slot.y,
       position_label: slot.position_label,
     });
+
+    // Swap: move target occupant to the dragged player's original position
+    if (targetOccupant && sourcePosition) {
+      newPositions.push({
+        player_id: targetOccupant.player_id,
+        x: sourcePosition.x,
+        y: sourcePosition.y,
+        position_label: sourcePosition.position_label,
+      });
+    }
 
     setPositions(newPositions);
     setHasChanges(true);
@@ -342,6 +370,7 @@ function LineupFieldEditor({
                     x={50}
                     y={50}
                     draggable
+                    inline
                     {...getPlayerCardProps(player, slot.position_label)}
                   />
                 ) : (
@@ -355,24 +384,23 @@ function LineupFieldEditor({
         </div>
 
         {/* Bench */}
-        <div>
+        <BenchDropZone>
           <h3 className="mb-2 text-sm font-medium text-muted-foreground">
             Bank ({benchPlayers.length})
           </h3>
-          <AnimatedList className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {benchPlayers.map((player) => (
-              <AnimatedListItem key={player.id}>
-                <BenchPlayer
-                  id={player.id}
-                  name={player.name}
-                  jerseyNumber={player.jersey_number}
-                  photoUrl={player.photo_url}
-                  draggable
-                />
-              </AnimatedListItem>
+              <BenchPlayer
+                key={player.id}
+                id={player.id}
+                name={player.name}
+                jerseyNumber={player.jersey_number}
+                photoUrl={player.photo_url}
+                draggable
+              />
             ))}
-          </AnimatedList>
-        </div>
+          </div>
+        </BenchDropZone>
 
         {/* Substitute suggestions */}
         {substitutes.length > 0 && (
@@ -503,6 +531,23 @@ function DropZone({
         isOver && "scale-110"
       )}
       style={{ left: `${x}%`, top: `${y}%` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+// Droppable zone for the bench area
+function BenchDropZone({ children }: { children: React.ReactNode }) {
+  const { setNodeRef, isOver } = useDroppable({ id: "bench" });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={cn(
+        "rounded-lg p-2 transition-colors",
+        isOver && "bg-muted/50 ring-2 ring-primary/30"
+      )}
     >
       {children}
     </div>

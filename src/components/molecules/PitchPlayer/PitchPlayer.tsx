@@ -15,6 +15,7 @@ interface PitchPlayerProps {
   x: number;
   y: number;
   draggable?: boolean;
+  inline?: boolean;
   overall?: number | null;
   cardTier?: CardTier | null;
   photoUrl?: string | null;
@@ -28,6 +29,7 @@ export function PitchPlayer({
   x,
   y,
   draggable = false,
+  inline = false,
   overall,
   cardTier,
   photoUrl,
@@ -37,13 +39,17 @@ export function PitchPlayer({
     disabled: !draggable,
   });
 
-  const style = {
-    left: `${x}%`,
-    top: `${y}%`,
-    transform: transform
-      ? `translate(${transform.x}px, ${transform.y}px)`
-      : undefined,
-  };
+  const style: React.CSSProperties = inline
+    ? transform
+      ? { transform: `translate(${transform.x}px, ${transform.y}px)` }
+      : {}
+    : {
+        left: `${x}%`,
+        top: `${y}%`,
+        transform: transform
+          ? `translate(${transform.x}px, ${transform.y}px)`
+          : undefined,
+      };
 
   const showCard = overall != null && cardTier != null;
 
@@ -52,7 +58,8 @@ export function PitchPlayer({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center",
+        "flex flex-col items-center",
+        !inline && "absolute -translate-x-1/2 -translate-y-1/2",
         draggable && "cursor-grab touch-none",
         isDragging && "z-50 cursor-grabbing"
       )}
