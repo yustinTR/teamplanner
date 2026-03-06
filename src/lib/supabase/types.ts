@@ -521,6 +521,7 @@ export type Database = {
           invite_code: string
           logo_url: string | null
           name: string
+          show_ratings: boolean
           team_type: Database["public"]["Enums"]["team_type"]
           updated_at: string
         }
@@ -539,6 +540,7 @@ export type Database = {
           invite_code?: string
           logo_url?: string | null
           name: string
+          show_ratings?: boolean
           team_type?: Database["public"]["Enums"]["team_type"]
           updated_at?: string
         }
@@ -557,6 +559,7 @@ export type Database = {
           invite_code?: string
           logo_url?: string | null
           name?: string
+          show_ratings?: boolean
           team_type?: Database["public"]["Enums"]["team_type"]
           updated_at?: string
         }

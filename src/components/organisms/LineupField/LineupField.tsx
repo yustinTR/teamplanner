@@ -105,6 +105,7 @@ function LineupFieldEditor({
   const { share, isGenerating } = useShareImage();
   const [isSaved, setIsSaved] = useState(!!existingLineup);
 
+  const showRatings = currentTeam?.show_ratings ?? true;
   const teamType = currentTeam?.team_type ?? "senioren";
   const defaultFormation = getDefaultFormation(teamType);
   const teamFormations = getFormationsForTeamType(teamType);
@@ -291,7 +292,7 @@ function LineupFieldEditor({
         overall?: number;
         cardTier?: ReturnType<typeof getCardTier>;
       } = {};
-      if (player) {
+      if (showRatings && player) {
         const rawSkills = (player.skills as PlayerSkills) ?? {};
         if (hasEafcSkills(rawSkills)) {
           const eafcSkills = ensureEafcFormat(rawSkills);
@@ -371,7 +372,7 @@ function LineupFieldEditor({
                     y={50}
                     draggable
                     inline
-                    {...getPlayerCardProps(player, slot.position_label)}
+                    {...(showRatings ? getPlayerCardProps(player, slot.position_label) : {})}
                   />
                 ) : (
                   <div className="flex size-10 items-center justify-center rounded-full border-2 border-dashed border-white/60 bg-white/10 text-xs text-white/80">

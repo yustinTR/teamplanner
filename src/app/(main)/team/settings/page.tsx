@@ -62,6 +62,7 @@ export default function TeamSettingsPage() {
                 team_type: currentTeam.team_type,
                 default_gathering_minutes: currentTeam.default_gathering_minutes,
                 home_address: currentTeam.home_address,
+                show_ratings: currentTeam.show_ratings,
               }}
               onSubmit={async (data) => {
                 await updateTeam.mutateAsync({ id: currentTeam.id, ...data });

@@ -29,6 +29,7 @@ export function createMockTeam(overrides?: Partial<Team>): Team {
     import_team_id: null,
     import_team_name: null,
     import_team_url: null,
+    show_ratings: true,
     created_at: "2026-01-01T00:00:00Z",
     updated_at: "2026-01-01T00:00:00Z",
     ...overrides,

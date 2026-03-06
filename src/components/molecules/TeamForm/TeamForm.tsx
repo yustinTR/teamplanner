@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { TEAM_TYPE_LABELS, ACTIVE_TEAM_TYPES } from "@/lib/constants";
 import type { TeamType } from "@/types";
 
@@ -20,6 +21,7 @@ interface TeamFormData {
   team_type: TeamType;
   default_gathering_minutes: number;
   home_address: string | null;
+  show_ratings: boolean;
 }
 
 interface TeamFormProps {
@@ -31,6 +33,7 @@ interface TeamFormProps {
 export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: TeamFormProps) {
   const [loading, setLoading] = useState(false);
   const [teamType, setTeamType] = useState<TeamType>(defaultValues?.team_type ?? "senioren");
+  const [showRatings, setShowRatings] = useState(defaultValues?.show_ratings ?? true);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,6 +46,7 @@ export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: T
         team_type: teamType,
         default_gathering_minutes: parseInt(formData.get("default_gathering_minutes") as string, 10) || 60,
         home_address: (formData.get("home_address") as string) || null,
+        show_ratings: showRatings,
       });
     } finally {
       setLoading(false);
@@ -101,6 +105,20 @@ export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: T
         <p className="text-xs text-muted-foreground">
           Hoeveel minuten voor de aftrap moeten spelers aanwezig zijn?
         </p>
+      </div>
+
+      <div className="flex items-center justify-between gap-2">
+        <div className="space-y-0.5">
+          <Label htmlFor="show_ratings">Spelersratings tonen</Label>
+          <p className="text-xs text-muted-foreground">
+            Toon spelerskaarten met ratings in de opstelling.
+          </p>
+        </div>
+        <Switch
+          id="show_ratings"
+          checked={showRatings}
+          onCheckedChange={setShowRatings}
+        />
       </div>
 
       <div className="space-y-2">

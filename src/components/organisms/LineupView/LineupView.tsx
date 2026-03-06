@@ -41,6 +41,7 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
   const shareRef = useRef<HTMLDivElement>(null);
   const { share, isGenerating } = useShareImage();
   const { currentTeam } = useAuthStore();
+  const showRatings = currentTeam?.show_ratings ?? true;
   const { data: lineup, isLoading } = useLineup(matchId);
   const { data: players } = usePlayers(currentTeam?.id);
   const { data: matchPlayersData } = useMatchPlayers(matchId);
@@ -78,7 +79,7 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
     const slot = formationSlots.find((s) => s.x === pos.x && s.y === pos.y);
     const posLabel = slot?.position_label ?? "";
     let cardProps: { overall?: number; cardTier?: CardTier } = {};
-    if (player) {
+    if (showRatings && player) {
       const rawSkills = (player.skills as PlayerSkills) ?? {};
       if (hasEafcSkills(rawSkills)) {
         const eafcSkills = ensureEafcFormat(rawSkills);
@@ -147,7 +148,7 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
               positionLabel={slot.position_label}
               x={slot.x}
               y={slot.y}
-              {...getPlayerCardProps(player, slot.position_label)}
+              {...(showRatings ? getPlayerCardProps(player, slot.position_label) : {})}
             />
           ) : (
             <div
