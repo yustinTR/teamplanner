@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import type { TeamInsert, TeamUpdate } from "@/types";
+import { trackEvent } from "@/lib/gtm";
 
 export function useTeam(teamId: string | undefined) {
   const supabase = createClient();
@@ -48,6 +49,7 @@ export function useCreateTeam() {
       return data;
     },
     onSuccess: () => {
+      trackEvent("create_team");
       queryClient.invalidateQueries({ queryKey: ["team"] });
     },
   });

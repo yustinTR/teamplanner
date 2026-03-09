@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import type { AvailabilityStatus, AvailabilityWithPlayer } from "@/types";
+import { trackEvent } from "@/lib/gtm";
 
 export function useAvailability(matchId: string | undefined) {
   const supabase = createClient();
@@ -53,6 +54,7 @@ export function useSetAvailability() {
       return data;
     },
     onSuccess: (data) => {
+      trackEvent("set_availability", { status: data.status });
       queryClient.invalidateQueries({ queryKey: ["availability", data.match_id] });
     },
   });

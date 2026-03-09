@@ -5,6 +5,7 @@ import Link from "next/link";
 import { register } from "@/app/(auth)/actions";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
+import { trackEvent } from "@/lib/gtm";
 import { Label } from "@/components/ui/label";
 
 interface RegisterFormProps {
@@ -31,6 +32,7 @@ export function RegisterForm({ next }: RegisterFormProps) {
     }
     if (result?.success) {
       setSuccess(result.success);
+      trackEvent("sign_up");
     }
     setLoading(false);
   }

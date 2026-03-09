@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import html2canvas from "html2canvas-pro";
+import { trackEvent } from "@/lib/gtm";
 
 interface UseShareImageReturn {
   share: (element: HTMLElement, filename: string) => Promise<void>;
@@ -31,6 +32,7 @@ export function useShareImage(): UseShareImageReturn {
 
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
+        trackEvent("share_lineup", { method: "native" });
       } else {
         // Fallback: download
         const url = URL.createObjectURL(blob);
@@ -39,6 +41,7 @@ export function useShareImage(): UseShareImageReturn {
         a.download = `${filename}.png`;
         a.click();
         URL.revokeObjectURL(url);
+        trackEvent("share_lineup", { method: "download" });
       }
     } finally {
       setIsGenerating(false);
