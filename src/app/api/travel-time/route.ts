@@ -15,6 +15,7 @@ async function nominatimSearch(query: string): Promise<GeocodingResult[]> {
   const response = await fetch(url, {
     headers: { "User-Agent": "TeamPlanner/1.0" },
     next: { revalidate: 86400 },
+    signal: AbortSignal.timeout(5000),
   });
   if (!response.ok) return [];
   return response.json();
@@ -102,28 +103,38 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!body.from || !body.to) {
+  const from = (body.from ?? "").trim();
+  const to = (body.to ?? "").trim();
+
+  if (!from || !to) {
     return NextResponse.json(
       { error: "Beide adressen zijn verplicht." },
       { status: 400 }
     );
   }
 
+  if (from.length > 500 || to.length > 500) {
+    return NextResponse.json(
+      { error: "Adres is te lang (max 500 tekens)." },
+      { status: 400 }
+    );
+  }
+
   const [fromCoords, toCoords] = await Promise.all([
-    geocodeAddress(body.from),
-    geocodeAddress(body.to),
+    geocodeAddress(from),
+    geocodeAddress(to),
   ]);
 
   if (!fromCoords) {
     return NextResponse.json(
-      { error: `Adres niet gevonden: "${body.from}"` },
+      { error: `Adres niet gevonden: "${from}"` },
       { status: 422 }
     );
   }
 
   if (!toCoords) {
     return NextResponse.json(
-      { error: `Adres niet gevonden: "${body.to}"` },
+      { error: `Adres niet gevonden: "${to}"` },
       { status: 422 }
     );
   }
@@ -133,6 +144,7 @@ export async function POST(request: Request) {
 
     const routeResponse = await fetch(routeUrl, {
       next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(5000),
     });
     if (!routeResponse.ok) {
       return NextResponse.json(

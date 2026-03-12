@@ -39,26 +39,36 @@ export async function POST(request: Request) {
 
   const { teamId } = body;
 
-  if (!teamId) {
+  if (!teamId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(teamId)) {
     return NextResponse.json(
-      { error: "Team ID is verplicht." },
+      { error: "Ongeldig Team ID." },
       { status: 400 }
     );
   }
 
-  // Verify user is coach and get import source
+  // Verify user is coach or admin of this team
+  const { data: isAdmin } = await supabase.rpc("is_team_admin", { check_team_id: teamId });
+
+  if (!isAdmin) {
+    return NextResponse.json(
+      { error: "Geen toegang tot dit team." },
+      { status: 403 }
+    );
+  }
+
+  // Get import source data
   const { data: team, error: teamError } = await supabase
     .from("teams")
     .select(
-      "id, created_by, import_club_abbrev, import_team_name, import_team_id, import_team_url"
+      "id, import_club_abbrev, import_team_name, import_team_id, import_team_url"
     )
     .eq("id", teamId)
     .single();
 
-  if (teamError || !team || team.created_by !== user.id) {
+  if (teamError || !team) {
     return NextResponse.json(
-      { error: "Geen toegang tot dit team." },
-      { status: 403 }
+      { error: "Team niet gevonden." },
+      { status: 404 }
     );
   }
 

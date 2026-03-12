@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Label } from "@/components/ui/label";
@@ -37,6 +38,8 @@ export function EventForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: 
         location: fd.get("location") as string,
         notes: fd.get("notes") as string,
       });
+    } catch {
+      toast.error("Kon event niet opslaan.");
     } finally {
       setLoading(false);
     }

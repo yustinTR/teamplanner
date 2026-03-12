@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Pencil, UserMinus } from "lucide-react";
+import { ArrowLeft, Pencil, UserMinus, ShieldCheck } from "lucide-react";
 import { spring, slideUp } from "@/lib/animations";
 import { SkillsRadar } from "@/components/molecules/SkillsRadar";
 import { SkillsEditor } from "@/components/molecules/SkillsEditor";
@@ -20,6 +20,7 @@ import { Spinner } from "@/components/atoms/Spinner";
 import { PlayerForm } from "@/components/molecules/PlayerForm";
 import { PlayerStatsSection } from "@/components/organisms/PlayerStatsSection";
 import { DETAILED_POSITION_LABELS, ROLE_LABELS } from "@/lib/constants";
+import { Switch } from "@/components/ui/switch";
 import {
   Sheet,
   SheetContent,
@@ -233,6 +234,26 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
             teamId={player.team_id}
           />
         </motion.div>
+      )}
+
+      {isCoach && player.user_id && (
+        <div className="mt-6 flex items-center justify-between rounded-lg border p-4">
+          <div className="flex items-center gap-3">
+            <ShieldCheck className="size-5 text-muted-foreground" />
+            <div>
+              <p className="text-sm font-medium">Beheerder</p>
+              <p className="text-xs text-muted-foreground">
+                Kan opstellingen, wedstrijden en events beheren
+              </p>
+            </div>
+          </div>
+          <Switch
+            checked={player.is_admin}
+            onCheckedChange={(checked) => {
+              updatePlayer.mutate({ id: player.id, is_admin: checked });
+            }}
+          />
+        </div>
       )}
 
       {isCoach && (

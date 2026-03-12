@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Textarea } from "@/components/atoms/Textarea";
@@ -69,6 +70,8 @@ export function PlayerForm({
         jersey_number: jerseyNum ? parseInt(jerseyNum, 10) : null,
         notes: (formData.get("notes") as string) || null,
       });
+    } catch {
+      toast.error("Kon speler niet opslaan.");
     } finally {
       setLoading(false);
     }

@@ -40,11 +40,12 @@ export function useCreateTeam() {
       if (error) throw error;
 
       // Auto-create a player record for the coach
-      await supabase.from("players").insert({
+      const { error: playerError } = await supabase.from("players").insert({
         team_id: data.id,
         user_id: user.id,
         name: user.user_metadata?.name ?? user.email ?? "Coach",
       });
+      if (playerError) throw new Error("Team aangemaakt, maar kon speler niet toevoegen. Probeer opnieuw.");
 
       return data;
     },

@@ -30,10 +30,10 @@ export function useExercises(filters?: ExerciseFilters) {
         query = query.lte("duration_minutes", filters.maxDuration);
       }
       if (filters?.minPlayers) {
-        query = query.gte("max_players", filters.minPlayers);
+        query = query.gte("min_players", filters.minPlayers);
       }
       if (filters?.maxPlayers) {
-        query = query.lte("min_players", filters.maxPlayers);
+        query = query.lte("max_players", filters.maxPlayers);
       }
 
       const { data, error } = await query;

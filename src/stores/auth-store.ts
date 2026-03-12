@@ -24,13 +24,25 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   setUser: (user) => set({ user }),
 
-  setCurrentTeam: (team) =>
+  setCurrentTeam: (team) => {
+    const state = get();
     set({
       currentTeam: team,
-      isCoach: team ? team.created_by === get().user?.id : false,
-    }),
+      isCoach: team
+        ? team.created_by === state.user?.id || (state.currentPlayer?.is_admin ?? false)
+        : false,
+    });
+  },
 
-  setCurrentPlayer: (player) => set({ currentPlayer: player }),
+  setCurrentPlayer: (player) => {
+    const state = get();
+    set({
+      currentPlayer: player,
+      isCoach: state.currentTeam
+        ? state.currentTeam.created_by === state.user?.id || (player?.is_admin ?? false)
+        : false,
+    });
+  },
 
   setMyTeams: (teams) => set({ myTeams: teams }),
 

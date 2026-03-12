@@ -41,9 +41,19 @@ const steps = [
   },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Beschikbaarheid bijhouden voor je voetbalteam",
+  description: "Nooit meer vragen wie er kan spelen. Spelers geven met één tik hun beschikbaarheid door.",
+  url: "https://myteamplanner.nl/features/beschikbaarheid",
+  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://myteamplanner.nl" },
+};
+
 export default function BeschikbaarheidPage() {
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 px-4 pb-16 pt-20">
         <div className="mx-auto max-w-3xl text-center">
           <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-white/10">

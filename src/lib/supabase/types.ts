@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.1"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       availability: {
@@ -451,6 +426,7 @@ export type Database = {
           created_at: string
           id: string
           is_active: boolean
+          is_admin: boolean
           jersey_number: number | null
           name: string
           notes: string | null
@@ -467,6 +443,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          is_admin?: boolean
           jersey_number?: number | null
           name: string
           notes?: string | null
@@ -483,6 +460,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          is_admin?: boolean
           jersey_number?: number | null
           name?: string
           notes?: string | null
@@ -504,6 +482,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      rate_limits: {
+        Row: {
+          action: string
+          last_request_at: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          last_request_at?: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          last_request_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       teams: {
         Row: {
@@ -657,11 +653,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_rate_limit: {
+        Args: { p_action: string; p_limit_seconds?: number }
+        Returns: number
+      }
       get_my_team_ids: { Args: never; Returns: string[] }
       get_team_by_invite_code: {
         Args: { invite_code_input: string }
         Returns: Json
       }
+      is_team_admin: { Args: { check_team_id: string }; Returns: boolean }
       join_team_by_invite_code: {
         Args: { invite_code_input: string; user_name: string }
         Returns: Json
@@ -815,9 +816,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       attendance_status: ["coming", "not_coming", "maybe"],

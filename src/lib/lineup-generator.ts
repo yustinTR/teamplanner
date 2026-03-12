@@ -18,6 +18,7 @@ export function matchPlayerToPlayer(mp: MatchPlayer): Player {
     skills: {},
     skills_version: 1,
     is_active: true,
+    is_admin: false,
     created_at: mp.created_at,
   };
 }

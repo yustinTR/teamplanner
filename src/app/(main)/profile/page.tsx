@@ -102,6 +102,7 @@ export default function ProfilePage() {
                   <Button
                     variant="ghost"
                     size="icon"
+                    aria-label="Naam bewerken"
                     onClick={() => setEditing(true)}
                   >
                     <Pencil className="size-4" />

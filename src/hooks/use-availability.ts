@@ -53,6 +53,25 @@ export function useSetAvailability() {
       if (error) throw error;
       return data;
     },
+    onMutate: async ({ playerId, matchId, status }) => {
+      await queryClient.cancelQueries({ queryKey: ["availability", matchId] });
+      const previous = queryClient.getQueryData<AvailabilityWithPlayer[]>(["availability", matchId]);
+      queryClient.setQueryData<AvailabilityWithPlayer[]>(["availability", matchId], (old) => {
+        if (!old) return old;
+        const exists = old.find((a) => a.player_id === playerId);
+        if (exists) {
+          return old.map((a) => a.player_id === playerId ? { ...a, status } : a);
+        }
+        // New record: add a placeholder so the UI updates immediately
+        return [...old, { id: `temp-${playerId}`, player_id: playerId, match_id: matchId, status, responded_at: new Date().toISOString(), players: null } as unknown as AvailabilityWithPlayer];
+      });
+      return { previous };
+    },
+    onError: (_err, { matchId }, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(["availability", matchId], context.previous);
+      }
+    },
     onSuccess: (data) => {
       trackEvent("set_availability", { status: data.status });
       queryClient.invalidateQueries({ queryKey: ["availability", data.match_id] });

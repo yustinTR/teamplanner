@@ -52,6 +52,28 @@ export function useSetEventAttendance() {
       if (error) throw error;
       return data;
     },
+    onMutate: async ({ eventId, playerId, status }) => {
+      await queryClient.cancelQueries({ queryKey: ["event-attendance", eventId] });
+      const previous = queryClient.getQueryData(["event-attendance", eventId]);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      queryClient.setQueryData(["event-attendance", eventId], (old: any[] | undefined) => {
+        if (!old) return old;
+        const exists = old.some((a) => a.player_id === playerId);
+        if (exists) {
+          return old.map((a) =>
+            a.player_id === playerId ? { ...a, status } : a
+          );
+        }
+        // New record: add placeholder so UI updates immediately
+        return [...old, { id: `temp-${playerId}`, player_id: playerId, event_id: eventId, status, responded_at: new Date().toISOString(), players: null }];
+      });
+      return { previous };
+    },
+    onError: (_err, { eventId }, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(["event-attendance", eventId], context.previous);
+      }
+    },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["event-attendance", data.event_id] });
     },

@@ -54,6 +54,7 @@ export function createMockPlayer(overrides?: Partial<Player>): Player {
     skills: {},
     skills_version: 1,
     is_active: true,
+    is_admin: false,
     created_at: "2026-01-01T00:00:00Z",
     ...overrides,
   };

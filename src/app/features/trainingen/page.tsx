@@ -42,9 +42,19 @@ const steps = [
   },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Trainingsplannen met kant-en-klare oefeningen",
+  description: "Stel in 2 minuten een trainingsplan samen uit 79+ voetbaloefeningen. Gefilterd op niveau en thema.",
+  url: "https://myteamplanner.nl/features/trainingen",
+  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://myteamplanner.nl" },
+};
+
 export default function TrainingenPage() {
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 px-4 pb-16 pt-20">
         <div className="mx-auto max-w-3xl text-center">
           <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-white/10">

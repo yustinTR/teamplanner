@@ -47,7 +47,7 @@ export function ExerciseCard({
         <div className="relative h-24 w-full overflow-hidden bg-neutral-50">
           <Image
             src={`/exercises/${category}.svg`}
-            alt=""
+            alt={EXERCISE_CATEGORY_LABELS[category] ?? category}
             fill
             className="object-cover"
           />

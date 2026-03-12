@@ -27,7 +27,7 @@ export default async function MainLayout({ children }: MainLayoutProps) {
       .eq("created_by", user.id),
     supabase
       .from("players")
-      .select("id, team_id")
+      .select("id, team_id, is_admin")
       .eq("user_id", user.id)
       .eq("is_active", true),
   ]);
@@ -56,7 +56,7 @@ export default async function MainLayout({ children }: MainLayoutProps) {
       const record = playerOnlyRecords.find((p) => p.team_id === team.id);
       myTeams.push({
         team,
-        role: "player",
+        role: record?.is_admin ? "coach" : "player",
         playerId: record?.id ?? null,
       });
     }

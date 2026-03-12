@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
@@ -112,6 +113,8 @@ export function MatchForm({
           ? parseInt(travelMinutes, 10)
           : null,
       });
+    } catch {
+      toast.error("Kon wedstrijd niet opslaan.");
     } finally {
       setLoading(false);
     }

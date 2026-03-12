@@ -8,8 +8,7 @@ import {
   enrichMatchesWithLocations,
 } from "@/lib/voetbal-nl-parser";
 
-const RATE_LIMIT_MS = 30 * 1000; // 30 seconds between requests
-const lastRequestMap = new Map<string, number>();
+const RATE_LIMIT_SECONDS = 30;
 
 export async function POST(request: Request) {
   // Verify authentication
@@ -23,12 +22,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Niet ingelogd." }, { status: 401 });
   }
 
-  // Rate limiting
-  const lastRequest = lastRequestMap.get(user.id);
-  if (lastRequest && Date.now() - lastRequest < RATE_LIMIT_MS) {
-    const remaining = Math.ceil(
-      (RATE_LIMIT_MS - (Date.now() - lastRequest)) / 1000
-    );
+  // Database-backed rate limiting (works across serverless instances)
+  const { data: remaining } = await supabase.rpc("check_rate_limit", {
+    p_action: "import_voetbal_nl",
+    p_limit_seconds: RATE_LIMIT_SECONDS,
+  });
+  if (remaining && remaining > 0) {
     return NextResponse.json(
       { error: `Wacht ${remaining} seconden voordat je opnieuw zoekt.` },
       { status: 429 }
@@ -51,8 +50,6 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-
-  lastRequestMap.set(user.id, Date.now());
 
   // --- Action: discover ---
   if (body.action === "discover") {

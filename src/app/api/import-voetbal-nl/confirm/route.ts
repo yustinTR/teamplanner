@@ -44,21 +44,31 @@ export async function POST(request: Request) {
 
   const { teamId, matches, players, importSource } = body;
 
-  if (!teamId) {
+  if (!teamId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(teamId)) {
     return NextResponse.json(
-      { error: "Team ID is verplicht." },
+      { error: "Ongeldig Team ID." },
       { status: 400 }
     );
   }
 
-  // Verify user is coach of this team
-  const { data: team, error: teamError } = await supabase
-    .from("teams")
-    .select("id, created_by")
-    .eq("id", teamId)
-    .single();
+  if (matches && matches.length > 200) {
+    return NextResponse.json(
+      { error: "Maximaal 200 wedstrijden per import." },
+      { status: 400 }
+    );
+  }
 
-  if (teamError || !team || team.created_by !== user.id) {
+  if (players && players.length > 100) {
+    return NextResponse.json(
+      { error: "Maximaal 100 spelers per import." },
+      { status: 400 }
+    );
+  }
+
+  // Verify user is coach or admin of this team
+  const { data: isAdmin } = await supabase.rpc("is_team_admin", { check_team_id: teamId });
+
+  if (!isAdmin) {
     return NextResponse.json(
       { error: "Geen toegang tot dit team." },
       { status: 403 }
@@ -151,9 +161,15 @@ export async function POST(request: Request) {
   if (players?.length) {
     for (const player of players) {
       try {
+        const trimmedName = (player.name ?? "").trim();
+        if (!trimmedName || trimmedName.length > 200) {
+          results.errors.push(`Ongeldige spelernaam: "${player.name}"`);
+          continue;
+        }
+
         const { error } = await supabase.from("players").insert({
           team_id: teamId,
-          name: player.name,
+          name: trimmedName,
           primary_position: player.position,
         });
 
@@ -174,7 +190,7 @@ export async function POST(request: Request) {
 
   // Save import source to team if provided
   if (importSource) {
-    await supabase
+    const { error: importSourceError } = await supabase
       .from("teams")
       .update({
         import_club_abbrev: importSource.clubAbbrev,
@@ -183,6 +199,9 @@ export async function POST(request: Request) {
         import_team_url: importSource.teamUrl,
       })
       .eq("id", teamId);
+    if (importSourceError) {
+      results.errors.push("Kon import-bron niet opslaan bij team.");
+    }
   }
 
   return NextResponse.json({ results });
@@ -212,5 +231,7 @@ export function parseDate(dateStr: string): string | null {
   if (month < 1 || month > 12 || day < 1 || day > 31) return null;
 
   const date = new Date(year, month - 1, day, hours, minutes, 0);
+  // Detect invalid dates like Feb 31 that silently roll over to March
+  if (date.getMonth() !== month - 1 || date.getDate() !== day) return null;
   return date.toISOString();
 }

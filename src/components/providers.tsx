@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/next";
+import { Toaster, toast } from "sonner";
 import { useState, useEffect } from "react";
 import { useUiStore } from "@/stores/ui-store";
 import { WifiOff } from "lucide-react";
@@ -49,6 +50,15 @@ export function Providers({ children }: ProvidersProps) {
           queries: {
             staleTime: 60 * 1000,
           },
+          mutations: {
+            onError: (error) => {
+              toast.error(
+                error instanceof Error
+                  ? error.message
+                  : "Er is iets misgegaan."
+              );
+            },
+          },
         },
       })
   );
@@ -56,6 +66,7 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       {process.env.NEXT_PUBLIC_VERCEL_ENV && <Analytics />}
+      <Toaster position="top-center" richColors closeButton />
       <OfflineBanner />
       {children}
     </QueryClientProvider>

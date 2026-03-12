@@ -19,31 +19,33 @@ export function usePlayerSeasonStats(
   return useQuery({
     queryKey: ["player-stats", playerId, teamId],
     queryFn: async (): Promise<PlayerSeasonStats | null> => {
-      const { data: team } = await supabase
-        .from("teams")
-        .select("team_type")
-        .eq("id", teamId!)
-        .single();
-      const defaultMinutes = getDefaultMatchMinutes(team?.team_type);
+      // Parallel batch 1: independent queries
+      const [teamRes, playerRes, matchesRes] = await Promise.all([
+        supabase
+          .from("teams")
+          .select("team_type")
+          .eq("id", teamId!)
+          .single(),
+        supabase
+          .from("players")
+          .select("name")
+          .eq("id", playerId!)
+          .single(),
+        supabase
+          .from("matches")
+          .select("id")
+          .eq("team_id", teamId!)
+          .eq("status", "completed"),
+      ]);
 
-      const { data: player } = await supabase
-        .from("players")
-        .select("name")
-        .eq("id", playerId!)
-        .single();
-      if (!player) return null;
+      const defaultMinutes = getDefaultMatchMinutes(teamRes.data?.team_type);
+      if (!playerRes.data) return null;
 
-      const { data: matches } = await supabase
-        .from("matches")
-        .select("id")
-        .eq("team_id", teamId!)
-        .eq("status", "completed");
-
-      const matchIds = (matches ?? []).map((m) => m.id);
+      const matchIds = (matchesRes.data ?? []).map((m) => m.id);
       if (matchIds.length === 0) {
         return {
           playerId: playerId!,
-          playerName: player.name,
+          playerName: playerRes.data.name,
           matchesPlayed: 0,
           totalMinutes: 0,
           averageMinutes: 0,
@@ -54,21 +56,23 @@ export function usePlayerSeasonStats(
         };
       }
 
-      const { data: lineups } = await supabase
-        .from("lineups")
-        .select("match_id, substitution_plan, positions")
-        .in("match_id", matchIds);
-
-      const { data: stats } = await supabase
-        .from("match_stats")
-        .select("player_id, goals, assists, yellow_cards, red_cards")
-        .eq("player_id", playerId!)
-        .in("match_id", matchIds);
+      // Parallel batch 2: queries depending on matchIds
+      const [lineupsRes, statsRes] = await Promise.all([
+        supabase
+          .from("lineups")
+          .select("match_id, substitution_plan, positions")
+          .in("match_id", matchIds),
+        supabase
+          .from("match_stats")
+          .select("player_id, goals, assists, yellow_cards, red_cards")
+          .eq("player_id", playerId!)
+          .in("match_id", matchIds),
+      ]);
 
       const results = aggregatePlayerStats(
-        [{ id: playerId!, name: player.name }],
-        lineups ?? [],
-        stats ?? [],
+        [{ id: playerId!, name: playerRes.data.name }],
+        lineupsRes.data ?? [],
+        statsRes.data ?? [],
         defaultMinutes
       );
       return results[0] ?? null;
@@ -82,27 +86,31 @@ export function useTeamSeasonStats(teamId: string | undefined) {
   return useQuery({
     queryKey: ["player-stats", "team", teamId],
     queryFn: async (): Promise<PlayerSeasonStats[]> => {
-      const { data: team } = await supabase
-        .from("teams")
-        .select("team_type")
-        .eq("id", teamId!)
-        .single();
-      const defaultMinutes = getDefaultMatchMinutes(team?.team_type);
+      // Parallel batch 1: independent queries
+      const [teamRes, playersRes, matchesRes] = await Promise.all([
+        supabase
+          .from("teams")
+          .select("team_type")
+          .eq("id", teamId!)
+          .single(),
+        supabase
+          .from("players")
+          .select("id, name")
+          .eq("team_id", teamId!)
+          .eq("is_active", true)
+          .neq("role", "staff"),
+        supabase
+          .from("matches")
+          .select("id")
+          .eq("team_id", teamId!)
+          .eq("status", "completed"),
+      ]);
 
-      const { data: players } = await supabase
-        .from("players")
-        .select("id, name")
-        .eq("team_id", teamId!)
-        .eq("is_active", true)
-        .neq("role", "staff");
+      const defaultMinutes = getDefaultMatchMinutes(teamRes.data?.team_type);
+      const players = playersRes.data;
       if (!players?.length) return [];
 
-      const { data: matches } = await supabase
-        .from("matches")
-        .select("id")
-        .eq("team_id", teamId!)
-        .eq("status", "completed");
-      const matchIds = (matches ?? []).map((m) => m.id);
+      const matchIds = (matchesRes.data ?? []).map((m) => m.id);
       if (matchIds.length === 0) {
         return players.map((p) => ({
           playerId: p.id,
@@ -117,20 +125,22 @@ export function useTeamSeasonStats(teamId: string | undefined) {
         }));
       }
 
-      const { data: lineups } = await supabase
-        .from("lineups")
-        .select("match_id, substitution_plan, positions")
-        .in("match_id", matchIds);
-
-      const { data: allStats } = await supabase
-        .from("match_stats")
-        .select("player_id, goals, assists, yellow_cards, red_cards")
-        .in("match_id", matchIds);
+      // Parallel batch 2: queries depending on matchIds
+      const [lineupsRes, allStatsRes] = await Promise.all([
+        supabase
+          .from("lineups")
+          .select("match_id, substitution_plan, positions")
+          .in("match_id", matchIds),
+        supabase
+          .from("match_stats")
+          .select("player_id, goals, assists, yellow_cards, red_cards")
+          .in("match_id", matchIds),
+      ]);
 
       return aggregatePlayerStats(
         players,
-        lineups ?? [],
-        allStats ?? [],
+        lineupsRes.data ?? [],
+        allStatsRes.data ?? [],
         defaultMinutes
       );
     },

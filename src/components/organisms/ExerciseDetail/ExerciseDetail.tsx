@@ -55,7 +55,7 @@ export function ExerciseDetail({ exerciseId }: ExerciseDetailProps) {
       <div className="relative h-36 w-full overflow-hidden rounded-xl bg-neutral-50">
         <Image
           src={`/exercises/${exercise.category}.svg`}
-          alt=""
+          alt={EXERCISE_CATEGORY_LABELS[exercise.category] ?? exercise.category}
           fill
           className="object-cover"
         />

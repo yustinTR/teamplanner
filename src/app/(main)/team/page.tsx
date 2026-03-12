@@ -20,7 +20,7 @@ export default function TeamPage() {
         </div>
         {isCoach && (
           <Link href="/team/settings">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white" aria-label="Teaminstellingen">
               <Settings className="size-5" />
             </Button>
           </Link>
