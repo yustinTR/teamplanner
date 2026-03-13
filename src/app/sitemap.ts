@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteUrl,
-      lastModified: "2026-03-02",
+      lastModified: "2026-03-13",
       changeFrequency: "weekly",
       priority: 1,
     },
@@ -43,31 +43,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${siteUrl}/features/beschikbaarheid`,
-      lastModified: "2026-03-02",
+      lastModified: "2026-03-13",
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/features/opstellingen`,
-      lastModified: "2026-03-02",
+      lastModified: "2026-03-13",
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/features/wedstrijden`,
-      lastModified: "2026-03-02",
+      lastModified: "2026-03-13",
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/features/trainingen`,
-      lastModified: "2026-03-02",
+      lastModified: "2026-03-13",
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${siteUrl}/blog`,
-      lastModified: "2026-03-02",
+      lastModified: "2026-03-13",
       changeFrequency: "weekly",
       priority: 0.7,
     },

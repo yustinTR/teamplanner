@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "lucide-react";
+import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Beschikbaarheid bijhouden voor je voetbalteam",
@@ -54,7 +55,12 @@ export default function BeschikbaarheidPage() {
   return (
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 px-4 pb-16 pt-20">
+      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 px-4 pb-16 pt-12">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-8 [&_nav]:text-white/60 [&_a]:hover:text-white [&_span]:last:text-white [&_svg]:text-white/30">
+            <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Features", href: "/#features" }, { label: "Beschikbaarheid" }]} />
+          </div>
+        </div>
         <div className="mx-auto max-w-3xl text-center">
           <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-white/10">
             <Users className="size-8 text-white" />

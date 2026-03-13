@@ -7,6 +7,7 @@ export interface BlogPost {
   featureLink: string;
   featureLabel: string;
   keywords: string[];
+  relatedSlugs?: string[];
   sections: BlogSection[];
 }
 
@@ -26,6 +27,7 @@ export const blogPosts: BlogPost[] = [
     featureLink: "/features/opstellingen",
     featureLabel: "Opstellingen maken",
     keywords: ["opstelling 7 tegen 7", "formatie 7v7", "jeugdvoetbal opstelling", "7 tegen 7 formaties"],
+    relatedSlugs: ["wisselschema-jeugdvoetbal", "voetbal-training-oefeningen", "voetbal-teamindeling-maken"],
     sections: [
       {
         heading: "Waarom 7 tegen 7?",
@@ -74,6 +76,7 @@ export const blogPosts: BlogPost[] = [
     featureLink: "/features/opstellingen",
     featureLabel: "Wisselschema maken",
     keywords: ["wisselschema jeugdvoetbal", "speeltijd verdelen", "eerlijk wisselen voetbal", "wisselschema maken"],
+    relatedSlugs: ["opstelling-7-tegen-7-voetbal", "beschikbaarheid-bijhouden-voetbalteam", "spelers-beoordelen-jeugdtrainer"],
     sections: [
       {
         heading: "Waarom eerlijke speeltijd belangrijk is",
@@ -115,6 +118,7 @@ export const blogPosts: BlogPost[] = [
     featureLink: "/features/wedstrijden",
     featureLabel: "Wedstrijden beheren",
     keywords: ["team managen voetbal", "voetbaltrainer app", "team beheren", "coach app voetbal"],
+    relatedSlugs: ["beschikbaarheid-bijhouden-voetbalteam", "communicatie-voetbalteam", "gratis-voetbal-app-voor-je-team"],
     sections: [
       {
         heading: "Het WhatsApp-probleem",
@@ -156,6 +160,7 @@ export const blogPosts: BlogPost[] = [
     featureLink: "/features/beschikbaarheid",
     featureLabel: "Beschikbaarheid bijhouden",
     keywords: ["beschikbaarheid voetbalteam", "wie kan er spelen", "beschikbaarheid bijhouden", "teamplanner voetbal"],
+    relatedSlugs: ["team-managen-als-voetbaltrainer", "communicatie-voetbalteam", "gratis-voetbal-app-voor-je-team"],
     sections: [
       {
         heading: "Het probleem: niemand reageert",
@@ -196,6 +201,7 @@ export const blogPosts: BlogPost[] = [
     featureLink: "/register",
     featureLabel: "Gratis starten",
     keywords: ["gratis voetbal app", "voetbal team app", "gratis teamplanner", "app voor voetbalteam"],
+    relatedSlugs: ["team-managen-als-voetbaltrainer", "beschikbaarheid-bijhouden-voetbalteam", "app-voetbaltrainer"],
     sections: [
       {
         heading: "Wat moet een goede voetbal app kunnen?",
@@ -237,6 +243,7 @@ export const blogPosts: BlogPost[] = [
     featureLink: "/features/trainingen",
     featureLabel: "Oefeningen bekijken",
     keywords: ["voetbal training oefeningen", "voetbaloefeningen", "training voetbal", "oefeningen jeugdvoetbal"],
+    relatedSlugs: ["voetbalseizoen-plannen", "spelers-beoordelen-jeugdtrainer", "opstelling-7-tegen-7-voetbal"],
     sections: [
       {
         heading: "Het wekelijkse dilemma",
@@ -264,6 +271,265 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           "De oefeningen zijn verdeeld over 7 categorieën: warming-up, passing, positiespel, verdedigen, aanvallen, conditie en afwerken. Elke categorie bevat oefeningen van basis tot gevorderd niveau.",
           "Of je nu een eenvoudige rondo zoekt voor de warming-up of een complexe aanvalspatronenoefening — je vindt het in de bibliotheek.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "voetbal-teamindeling-maken",
+    title: "Voetbal teamindeling maken: tips voor trainers",
+    description:
+      "Hoe maak je als trainer een eerlijke en effectieve teamindeling? Van spelerselectie tot posities — praktische tips voor amateurvoetbalcoaches.",
+    date: "2026-03-13",
+    readingTime: "4 min",
+    featureLink: "/features/opstellingen",
+    featureLabel: "Opstellingen maken",
+    keywords: ["voetbal teamindeling", "teamindeling maken", "voetbal team samenstellen", "teamindeling voetbal coach"],
+    relatedSlugs: ["opstelling-7-tegen-7-voetbal", "wisselschema-jeugdvoetbal", "spelers-beoordelen-jeugdtrainer"],
+    sections: [
+      {
+        heading: "Begin bij je spelers, niet bij de formatie",
+        paragraphs: [
+          "De meeste coaches beginnen bij een formatie: 4-3-3, 4-4-2, of een variant. Maar een goede teamindeling begint bij je spelers. Wie heb je beschikbaar? Wat zijn hun kwaliteiten? Op welke posities voelen ze zich het sterkst?",
+          "Ken eerst je selectie — kijk naar snelheid, techniek, ervaring en fitheid. Pas dan kies je een formatie die bij je spelers past, niet andersom. Een 4-3-3 werkt niet als je maar één echte buitenspeler hebt.",
+        ],
+      },
+      {
+        heading: "Houd rekening met balans",
+        paragraphs: [
+          "Een goede teamindeling is meer dan 11 namen op papier. Mix ervaren en onervaren spelers door het veld. Zet een rustige verdediger naast een die graag mee opkomt. Combineer een creatieve middenvelder met iemand die het vuile werk doet.",
+          "Denk ook aan links- en rechtsbenige spelers. Een linkspoot op rechtsbuiten snijdt naar binnen, een rechtspoot houdt de breedte. Beide opties zijn geldig, maar het verandert hoe je team speelt.",
+        ],
+      },
+      {
+        heading: "Communiceer je keuzes",
+        paragraphs: [
+          "Spelers accepteren een teamindeling beter als ze begrijpen waarom. Leg uit waarom iemand op een bepaalde positie staat. 'Jij staat centraal achterin omdat je goed overzicht hebt' motiveert meer dan 'zo heb ik het bedacht'.",
+          "Bij jeugdteams is dit extra belangrijk. Laat spelers op verschillende posities spelen zodat ze zich breed ontwikkelen. Leg uit dat ze niet altijd op hun favoriete plek staan, maar dat het goed is voor hun ontwikkeling.",
+        ],
+      },
+      {
+        heading: "Gebruik een tool",
+        paragraphs: [
+          "Met pen en papier een teamindeling maken werkt, maar het is niet handig om te delen of aan te passen. Een digitale tool maakt het makkelijker om posities te schuiven, wissels te plannen en je indeling met het team te delen.",
+          "In MyTeamPlanner sleep je spelers naar het veld, kies je een formatie en plan je wissels vooraf. Je ziet direct of je indeling klopt en hoeveel minuten elke speler maakt. Spelers kunnen hun positie bekijken in de app.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "app-voetbaltrainer",
+    title: "Beste apps voor voetbaltrainers in 2026",
+    description:
+      "Welke apps zijn er voor amateurvoetbaltrainers? Een vergelijking van de beste tools voor teammanagement, opstellingen en beschikbaarheid.",
+    date: "2026-03-10",
+    readingTime: "5 min",
+    featureLink: "/register",
+    featureLabel: "Gratis starten",
+    keywords: ["app voetbaltrainer", "beste voetbal app", "voetbal coach app", "teammanagement app voetbal"],
+    relatedSlugs: ["gratis-voetbal-app-voor-je-team", "team-managen-als-voetbaltrainer", "communicatie-voetbalteam"],
+    sections: [
+      {
+        heading: "Waarom een app als trainer?",
+        paragraphs: [
+          "Als amateurvoetbaltrainer besteed je elke week tijd aan organisatie: wie kan er spelen, wat is de opstelling, hoe laat verzamelen. WhatsApp-groepen raken onoverzichtelijk, papieren lijstjes raken kwijt, en aan het eind van het seizoen heb je geen idee wie hoeveel heeft gespeeld.",
+          "Een speciale app bespaart je uren per week. Spelers geven zelf hun beschikbaarheid door, je maakt opstellingen op je telefoon, en statistieken worden automatisch bijgehouden. De tijd die je bespaart kun je besteden aan wat echt belangrijk is: trainen en coachen.",
+        ],
+      },
+      {
+        heading: "Waar moet je op letten?",
+        paragraphs: [
+          "Niet elke app is geschikt voor amateurvoetbal. Let op deze punten: gebruiksgemak (je spelers moeten het ook snappen), prijs (gratis of betaalbaar), taal (Nederlandse interface is een pre), en of de app mobiel-eerst is ontworpen.",
+          "Veel apps zijn gebouwd voor professionele clubs en zitten vol functies die je niet nodig hebt. GPS-tracking, video-analyse, en uitgebreide tactiekborden — leuk, maar overkill voor een zaterdagteam in de 3e klasse.",
+        ],
+      },
+      {
+        heading: "Populaire opties vergeleken",
+        paragraphs: [
+          "TeamSnap en Spond zijn internationale apps met een grote gebruikersbasis. Ze bieden basisfuncties voor beschikbaarheid en communicatie, maar zijn niet specifiek voor voetbal. SoccerLAB is gericht op professionele clubs en heeft een prijskaartje dat past bij betaald voetbal.",
+          "MyTeamPlanner is specifiek gebouwd voor amateurvoetbal in Nederland. Het is volledig gratis, heeft een Nederlandse interface, en biedt precies wat je nodig hebt: wedstrijden plannen, beschikbaarheid ophalen, opstellingen maken met drag & drop, en seizoensstatistieken bijhouden.",
+        ],
+      },
+      {
+        heading: "Conclusie",
+        paragraphs: [
+          "Voor amateurvoetbalcoaches in Nederland is een simpele, gratis tool het beste. Je hebt geen enterprise-software nodig — je hebt iets nodig dat werkt op de telefoon van elke speler, zonder uitleg.",
+          "Probeer MyTeamPlanner en ontdek wat het verschil maakt. In 2 minuten je team aangemaakt, uitnodigingslink delen via WhatsApp, en je bent klaar. Geen app store, geen kosten, geen gedoe.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "voetbalseizoen-plannen",
+    title: "Hoe plan je een voetbalseizoen als trainer",
+    description:
+      "Een nieuw seizoen begint met goede planning. Van selectie samenstellen tot wedstrijdschema importeren — een stappenplan voor amateurcoaches.",
+    date: "2026-03-07",
+    readingTime: "5 min",
+    featureLink: "/features/wedstrijden",
+    featureLabel: "Wedstrijden beheren",
+    keywords: ["voetbalseizoen plannen", "seizoen voorbereiden voetbal", "voetbal coach planning", "seizoensplanning amateurvoetbal"],
+    relatedSlugs: ["team-managen-als-voetbaltrainer", "voetbal-training-oefeningen", "voetbal-teamindeling-maken"],
+    sections: [
+      {
+        heading: "Begin op tijd",
+        paragraphs: [
+          "Een goed seizoen begint weken voor de eerste wedstrijd. Inventariseer je selectie: wie blijft, wie vertrekt, en zijn er nieuwe spelers? Zorg dat iedereen geregistreerd staat en dat contactgegevens up-to-date zijn.",
+          "Maak een planning voor de voorbereiding. Hoeveel trainingen heb je voor de competitie begint? Welke onderwerpen wil je behandelen? Een simpele weekplanning geeft richting aan je voorbereiding.",
+        ],
+      },
+      {
+        heading: "Importeer je wedstrijdprogramma",
+        paragraphs: [
+          "Veel clubs gebruiken voetbal.nl voor hun competitieschema. In plaats van elke wedstrijd handmatig over te nemen, kun je het hele programma in één keer importeren. Inclusief tegenstanders, datums, tijden en locaties.",
+          "Met MyTeamPlanner importeer je je wedstrijdprogramma direct. Wedstrijden verschijnen in je kalender en spelers kunnen meteen hun beschikbaarheid doorgeven. De verzameltijd wordt automatisch berekend, inclusief reistijd voor uitwedstrijden.",
+        ],
+      },
+      {
+        heading: "Plan je trainingen",
+        paragraphs: [
+          "Maak een globaal trainingsplan per periode. Wissel techniek, tactiek en conditie af. In de voorbereiding focus je op conditie en teambuilding. Tijdens de competitie werk je aan specifieke verbeterpunten die je in wedstrijden ziet.",
+          "Gebruik een oefeningenbibliotheek voor inspiratie. Met 79+ kant-en-klare oefeningen hoef je niet elke week het wiel opnieuw uit te vinden. Filter op thema, niveau en aantal spelers om snel de juiste oefening te vinden.",
+        ],
+      },
+      {
+        heading: "Houd het overzicht",
+        paragraphs: [
+          "Gedurende het seizoen stapelen wedstrijden, trainingen en evenementen zich op. Een dashboard dat je in één oogopslag laat zien wat er aankomt, wie er beschikbaar is en wat de stand van zaken is, voorkomt dat je iets vergeet.",
+          "Kijk regelmatig naar je seizoensstatistieken. Wie maakt de meeste minuten? Is de speeltijdverdeling eerlijk? Moet je de opstelling aanpassen? Data helpt je om betere beslissingen te nemen als coach.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "voetbal-statistieken-bijhouden",
+    title: "Voetbal statistieken bijhouden: zo doe je dat",
+    description:
+      "Wil je weten wie je topscorer is of hoeveel minuten elke speler maakt? Leer hoe je eenvoudig voetbalstatistieken bijhoudt voor je amateurteam.",
+    date: "2026-03-04",
+    readingTime: "4 min",
+    featureLink: "/features/wedstrijden",
+    featureLabel: "Statistieken bijhouden",
+    keywords: ["voetbal statistieken bijhouden", "voetbal stats app", "doelpunten bijhouden voetbal", "speeltijd bijhouden"],
+    relatedSlugs: ["wisselschema-jeugdvoetbal", "voetbalseizoen-plannen", "app-voetbaltrainer"],
+    sections: [
+      {
+        heading: "Waarom statistieken bijhouden?",
+        paragraphs: [
+          "Statistieken geven je objectief inzicht in je team. Wie maakt de meeste minuten? Wie scoort het vaakst? Hoe is de speeltijdverdeling? Zonder data ga je af op gevoel, en dat leidt soms tot verkeerde keuzes.",
+          "Vooral bij jeugdvoetbal zijn statistieken waardevol. Ze helpen je om eerlijk te verdelen. Als je ziet dat een speler drie wedstrijden op rij minder dan de helft heeft gespeeld, kun je dat compenseren.",
+        ],
+      },
+      {
+        heading: "Welke stats zijn nuttig?",
+        paragraphs: [
+          "Voor amateurvoetbal hoef je niet alles bij te houden. Focus op de basis: doelpunten, assists, gele en rode kaarten, gespeelde wedstrijden en speelminuten. Dat geeft al een compleet beeld van je seizoen.",
+          "Wil je verder gaan? Houd dan ook bij wie er in de basis stond en wie invaller was, en op welke positie iemand speelde. Zo kun je aan het eind van het seizoen zien hoe je team zich heeft ontwikkeld.",
+        ],
+      },
+      {
+        heading: "Na elke wedstrijd invullen",
+        paragraphs: [
+          "De sleutel is consistentie. Maak er een gewoonte van om direct na de wedstrijd de score en individuele stats in te vullen. Het kost 2 minuten en voorkomt dat je het vergeet of achteraf moet reconstrueren.",
+          "In MyTeamPlanner vul je na de wedstrijd de eindstand in en kun je per speler doelpunten, assists en kaarten noteren. De app berekent automatisch de speelminuten op basis van je geplande wissels.",
+        ],
+      },
+      {
+        heading: "Seizoenshighlights",
+        paragraphs: [
+          "Aan het eind van het seizoen heb je een schat aan data. Wie was topscorer? Wie speelde de meeste wedstrijden? Wie maakte de meeste minuten? Ideaal voor het seizoensoverzicht op de teamavond.",
+          "MyTeamPlanner berekent deze highlights automatisch. Je ziet in één overzicht de seizoenstoppers per categorie. Geen Excel nodig, geen handmatig tellen — gewoon invullen na elke wedstrijd en de app doet de rest.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "communicatie-voetbalteam",
+    title: "Communicatie in een voetbalteam verbeteren",
+    description:
+      "Slechte communicatie kost je spelers en wedstrijden. Ontdek hoe je als coach de communicatie in je amateurvoetbalteam verbetert.",
+    date: "2026-03-01",
+    readingTime: "4 min",
+    featureLink: "/features/beschikbaarheid",
+    featureLabel: "Beschikbaarheid bijhouden",
+    keywords: ["communicatie voetbalteam", "team communicatie verbeteren", "voetbal team organiseren", "communicatie coach spelers"],
+    relatedSlugs: ["team-managen-als-voetbaltrainer", "beschikbaarheid-bijhouden-voetbalteam", "app-voetbaltrainer"],
+    sections: [
+      {
+        heading: "Het probleem met WhatsApp-groepen",
+        paragraphs: [
+          "Bijna elk amateurteam heeft een WhatsApp-groep. Handig voor een snelle mededeling, maar zodra je er wedstrijdinformatie, beschikbaarheid en opstellingen doorheen gooit, wordt het een chaos. Belangrijke berichten verdwijnen tussen emoji's, memes en discussies over de Eredivisie.",
+          "Niet iedereen leest alles. Sommige spelers zetten de groep op mute. En als coach heb je geen idee wie het bericht over de wedstrijd van zaterdag daadwerkelijk heeft gezien. Het resultaat: vrijdagavond nog steeds geen compleet beeld.",
+        ],
+      },
+      {
+        heading: "Scheidt informatie van communicatie",
+        paragraphs: [
+          "De oplossing is simpel: gebruik WhatsApp voor de gezelligheid en een apart kanaal voor de organisatie. Wedstrijdinfo, beschikbaarheid en opstellingen horen niet in een chatgroep. Ze verdienen een plek waar iedereen ze makkelijk terugvindt.",
+          "Een teamplanner fungeert als dat aparte kanaal. Spelers openen de app en zien meteen de eerstvolgende wedstrijd, of ze beschikbaar zijn, en wat de opstelling is. Geen scrollen door 200 berichten om te vinden wanneer ze moeten zijn.",
+        ],
+      },
+      {
+        heading: "Maak reageren makkelijk",
+        paragraphs: [
+          "Hoe minder moeite het kost om te reageren, hoe meer spelers het doen. Een WhatsApp-poll is al beter dan een open vraag, maar een app waar je met één tik je beschikbaarheid doorgeeft is het beste.",
+          "Automatische herinneringen helpen ook. Als spelers 2 dagen voor de wedstrijd een melding krijgen dat ze nog niet hebben gereageerd, hoeft de coach niet zelf achter iedereen aan te gaan.",
+        ],
+      },
+      {
+        heading: "Wees consistent",
+        paragraphs: [
+          "Het belangrijkste is consistentie. Stuur informatie altijd via hetzelfde kanaal. Als spelers weten waar ze moeten kijken, hoef je niet meer te herhalen. Na een paar weken is het een gewoonte.",
+          "Begin klein: gebruik een teamplanner alleen voor beschikbaarheid. Als dat werkt, voeg je opstellingen toe. En voor je het weet gebruik je het voor alles — van wedstrijdplanning tot seizoensstatistieken.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "spelers-beoordelen-jeugdtrainer",
+    title: "Spelers beoordelen en ontwikkelen als jeugdtrainer",
+    description:
+      "Hoe beoordeel je spelers eerlijk als jeugdtrainer? Praktische tips voor het bijhouden van vaardigheden en het stimuleren van ontwikkeling.",
+    date: "2026-02-26",
+    readingTime: "5 min",
+    featureLink: "/features/opstellingen",
+    featureLabel: "Spelerprofielen bekijken",
+    keywords: ["spelers beoordelen jeugd", "jeugdvoetbal evaluatie", "spelers ontwikkelen", "vaardigheden jeugdvoetbal"],
+    relatedSlugs: ["voetbal-teamindeling-maken", "wisselschema-jeugdvoetbal", "voetbal-training-oefeningen"],
+    sections: [
+      {
+        heading: "Beoordelen is niet hetzelfde als selecteren",
+        paragraphs: [
+          "Bij jeugdvoetbal gaat het niet om wie de beste is, maar om wie zich het meeste ontwikkelt. Een speler die in september nauwelijks kon passen maar in maart zuivere ballen geeft, verdient erkenning — ook al is hij niet de beste van het team.",
+          "Beoordeel spelers op groei, niet alleen op huidig niveau. Dat betekent dat je een startmeting nodig hebt. Noteer aan het begin van het seizoen waar elke speler staat, en vergelijk dat later met hun ontwikkeling.",
+        ],
+      },
+      {
+        heading: "Welke vaardigheden beoordeel je?",
+        paragraphs: [
+          "Houd het simpel. Focus op de basisvaardigheden: techniek, snelheid, passing, positiespel en inzet. Geef elke vaardigheid een score van 1 tot 10. Dat hoeft niet wetenschappelijk exact te zijn — het gaat om het totaalplaatje.",
+          "Herhaal de beoordeling een paar keer per seizoen. Na 3 metingen zie je trends: welke spelers groeien snel, wie stagneert, en waar liggen de verbeterpunten van je team als geheel.",
+        ],
+      },
+      {
+        heading: "Maak het visueel",
+        paragraphs: [
+          "Cijfers in een tabel zijn lastig te interpreteren. Een radardiagram per speler maakt sterke punten en verbeterpunten direct zichtbaar. Je ziet in één oogopslag of iemand een allrounder is of juist uitblinkt op één vlak.",
+          "In MyTeamPlanner vul je vaardigheden in per speler en zie je automatisch een radardiagram met hun profiel. Vergelijk spelers naast elkaar om te zien hoe ze zich tot het team verhouden.",
+        ],
+      },
+      {
+        heading: "Gebruik beoordelingen voor de training",
+        paragraphs: [
+          "Beoordelingen zijn niet alleen voor het rapport — ze sturen je trainingsplanning. Als je ziet dat 5 spelers laag scoren op passing, plan dan een passtraining. Als het positiespel achterblijft, werk daar een sessie aan.",
+          "Zo maak je de koppeling tussen beoordelen en ontwikkelen. Je traint niet willekeurig, maar gericht op wat je team nodig heeft. Dat is het verschil tussen een goede en een geweldige jeugdtrainer.",
+        ],
+      },
+      {
+        heading: "Eerlijk en transparant",
+        paragraphs: [
+          "Bespreek beoordelingen met spelers en bij jeugd ook met ouders. Leg uit wat je ziet en wat ze kunnen verbeteren. Een cijfer zonder context motiveert niemand, maar een uitleg als 'je passing is gegroeid van een 5 naar een 7, geweldig!' geeft vertrouwen.",
+          "Wees eerlijk maar positief. Focus op wat goed gaat en benoem verbeterpunten als kansen, niet als tekortkomingen. Jeugdspelers die zich gewaardeerd voelen, ontwikkelen zich sneller.",
         ],
       },
     ],

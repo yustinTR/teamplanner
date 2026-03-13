@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
-import { blogPosts, getBlogPost, getAllSlugs } from "@/lib/blog";
+import { ArrowRight, Clock } from "lucide-react";
+import { blogPosts, getBlogPost, getAllSlugs, type BlogPost } from "@/lib/blog";
+import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -47,10 +48,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  // Find related posts (other posts, max 3)
-  const relatedPosts = blogPosts
-    .filter((p) => p.slug !== post.slug)
-    .slice(0, 3);
+  // Find related posts (curated via relatedSlugs, fallback to first 3 others)
+  const relatedPosts = post.relatedSlugs?.length
+    ? post.relatedSlugs
+        .map((s) => blogPosts.find((p) => p.slug === s))
+        .filter((p): p is BlogPost => p !== undefined)
+    : blogPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -84,14 +87,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       />
       <article className="px-4 pb-16 pt-12">
         <div className="mx-auto max-w-2xl">
-          {/* Back link */}
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-neutral-900"
-          >
-            <ArrowLeft className="size-4" />
-            Alle artikelen
-          </Link>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Blog", href: "/blog" },
+              { label: post.title },
+            ]}
+          />
 
           {/* Header */}
           <header className="mt-6">
