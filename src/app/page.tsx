@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen. Makkelijker dan WhatsApp, speciaal voor coaches en spelers.",
   alternates: {
-    canonical: "https://myteamplanner.nl",
+    canonical: "https://www.myteamplanner.nl",
   },
 };
 
@@ -177,10 +177,27 @@ const benefits = [
   },
 ];
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
+
 export default function LandingPage() {
 
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <AuthRedirect />
       {/* Hero section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">

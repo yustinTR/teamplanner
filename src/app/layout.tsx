@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = "https://myteamplanner.nl";
+const siteUrl = "https://www.myteamplanner.nl";
 
 export const metadata: Metadata = {
   title: {
@@ -142,6 +142,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen.",
               url: siteUrl,
               inLanguage: "nl",
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "MyTeamPlanner",
+              url: siteUrl,
+              logo: `${siteUrl}/icons/icon-192x192.svg`,
+              description:
+                "De gratis teamplanner voor amateurvoetbal. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen.",
+              sameAs: [],
             }),
           }}
         />

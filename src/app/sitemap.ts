@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
 import { blogPosts } from "@/lib/blog";
 
-const siteUrl = "https://myteamplanner.nl";
+const siteUrl = "https://www.myteamplanner.nl";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteUrl,
-      lastModified: "2026-03-13",
+      lastModified: "2026-04-10",
       changeFrequency: "weekly",
       priority: 1,
     },

@@ -4,16 +4,16 @@ import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "luc
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Opstelling maken met drag & drop",
+  title: "Voetbal opstelling maken — gratis online tool",
   description:
-    "Maak visuele voetbalopstellingen met drag & drop. Kies een formatie, sleep spelers naar het veld en plan wisselmomenten met automatische speeltijdverdeling.",
+    "Voetbalopstelling maken met drag & drop en direct delen met je team. Kies uit 11v11 en 7v7 formaties, plan wissels met eerlijke speeltijd. Gratis.",
   alternates: {
-    canonical: "https://myteamplanner.nl/features/opstellingen",
+    canonical: "https://www.myteamplanner.nl/features/opstellingen",
   },
   openGraph: {
-    title: "Opstelling maken met drag & drop",
-    description: "Maak visuele voetbalopstellingen met drag & drop. Kies een formatie en plan wisselmomenten.",
-    url: "https://myteamplanner.nl/features/opstellingen",
+    title: "Voetbal opstelling maken — gratis online tool",
+    description: "Voetbalopstelling maken met drag & drop en direct delen met je team. Kies uit 11v11 en 7v7 formaties.",
+    url: "https://www.myteamplanner.nl/features/opstellingen",
   },
 };
 
@@ -48,8 +48,8 @@ const jsonLd = {
   "@type": "WebPage",
   name: "Opstelling maken met drag & drop",
   description: "Maak visuele voetbalopstellingen met drag & drop. Kies een formatie en plan wisselmomenten.",
-  url: "https://myteamplanner.nl/features/opstellingen",
-  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://myteamplanner.nl" },
+  url: "https://www.myteamplanner.nl/features/opstellingen",
+  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://www.myteamplanner.nl" },
 };
 
 export default function OpstellingenPage() {

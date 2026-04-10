@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Privacybeleid van MyTeamPlanner. Lees hoe wij omgaan met je persoonsgegevens conform de AVG.",
   alternates: {
-    canonical: "https://myteamplanner.nl/privacy",
+    canonical: "https://www.myteamplanner.nl/privacy",
   },
 };
 

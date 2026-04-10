@@ -26,12 +26,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     description: post.description,
     keywords: post.keywords,
     alternates: {
-      canonical: `https://myteamplanner.nl/blog/${post.slug}`,
+      canonical: `https://www.myteamplanner.nl/blog/${post.slug}`,
     },
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `https://myteamplanner.nl/blog/${post.slug}`,
+      url: `https://www.myteamplanner.nl/blog/${post.slug}`,
       type: "article",
       publishedTime: post.date,
       siteName: "MyTeamPlanner",
@@ -61,20 +61,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     headline: post.title,
     description: post.description,
     datePublished: post.date,
-    url: `https://myteamplanner.nl/blog/${post.slug}`,
+    url: `https://www.myteamplanner.nl/blog/${post.slug}`,
     inLanguage: "nl",
     author: {
       "@type": "Organization",
       name: "MyTeamPlanner",
-      url: "https://myteamplanner.nl",
+      url: "https://www.myteamplanner.nl",
     },
     publisher: {
       "@type": "Organization",
       name: "MyTeamPlanner",
-      url: "https://myteamplanner.nl",
+      url: "https://www.myteamplanner.nl",
       logo: {
         "@type": "ImageObject",
-        url: "https://myteamplanner.nl/icons/icon-192x192.svg",
+        url: "https://www.myteamplanner.nl/icons/icon-192x192.svg",
       },
     },
   };
