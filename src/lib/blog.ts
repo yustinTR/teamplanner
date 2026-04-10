@@ -27,7 +27,7 @@ export const blogPosts: BlogPost[] = [
     featureLink: "/features/opstellingen",
     featureLabel: "Opstellingen maken",
     keywords: ["opstelling 7 tegen 7", "formatie 7v7", "jeugdvoetbal opstelling", "7 tegen 7 formaties"],
-    relatedSlugs: ["wisselschema-jeugdvoetbal", "voetbal-training-oefeningen", "voetbal-teamindeling-maken"],
+    relatedSlugs: ["wisselschema-jeugdvoetbal", "opstelling-maken-voetbal", "voetbal-teamindeling-maken"],
     sections: [
       {
         heading: "Waarom 7 tegen 7?",
@@ -76,7 +76,7 @@ export const blogPosts: BlogPost[] = [
     featureLink: "/features/opstellingen",
     featureLabel: "Wisselschema maken",
     keywords: ["wisselschema jeugdvoetbal", "speeltijd verdelen", "eerlijk wisselen voetbal", "wisselschema maken"],
-    relatedSlugs: ["opstelling-7-tegen-7-voetbal", "beschikbaarheid-bijhouden-voetbalteam", "spelers-beoordelen-jeugdtrainer"],
+    relatedSlugs: ["opstelling-7-tegen-7-voetbal", "beschikbaarheid-bijhouden-team", "opstelling-maken-voetbal"],
     sections: [
       {
         heading: "Waarom eerlijke speeltijd belangrijk is",
@@ -530,6 +530,174 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           "Bespreek beoordelingen met spelers en bij jeugd ook met ouders. Leg uit wat je ziet en wat ze kunnen verbeteren. Een cijfer zonder context motiveert niemand, maar een uitleg als 'je passing is gegroeid van een 5 naar een 7, geweldig!' geeft vertrouwen.",
           "Wees eerlijk maar positief. Focus op wat goed gaat en benoem verbeterpunten als kansen, niet als tekortkomingen. Jeugdspelers die zich gewaardeerd voelen, ontwikkelen zich sneller.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "beste-voetbal-team-app",
+    title: "De beste gratis team app voor amateurvoetbal (2026)",
+    description:
+      "Op zoek naar een gratis voetbal team app? Vergelijk de populairste apps voor amateurvoetbal: van beschikbaarheid en opstellingen tot communicatie en wedstrijdbeheer.",
+    date: "2026-04-10",
+    readingTime: "6 min",
+    featureLink: "/features/beschikbaarheid",
+    featureLabel: "Beschikbaarheid bekijken",
+    keywords: [
+      "voetbal team app",
+      "gratis teamplanner",
+      "beste app amateurvoetbal",
+      "voetbal app gratis",
+      "team beheer app",
+      "spond alternatief",
+    ],
+    relatedSlugs: ["beschikbaarheid-bijhouden-team", "opstelling-maken-voetbal"],
+    sections: [
+      {
+        heading: "Waarom een team app voor je voetbalteam?",
+        paragraphs: [
+          "Wie kent het niet: een overvolle WhatsApp-groep waar de vraag 'wie kan er zaterdag?' verdwijnt tussen foto's, GIF'jes en discussies over de scheidsrechter. Als trainer of teammanager kost het je al snel een uur per week om bij te houden wie er kan spelen, de opstelling te maken en iedereen op de hoogte te houden.",
+          "Een team app lost dit op. Spelers geven zelf hun beschikbaarheid door, je maakt opstellingen in de app en iedereen ziet direct wanneer en waar ze moeten zijn. Minder gedoe, meer voetbal.",
+        ],
+      },
+      {
+        heading: "Waar moet je op letten bij een team app?",
+        paragraphs: [
+          "Niet elke app is geschikt voor amateurvoetbal. De meeste coaches willen geen ingewikkelde software — ze willen iets dat simpel werkt op hun telefoon. Let daarom op: is de app gratis? Werkt het op zowel iPhone als Android? Kunnen spelers snel hun beschikbaarheid doorgeven? En kun je opstellingen maken en delen?",
+          "Andere handige functies zijn wedstrijdplanning met automatische import vanuit voetbal.nl, spelerstatistieken bijhouden en trainingsplannen samenstellen. Hoe meer je in één app kunt doen, hoe minder losse tools je nodig hebt.",
+        ],
+      },
+      {
+        heading: "Populaire apps vergeleken",
+        paragraphs: [
+          "Er zijn verschillende apps beschikbaar voor teammanagement in het amateurvoetbal. Spond is populair voor het bijhouden van aanwezigheid en heeft een mooie interface, maar mist specifieke voetbalfuncties zoals opstellingen en wisselschema's. SportEasy biedt veel functies maar zit achter een betaald abonnement voor de meeste features.",
+          "Sideline, Teamy en Equipo zijn andere opties die elk hun sterke punten hebben. De keuze hangt af van wat voor jouw team het belangrijkst is: als je puur aanwezigheid wilt bijhouden, werkt vrijwel elke app. Maar als je ook opstellingen wilt maken, wissels wilt plannen en wedstrijden wilt beheren, heb je een completere oplossing nodig.",
+        ],
+      },
+      {
+        heading: "MyTeamPlanner: gebouwd voor amateurvoetbal",
+        paragraphs: [
+          "MyTeamPlanner is specifiek ontworpen voor amateurvoetbalteams. Waar andere apps generiek zijn (hockey, basketbal, voetbal), focust MyTeamPlanner zich volledig op wat voetbalcoaches nodig hebben. Denk aan formaties voor 7v7 en 11v11, wisselschema's met eerlijke speeltijd, en import van je wedstrijdprogramma vanuit voetbal.nl.",
+          "Beschikbaarheid bijhouden gaat met één tik. Opstellingen maak je door spelers naar het veld te slepen. En het mooiste: het is helemaal gratis. Geen premium versie, geen verborgen kosten. Binnen 2 minuten heb je je team aangemaakt en kun je de uitnodigingslink delen via WhatsApp.",
+        ],
+      },
+      {
+        heading: "Aan de slag met je team",
+        paragraphs: [
+          "Het overstappen naar een team app hoeft niet ingewikkeld te zijn. Maak een account aan, voeg je spelers toe en deel de uitnodigingslink in de bestaande WhatsApp-groep. Spelers klikken op de link, maken een account aan en zijn direct gekoppeld. Vanaf dat moment kunnen ze zelf hun beschikbaarheid doorgeven.",
+          "Tip: begin met één functie, bijvoorbeeld beschikbaarheid. Als het team gewend is, voeg je opstellingen en wedstrijdbeheer toe. Zo voorkom je weerstand en ontdekt iedereen stap voor stap de voordelen.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "opstelling-maken-voetbal",
+    title: "Online voetbalopstelling maken en delen met je team",
+    description:
+      "Leer hoe je snel een voetbalopstelling maakt met een online tool. Van formatie kiezen tot spelers slepen en delen via WhatsApp — alles uitgelegd voor coaches.",
+    date: "2026-04-10",
+    readingTime: "5 min",
+    featureLink: "/features/opstellingen",
+    featureLabel: "Opstellingen maken",
+    keywords: [
+      "opstelling maken voetbal",
+      "voetbal opstelling online",
+      "formatie maker",
+      "opstelling delen",
+      "voetbal lineup maker",
+      "opstelling tool gratis",
+    ],
+    relatedSlugs: ["opstelling-7-tegen-7-voetbal", "wisselschema-jeugdvoetbal", "beste-voetbal-team-app"],
+    sections: [
+      {
+        heading: "Waarom je opstelling digitaal maken?",
+        paragraphs: [
+          "Veel trainers schrijven hun opstelling nog op een papiertje of sturen een WhatsApp-bericht met namen. Dat werkt, maar het is foutgevoelig en tijdrovend. Een digitale tool toont je opstelling visueel op een voetbalveld, waardoor spelers direct zien waar ze staan.",
+          "Met een online opstelling-tool kun je bovendien eenvoudig wisselen, formaties vergelijken en de opstelling met één klik delen met je hele team. Geen misverstanden meer over wie waar speelt.",
+        ],
+      },
+      {
+        heading: "De juiste formatie kiezen",
+        paragraphs: [
+          "Bij 11 tegen 11 zijn de klassieke formaties 4-3-3, 4-4-2 en 3-5-2. Welke het beste werkt, hangt af van je spelers. Heb je sterke buitenspelers? Dan is 4-3-3 ideaal. Een sterk middenveld? Overweeg 4-4-2 of 3-5-2. Bij jeugdvoetbal (7v7) zijn 2-3-1 en 3-2-1 het populairst.",
+          "Het belangrijkste: kies een formatie die past bij het niveau van je team. Bij de jongste jeugd is ontwikkeling belangrijker dan tactiek. Bij de senioren kun je meer eisen stellen aan positioneel spel.",
+        ],
+      },
+      {
+        heading: "Spelers naar het veld slepen",
+        paragraphs: [
+          "In MyTeamPlanner kies je eerst een formatie, waarna het veld verschijnt met de posities. Vervolgens sleep je beschikbare spelers vanuit de bank naar hun positie. Het systeem laat je alleen spelers zien die beschikbaar zijn voor die wedstrijd — zo maak je nooit per ongeluk een opstelling met afwezige spelers.",
+          "Je kunt spelers ook verplaatsen tussen posities door ze over het veld te slepen. Zo experimenteer je snel met verschillende opstellingen totdat je tevreden bent.",
+        ],
+      },
+      {
+        heading: "Wisselschema en eerlijke speeltijd",
+        paragraphs: [
+          "Bij jeugdvoetbal is eerlijke speeltijd essentieel. MyTeamPlanner genereert automatisch een wisselschema zodat elke speler evenveel minuten maakt. Je kunt het schema handmatig aanpassen als je wilt, maar de basis is altijd eerlijk verdeeld.",
+          "Het wisselschema toont per helft of kwart wie er in het veld staat en wanneer er gewisseld wordt. Zo heb je tijdens de wedstrijd een duidelijk overzicht en hoef je niet meer te onthouden wie er al gewisseld heeft.",
+        ],
+      },
+      {
+        heading: "Opstelling delen met je team",
+        paragraphs: [
+          "Als je opstelling klaar is, kun je deze als afbeelding delen via WhatsApp of andere apps. Spelers zien een mooie visual van het veld met hun naam op hun positie. Dat is niet alleen praktisch, het motiveert ook — spelers kijken uit naar de wedstrijd als ze hun opstelling zien.",
+          "In MyTeamPlanner kun je ook een wedstrijdverslag delen na afloop, met de score, doelpuntenmakers en statistieken. Zo heeft je hele team een compleet overzicht van de wedstrijddag.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "beschikbaarheid-bijhouden-team",
+    title: "Beschikbaarheid bijhouden: stop met WhatsApp-chaos",
+    description:
+      "Beschikbaarheid bijhouden voor je voetbalteam hoeft niet via WhatsApp. Ontdek hoe een team app je uren per week bespaart en hoe spelers met één tik reageren.",
+    date: "2026-04-10",
+    readingTime: "5 min",
+    featureLink: "/features/beschikbaarheid",
+    featureLabel: "Beschikbaarheid bekijken",
+    keywords: [
+      "beschikbaarheid bijhouden",
+      "beschikbaarheid team app",
+      "voetbal aanwezigheid",
+      "wie kan er spelen",
+      "beschikbaarheid voetbal",
+      "team beschikbaarheid app",
+    ],
+    relatedSlugs: ["beste-voetbal-team-app", "opstelling-maken-voetbal", "wisselschema-jeugdvoetbal"],
+    sections: [
+      {
+        heading: "Het WhatsApp-probleem",
+        paragraphs: [
+          "Elke trainer kent het ritueel: op woensdag stuur je in de WhatsApp-groep 'wie kan er zaterdag?' en dan begint het wachten. Sommige spelers reageren meteen, anderen pas vrijdagavond. Tussendoor moet je berichten terugscrollen om te tellen wie er allemaal kan.",
+          "En dan zijn er nog de onduidelijke reacties: een duimpje omhoog (beschikbaar?), een 'misschien' zonder verdere uitleg, of iemand die reageert op een ander bericht waardoor je het mist. Als trainer ben je meer tijd kwijt aan het bijhouden van beschikbaarheid dan aan het maken van een trainingsplan.",
+        ],
+      },
+      {
+        heading: "Hoe werkt beschikbaarheid in een team app?",
+        paragraphs: [
+          "Met een team app geven spelers hun beschikbaarheid door met één tik: beschikbaar, afwezig of misschien. De coach ziet een realtime overzicht van het hele team per wedstrijd. Geen berichten tellen, geen herinneringen sturen — de app regelt het.",
+          "In MyTeamPlanner opent een speler de app, ziet de komende wedstrijden en tikt op groen (beschikbaar), rood (afwezig) of oranje (misschien). Dat is het. De coach ziet meteen hoeveel spelers er zijn en wie er nog niet heeft gereageerd.",
+        ],
+      },
+      {
+        heading: "Voordelen voor de coach",
+        paragraphs: [
+          "Het grootste voordeel: je hebt op elk moment een actueel overzicht. Op donderdagavond weet je al of je genoeg spelers hebt voor zaterdag. Je kunt vroeg beginnen met je opstelling en hoeft niet meer op vrijdagavond in paniek mensen te bellen.",
+          "Daarnaast is de informatie betrouwbaar. Een tik op 'beschikbaar' is een duidelijk antwoord, geen dubbelzinnig berichtje. En als iemand zich bedenkt, wijzigen ze het zelf in de app — jij hoeft niets bij te houden.",
+        ],
+      },
+      {
+        heading: "Voordelen voor spelers",
+        paragraphs: [
+          "Ook spelers profiteren. Ze hoeven niet meer een bericht te typen in een drukke groepsapp. Eén tik is genoeg. Bovendien zien ze direct of er genoeg teamgenoten zijn — dat motiveert om zelf ook snel te reageren.",
+          "Spelers zien ook de wedstrijddetails: tegenstander, locatie en verzameltijd. Geen 'hoe laat moeten we er zijn?' berichten meer in de groepsapp. Alles staat overzichtelijk bij elkaar.",
+        ],
+      },
+      {
+        heading: "Van WhatsApp naar team app: zo doe je dat",
+        paragraphs: [
+          "De overstap hoeft niet groot te zijn. Maak een account aan in MyTeamPlanner, voeg je spelers toe en deel de uitnodigingslink in je bestaande WhatsApp-groep. Binnen een paar minuten zijn de eerste spelers gekoppeld.",
+          "Gebruik de eerste weken beide systemen naast elkaar als dat nodig is. Zodra de meeste spelers gewend zijn, merk je vanzelf dat de WhatsApp-groep stiller wordt — en dat is precies de bedoeling. Je team communiceert gestructureerder en jij bespaart uren per week.",
         ],
       },
     ],

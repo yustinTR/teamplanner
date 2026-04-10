@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Algemene voorwaarden van MyTeamPlanner, de gratis teamplanner voor amateurvoetbal.",
   alternates: {
-    canonical: "https://myteamplanner.nl/voorwaarden",
+    canonical: "https://www.myteamplanner.nl/voorwaarden",
   },
 };
 

@@ -4,16 +4,16 @@ import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "luc
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Wedstrijdbeheer voor amateurvoetbal",
+  title: "Wedstrijden plannen — gratis voetbal team app",
   description:
-    "Plan wedstrijden, importeer programma's van voetbal.nl, houd scores bij en bekijk spelerstatistieken. Alles wat een amateurvoetbalcoach nodig heeft.",
+    "Wedstrijden plannen en bijhouden voor je amateurvoetbalteam. Importeer van voetbal.nl, houd scores bij en deel wedstrijdverslagen. Gratis voor coaches.",
   alternates: {
-    canonical: "https://myteamplanner.nl/features/wedstrijden",
+    canonical: "https://www.myteamplanner.nl/features/wedstrijden",
   },
   openGraph: {
-    title: "Wedstrijdbeheer voor amateurvoetbal",
-    description: "Plan wedstrijden, importeer van voetbal.nl, houd scores bij en bekijk statistieken.",
-    url: "https://myteamplanner.nl/features/wedstrijden",
+    title: "Wedstrijden plannen — gratis voetbal team app",
+    description: "Wedstrijden plannen en bijhouden voor je amateurvoetbalteam. Importeer van voetbal.nl, houd scores bij.",
+    url: "https://www.myteamplanner.nl/features/wedstrijden",
   },
 };
 
@@ -48,8 +48,8 @@ const jsonLd = {
   "@type": "WebPage",
   name: "Wedstrijdbeheer voor amateurvoetbal",
   description: "Plan wedstrijden, importeer van voetbal.nl, houd scores bij en bekijk statistieken.",
-  url: "https://myteamplanner.nl/features/wedstrijden",
-  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://myteamplanner.nl" },
+  url: "https://www.myteamplanner.nl/features/wedstrijden",
+  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://www.myteamplanner.nl" },
 };
 
 export default function WedstrijdenPage() {

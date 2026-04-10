@@ -4,16 +4,16 @@ import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "luc
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Beschikbaarheid bijhouden voor je voetbalteam",
+  title: "Beschikbaarheid bijhouden — gratis voetbal team app",
   description:
-    "Nooit meer vragen wie er kan spelen. Spelers geven met één tik hun beschikbaarheid door. De coach ziet realtime wie er beschikbaar is.",
+    "Beschikbaarheid bijhouden voor je voetbalteam zonder WhatsApp-chaos. Spelers geven met één tik aan of ze er zijn. Gratis voor amateurvoetbal.",
   alternates: {
-    canonical: "https://myteamplanner.nl/features/beschikbaarheid",
+    canonical: "https://www.myteamplanner.nl/features/beschikbaarheid",
   },
   openGraph: {
-    title: "Beschikbaarheid bijhouden voor je voetbalteam",
-    description: "Nooit meer vragen wie er kan spelen. Spelers geven met één tik hun beschikbaarheid door.",
-    url: "https://myteamplanner.nl/features/beschikbaarheid",
+    title: "Beschikbaarheid bijhouden — gratis voetbal team app",
+    description: "Beschikbaarheid bijhouden voor je voetbalteam zonder WhatsApp-chaos. Spelers geven met één tik aan of ze er zijn.",
+    url: "https://www.myteamplanner.nl/features/beschikbaarheid",
   },
 };
 
@@ -47,8 +47,8 @@ const jsonLd = {
   "@type": "WebPage",
   name: "Beschikbaarheid bijhouden voor je voetbalteam",
   description: "Nooit meer vragen wie er kan spelen. Spelers geven met één tik hun beschikbaarheid door.",
-  url: "https://myteamplanner.nl/features/beschikbaarheid",
-  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://myteamplanner.nl" },
+  url: "https://www.myteamplanner.nl/features/beschikbaarheid",
+  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://www.myteamplanner.nl" },
 };
 
 export default function BeschikbaarheidPage() {

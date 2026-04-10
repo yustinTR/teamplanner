@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Maak gratis een account aan op MyTeamPlanner en begin direct met het beheren van je amateurvoetbalteam.",
   alternates: {
-    canonical: "https://myteamplanner.nl/register",
+    canonical: "https://www.myteamplanner.nl/register",
   },
 };
 

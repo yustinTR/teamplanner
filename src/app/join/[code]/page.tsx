@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: JoinPageProps): Promise<Metad
     openGraph: {
       title,
       description,
-      url: `https://myteamplanner.nl/join/${code}`,
+      url: `https://www.myteamplanner.nl/join/${code}`,
       siteName: "MyTeamPlanner",
       images: [{ url: "/api/og", width: 1200, height: 630 }],
     },

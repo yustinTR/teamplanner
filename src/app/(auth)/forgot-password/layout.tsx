@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Wachtwoord vergeten? Vraag een reset-link aan om je wachtwoord te herstellen.",
   alternates: {
-    canonical: "https://myteamplanner.nl/forgot-password",
+    canonical: "https://www.myteamplanner.nl/forgot-password",
   },
 };
 

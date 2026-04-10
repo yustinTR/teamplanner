@@ -4,16 +4,16 @@ import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "luc
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Trainingsplannen met kant-en-klare oefeningen",
+  title: "Voetbal trainingsschema maken — gratis oefeningen",
   description:
-    "Stel in 2 minuten een trainingsplan samen uit een bibliotheek van 79+ voetbaloefeningen. Gefilterd op niveau, thema en spelersaantal.",
+    "Trainingsschema maken voor je voetbalteam met 79+ kant-en-klare oefeningen. Filter op niveau en thema, stel een plan samen in 2 minuten. Gratis.",
   alternates: {
-    canonical: "https://myteamplanner.nl/features/trainingen",
+    canonical: "https://www.myteamplanner.nl/features/trainingen",
   },
   openGraph: {
-    title: "Trainingsplannen met kant-en-klare oefeningen",
-    description: "Stel in 2 minuten een trainingsplan samen uit 79+ voetbaloefeningen. Gefilterd op niveau en thema.",
-    url: "https://myteamplanner.nl/features/trainingen",
+    title: "Voetbal trainingsschema maken — gratis oefeningen",
+    description: "Trainingsschema maken voor je voetbalteam met 79+ kant-en-klare oefeningen. Filter op niveau en thema.",
+    url: "https://www.myteamplanner.nl/features/trainingen",
   },
 };
 
@@ -48,8 +48,8 @@ const jsonLd = {
   "@type": "WebPage",
   name: "Trainingsplannen met kant-en-klare oefeningen",
   description: "Stel in 2 minuten een trainingsplan samen uit 79+ voetbaloefeningen. Gefilterd op niveau en thema.",
-  url: "https://myteamplanner.nl/features/trainingen",
-  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://myteamplanner.nl" },
+  url: "https://www.myteamplanner.nl/features/trainingen",
+  isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://www.myteamplanner.nl" },
 };
 
 export default function TrainingenPage() {

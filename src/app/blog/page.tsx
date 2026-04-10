@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Praktische artikelen over opstellingen, wisselschema's, teambeheer en trainingen voor amateurvoetbalcoaches in Nederland.",
   alternates: {
-    canonical: "https://myteamplanner.nl/blog",
+    canonical: "https://www.myteamplanner.nl/blog",
   },
 };
 
