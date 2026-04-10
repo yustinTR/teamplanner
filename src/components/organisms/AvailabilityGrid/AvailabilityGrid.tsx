@@ -116,7 +116,7 @@ export function AvailabilityGrid({ matchId }: AvailabilityGridProps) {
                     photoUrl={player.photo_url}
                     status={statusMap.get(player.id) ?? null}
                   />
-                  {isCoach && !player.user_id && (
+                  {isCoach && (
                     <div className="pb-2 pl-11">
                       <AvailabilityToggle
                         value={statusMap.get(player.id) ?? null}
