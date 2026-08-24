@@ -5,7 +5,7 @@ import {
   getLocationsFromIcal,
   enrichMatchesWithLocations,
 } from "@/lib/voetbal-nl-parser";
-import { parseDate } from "../confirm/route";
+import { upsertMatches, applyResults } from "@/lib/match-sync";
 
 interface RefreshBody {
   teamId: string;
@@ -82,15 +82,14 @@ export async function POST(request: Request) {
   const results = {
     matchesCreated: 0,
     matchesUpdated: 0,
+    resultsUpdated: 0,
     errors: [] as string[],
   };
 
   try {
-    // Fetch matches from VoetbalAssist API
-    const { matches: apiMatches } = await getMatchesFromApi(
-      team.import_club_abbrev,
-      team.import_team_name
-    );
+    // Fetch matches and results from VoetbalAssist API
+    const { matches: apiMatches, results: apiResults } =
+      await getMatchesFromApi(team.import_club_abbrev, team.import_team_name);
 
     // Enrich with location data if possible
     let enrichedMatches = apiMatches;
@@ -107,76 +106,14 @@ export async function POST(request: Request) {
       }
     }
 
-    // Fetch existing matches for deduplication
-    const { data: existingMatches } = await supabase
-      .from("matches")
-      .select("id, opponent, match_date")
-      .eq("team_id", teamId);
+    const upsertResult = await upsertMatches(supabase, teamId, enrichedMatches);
+    results.matchesCreated = upsertResult.matchesCreated;
+    results.matchesUpdated = upsertResult.matchesUpdated;
+    results.errors.push(...upsertResult.errors);
 
-    // Upsert matches with dedup logic
-    for (const match of enrichedMatches) {
-      try {
-        const matchDate = parseDate(match.date);
-        if (!matchDate) {
-          results.errors.push(
-            `Ongeldige datum voor wedstrijd tegen ${match.opponent}`
-          );
-          continue;
-        }
-
-        // Check for existing match: same opponent (case-insensitive) + same day
-        const matchDay = new Date(matchDate);
-        const existing = existingMatches?.find((em) => {
-          const existingDay = new Date(em.match_date);
-          return (
-            em.opponent.toLowerCase() === match.opponent.toLowerCase() &&
-            existingDay.getFullYear() === matchDay.getFullYear() &&
-            existingDay.getMonth() === matchDay.getMonth() &&
-            existingDay.getDate() === matchDay.getDate()
-          );
-        });
-
-        if (existing) {
-          const { error } = await supabase
-            .from("matches")
-            .update({
-              match_date: matchDate,
-              home_away: match.homeAway,
-              location: match.location,
-            })
-            .eq("id", existing.id);
-
-          if (error) {
-            results.errors.push(
-              `Fout bij updaten wedstrijd tegen ${match.opponent}: ${error.message}`
-            );
-          } else {
-            results.matchesUpdated++;
-          }
-        } else {
-          const { error } = await supabase.from("matches").insert({
-            team_id: teamId,
-            opponent: match.opponent,
-            match_date: matchDate,
-            home_away: match.homeAway,
-            location: match.location,
-            status: "upcoming",
-          });
-
-          if (error) {
-            results.errors.push(
-              `Fout bij aanmaken wedstrijd tegen ${match.opponent}: ${error.message}`
-            );
-          } else {
-            results.matchesCreated++;
-          }
-        }
-      } catch {
-        results.errors.push(
-          `Onverwachte fout bij wedstrijd tegen ${match.opponent}`
-        );
-      }
-    }
+    const resultsResult = await applyResults(supabase, teamId, apiResults);
+    results.resultsUpdated = resultsResult.resultsUpdated;
+    results.errors.push(...resultsResult.errors);
   } catch (err) {
     console.error("Refresh error:", err);
     return NextResponse.json(

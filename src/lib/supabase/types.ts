@@ -501,8 +501,47 @@ export type Database = {
         }
         Relationships: []
       }
+      sync_log: {
+        Row: {
+          changes: Json
+          id: string
+          matches_created: number
+          matches_updated: number
+          results_updated: number
+          run_at: string
+          team_id: string
+        }
+        Insert: {
+          changes?: Json
+          id?: string
+          matches_created?: number
+          matches_updated?: number
+          results_updated?: number
+          run_at?: string
+          team_id: string
+        }
+        Update: {
+          changes?: Json
+          id?: string
+          matches_created?: number
+          matches_updated?: number
+          results_updated?: number
+          run_at?: string
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sync_log_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teams: {
         Row: {
+          auto_sync_enabled: boolean
           club_name: string | null
           created_at: string
           created_by: string
@@ -515,6 +554,7 @@ export type Database = {
           import_team_name: string | null
           import_team_url: string | null
           invite_code: string
+          last_synced_at: string | null
           logo_url: string | null
           name: string
           show_ratings: boolean
@@ -522,6 +562,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          auto_sync_enabled?: boolean
           club_name?: string | null
           created_at?: string
           created_by: string
@@ -534,6 +575,7 @@ export type Database = {
           import_team_name?: string | null
           import_team_url?: string | null
           invite_code?: string
+          last_synced_at?: string | null
           logo_url?: string | null
           name: string
           show_ratings?: boolean
@@ -541,6 +583,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          auto_sync_enabled?: boolean
           club_name?: string | null
           created_at?: string
           created_by?: string
@@ -553,6 +596,7 @@ export type Database = {
           import_team_name?: string | null
           import_team_url?: string | null
           invite_code?: string
+          last_synced_at?: string | null
           logo_url?: string | null
           name?: string
           show_ratings?: boolean

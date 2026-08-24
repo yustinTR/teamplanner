@@ -9,6 +9,7 @@ import { useUpdateTeam } from "@/hooks/use-team";
 import { Button } from "@/components/atoms/Button";
 import { TeamForm } from "@/components/molecules/TeamForm";
 import { InviteLink } from "@/components/molecules/InviteLink";
+import { AutoSyncSettings } from "@/components/molecules/AutoSyncSettings";
 import { markInviteVisited } from "@/lib/onboarding";
 
 export default function TeamSettingsPage() {
@@ -90,6 +91,26 @@ export default function TeamSettingsPage() {
                 Import van clubwebsite
               </Link>
             </Button>
+
+            {currentTeam.import_club_abbrev && (
+              <div className="mt-4 border-t pt-4">
+                <AutoSyncSettings
+                  enabled={currentTeam.auto_sync_enabled}
+                  lastSyncedAt={currentTeam.last_synced_at}
+                  disabled={updateTeam.isPending}
+                  onToggle={async (enabled) => {
+                    await updateTeam.mutateAsync({
+                      id: currentTeam.id,
+                      auto_sync_enabled: enabled,
+                    });
+                    useAuthStore.getState().setCurrentTeam({
+                      ...currentTeam,
+                      auto_sync_enabled: enabled,
+                    });
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
