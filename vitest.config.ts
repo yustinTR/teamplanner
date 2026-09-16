@@ -47,6 +47,23 @@ export default defineConfig({
           environment: 'node',
         },
       },
+      // Hook tests (jsdom for renderHook + React Query)
+      {
+        extends: true,
+        test: {
+          name: 'hooks',
+          include: ['src/**/*.test.tsx'],
+          environment: 'jsdom',
+        },
+      },
     ],
+    coverage: {
+      include: ['src/**'],
+      exclude: [
+        'src/**/*.stories.tsx',
+        'src/lib/supabase/types.ts',
+        'src/types/**',
+      ],
+    },
   },
 });
