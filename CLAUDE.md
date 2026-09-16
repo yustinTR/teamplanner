@@ -15,9 +15,11 @@ npm run dev              # Start Next.js dev server
 npm run build            # Production build
 npm run lint             # ESLint
 npm run storybook        # Start Storybook dev server (port 6006)
-npm run test             # Run all tests (unit + storybook)
+npm run test             # Run all tests (unit + hooks + storybook)
 npm run test:unit        # Run unit tests only
+npm run test:hooks       # Run hook tests only (jsdom + React Query)
 npm run test:stories     # Run Storybook tests only (Playwright browser)
+npm run test:coverage    # All tests with coverage (thresholds enforced in CI)
 npm run test:watch       # Tests in watch mode
 npm run test:e2e         # E2E tests (Playwright)
 

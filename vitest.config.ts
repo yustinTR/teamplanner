@@ -64,6 +64,14 @@ export default defineConfig({
         'src/lib/supabase/types.ts',
         'src/types/**',
       ],
+      reporter: ['text', 'html', 'json-summary'],
+      // Ratchet against regression — raise as coverage improves
+      thresholds: {
+        statements: 42,
+        branches: 40,
+        functions: 43,
+        lines: 42,
+      },
     },
   },
 });
