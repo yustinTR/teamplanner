@@ -6,6 +6,8 @@ const publicPaths = ["/login", "/register", "/auth/callback", "/auth/confirm", "
 
 function isPublicPath(pathname: string): boolean {
   if (pathname === "/") return true;
+  // API routes handle their own auth (session check, cron secret, or public)
+  if (pathname.startsWith("/api/")) return true;
   return publicPaths.some((path) => pathname.startsWith(path)) ||
     pathname.startsWith("/join/");
 }
