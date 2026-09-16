@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Settings } from "lucide-react";
+import { BarChart3, Settings } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { PlayerList } from "@/components/organisms/PlayerList";
 import { Button } from "@/components/atoms/Button";
@@ -18,13 +18,20 @@ export default function TeamPage() {
             <p className="text-sm text-white/70">{currentTeam.name}</p>
           )}
         </div>
-        {isCoach && (
-          <Link href="/team/settings">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white" aria-label="Teaminstellingen">
-              <Settings className="size-5" />
+        <div className="flex items-center gap-1">
+          <Link href="/team/stats">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white" aria-label="Teamstatistieken">
+              <BarChart3 className="size-5" />
             </Button>
           </Link>
-        )}
+          {isCoach && (
+            <Link href="/team/settings">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white" aria-label="Teaminstellingen">
+                <Settings className="size-5" />
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
 
       <div className="px-4 pb-4">

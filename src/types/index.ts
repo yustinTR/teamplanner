@@ -40,4 +40,6 @@ export type {
   MatchStatsInsert,
   MatchStatsUpdate,
   PlayerSeasonStats,
+  PlayerAttendance,
+  TeamSeasonSummary,
 } from "./match-stats";

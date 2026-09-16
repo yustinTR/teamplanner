@@ -1,0 +1,1 @@
+export { MinutesFairnessChart } from "./MinutesFairnessChart";

@@ -15,3 +15,21 @@ export interface PlayerSeasonStats {
   yellowCards: number;
   redCards: number;
 }
+
+export interface PlayerAttendance {
+  playerId: string;
+  playerName: string;
+  respondedCount: number;
+  availableCount: number;
+  responseRate: number;
+  availableRate: number;
+}
+
+export interface TeamSeasonSummary {
+  played: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goalsFor: number;
+  goalsAgainst: number;
+}

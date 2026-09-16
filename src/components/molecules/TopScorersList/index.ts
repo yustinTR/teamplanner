@@ -1,0 +1,1 @@
+export { TopScorersList } from "./TopScorersList";

@@ -1,4 +1,8 @@
-import type { PlayerSeasonStats } from "@/types";
+import type {
+  PlayerAttendance,
+  PlayerSeasonStats,
+  TeamSeasonSummary,
+} from "@/types";
 import type { SubstitutionPlan } from "@/types/lineup";
 
 interface MatchStatsRow {
@@ -82,6 +86,79 @@ export function aggregatePlayerStats(
       redCards,
     };
   });
+}
+
+interface AvailabilityRow {
+  player_id: string;
+  match_id: string;
+  status: "available" | "unavailable" | "maybe";
+}
+
+/**
+ * Aggregate availability responses per player over a set of matches.
+ * Rates are relative to the number of matches, so a player who never
+ * responds scores 0 on both.
+ */
+export function aggregateAttendance(
+  players: PlayerInfo[],
+  availability: AvailabilityRow[],
+  matchCount: number
+): PlayerAttendance[] {
+  return players.map((player) => {
+    const responses = availability.filter((a) => a.player_id === player.id);
+    const availableCount = responses.filter(
+      (a) => a.status === "available"
+    ).length;
+    return {
+      playerId: player.id,
+      playerName: player.name,
+      respondedCount: responses.length,
+      availableCount,
+      responseRate:
+        matchCount > 0 ? Math.round((responses.length / matchCount) * 100) : 0,
+      availableRate:
+        matchCount > 0 ? Math.round((availableCount / matchCount) * 100) : 0,
+    };
+  });
+}
+
+interface CompletedMatchRow {
+  home_away: "home" | "away";
+  score_home: number | null;
+  score_away: number | null;
+}
+
+/**
+ * Aggregate season results (W/D/L, goals for/against) from completed
+ * matches. Matches without a score are skipped.
+ */
+export function aggregateTeamResults(
+  matches: CompletedMatchRow[]
+): TeamSeasonSummary {
+  const summary: TeamSeasonSummary = {
+    played: 0,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    goalsFor: 0,
+    goalsAgainst: 0,
+  };
+
+  for (const match of matches) {
+    if (match.score_home === null || match.score_away === null) continue;
+    const goalsFor =
+      match.home_away === "home" ? match.score_home : match.score_away;
+    const goalsAgainst =
+      match.home_away === "home" ? match.score_away : match.score_home;
+    summary.played++;
+    summary.goalsFor += goalsFor;
+    summary.goalsAgainst += goalsAgainst;
+    if (goalsFor > goalsAgainst) summary.wins++;
+    else if (goalsFor < goalsAgainst) summary.losses++;
+    else summary.draws++;
+  }
+
+  return summary;
 }
 
 /**
