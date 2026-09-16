@@ -4,30 +4,17 @@ import { blogPosts } from "@/lib/blog";
 const siteUrl = "https://www.myteamplanner.nl";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const latestPostDate = blogPosts
+    .map((post) => post.date)
+    .sort()
+    .at(-1);
+
   return [
     {
       url: siteUrl,
-      lastModified: "2026-04-10",
+      lastModified: "2026-09-14",
       changeFrequency: "weekly",
       priority: 1,
-    },
-    {
-      url: `${siteUrl}/login`,
-      lastModified: "2026-02-19",
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${siteUrl}/register`,
-      lastModified: "2026-02-19",
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/forgot-password`,
-      lastModified: "2026-02-19",
-      changeFrequency: "yearly",
-      priority: 0.3,
     },
     {
       url: `${siteUrl}/voorwaarden`,
@@ -67,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${siteUrl}/blog`,
-      lastModified: "2026-03-13",
+      lastModified: latestPostDate,
       changeFrequency: "weekly",
       priority: 0.7,
     },
