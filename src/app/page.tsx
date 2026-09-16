@@ -11,6 +11,7 @@ import {
   Zap,
 } from "lucide-react";
 import { FaqSection } from "@/components/molecules/FaqSection";
+import { blogPosts } from "@/lib/blog";
 import { MarketingFooter } from "@/components/organisms/MarketingFooter";
 import { HeroDemo } from "@/components/molecules/HeroDemo";
 import { SocialProof } from "@/components/molecules/SocialProof";
@@ -177,27 +178,10 @@ const benefits = [
   },
 ];
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-};
-
 export default function LandingPage() {
 
   return (
     <div className="min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <AuthRedirect />
       {/* Hero section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
@@ -400,6 +384,51 @@ export default function LandingPage() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest blog articles */}
+      <section className="bg-neutral-50 py-16">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="text-center text-2xl font-bold text-neutral-900 sm:text-3xl">
+            Tips voor coaches
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-center text-muted-foreground">
+            Praktische artikelen over opstellingen, wisselschema&apos;s en
+            teambeheer.
+          </p>
+          <div className="mt-8 grid gap-6 sm:grid-cols-3">
+            {[...blogPosts]
+              .sort((a, b) => b.date.localeCompare(a.date))
+              .slice(0, 3)
+              .map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group rounded-2xl border border-neutral-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+                >
+                  <h3 className="font-bold text-neutral-900 group-hover:text-primary-600">
+                    {post.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground line-clamp-3">
+                    {post.description}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary-600">
+                    Lees meer
+                    <ArrowRight className="size-4" />
+                  </span>
+                </Link>
+              ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1 font-medium text-primary-600 hover:text-primary-700"
+            >
+              Bekijk alle artikelen
+              <ArrowRight className="size-4" />
+            </Link>
           </div>
         </div>
       </section>
