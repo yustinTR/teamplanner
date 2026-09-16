@@ -10,12 +10,17 @@ import { Button } from "@/components/atoms/Button";
 import { TeamForm } from "@/components/molecules/TeamForm";
 import { InviteLink } from "@/components/molecules/InviteLink";
 import { AutoSyncSettings } from "@/components/molecules/AutoSyncSettings";
+import { SyncLogList } from "@/components/molecules/SyncLogList";
+import { useSyncLog } from "@/hooks/use-sync-log";
 import { markInviteVisited } from "@/lib/onboarding";
 
 export default function TeamSettingsPage() {
   const router = useRouter();
   const { currentTeam, isCoach } = useAuthStore();
   const updateTeam = useUpdateTeam();
+  const syncLog = useSyncLog(
+    isCoach && currentTeam?.import_club_abbrev ? currentTeam.id : undefined
+  );
 
   useEffect(() => {
     if (isCoach) {
@@ -109,6 +114,12 @@ export default function TeamSettingsPage() {
                     });
                   }}
                 />
+                <div className="mt-4 border-t pt-4">
+                  <h3 className="mb-2 text-sm font-medium">
+                    Recente wijzigingen
+                  </h3>
+                  <SyncLogList entries={syncLog.data ?? []} />
+                </div>
               </div>
             )}
           </div>
