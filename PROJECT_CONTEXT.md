@@ -40,7 +40,8 @@ TeamPlanner lost dit op met één centrale plek voor het hele team.
 11. **Evenementen** — Trainingen, toernooien en andere teamactiviteiten met aanwezigheid en taken
 12. **Trainingen** — Oefeningen-bibliotheek met filters (niveau, thema, spelersaantal) + trainingsplannen
 13. **Voetbal.nl import** — Team- en spelergegevens importeren vanuit voetbal.nl
-14. **PWA** — Installeerbaar, offline basis, homescreen icon
+14. **Automatische sync** — Dagelijkse cron (Vercel) ververst programma, tijdwijzigingen en uitslagen voor teams met een gekoppelde importbron; aan/uit per team in instellingen
+15. **PWA** — Installeerbaar, offline basis, homescreen icon
 
 ### Growth features (compleet)
 
@@ -55,7 +56,7 @@ TeamPlanner lost dit op met één centrale plek voor het hele team.
 
 ```sql
 -- teams: Het team
-teams (id, name, club_name, formation, invite_code, created_by, logo_url, import_source, team_type, default_gathering_minutes)
+teams (id, name, club_name, formation, invite_code, created_by, logo_url, import_source, team_type, default_gathering_minutes, auto_sync_enabled, last_synced_at)
 -- team_type: 'senior' | 'junior_11' | 'junior_7' | 'g_team_11' | 'g_team_7'
 
 -- players: Spelers in een team
@@ -95,6 +96,9 @@ exercises (id, title, description, category, level, min_players, max_players, du
 
 -- exercise_categories: Categorieën voor oefeningen
 exercise_categories (id, name, slug)
+
+-- sync_log: Wijzigingen per automatische sync-run (alleen geschreven door cron met service role)
+sync_log (id, team_id, run_at, matches_created, matches_updated, results_updated, changes)
 ```
 
 ## Rollen & Rechten
