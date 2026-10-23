@@ -38,4 +38,4 @@ The app is free, says so publicly, and has no billing code. The plan is phased b
 
 - At what team count do Supabase and Vercel free tiers run out, and is that the real monetisation trigger?
 - What does "100% up and running" include before ads are considered?
-- Ads or no ads for an audience that includes children and G-players?
+- (The children-and-ads question was closed by Yustin on 2026-10-23 as not needed; it reopens if ads come into view.)

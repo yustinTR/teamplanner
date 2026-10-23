@@ -32,14 +32,15 @@ What exists on 2026-10-23:
 - [[2026-03-02-share-images-from-hidden-components]]
 - [[2026-03-04-landing-page-shows-the-app]]
 - [[2026-03-13-android-app-in-kotlin-as-one-to-one-port]]
+- [[2026-10-23-active-team-definition]]
 
 ## Risks and tensions
 
-- **The key metric is read by hand.** On 2026-10-23 there are **25 teams in the database** — *"25 database entries met verschillende teams"* ([[2026-10-23-open-questions-answered]]) — up from fewer than 10 on 2026-03-02. That is a row count, not an activity measure: it includes any test or abandoned team. The growth plan's thresholds speak of *active* teams, which nothing defines or records over time.
+- **The key metric is read by hand.** On 2026-10-23 there are **25 teams in the database** — *"25 database entries met verschillende teams"* ([[2026-10-23-open-questions-answered]]) — up from fewer than 10 on 2026-03-02. That is a row count, not an activity measure: it includes any test or abandoned team. The growth plan's thresholds speak of *active* teams, now defined — a match or event in the last 60 days and two or more linked players ([[2026-10-23-active-team-definition]]) — but not yet counted.
 - **Content versus product time.** Fifteen articles in six weeks, then nothing since April; whether they rank is unknown here.
 - **Marketing honesty**: fictional quotes were removed the day they shipped; the counter is live. Any future social proof must be real.
 
 ## Open questions
 
-- Define "active team" (a proposal: at least one match or event in the last 60 days and two or more players with an account) as a query, and log the count monthly.
+- Take the first reading of the active-team count and log it monthly.
 - Which keywords rank, and did the blog bring registrations? Search Console data is outside the brain; a `raw/` export would answer it.

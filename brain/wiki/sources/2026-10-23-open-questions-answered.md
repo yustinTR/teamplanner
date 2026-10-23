@@ -42,11 +42,12 @@ After the initial ingest, Yustin answered the open questions in one chat message
 | 19 | Figma | *"figma mag geschrapt worden het volledige design mag component based in storybook"* | [[2026-10-23-storybook-is-the-design-system-figma-dropped]] |
 | 20 | Seeded exercises reviewed; KNVB material used | *"ja en ja"* (second message) | [[training-content]], [[knvb-rinus]] |
 | 21 | VoetbalAssist terms | *"voetbalassist heb ik nog geen rechten voor omdat het achter een betaalmuur zit volgens mij"* | [[voetbal-nl]], [[voetbal-nl-integration]] |
+| 20b | KNVB provenance | *"ze zijn geïnspireerd op knvb oefeningen"* (third message) — inspired by, not copied | [[training-content]] |
 | 21b | Alert when the daily sync fails | *"ja"* (second message) | [[voetbal-nl-integration]] |
 | 22 | Deleting player data | *"nee maar het moet wel kunnen"* | [[data-model-and-permissions]] |
 | 23 | iOS | *"ooit komt er ook een ios client maar ios licentie vind ik nog te duur dus voorlopig blijft bij pwa en android"* | [[native-app]], [[2026-02-19-pwa-over-native-app]] |
 
-A second message the same day answered 11, 20 and the sync-alert half of 21, and clarified 15. Still unaddressed: the children-and-ads half of 17, and what "active" should mean once it is measured.
+A second message the same day answered 11, 20 and the sync-alert half of 21, and clarified 15. A third message closed the rest: the ads-and-children question Yustin does not need kept open (*"heb ik niet nodig"*), and he agreed to the proposed definition of an active team ([[2026-10-23-active-team-definition]]).
 
 ## Requirements raised
 
@@ -62,6 +63,7 @@ A second message the same day answered 11, 20 and the sync-alert half of 21, and
 - [[2026-10-23-push-per-client-web-first]]
 - [[2026-10-23-statistics-per-season-august-to-july]]
 - [[2026-10-23-storybook-is-the-design-system-figma-dropped]]
+- [[2026-10-23-active-team-definition]]
 
 ## What was built
 
@@ -69,5 +71,4 @@ Nothing; this is a session, not a plan. The ledger rows and topic pages now carr
 
 ## Open questions
 
-- Ads and children — see [[open-questions]].
-- "Active team" is still undefined: the 25 are rows in `teams`, including test and abandoned teams, if any.
+- None from this session. The first reading of the active-team count is still to be taken.

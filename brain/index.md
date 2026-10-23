@@ -9,7 +9,7 @@ have been read — the February 2026 project document, the eleven design
 documents in `docs/plans/`, and the three Android design documents in
 `../teamplanner-android/docs/plans/` (implementation plans are covered on their
 design's source page), plus the 2026-10-23 working session in which Yustin
-answered the open questions. `raw/` is empty. 60 pages.
+answered the open questions. `raw/` is empty. 61 pages.
 
 Start with [[overview]]. The fastest route to what is still unresolved is
 [[open-questions]]; the fastest route to what was planned versus what exists
@@ -24,6 +24,7 @@ fastest route to what the Android app lacks is [[web-android-parity]].
 
 _newest first, status shown_
 
+- [[2026-10-23-active-team-definition]] — Active = a match or event in the last 60 days and two or more linked players; thresholds are measured against this, not row counts. · **accepted**
 - [[2026-10-23-storybook-is-the-design-system-figma-dropped]] — Storybook is the design system; `design/Teamplanner.fig` is historical. · **accepted**
 - [[2026-10-23-statistics-per-season-august-to-july]] — Statistics grouped per season, August to July; a season filter on the dashboard, web first. · **accepted**
 - [[2026-10-23-push-per-client-web-first]] — Web Push and Android push on separate paths so the clients can evolve apart; web first; the three triggers are shared. · **accepted**

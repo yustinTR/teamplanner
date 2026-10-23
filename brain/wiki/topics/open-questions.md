@@ -27,16 +27,14 @@ A single place for things nobody owns. Grouped by **planned but not built**, **u
 
 - Android push mechanism. → [[notifications]]
 - What could ever be paid for, given the public "volledig gratis" promise. → [[monetisation]]
-- Ads on an app used by children and G-players — not addressed on 2026-10-23; ads are anyway deferred until "100% up and running". → [[monetisation]]
 - E-mail fallback for players who never install the PWA on iOS. → [[notifications]]
 - iOS client: deferred until the Apple licence is worth it; no threshold. → [[native-app]]
 
 ## Missing information
 
-- **Definition and history of "active team".** 25 team rows on 2026-10-23; no activity definition, no series, no funnel numbers. → [[growth-and-seo]], [[onboarding-and-conversion]]
+- **First reading of the active-team count** ([[2026-10-23-active-team-definition]]) and a monthly series; no funnel numbers either. → [[growth-and-seo]], [[onboarding-and-conversion]]
 - **User feedback.** Confirmed 2026-10-23: nothing written down yet, although feedback already shaped `show_ratings`. `raw/` is empty. → [[be-fair]]
 - **Search performance** of the 15 articles and 4 feature pages. → [[growth-and-seo]]
-- **Licence for the KNVB-derived exercises** — reviewed and present, licence unchecked. → [[training-content]]
 - **VoetbalAssist licence** — probably behind a paywall the project has not paid for. → [[voetbal-nl-integration]]
 - **Full delete of a player's data** — must be possible; whether it exists beyond `is_active = false` is unverified. → [[data-model-and-permissions]]
 

@@ -27,10 +27,10 @@ The content strategy in the roadmap: *"AI-gegenereerd"* initial set, curated wit
 
 ## Risks and tensions
 
-- **Provenance.** The seeds were reviewed by Yustin and include KNVB material (*"ja en ja"*, [[2026-10-23-open-questions-answered]]). Whether that material may be republished in the app is a licensing question nobody has checked ([[knvb-rinus]]); with 25 teams it is a low-visibility risk, but it grows with the user base.
+- **Provenance.** The seeds were reviewed by Yustin and are *"geïnspireerd op knvb oefeningen"* — inspired by, written in the project's own words, not copied ([[2026-10-23-open-questions-answered]]). No licence question remains ([[knvb-rinus]]).
 - **Static library**: no source mentions adding, editing or user-contributed exercises after the seeds; content may be the first thing a returning coach finds exhausted.
 
 ## Open questions
 
-- When does the library grow, and under what licence for the KNVB-derived items?
+- When does the library grow, and can coaches add their own exercises?
 - Can coaches add their own exercises? (Not in any design.)

@@ -32,13 +32,13 @@ What is open:
 
 - **Push notifications** — the one MVP must-have never built, designed in August ([[notifications]]).
 - **Android phase 5 and parity** — push, Play Store, and the ported features the ledger lists ([[native-app]], [[web-android-parity]]).
-- **The growth metric** — 25 team rows by a hand query; "active" is undefined and the number is not tracked over time ([[growth-and-seo]]).
+- **The growth metric** — 25 team rows by a hand query; "active" is now defined ([[2026-10-23-active-team-definition]]) but not yet counted or tracked ([[growth-and-seo]]).
 - **Roadmap phases 3 and 4**, the parent view, and the full list in [[open-questions]].
 
 ## Biggest risks
 
 1. **Silence.** Without push the app depends on players remembering to open it; WhatsApp *"pusht"* ([[2026-08-24-v2-sync-push-stats-design]]).
-2. **Growth read by hand.** From fewer than 10 to 25 team rows in seven months; how many are active is unknown, and there is no series.
+2. **Growth read by hand.** From fewer than 10 to 25 team rows in seven months; the active count has a definition and no reading yet.
 3. **Upstream dependency.** The daily sync reads voetbal.nl data with no agreement and no alerting ([[voetbal-nl-integration]]).
 4. **Drift between two clients.** Every web feature is a second implementation in Kotlin; seven months of one-sided change already sit in [[web-android-parity]].
 5. **Solo bus factor.** Every decision, and this brain, rests on one person; the brain exists so that the reasoning survives a long pause.

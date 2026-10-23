@@ -24,3 +24,7 @@ Yustin answered 21 of the 23 questions in one chat message, quoted verbatim on t
 ## [2026-10-23] ingest | Second batch of answers
 Pages touched: [[2026-10-23-open-questions-answered]], [[web-android-parity]], [[training-content]], [[knvb-rinus]], [[voetbal-nl-integration]], [[growth-and-seo]], [[overview]], [[open-questions]], `index.md`
 Yustin answered the remaining questions: the voetbal.nl import belongs on Android as well as the web (last undecided ledger row closed — every feature gap is now a port); the seeded exercises were reviewed and contain KNVB material (licence unchecked); a sync-failure alert is wanted; and the "25 active teams" are 25 rows in `teams`, not an activity measure — the overview and growth pages are corrected and a definition of "active" is proposed. Open: ads and children, the KNVB licence, the active-team definition.
+
+## [2026-10-23] ingest | Third batch of answers
+Pages touched: [[2026-10-23-active-team-definition]] (new), [[2026-10-23-open-questions-answered]], [[training-content]], [[knvb-rinus]], [[growth-and-seo]], [[monetisation]], [[overview]], [[open-questions]], `index.md`
+Closed the last items: the exercises are inspired by KNVB material, not copied, so the licence question is gone; the ads-and-children question is dropped at Yustin's request; and the proposed definition of an active team is accepted as a decision. The brain has no unanswered question from the initial ingest left; what remains open is work (ports, push, season filter, sync alert, first active-team reading).

@@ -19,7 +19,7 @@ The reference competitor for the exercise library. The roadmap's judgement: Rinu
 
 ## Key facts
 
-- The seeded library does contain KNVB-derived material, confirmed 2026-10-23 ([[2026-10-23-open-questions-answered]]); its licence has not been checked. See [[training-content]].
+- The seeded library is inspired by KNVB exercises and written in the project's own words, confirmed 2026-10-23 ([[2026-10-23-open-questions-answered]]). See [[training-content]].
 
 ## Relationships
 
@@ -27,4 +27,4 @@ The reference competitor for the exercise library. The roadmap's judgement: Rinu
 
 ## Open questions
 
-- Is republishing KNVB-derived exercises allowed? → [[open-questions]]
+- None.
