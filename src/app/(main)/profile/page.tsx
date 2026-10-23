@@ -9,6 +9,9 @@ import { Input } from "@/components/atoms/Input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { logout } from "@/app/(auth)/actions";
+import { toast } from "sonner";
+import { usePushSubscription } from "@/hooks/use-push-subscription";
+import { PushNotificationSettings } from "@/components/molecules/PushNotificationSettings";
 
 export default function ProfilePage() {
   const { user, currentTeam, currentPlayer, isCoach } = useAuthStore();
@@ -17,6 +20,26 @@ export default function ProfilePage() {
     user?.user_metadata?.name ?? ""
   );
   const [saving, setSaving] = useState(false);
+  const push = usePushSubscription(user?.id);
+  const showIosHint =
+    typeof navigator !== "undefined" &&
+    /iPhone|iPad|iPod/.test(navigator.userAgent) &&
+    !window.matchMedia("(display-mode: standalone)").matches;
+
+  function handleEnablePush() {
+    push.subscribe.mutate(undefined, {
+      onSuccess: () => toast.success("Meldingen staan aan"),
+      onError: (err) =>
+        toast.error(err instanceof Error ? err.message : "Meldingen aanzetten mislukt"),
+    });
+  }
+
+  function handleDisablePush() {
+    push.unsubscribe.mutate(undefined, {
+      onSuccess: () => toast.success("Meldingen staan uit"),
+      onError: () => toast.error("Meldingen uitzetten mislukt"),
+    });
+  }
 
   async function handleSaveName() {
     setSaving(true);
@@ -116,6 +139,14 @@ export default function ProfilePage() {
               </>
             )}
           </div>
+
+          <PushNotificationSettings
+            status={push.status.data ?? "loading"}
+            pending={push.subscribe.isPending || push.unsubscribe.isPending}
+            showIosHint={showIosHint}
+            onEnable={handleEnablePush}
+            onDisable={handleDisablePush}
+          />
 
           <form action={logout}>
             <Button variant="outline" className="w-full gap-2 text-danger hover:bg-danger-50 hover:text-danger" type="submit">

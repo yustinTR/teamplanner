@@ -6,6 +6,17 @@ import {
   enrichMatchesWithLocations,
 } from "@/lib/voetbal-nl-parser";
 import { upsertMatches, applyResults } from "@/lib/match-sync";
+import {
+  operatorUserIds,
+  sendPushToUsers,
+  teamAdminUserIds,
+  teamMemberUserIds,
+} from "@/lib/push";
+import {
+  buildSyncFailure,
+  buildSyncRunAlert,
+  buildSyncSummary,
+} from "@/lib/push-messages";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -16,6 +27,7 @@ interface TeamSyncSummary {
   matchesCreated: number;
   matchesUpdated: number;
   resultsUpdated: number;
+  pushSent: number;
   errors: string[];
 }
 
@@ -44,6 +56,7 @@ export async function GET(request: Request) {
     .not("import_team_name", "is", null);
 
   if (teamsError) {
+    await alertOperators(supabase, 1, 1);
     return NextResponse.json(
       { error: `Failed to fetch teams: ${teamsError.message}` },
       { status: 500 }
@@ -61,6 +74,7 @@ export async function GET(request: Request) {
       matchesCreated: 0,
       matchesUpdated: 0,
       resultsUpdated: 0,
+      pushSent: 0,
       errors: [],
     };
 
@@ -109,6 +123,21 @@ export async function GET(request: Request) {
         if (logError) {
           summary.errors.push(`Sync log failed: ${logError.message}`);
         }
+
+        // Tell the team; a push failure never fails the sync
+        try {
+          const userIds = await teamMemberUserIds(supabase, team.id);
+          const pushResult = await sendPushToUsers(
+            supabase,
+            userIds,
+            buildSyncSummary(team.id, team.name, changes)
+          );
+          summary.pushSent = pushResult.sent;
+        } catch (pushErr) {
+          summary.errors.push(
+            `Push failed: ${pushErr instanceof Error ? pushErr.message : "unknown error"}`
+          );
+        }
       }
 
       await supabase
@@ -125,8 +154,41 @@ export async function GET(request: Request) {
     summaries.push(summary);
   }
 
+  const failed = summaries.filter((s) => s.errors.length > 0);
+  if (failed.length > 0) {
+    // The team's coach hears about their own team; operators about the run
+    for (const summary of failed) {
+      try {
+        const adminIds = await teamAdminUserIds(supabase, summary.teamId);
+        await sendPushToUsers(
+          supabase,
+          adminIds,
+          buildSyncFailure(summary.teamId, summary.teamName, summary.errors[0])
+        );
+      } catch (err) {
+        console.error(`Sync failure alert failed for ${summary.teamId}:`, err);
+      }
+    }
+    await alertOperators(supabase, failed.length, summaries.length);
+  }
+
   return NextResponse.json({
     teamsSynced: summaries.length,
+    teamsFailed: failed.length,
     summaries,
   });
+}
+
+async function alertOperators(
+  supabase: ReturnType<typeof createAdminClient>,
+  failed: number,
+  total: number
+) {
+  const operators = operatorUserIds();
+  if (operators.length === 0) return;
+  try {
+    await sendPushToUsers(supabase, operators, buildSyncRunAlert(failed, total));
+  } catch (err) {
+    console.error("Operator sync alert failed:", err);
+  }
 }

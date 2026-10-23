@@ -5,19 +5,23 @@ import { createClient } from "@/lib/supabase/client";
 import type { PlayerSeasonStats } from "@/types";
 import { aggregatePlayerStats } from "@/lib/player-stats-utils";
 import { TEAM_TYPE_CONFIG } from "@/lib/constants";
+import { currentSeason, seasonBounds } from "@/lib/season";
 
 function getDefaultMatchMinutes(teamType: string | null | undefined): number {
   const config = teamType ? TEAM_TYPE_CONFIG[teamType] : undefined;
   return config ? config.halfMinutes * config.halves : 90;
 }
 
+/** Statistics of one player for the current season (August–July). */
 export function usePlayerSeasonStats(
   playerId: string | undefined,
   teamId: string | undefined
 ) {
   const supabase = createClient();
+  const season = currentSeason();
+  const { start, end } = seasonBounds(season);
   return useQuery({
-    queryKey: ["player-stats", playerId, teamId],
+    queryKey: ["player-stats", playerId, teamId, season],
     queryFn: async (): Promise<PlayerSeasonStats | null> => {
       // Parallel batch 1: independent queries
       const [teamRes, playerRes, matchesRes] = await Promise.all([
@@ -35,7 +39,9 @@ export function usePlayerSeasonStats(
           .from("matches")
           .select("id")
           .eq("team_id", teamId!)
-          .eq("status", "completed"),
+          .eq("status", "completed")
+          .gte("match_date", start)
+          .lt("match_date", end),
       ]);
 
       const defaultMinutes = getDefaultMatchMinutes(teamRes.data?.team_type);
@@ -81,10 +87,13 @@ export function usePlayerSeasonStats(
   });
 }
 
+/** Per-player statistics of the whole team for the current season. */
 export function useTeamSeasonStats(teamId: string | undefined) {
   const supabase = createClient();
+  const season = currentSeason();
+  const { start, end } = seasonBounds(season);
   return useQuery({
-    queryKey: ["player-stats", "team", teamId],
+    queryKey: ["player-stats", "team", teamId, season],
     queryFn: async (): Promise<PlayerSeasonStats[]> => {
       // Parallel batch 1: independent queries
       const [teamRes, playersRes, matchesRes] = await Promise.all([
@@ -103,7 +112,9 @@ export function useTeamSeasonStats(teamId: string | undefined) {
           .from("matches")
           .select("id")
           .eq("team_id", teamId!)
-          .eq("status", "completed"),
+          .eq("status", "completed")
+          .gte("match_date", start)
+          .lt("match_date", end),
       ]);
 
       const defaultMinutes = getDefaultMatchMinutes(teamRes.data?.team_type);

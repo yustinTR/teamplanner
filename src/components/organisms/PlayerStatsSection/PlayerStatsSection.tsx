@@ -1,5 +1,6 @@
 "use client";
 
+import { currentSeason, seasonLabel } from "@/lib/season";
 import { usePlayerSeasonStats } from "@/hooks/use-player-stats";
 import { PlayerStatsSummary } from "@/components/molecules/PlayerStatsSummary";
 import { Spinner } from "@/components/atoms/Spinner";
@@ -31,7 +32,7 @@ export function PlayerStatsSection({
   return (
     <div>
       <h2 className="mb-3 text-sm font-medium text-muted-foreground">
-        Seizoensstatistieken
+        Seizoensstatistieken {seasonLabel(currentSeason())}
       </h2>
       <PlayerStatsSummary
         matchesPlayed={stats.matchesPlayed}

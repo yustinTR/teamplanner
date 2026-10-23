@@ -13,8 +13,13 @@ import {
   aggregateTeamResults,
 } from "@/lib/player-stats-utils";
 import { TEAM_TYPE_CONFIG } from "@/lib/constants";
+import { availableSeasons, currentSeason, isInSeason } from "@/lib/season";
 
 export interface TeamStats {
+  /** The season the numbers below belong to (start year). */
+  season: number;
+  /** Seasons that have completed matches, plus the current one, newest first. */
+  seasons: number[];
   playerStats: PlayerSeasonStats[];
   attendance: PlayerAttendance[];
   summary: TeamSeasonSummary;
@@ -26,14 +31,16 @@ function getDefaultMatchMinutes(teamType: string | null | undefined): number {
 }
 
 /**
- * All season data the team stats dashboard needs: per-player minutes and
- * stats, availability rates, and the team's W/D/L record.
+ * All data the team stats dashboard needs for one season (August–July):
+ * per-player minutes and stats, availability rates, and the W/D/L record.
+ * Defaults to the current season.
  */
-export function useTeamStats(teamId: string | undefined) {
+export function useTeamStats(teamId: string | undefined, season?: number) {
   const supabase = createClient();
+  const selectedSeason = season ?? currentSeason();
 
   return useQuery({
-    queryKey: ["team-stats", teamId],
+    queryKey: ["team-stats", teamId, selectedSeason],
     queryFn: async (): Promise<TeamStats> => {
       const [teamRes, playersRes, matchesRes] = await Promise.all([
         supabase.from("teams").select("team_type").eq("id", teamId!).single(),
@@ -45,17 +52,23 @@ export function useTeamStats(teamId: string | undefined) {
           .neq("role", "staff"),
         supabase
           .from("matches")
-          .select("id, home_away, score_home, score_away")
+          .select("id, match_date, home_away, score_home, score_away")
           .eq("team_id", teamId!)
           .eq("status", "completed"),
       ]);
 
       const players = playersRes.data ?? [];
-      const matches = matchesRes.data ?? [];
+      const allMatches = matchesRes.data ?? [];
+      const seasons = availableSeasons(allMatches.map((m) => m.match_date));
+      const matches = allMatches.filter((m) =>
+        isInSeason(m.match_date, selectedSeason)
+      );
       const matchIds = matches.map((m) => m.id);
 
       if (players.length === 0 || matchIds.length === 0) {
         return {
+          season: selectedSeason,
+          seasons,
           playerStats: [],
           attendance: [],
           summary: aggregateTeamResults(matches),
@@ -78,6 +91,8 @@ export function useTeamStats(teamId: string | undefined) {
       ]);
 
       return {
+        season: selectedSeason,
+        seasons,
         playerStats: aggregatePlayerStats(
           players,
           lineupsRes.data ?? [],

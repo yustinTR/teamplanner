@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { authenticateRequest } from "@/lib/supabase/request";
 import {
   discoverClubAbbrev,
   getTeams,
@@ -11,16 +11,12 @@ import {
 const RATE_LIMIT_SECONDS = 30;
 
 export async function POST(request: Request) {
-  // Verify authentication
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-
-  if (authError || !user) {
+  // Verify authentication (cookie session or Bearer token from the Android app)
+  const auth = await authenticateRequest(request);
+  if (!auth) {
     return NextResponse.json({ error: "Niet ingelogd." }, { status: 401 });
   }
+  const { supabase, user } = auth;
 
   // Database-backed rate limiting (works across serverless instances)
   const { data: remaining } = await supabase.rpc("check_rate_limit", {

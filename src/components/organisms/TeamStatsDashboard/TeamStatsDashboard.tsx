@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { BarChart3 } from "lucide-react";
 import { useTeamStats } from "@/hooks/use-team-stats";
+import { SeasonSelect } from "@/components/molecules/SeasonSelect";
+import { currentSeason, seasonLabel } from "@/lib/season";
 import { MinutesFairnessChart } from "@/components/molecules/MinutesFairnessChart";
 import { TopScorersList } from "@/components/molecules/TopScorersList";
 import { AttendanceOverview } from "@/components/molecules/AttendanceOverview";
@@ -28,7 +31,8 @@ function StatTile({ label, value }: StatTileProps) {
 }
 
 export function TeamStatsDashboard({ teamId }: TeamStatsDashboardProps) {
-  const { data, isLoading } = useTeamStats(teamId);
+  const [season, setSeason] = useState(() => currentSeason());
+  const { data, isLoading } = useTeamStats(teamId, season);
 
   if (isLoading) {
     return (
@@ -38,13 +42,21 @@ export function TeamStatsDashboard({ teamId }: TeamStatsDashboardProps) {
     );
   }
 
+  const seasons = data?.seasons ?? [season];
+  const selector = seasons.length > 1 && (
+    <SeasonSelect seasons={seasons} value={season} onChange={setSeason} />
+  );
+
   if (!data || data.summary.played === 0) {
     return (
-      <EmptyState
-        icon={BarChart3}
-        title="Nog geen statistieken"
-        description="Statistieken verschijnen zodra je eerste wedstrijd is gespeeld en de uitslag is ingevuld."
-      />
+      <div className="space-y-4">
+        {selector}
+        <EmptyState
+          icon={BarChart3}
+          title={`Nog geen statistieken in seizoen ${seasonLabel(season)}`}
+          description="Statistieken verschijnen zodra de eerste wedstrijd van dit seizoen is gespeeld en de uitslag is ingevuld."
+        />
+      </div>
     );
   }
 
@@ -52,6 +64,7 @@ export function TeamStatsDashboard({ teamId }: TeamStatsDashboardProps) {
 
   return (
     <div className="space-y-4">
+      {selector}
       <div className="grid grid-cols-4 gap-2">
         <StatTile label="Gespeeld" value={`${summary.played}`} />
         <StatTile
