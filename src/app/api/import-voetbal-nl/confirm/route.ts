@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { authenticateRequest } from "@/lib/supabase/request";
 import { upsertMatches } from "@/lib/match-sync";
 import type { ParsedMatch, ParsedPlayer } from "@/lib/voetbal-nl-parser";
 
@@ -18,19 +18,12 @@ interface ConfirmBody {
 }
 
 export async function POST(request: Request) {
-  // Verify authentication
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    return NextResponse.json(
-      { error: "Niet ingelogd." },
-      { status: 401 }
-    );
+  // Verify authentication (cookie session or Bearer token from the Android app)
+  const auth = await authenticateRequest(request);
+  if (!auth) {
+    return NextResponse.json({ error: "Niet ingelogd." }, { status: 401 });
   }
+  const { supabase, user } = auth;
 
   // Parse request body
   let body: ConfirmBody;

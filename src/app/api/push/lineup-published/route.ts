@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { authenticateRequest } from "@/lib/supabase/request";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendPushToUsers } from "@/lib/push";
 import { buildLineupPublished, lineupPlayerIds } from "@/lib/push-messages";
@@ -13,14 +13,12 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
  * match's team may trigger it.
  */
 export async function POST(request: Request) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-  if (authError || !user) {
+  // Verify authentication (cookie session or Bearer token from the Android app)
+  const auth = await authenticateRequest(request);
+  if (!auth) {
     return NextResponse.json({ error: "Niet ingelogd." }, { status: 401 });
   }
+  const { supabase, user } = auth;
 
   let matchId: unknown;
   try {
