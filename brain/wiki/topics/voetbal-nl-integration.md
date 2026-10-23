@@ -19,7 +19,7 @@ Rules the sync keeps: dedupe on opponent and day, never overwrite a manually ent
 
 - An imported team must stay correct without the coach touching it.
 - Manual edits win over upstream data.
-- A failed daily run raises an alert (wanted, [[2026-10-23-open-questions-answered]]); today only `sync_log` would show it, and only if someone looks.
+- A failed daily run raises an alert — built 2026-10-23 (commit `c6f2e25`): the team's coach and admins get a push naming the team and the first error; operators listed in the `SYNC_ALERT_USER_IDS` environment variable (not yet set) get a run summary.
 
 ## Decisions
 
@@ -34,4 +34,4 @@ Rules the sync keeps: dedupe on opponent and day, never overwrite a manually ent
 ## Open questions
 
 - A VoetbalAssist licence: needed, available, affordable? The feature that makes onboarding easy rests on it.
-- Build the sync-failure alert: the cron route returns a summary already; the cheapest path is an e-mail or push to Yustin when a run throws or updates zero clubs (synthesis).
+- Set `SYNC_ALERT_USER_IDS` in Vercel to Yustin's auth user id so the operator alert reaches him on a device where push is on.

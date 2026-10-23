@@ -27,9 +27,9 @@ The season dashboard aggregates every completed match of a team ([[2026-08-24-v2
 
 ## Consequences
 
-- The dashboard and player statistics need a season filter derived from `match_date` (1 August to 31 July), defaulting to the current season, with earlier seasons selectable — a web task, then an Android port ([[web-android-parity]]).
+- **Built on the web the same day** (commit `2931452`): `src/lib/season.ts` derives the season from `match_date`; the team dashboard has a season selector when more than one season has matches; player and dashboard statistics default to the current season and say so in their heading. Android port owed ([[web-android-parity]]).
 - No schema change is required for the boundary; a stored season label would only be needed for exceptions, which no source mentions.
 
 ## Where it lives in the code
 
-- To do: `src/lib/player-stats-utils.ts`, `src/hooks/use-team-season-stats`, `src/app/(main)/team/stats/`
+- `src/lib/season.ts` (tests in `src/lib/__tests__/season.test.ts`), `src/components/molecules/SeasonSelect/`, `src/hooks/use-team-stats.ts`, `src/hooks/use-player-stats.ts`, `src/components/organisms/TeamStatsDashboard/`

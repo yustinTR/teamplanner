@@ -9,7 +9,7 @@ have been read — the February 2026 project document, the eleven design
 documents in `docs/plans/`, and the three Android design documents in
 `../teamplanner-android/docs/plans/` (implementation plans are covered on their
 design's source page), plus the 2026-10-23 working session in which Yustin
-answered the open questions. `raw/` is empty. 61 pages.
+answered the open questions. `raw/` is empty. 62 pages.
 
 Start with [[overview]]. The fastest route to what is still unresolved is
 [[open-questions]]; the fastest route to what was planned versus what exists
@@ -30,7 +30,7 @@ _newest first, status shown_
 - [[2026-10-23-push-per-client-web-first]] — Web Push and Android push on separate paths so the clients can evolve apart; web first; the three triggers are shared. · **accepted**
 - [[2026-10-23-android-share-image-matches-the-web-card]] — Android renders the lineup image at the web's 1080×1350; the 540×810 Canvas is a gap. · **accepted** (delegated)
 - [[2026-10-23-web-is-the-source-of-truth-for-both-clients]] — One brain for both repositories; the web app defines behaviour, copy and data, Android follows; every allowed difference is written down. · **accepted**
-- [[2026-08-24-web-push-via-service-worker]] — Web Push through the Serwist service worker, three triggers, no preferences or e-mail fallback; designed, not built. · **proposed**
+- [[2026-08-24-web-push-via-service-worker]] — Web Push through the Serwist service worker, three triggers, no preferences or e-mail fallback; built 2026-10-23. · **accepted**
 - [[2026-08-24-daily-cron-sync-reuses-the-parser]] — Daily Vercel Cron with a service-role client reuses the voetbal.nl parser and the manual import's upsert logic; manual scores are never overwritten. · **accepted**
 - [[2026-03-13-android-app-in-kotlin-as-one-to-one-port]] — The native client is a Kotlin + Compose one-to-one port of the web app on the same backend, Android only. · **accepted**
 - [[2026-03-13-native-app-as-separate-expo-repo]] — A React Native + Expo app in a separate repository; superseded the same day by the Kotlin build. · **superseded**
@@ -53,7 +53,7 @@ _newest first, status shown_
 - [[growth-and-seo]] — organic-only growth: 15 articles, feature pages, viral invite and share loop; the unmeasured active-team count
 - [[monetisation]] — free and publicly promised so; February's Stripe tiers superseded by ad-then-freemium phasing; what is left to charge for
 - [[native-app]] — the Kotlin Android app: phases 1–4 built in March, phase 5 (push, Play Store) open; iOS stays PWA
-- [[notifications]] — none exist; push planned three times, the August Web Push design is current
+- [[notifications]] — Web Push live since 2026-10-23 with three triggers and a sync-failure alert; Android push open
 - [[onboarding-and-conversion]] — landing page, coach checklist and hints, WhatsApp invite flow; no funnel numbers recorded
 - [[open-questions]] — planned-not-built, undecided choices, missing information; the unsourced-claims group is now empty
 - [[product-vision-and-roadmap]] — coordination tool → assistant coach; roadmap phases and their state
@@ -96,4 +96,4 @@ _newest first, status shown_
 
 ## Notes
 
-_none yet_
+- [[2026-10-23-active-team-count]] — first reading: 2 active teams of 22, 20 set up but never adopted; the query to repeat monthly

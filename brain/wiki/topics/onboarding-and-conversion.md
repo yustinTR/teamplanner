@@ -30,7 +30,7 @@ The funnel is: search or shared link → landing page → register → create te
 
 ## Risks and tensions
 
-- **No funnel numbers anywhere in the brain.** GTM events for key actions exist since 2026-03-09 (git history); their readings are not recorded.
+- **The one funnel number we have is bad.** 20 of 22 teams never got a second member with an account ([[2026-10-23-active-team-count]]). Whether coaches never share the link, players do not open it, or registration stops them is unknown; GTM events exist since 2026-03-09 and could say.
 - **Registration is the wall.** A player must create an account to answer availability; the February plan mentioned magic links, the build has e-mail and password. Whether a no-account availability answer was ever considered is unsourced.
 - **The last checklist step is a proxy** (visited team settings), not the real event (link shared).
 

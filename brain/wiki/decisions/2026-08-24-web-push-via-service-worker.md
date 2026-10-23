@@ -3,8 +3,8 @@ type: decision
 title: Web Push through the existing service worker, three triggers, no preferences
 created: 2026-10-23
 updated: 2026-10-23
-status: proposed
-decided_by: Yustin Troost, product and technical call, 2026-08-24 (designed; not built)
+status: accepted
+decided_by: Yustin Troost, product and technical call, 2026-08-24; built 2026-10-23
 supersedes: "the native-app push of [[2026-03-13-native-app-as-separate-expo-repo]] as the first push channel"
 tags: [notifications, pwa, service-worker]
 sources: ["[[2026-08-24-v2-sync-push-stats-design]]", "[[2026-02-xx-project-documentatie-v1]]"]
@@ -28,11 +28,15 @@ Push was a *"Must"* in the February MVP list ([[2026-02-xx-project-documentatie-
 
 ## Consequences
 
-- Not built on 2026-10-23: no `push_subscriptions` migration, no `web-push` dependency, no routes. The recommended order 1 → 3 → 2 was followed and stopped before 2.
+- **Built on 2026-10-23** (commit `0c3e1a3`): `push_subscriptions` table with a `platform` column so an Android subscription type can share it later, `web-push` sending, the three triggers, and the profile toggle. Subscriptions are written by the client through RLS rather than an API route — one difference from the design. The same day the sync-failure alert was added on top ([[voetbal-nl-integration]]).
 - On iOS, push only works with the PWA on the home screen (iOS 16.4+); the design plans an in-app hint. This is the price of [[2026-02-19-pwa-over-native-app]].
 - A second cron (availability reminders) and a VAPID key pair are needed; keys live in Vercel, never here.
-- Status moves to `accepted` when built. See [[notifications]].
+- See [[notifications]] for the triggers as built.
 
 ## Where it lives in the code
 
-- Nowhere yet. Planned: `src/app/sw.ts` handlers, `src/lib/push.ts`, `src/app/api/push/*`, `src/app/api/cron/availability-reminders/`, `PushNotificationSettings` molecule.
+- `supabase/migrations/20261023120000_create_push_subscriptions.sql`
+- Sending: `src/lib/push.ts`; payloads and recipient rules: `src/lib/push-messages.ts` (tested in `src/lib/__tests__/push-messages.test.ts`)
+- Triggers: `src/app/api/cron/availability-reminders/route.ts` (daily, `vercel.json`), `src/app/api/push/lineup-published/route.ts` (called from `src/hooks/use-lineup.ts`), `src/app/api/cron/sync-matches/route.ts`
+- Service worker: `src/app/sw.ts`; UI: `src/hooks/use-push-subscription.ts`, `src/components/molecules/PushNotificationSettings/`, `src/app/(main)/profile/page.tsx`
+- Keys: `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` in Vercel (values never here)

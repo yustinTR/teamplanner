@@ -47,7 +47,9 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Team season stats dashboard ([[statistics-and-fair-playing-time]]) | yes (2026-09-16) | no | **gap**; port after the season filter ([[2026-10-23-statistics-per-season-august-to-july]]) lands on the web |
 | Admin flag honoured in `isCoach` ([[2026-03-12-admins-share-coach-rights]]) | yes | yes (`currentPlayer.isAdmin`) | parity |
 | Profile editing | yes | yes | parity |
-| Push notifications ([[notifications]]) | no (designed) | no (phase 5) | neither; separate paths, web first ([[2026-10-23-push-per-client-web-first]]); the three triggers are shared |
+| Push notifications ([[notifications]]) | **yes (2026-10-23)**, Web Push | no (phase 5) | **gap**; separate path ([[2026-10-23-push-per-client-web-first]]); the three triggers and the `push_subscriptions` table (with `platform`) are shared |
+| Season filter on statistics ([[2026-10-23-statistics-per-season-august-to-july]]) | yes (2026-10-23) | no | **gap** |
+| Sync-failure alert to coach | yes (2026-10-23, via push) | n/a until Android push | follows push |
 | PWA install, offline basics | yes | n/a | allowed — platform |
 | Landing page, blog, feature pages, SEO, legal pages | yes | no, by rule | allowed — web-only marketing |
 
@@ -67,7 +69,7 @@ Platform-forced, written down so they stop being questions:
 | Animation | Framer Motion presets ([[2026-03-02-framer-motion-for-all-animation]]) | Compose animations | no shared presets; feel should match, no rule yet |
 | Navigation | App Router, bottom nav | Navigation Compose, bottom tabs | same four tabs |
 | Secrets | Vercel env | `local.properties` | platform |
-| Push mechanism | Web Push (VAPID) | undesigned (FCM likely) | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
+| Push mechanism | Web Push (VAPID), built | undesigned (FCM likely) | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
 
 ### Shared contract (must never drift)
 

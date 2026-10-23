@@ -36,11 +36,11 @@ What exists on 2026-10-23:
 
 ## Risks and tensions
 
-- **The key metric is read by hand.** On 2026-10-23 there are **25 teams in the database** — *"25 database entries met verschillende teams"* ([[2026-10-23-open-questions-answered]]) — up from fewer than 10 on 2026-03-02. That is a row count, not an activity measure: it includes any test or abandoned team. The growth plan's thresholds speak of *active* teams, now defined — a match or event in the last 60 days and two or more linked players ([[2026-10-23-active-team-definition]]) — but not yet counted.
+- **The key metric is read by hand.** On 2026-10-23 there are **25 teams in the database** — *"25 database entries met verschillende teams"* ([[2026-10-23-open-questions-answered]]) — up from fewer than 10 on 2026-03-02. That is a row count, not an activity measure: it includes any test or abandoned team. The growth plan's thresholds speak of *active* teams, now defined — a match or event in the last 60 days and two or more linked players ([[2026-10-23-active-team-definition]]) — and counted for the first time: **2 active teams of 22**, 20 set up but never adopted by a second member ([[2026-10-23-active-team-count]]).
 - **Content versus product time.** Fifteen articles in six weeks, then nothing since April; whether they rank is unknown here.
 - **Marketing honesty**: fictional quotes were removed the day they shipped; the counter is live. Any future social proof must be real.
 
 ## Open questions
 
-- Take the first reading of the active-team count and log it monthly.
+- Log the count monthly in [[2026-10-23-active-team-count]]; the first reading says the invite step, not acquisition, is the bottleneck.
 - Which keywords rank, and did the blog bring registrations? Search Console data is outside the brain; a `raw/` export would answer it.

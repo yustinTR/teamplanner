@@ -11,15 +11,15 @@ sources: ["[[2026-02-xx-project-documentatie-v1]]", "[[2026-03-13-seo-blog-nativ
 
 ## Where we stand
 
-**There are none.** No push, no e-mail reminders, no in-app inbox on 2026-10-23. Push was a *"Must"* in the February MVP list ([[2026-02-xx-project-documentatie-v1]]) and is the only MVP item never built. It has been planned three times:
+**Web Push exists since 2026-10-23** — the February MVP's last must-have ([[2026-02-xx-project-documentatie-v1]]), built as the August design specified ([[2026-08-24-web-push-via-service-worker]]). Android push is still open (phase 5). The history:
 
 | Date | Plan | State |
 |---|---|---|
 | 2026-02 | Web Push API + Supabase Edge Functions ([[2026-02-xx-project-documentatie-v1]]) | not built |
 | 2026-03-13 | Push in the native app, phase 5 ([[2026-03-13-seo-blog-native-app-design]]); the app became [[teamplanner-android]] in Kotlin | phases 1–4 built, phase 5 not started |
-| 2026-08-24 | Web Push via the Serwist service worker, Next.js routes, three triggers ([[2026-08-24-web-push-via-service-worker]]) | designed, not built |
+| 2026-08-24 | Web Push via the Serwist service worker, Next.js routes, three triggers ([[2026-08-24-web-push-via-service-worker]]) | **built 2026-10-23** |
 
-The August design is current. Its diagnosis is the sharpest statement of the gap: *"Dat is precies waarom WhatsApp nu wint: het pusht."* Everything that would feed push already exists: `sync_log` records changes, lineups have a save event, availability has a no-response state.
+As built: an availability reminder at 16:00 UTC for matches within three days to members with an account and no answer; a lineup notification to every selected player (starters and substitutes, not loan players, not the coach) on save; a programme update to the whole team when the daily sync changes something; and, as an extra, a sync-failure push to the team's coach and admins plus an operator alert to the users in `SYNC_ALERT_USER_IDS`. Users turn it on in their profile; on iOS the toggle explains the home-screen requirement. The service worker is disabled in development, so the toggle shows "not supported" locally.
 
 ## Requirements
 
@@ -37,13 +37,13 @@ The August design is current. Its diagnosis is the sharpest statement of the gap
 
 ## Risks and tensions
 
-- **Without push, the "assistent-coach" is silent.** Sync and dashboard are built; the part that brings players back is not. See [[product-vision-and-roadmap]].
+- **Only two teams have members who could receive it** ([[2026-10-23-active-team-count]]). Push rewards adoption; it does not create it.
 - **iOS adoption**: many players will never install the PWA to the home screen; for them push does not exist, and the design excludes e-mail. The reminder may need a WhatsApp-shareable fallback (a "nudge" message the coach forwards) — not in any source, a synthesis.
 - **Permission prompts** cost trust if asked too early; the design puts the toggle on the profile page, not in onboarding.
 - **Two clients, two push paths, by choice.** Web Push first, Android push later on its own path, so the clients can evolve apart ([[2026-10-23-push-per-client-web-first]]); the three triggers are the shared contract. See [[web-android-parity]].
 
 ## Open questions
 
-- When is push built? It is the open item of the V2 design's 1 → 3 → 2 order.
+- First real-device check: subscribe on a phone, trigger the reminder cron by hand, confirm the notification arrives. Not yet done.
 - Does the iOS limitation justify an e-mail fallback after all, or a coach-forwarded nudge?
 - Android push mechanism (FCM or other) is undesigned; it waits for the web's push to work.
