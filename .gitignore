@@ -60,3 +60,8 @@ storybook-static
 # Brain: OS and tooling artefacts inside the knowledge base.
 brain/**/.DS_Store
 brain/**/.obsidian/
+
+# Serwist output (generated at build)
+public/sw.js
+public/sw.js.map
+public/swe-worker-*.js
