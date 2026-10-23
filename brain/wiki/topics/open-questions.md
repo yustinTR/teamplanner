@@ -13,8 +13,8 @@ A single place for things nobody owns. Grouped by **planned but not built**, **u
 
 ## Planned but not built
 
-- **Android phase 5** — push, icons, Play Store listing; the app itself exists with phases 1–4. → [[native-app]]
-- **Android ports now owed** — onboarding, match-report sharing, share-image size, 3-4-3, sync settings, voetbal.nl import, season dashboard. → [[web-android-parity]]
+- **Device run of the Android ports** — compiled on 2026-10-23, never launched on a phone. → [[web-android-parity]]
+- **Android phase 5 prerequisites** — Firebase project with `google-services.json`, FCM service-account JSON in Vercel, Play Console account and signing key. → [[native-app]]
 - **`SYNC_ALERT_USER_IDS`** — set it in Vercel so the operator alert reaches Yustin. → [[voetbal-nl-integration]]
 - **Real-device push check** — subscribe on a phone and trigger the reminder cron by hand. → [[notifications]]
 - **Android push** on its own path, now that Web Push is live. → [[2026-10-23-push-per-client-web-first]]

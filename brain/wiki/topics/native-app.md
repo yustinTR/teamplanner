@@ -11,7 +11,7 @@ sources: ["[[2026-03-02-growth-seo-viral-design]]", "[[2026-03-13-seo-blog-nativ
 
 ## Where we stand
 
-**An Android app exists and is in development**: [[teamplanner-android]], Kotlin + Jetpack Compose, phases 1–4 of its plan built between 2026-03-13 and 2026-03-15, phase 5 (push notifications, icons, splash, Play Store listing) not started, no commits between 2026-03-15 and the rename on 2026-10-23. It is a one-to-one port of the web app on the same backend; what it lacks is listed in [[web-android-parity]].
+**An Android app exists and is at parity with the web except for push**: [[teamplanner-android]], Kotlin + Jetpack Compose, phases 1–4 built in March, every later web feature ported on 2026-10-23 (compiled, not yet run on a device). Phase 5 — push on its own path and the Play Store listing — is designed and blocked on accounts only Yustin can create ([[web-android-parity]]).
 
 How it got here:
 
@@ -40,7 +40,7 @@ What the Android app is for, now that push is designed on the web too: Play Stor
 ## Risks and tensions
 
 - **Two codebases, one developer.** Every web feature since March is an unpaid port. The ledger makes the debt visible; it does not pay it.
-- **Phase 5 is the whole distribution value.** Without a Play Store listing the app reaches nobody the PWA does not; without push it offers nothing the PWA cannot.
+- **Phase 5 is the whole distribution value.** Without a Play Store listing the app reaches nobody the PWA does not; without push it offers nothing the PWA cannot. Both wait on a Firebase project, an FCM service account in Vercel and a Play Console account.
 - **Push in two places, by choice.** Separate paths per client so the two can evolve apart, web first ([[2026-10-23-push-per-client-web-first]]); the three triggers stay the shared contract.
 
 ## Open questions

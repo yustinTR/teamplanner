@@ -1,6 +1,6 @@
 ---
 type: decision
-title: The Android share image matches the web card, 1080×1350
+title: The Android share image matches the web card (540 px at scale 2)
 created: 2026-10-23
 updated: 2026-10-23
 status: accepted
@@ -10,11 +10,11 @@ tags: [android, parity, sharing]
 sources: ["[[2026-10-23-open-questions-answered]]", "[[2026-03-13-android-phase4-complex-features-design]]"]
 ---
 
-# The Android share image matches the web card, 1080×1350
+# The Android share image matches the web card (540 px at scale 2)
 
 ## Decision
 
-The Android lineup image is rendered at the web's 1080×1350 px with the same layout, so a shared lineup looks the same whichever client made it; the 540×810 Canvas of phase 4 is a gap, not an allowed difference.
+The Android lineup image is rendered at the same size and resolution as the web card, so a shared lineup looks the same whichever client made it. Checked against the code on 2026-10-23: the web card is a 540 CSS px wide component captured at scale 2 (`src/hooks/use-share-image.ts`), not the 1080×1350 of the design document — so Android keeps its 540×810 layout and renders it at scale 2 (1080×1620). Built the same day.
 
 ## Context
 
@@ -27,7 +27,7 @@ Phase 4 chose 540×810 without a stated reason ([[2026-03-13-android-phase4-comp
 
 ## Consequences
 
-- An Android task: scale the Canvas and verify the layout against the web card side by side. Ledger row updated in [[web-android-parity]].
+- Built 2026-10-23 (`ShareLineupImage.kt`, `SCALE = 2`); the layout should still be compared side by side on a device. Ledger row updated in [[web-android-parity]].
 - Any later change to the card layout is made on the web first and ported.
 
 ## Where it lives in the code
