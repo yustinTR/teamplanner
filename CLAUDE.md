@@ -106,6 +106,10 @@ Roles: Coach (`created_by`) has full CRUD. Player (`user_id` in players) can upd
 - `onboarding.ts` — localStorage helpers for onboarding checklist & hints
 - `blog.ts` — Blog article content and metadata
 
+### Knowledge brain (`brain/`)
+
+Not app code — an LLM-maintained markdown wiki (Obsidian vault) holding the project's *reasoning*: product vision, decisions and the alternatives they beat, growth strategy, what was planned but never built, open questions. The code records what the app is; the brain records why. `brain/raw/` holds immutable new source material (feedback, screenshots, market notes); `docs/plans/` stays where the `brainstorming` and `writing-plans` skills write it and is the brain's second immutable source location; `brain/wiki/` holds the generated pages (`decisions/`, `topics/`, `entities/`, `sources/`, `notes/`); `brain/index.md` and `brain/log.md` are the catalog and history. It also covers the Kotlin Android app in `../teamplanner-android` (GitHub `yustinTR/teamplanner-android`): one brain for both clients, the web app is the source of truth and `brain/wiki/topics/web-android-parity.md` is the ledger of what Android still owes and which platform differences are allowed — update it when a feature ships here. It has its own `brain/CLAUDE.md` with the schema and the ingest/query/lint workflows — read that before touching anything under `brain/`, never edit `brain/raw/` or `docs/plans/` from brain work, and keep brain changes in their own commits.
+
 ## Key Conventions
 
 ### Language Split

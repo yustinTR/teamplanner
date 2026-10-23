@@ -56,3 +56,7 @@ next-env.d.ts
 
 *storybook.log
 storybook-static
+
+# Brain: OS and tooling artefacts inside the knowledge base.
+brain/**/.DS_Store
+brain/**/.obsidian/

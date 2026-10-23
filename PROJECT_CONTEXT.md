@@ -158,6 +158,7 @@ Coach maakt event aan (training, toernooi) → Voegt taken toe → Spelers geven
 ```
 teamplanner/
 ├── .github/workflows/         → CI pipeline (lint, build, tests)
+├── brain/                     → Knowledge brain: beslissingen, context, open vragen (zie brain/CLAUDE.md)
 ├── .storybook/                → Storybook configuratie
 ├── docs/                      → Project documentatie & design archief
 │   ├── plans/                 → 14 design & implementatie documenten (archief)
