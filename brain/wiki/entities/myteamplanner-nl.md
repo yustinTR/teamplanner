@@ -11,7 +11,7 @@ sources: ["[[2026-02-xx-project-documentatie-v1]]", "[[2026-02-26-seo-feature-pa
 
 ## What it is
 
-The public name and domain of TeamPlanner: `https://www.myteamplanner.nl` (`src/app/layout.tsx`). The February plan budgeted `teamplanner.nl` ([[2026-02-xx-project-documentatie-v1]]); the product is called *"MyTeamPlanner"* in all marketing copy from 2026-02-26 on ([[2026-02-26-seo-feature-pages-design]]). The reason for the change is not recorded (unsourced; presumably the shorter domain was taken).
+The public name and domain of TeamPlanner: `https://www.myteamplanner.nl` (`src/app/layout.tsx`). The February plan budgeted `teamplanner.nl` ([[2026-02-xx-project-documentatie-v1]]); the product is called *"MyTeamPlanner"* in all marketing copy from 2026-02-26 on ([[2026-02-26-seo-feature-pages-design]]). The reason: `teamplanner.nl` was taken, and `myteamplanner.nl` *"leek mij de meest logische oplossing"* ([[2026-10-23-open-questions-answered]]).
 
 ## Role in this project
 

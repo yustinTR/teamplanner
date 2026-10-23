@@ -35,11 +35,11 @@ What exists on 2026-10-23:
 
 ## Risks and tensions
 
-- **The key metric is not measured in any source.** "Active teams" drives every threshold; the landing page counts `teams` rows (any team, ever), GTM events exist, but no page records a number after 2026-03-02.
+- **The key metric is read by hand.** On 2026-10-23 there are **25 teams in the database** — *"25 database entries met verschillende teams"* ([[2026-10-23-open-questions-answered]]) — up from fewer than 10 on 2026-03-02. That is a row count, not an activity measure: it includes any test or abandoned team. The growth plan's thresholds speak of *active* teams, which nothing defines or records over time.
 - **Content versus product time.** Fifteen articles in six weeks, then nothing since April; whether they rank is unknown here.
 - **Marketing honesty**: fictional quotes were removed the day they shipped; the counter is live. Any future social proof must be real.
 
 ## Open questions
 
-- How many active teams now? Where is it measured? (Vercel Analytics, GTM, a Supabase query?)
+- Define "active team" (a proposal: at least one match or event in the last 60 days and two or more players with an account) as a query, and log the count monthly.
 - Which keywords rank, and did the blog bring registrations? Search Console data is outside the brain; a `raw/` export would answer it.

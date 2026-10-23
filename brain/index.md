@@ -8,7 +8,8 @@ Updated on every ingest.
 have been read — the February 2026 project document, the eleven design
 documents in `docs/plans/`, and the three Android design documents in
 `../teamplanner-android/docs/plans/` (implementation plans are covered on their
-design's source page). `raw/` is empty. 55 pages.
+design's source page), plus the 2026-10-23 working session in which Yustin
+answered the open questions. `raw/` is empty. 60 pages.
 
 Start with [[overview]]. The fastest route to what is still unresolved is
 [[open-questions]]; the fastest route to what was planned versus what exists
@@ -23,6 +24,10 @@ fastest route to what the Android app lacks is [[web-android-parity]].
 
 _newest first, status shown_
 
+- [[2026-10-23-storybook-is-the-design-system-figma-dropped]] — Storybook is the design system; `design/Teamplanner.fig` is historical. · **accepted**
+- [[2026-10-23-statistics-per-season-august-to-july]] — Statistics grouped per season, August to July; a season filter on the dashboard, web first. · **accepted**
+- [[2026-10-23-push-per-client-web-first]] — Web Push and Android push on separate paths so the clients can evolve apart; web first; the three triggers are shared. · **accepted**
+- [[2026-10-23-android-share-image-matches-the-web-card]] — Android renders the lineup image at the web's 1080×1350; the 540×810 Canvas is a gap. · **accepted** (delegated)
 - [[2026-10-23-web-is-the-source-of-truth-for-both-clients]] — One brain for both repositories; the web app defines behaviour, copy and data, Android follows; every allowed difference is written down. · **accepted**
 - [[2026-08-24-web-push-via-service-worker]] — Web Push through the Serwist service worker, three triggers, no preferences or e-mail fallback; designed, not built. · **proposed**
 - [[2026-08-24-daily-cron-sync-reuses-the-parser]] — Daily Vercel Cron with a service-role client reuses the voetbal.nl parser and the manual import's upsert logic; manual scores are never overwritten. · **accepted**
@@ -49,7 +54,7 @@ _newest first, status shown_
 - [[native-app]] — the Kotlin Android app: phases 1–4 built in March, phase 5 (push, Play Store) open; iOS stays PWA
 - [[notifications]] — none exist; push planned three times, the August Web Push design is current
 - [[onboarding-and-conversion]] — landing page, coach checklist and hints, WhatsApp invite flow; no funnel numbers recorded
-- [[open-questions]] — planned-not-built, undecided choices, missing information, unsourced claims
+- [[open-questions]] — planned-not-built, undecided choices, missing information; the unsourced-claims group is now empty
 - [[product-vision-and-roadmap]] — coordination tool → assistant coach; roadmap phases and their state
 - [[statistics-and-fair-playing-time]] — match stats, derived minutes, season dashboard; fairness for G-voetbal
 - [[training-content]] — exercise library and plans; AI-generated seeds, review and provenance unrecorded
@@ -86,6 +91,7 @@ _newest first, status shown_
 - [[2026-03-13-android-phase4-complex-features-design]] — Android lineup editor, substitutions, 540×810 share image, team settings; no voetbal.nl import
 - [[2026-03-13-seo-blog-native-app-design]] — six more articles (built) and the Expo app (built as Kotlin instead)
 - [[2026-08-24-v2-sync-push-stats-design]] — V2: daily sync (built), Web Push (not built), season dashboard (built)
+- [[2026-10-23-open-questions-answered]] — working session: Yustin's verbatim answers to all 23 open questions in two messages; seven reasons sourced, four decisions, 25 team rows
 
 ## Notes
 

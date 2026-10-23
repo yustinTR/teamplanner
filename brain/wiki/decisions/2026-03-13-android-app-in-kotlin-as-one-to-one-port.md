@@ -18,7 +18,7 @@ The native client is a Kotlin + Jetpack Compose app in a separate repository, An
 
 ## Context
 
-[[2026-03-13-seo-blog-native-app-design]] approved a React Native + Expo app for Android *and* the same code on iOS later. The repository scaffolded that day (*"feat: scaffold Android app with Kotlin + Jetpack Compose"*) went native instead, keeping the design's five phases and its *"shared backend, copied types"* idea. No document explains the switch (unsourced). Plausible reasons: Compose gives Material 3 and a native feel without a bridge; a Kotlin port cannot share TypeScript anyway, so Expo's code-sharing promise was weak for a solo developer; and iOS was never budgeted ([[2026-03-02-growth-seo-viral-design]]).
+[[2026-03-13-seo-blog-native-app-design]] approved a React Native + Expo app for Android *and* the same code on iOS later. The repository scaffolded that day (*"feat: scaffold Android app with Kotlin + Jetpack Compose"*) went native instead, keeping the design's five phases and its *"shared backend, copied types"* idea. Yustin's reason: *"de native route mij toch een beter en leuker idee leek"* ([[2026-10-23-open-questions-answered]]) — a preference for a real native app over a bridge. iOS was never budgeted ([[2026-03-02-growth-seo-viral-design]]) and is deferred until the licence is worth it ([[native-app]]).
 
 ## Alternatives considered
 

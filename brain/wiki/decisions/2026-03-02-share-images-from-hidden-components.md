@@ -28,9 +28,9 @@ Lineups and match reports are shared as PNGs rendered from dedicated, hidden, fi
 
 ## Consequences
 
-- `html2canvas-pro` rather than `html2canvas` in `package.json`; the reason is not recorded (unsourced), the likely one being Tailwind v4 colour functions.
+- `html2canvas-pro` rather than `html2canvas` in `package.json`; not a deliberate choice — *"die keuze heb ik niet nadrukkelijk gemaakt"* ([[2026-10-23-open-questions-answered]]). Most likely picked during implementation for Tailwind v4 colour support (synthesis).
 - Every shared image is an advertisement; changing the footer is a growth decision, not a styling one.
-- [[teamplanner-android]] renders the same card with Compose `Canvas` at 540×810 and shares it through the system share sheet; whether the size difference is accepted is open in [[web-android-parity]].
+- [[teamplanner-android]] renders the same card with Compose `Canvas` at 540×810 and shares it through the system share sheet; the size difference is a gap: Android moves to 1080×1350 ([[2026-10-23-android-share-image-matches-the-web-card]]).
 
 ## Where it lives in the code
 

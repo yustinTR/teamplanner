@@ -17,11 +17,12 @@ The founding diagnosis ([[2026-02-xx-project-documentatie-v1]]): coaches *"op vr
 
 ## Current phase
 
-**MVP complete, growth features complete, V2 two-thirds built, Android app at phase 4 of 5.** First commit 2026-02-19; the MVP, library, skills, multi-team, sharing, animations, SEO content and landing page all landed by 2026-03-13; admin rights and hardening on 2026-03-12; automatic voetbal.nl sync on 2026-08-24; the season dashboard on 2026-09-16. Last web commit 2026-09-16. A Kotlin Android client, [[teamplanner-android]], was built in three days (2026-03-13 to 2026-03-15) as a one-to-one port and has not moved since; it lacks everything the web gained after that ([[web-android-parity]]). As of 2026-10-23 neither client has had user-facing work for five weeks.
+**MVP complete, growth features complete, V2 two-thirds built, Android app at phase 4 of 5.** First commit 2026-02-19; the MVP, library, skills, multi-team, sharing, animations, SEO content and landing page all landed by 2026-03-13; admin rights and hardening on 2026-03-12; automatic voetbal.nl sync on 2026-08-24; the season dashboard on 2026-09-16. Last web commit 2026-09-16. A Kotlin Android client, [[teamplanner-android]], was built in three days (2026-03-13 to 2026-03-15) as a one-to-one port and has not moved since; it lacks everything the web gained after that ([[web-android-parity]]). As of 2026-10-23 neither client has had user-facing work for five weeks. **25 teams in the database** on 2026-10-23 (a row count, not an activity measure), up from fewer than 10 in March ([[2026-10-23-open-questions-answered]]).
 
 What is settled:
 
 - Platform and stack: PWA, Supabase, Next.js, Atomic Design with Storybook as the component record ([[2026-02-19-pwa-over-native-app]], [[2026-02-19-supabase-as-the-backend]], [[design-and-motion]]).
+- Decided on 2026-10-23: push per client with web first, statistics per season (August to July), Storybook as the design system with Figma dropped, the Android share image at the web's size ([[2026-10-23-open-questions-answered]]).
 - Two clients, one brain: the web app is the source of truth, the Android app follows, the parity ledger records every gap and every allowed difference ([[2026-10-23-web-is-the-source-of-truth-for-both-clients]]).
 - Roadmap order: library → statistics → development → AI ([[2026-02-26-training-library-before-stats-before-ai]]); the first two are built.
 - Growth first, free app, no ads or paywall until 100+ / 500+ teams ([[2026-03-02-growth-before-monetisation]]).
@@ -31,13 +32,13 @@ What is open:
 
 - **Push notifications** — the one MVP must-have never built, designed in August ([[notifications]]).
 - **Android phase 5 and parity** — push, Play Store, and the ported features the ledger lists ([[native-app]], [[web-android-parity]]).
-- **The growth metric** — "active teams" drives every threshold and is measured nowhere in the brain ([[growth-and-seo]]).
+- **The growth metric** — 25 team rows by a hand query; "active" is undefined and the number is not tracked over time ([[growth-and-seo]]).
 - **Roadmap phases 3 and 4**, the parent view, and the full list in [[open-questions]].
 
 ## Biggest risks
 
 1. **Silence.** Without push the app depends on players remembering to open it; WhatsApp *"pusht"* ([[2026-08-24-v2-sync-push-stats-design]]).
-2. **Unmeasured growth.** Fifteen blog articles and a conversion-optimised landing page, and no recorded number since *"<10 active teams"* on 2026-03-02.
+2. **Growth read by hand.** From fewer than 10 to 25 team rows in seven months; how many are active is unknown, and there is no series.
 3. **Upstream dependency.** The daily sync reads voetbal.nl data with no agreement and no alerting ([[voetbal-nl-integration]]).
 4. **Drift between two clients.** Every web feature is a second implementation in Kotlin; seven months of one-sided change already sit in [[web-android-parity]].
 5. **Solo bus factor.** Every decision, and this brain, rests on one person; the brain exists so that the reasoning survives a long pause.

@@ -29,14 +29,15 @@ Fair playing time is why this exists. February: *"Specifiek voor G-voetbal is he
 
 - [[2026-02-26-training-library-before-stats-before-ai]] — why stats came after the library and before AI
 - [[2026-02-26-skills-as-jsonb-without-history]]
+- [[2026-10-23-statistics-per-season-august-to-july]]
 
 ## Risks and tensions
 
 - **Minutes depend on coach discipline**: a coach who skips the substitution plan gets a fairness chart with zeros. The design does not address it.
-- **Ratings visible to the team** (bronze/silver/gold cards) may cut against the fairness ethos in youth and G-teams; a `show_ratings` team toggle exists (2026-03-06, git history) without recorded reasoning.
-- **No season boundary** in the data model: statistics are all-time per team unless the code filters by date (unverified).
+- **Ratings visible to the team** (bronze/silver/gold cards) may cut against the fairness ethos in youth and G-teams; the `show_ratings` team toggle (2026-03-06) came from feedback: *"sommige teams het niet wilde"* ([[2026-10-23-open-questions-answered]]).
+- **No season boundary yet**: statistics are all-time per team. Decided 2026-10-23: group per season, August to July ([[2026-10-23-statistics-per-season-august-to-july]]) — a web task, then an Android port.
 
 ## Open questions
 
-- Is there a season concept, or will next year's dashboard mix two seasons?
+- Build the season filter before August 2027, when the first second season starts for the earliest teams.
 - Roadmap phase 3: evaluations and development over time need history that `skills` lacks.

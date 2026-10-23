@@ -23,7 +23,7 @@ Fewer than ten teams, no ad budget, and a landing page with *"geen productbeeld,
 ## Alternatives considered
 
 - **Static screenshots instead of the animated demo.** Cheaper, but the whole point was that visitors *"de app zien en voelen"*. The static image survives only as the reduced-motion fallback.
-- **Fictional quotes until real ones exist.** Approved, then dropped within hours. The brain records the drop as the decision; the reasoning (honesty, or legal exposure) is not written down (unsourced).
+- **Fictional quotes until real ones exist.** Approved, then dropped within hours: *"omdat ik geen nep content wil"* ([[2026-10-23-open-questions-answered]]). A standing rule, not a one-off.
 
 ## Consequences
 

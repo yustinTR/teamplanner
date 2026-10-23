@@ -21,7 +21,7 @@ The only external data integration. A coach links a team to a club abbreviation 
 
 - Parser: `src/lib/voetbal-nl-parser.ts`, server-side; routes under `src/app/api/import-voetbal-nl/`.
 - Teams record `import_source`, `import_club_abbrev`, `import_team_name` (`PROJECT_CONTEXT.md`, design).
-- There is no agreement with the KNVB or VoetbalAssist; the sync is deliberately polite (one call per club per day, sequential). Any change on their side breaks import silently for every linked team.
+- There is no agreement with the KNVB or VoetbalAssist. Yustin on 2026-10-23: *"voetbalassist heb ik nog geen rechten voor omdat het achter een betaalmuur zit volgens mij"* ([[2026-10-23-open-questions-answered]]) — the integration reads data the project has no licence for, as far as he knows. The sync is deliberately polite (one call per club per day, sequential). Any change on their side breaks import silently for every linked team.
 
 ## Relationships
 
@@ -30,4 +30,4 @@ The only external data integration. A coach links a team to a club abbreviation 
 
 ## Open questions
 
-- Terms of use of the data; monitoring when the upstream format changes. → [[voetbal-nl-integration]]
+- Whether a paid VoetbalAssist licence is needed or available, and at what cost; monitoring when the upstream format changes. → [[voetbal-nl-integration]]

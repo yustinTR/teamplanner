@@ -13,7 +13,7 @@ sources: ["[[2026-02-26-player-skills-profile-design]]", "[[2026-02-26-coach-aut
 # Player skills as one JSONB object, no history
 
 > [!info] Amended 2026-03-02
-> Four days after this design, commit `75aaa9e` (*"feat: add EAFC26-style player rating system with FUT cards"*, git history) replaced the ten 1–10 skills with six EA FC categories scored 1–99 (`EAFC_ATTRIBUTE_CATEGORIES` in `src/lib/constants.ts`). Old objects are converted on read by `ensureEafcFormat()` in `src/lib/player-rating.ts`; no migration adds a `skills_version` column, so the `skills_version` in `PROJECT_CONTEXT.md` describes this in-code versioning, not a database field. The JSONB-without-history decision stands; the shape changed. [[teamplanner-android]] was born on the v2 shape.
+> Four days after this design, commit `75aaa9e` (*"feat: add EAFC26-style player rating system with FUT cards"*, git history) replaced the ten 1–10 skills with six EA FC categories scored 1–99 (`EAFC_ATTRIBUTE_CATEGORIES` in `src/lib/constants.ts`). Old objects are converted on read by `ensureEafcFormat()` in `src/lib/player-rating.ts`; no migration adds a `skills_version` column, so the `skills_version` in `PROJECT_CONTEXT.md` describes this in-code versioning, not a database field. The reason was product feel, not data: *"omdat we dat toen een leuker idee vonden dat het beetje leek op fifa kaartjes"* ([[2026-10-23-open-questions-answered]]). The JSONB-without-history decision stands; the shape changed. [[teamplanner-android]] was born on the v2 shape.
 
 ## Decision
 

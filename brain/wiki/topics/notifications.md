@@ -32,6 +32,7 @@ The August design is current. Its diagnosis is the sharpest statement of the gap
 ## Decisions
 
 - [[2026-08-24-web-push-via-service-worker]] (proposed)
+- [[2026-10-23-push-per-client-web-first]] (accepted)
 - [[2026-02-19-pwa-over-native-app]] — the reason push is harder than in a native app
 
 ## Risks and tensions
@@ -39,10 +40,10 @@ The August design is current. Its diagnosis is the sharpest statement of the gap
 - **Without push, the "assistent-coach" is silent.** Sync and dashboard are built; the part that brings players back is not. See [[product-vision-and-roadmap]].
 - **iOS adoption**: many players will never install the PWA to the home screen; for them push does not exist, and the design excludes e-mail. The reminder may need a WhatsApp-shareable fallback (a "nudge" message the coach forwards) — not in any source, a synthesis.
 - **Permission prompts** cost trust if asked too early; the design puts the toggle on the profile page, not in onboarding.
-- **Two clients, two push channels.** Web Push for the PWA and Firebase Cloud Messaging for [[teamplanner-android]] would serve the same three triggers; nothing yet says whether one server-side sender fans out to both. See [[web-android-parity]].
+- **Two clients, two push paths, by choice.** Web Push first, Android push later on its own path, so the clients can evolve apart ([[2026-10-23-push-per-client-web-first]]); the three triggers are the shared contract. See [[web-android-parity]].
 
 ## Open questions
 
 - When is push built? It is the open item of the V2 design's 1 → 3 → 2 order.
 - Does the iOS limitation justify an e-mail fallback after all, or a coach-forwarded nudge?
-- Web Push first, Android FCM first, or both from one sender?
+- Android push mechanism (FCM or other) is undesigned; it waits for the web's push to work.

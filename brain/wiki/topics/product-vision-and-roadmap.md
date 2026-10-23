@@ -24,7 +24,7 @@ Roadmap status against [[2026-02-26-training-library-before-stats-before-ai]]:
 | 3 Player development | Not designed; skills radar is a partial answer without history |
 | 4 AI layer | Not started; depends on 1–3 and half a season of data |
 
-Planned and not built: push notifications ([[notifications]]), the parent/carer view, carpool, PDF export ([[open-questions]]). The Android app exists with phases 1–4 and lags the web since 2026-03-15 ([[native-app]], [[web-android-parity]]).
+Planned and not built: push notifications ([[notifications]]); the parent/carer view, carpool and PDF export are **deferred, not dropped** (*"uitgesteld"*, [[2026-10-23-open-questions-answered]]). The Android app exists with phases 1–4 and lags the web since 2026-03-15 ([[native-app]], [[web-android-parity]]).
 
 ## Requirements
 
@@ -35,6 +35,7 @@ Planned and not built: push notifications ([[notifications]]), the parent/carer 
 ## Decisions
 
 - [[2026-02-19-pwa-over-native-app]], [[2026-02-19-supabase-as-the-backend]]
+- [[2026-10-23-push-per-client-web-first]], [[2026-10-23-statistics-per-season-august-to-july]], [[2026-10-23-storybook-is-the-design-system-figma-dropped]]
 - [[2026-02-26-training-library-before-stats-before-ai]]
 - [[2026-03-02-growth-before-monetisation]]
 - [[2026-03-13-android-app-in-kotlin-as-one-to-one-port]], [[2026-10-23-web-is-the-source-of-truth-for-both-clients]]
@@ -49,4 +50,4 @@ Planned and not built: push notifications ([[notifications]]), the parent/carer 
 ## Open questions
 
 - Phase 3 design: what does "development over time" need from the data model? ([[2026-02-26-skills-as-jsonb-without-history]])
-- Is the parent/carer view still wanted? No source since February.
+- When does the deferred parent/carer view get a design? Deferred on 2026-10-23 without a date.

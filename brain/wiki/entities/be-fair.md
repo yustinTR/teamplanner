@@ -21,6 +21,7 @@ The first real user and the source of most product intuition in the design docum
 
 - The G-team plays 8v8 (`team_type` `g_team`, `fieldPlayers: 8` in `src/lib/constants.ts`); the team types and the 8v8 and 7v7 formations were reworked on 2026-02-20 (`supabase/migrations/20260220121202_update_team_types_for_7v7.sql`, commit `b2e63a3`).
 - No player, parent or coach of the club other than the developer is named anywhere in this brain, by rule (`brain/CLAUDE.md`).
+- Feedback from teams has shaped at least one feature — the `show_ratings` toggle, because some teams did not want ratings shown ([[2026-10-23-open-questions-answered]]) — but none of it is written down yet.
 
 ## Relationships
 
@@ -29,4 +30,4 @@ The first real user and the source of most product intuition in the design docum
 
 ## Open questions
 
-- Has any feedback from the beta team been written down? Nothing in `raw/`. → [[open-questions]]
+- No feedback is written down yet (*"nee nog niet"*, [[2026-10-23-open-questions-answered]]). When it is, it goes in `raw/` as a dated folder. → [[open-questions]]

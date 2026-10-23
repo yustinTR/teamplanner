@@ -19,6 +19,7 @@ Rules the sync keeps: dedupe on opponent and day, never overwrite a manually ent
 
 - An imported team must stay correct without the coach touching it.
 - Manual edits win over upstream data.
+- A failed daily run raises an alert (wanted, [[2026-10-23-open-questions-answered]]); today only `sync_log` would show it, and only if someone looks.
 
 ## Decisions
 
@@ -26,11 +27,11 @@ Rules the sync keeps: dedupe on opponent and day, never overwrite a manually ent
 
 ## Risks and tensions
 
-- **No agreement with the data owner.** The KNVB or VoetbalAssist can change the format or block access; every linked team breaks at once and only `sync_log` would show it. No alert exists.
+- **No agreement, and probably no licence, with the data owner.** Yustin believes VoetbalAssist's API sits behind a paywall he has not paid for ([[2026-10-23-open-questions-answered]]). The KNVB or VoetbalAssist can change the format or block access; every linked team breaks at once and only `sync_log` would show it. No alert exists.
 - **Dedupe on opponent + day** fails for a double-header or a rescheduled match on the same day against the same opponent; a rare case the design accepted.
 - **`sync_log` without push** ([[notifications]]) means changes are detected but not announced; the coach must open settings to see them.
 
 ## Open questions
 
-- Terms of use of the upstream data.
-- Monitoring: who notices when the daily run starts failing?
+- A VoetbalAssist licence: needed, available, affordable? The feature that makes onboarding easy rests on it.
+- Build the sync-failure alert: the cron route returns a summary already; the cheapest path is an e-mail or push to Yustin when a run throws or updates zero clubs (synthesis).

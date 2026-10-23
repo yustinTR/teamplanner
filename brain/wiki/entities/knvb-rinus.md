@@ -19,7 +19,7 @@ The reference competitor for the exercise library. The roadmap's judgement: Rinu
 
 ## Key facts
 
-- The library's content strategy names *"KNVB materiaal"* among curated sources; licensing of that material is not discussed anywhere (unsourced). See [[training-content]].
+- The seeded library does contain KNVB-derived material, confirmed 2026-10-23 ([[2026-10-23-open-questions-answered]]); its licence has not been checked. See [[training-content]].
 
 ## Relationships
 
@@ -27,4 +27,4 @@ The reference competitor for the exercise library. The roadmap's judgement: Rinu
 
 ## Open questions
 
-- Is any seeded exercise derived from KNVB material, and is that allowed? → [[open-questions]]
+- Is republishing KNVB-derived exercises allowed? → [[open-questions]]

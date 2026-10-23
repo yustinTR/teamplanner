@@ -23,7 +23,7 @@ The audience is on a phone *"op het veld, in de kleedkamer, of onderweg"* ([[202
 ## Alternatives considered
 
 - **Native iOS and Android apps.** Store presence and real push, at the cost of two more codebases, $99/year for Apple, review cycles, and a download step between the WhatsApp link and the first availability tap. Lost on friction and cost.
-- **Native app later, as a second client on the same backend.** Happened on 2026-03-13 for Android ([[2026-03-13-android-app-in-kotlin-as-one-to-one-port]], [[teamplanner-android]]). It adds a client; the PWA remains the product and the only iOS client.
+- **Native app later, as a second client on the same backend.** Happened on 2026-03-13 for Android ([[2026-03-13-android-app-in-kotlin-as-one-to-one-port]], [[teamplanner-android]]). It adds a client; the PWA remains the product and the only iOS client until an Apple licence is judged worth it ([[2026-10-23-open-questions-answered]]).
 
 ## Consequences
 

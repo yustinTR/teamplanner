@@ -39,9 +39,9 @@ The schema is in `PROJECT_CONTEXT.md` and `supabase/migrations/` (20 files on 20
 
 - **History is absent by design** in skills and lineups; roadmap phase 3 (development over time) and any "who played where last season" question will need it.
 - **Two documents describe roles**, `CLAUDE.md` and `PROJECT_CONTEXT.md`, and both lag the admin flag; `PROJECT_CONTEXT.md` also lags the team-type values and the EA FC skills shape. The brain is not the place to fix that; the code docs are.
-- **Personal data of minors** sits in `players` (names, photos, notes with *"bijzonderheden"*). The privacy page exists (`/privacy`); no source discusses retention or deletion.
+- **Personal data of minors** sits in `players` (names, photos, notes with *"bijzonderheden"*). The privacy page exists (`/privacy`). There is no retention rule, but deletion *"moet wel kunnen"* ([[2026-10-23-open-questions-answered]]): a coach or a player must be able to remove a player's data, photo included, on both clients.
 
 ## Open questions
 
 - Which Android models already lag the schema (anything after 2026-03-15)? → [[web-android-parity]]
-- Data retention for players who leave, and for teams that go inactive.
+- Does a full delete (player row, photo in Storage, availability and stats rows) exist today, or only `is_active = false`? Unverified. A retention rule for inactive teams is still unwritten.
