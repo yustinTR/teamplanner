@@ -23,6 +23,19 @@ export function useLineup(matchId: string | undefined) {
   });
 }
 
+/**
+ * Fire-and-forget: the server notifies selected players. Never blocks or
+ * fails the save; silently skipped where fetch is unavailable (tests).
+ */
+function notifyLineupPublished(matchId: string) {
+  if (typeof fetch !== "function") return;
+  fetch("/api/push/lineup-published", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ matchId }),
+  }).catch(() => {});
+}
+
 export function useSaveLineup() {
   const supabase = createClient();
   const queryClient = useQueryClient();
@@ -59,6 +72,7 @@ export function useSaveLineup() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["lineup", data.match_id] });
+      notifyLineupPublished(data.match_id);
     },
   });
 }

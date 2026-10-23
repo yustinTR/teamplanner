@@ -6,6 +6,8 @@ import {
   enrichMatchesWithLocations,
 } from "@/lib/voetbal-nl-parser";
 import { upsertMatches, applyResults } from "@/lib/match-sync";
+import { sendPushToUsers, teamMemberUserIds } from "@/lib/push";
+import { buildSyncSummary } from "@/lib/push-messages";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -16,6 +18,7 @@ interface TeamSyncSummary {
   matchesCreated: number;
   matchesUpdated: number;
   resultsUpdated: number;
+  pushSent: number;
   errors: string[];
 }
 
@@ -61,6 +64,7 @@ export async function GET(request: Request) {
       matchesCreated: 0,
       matchesUpdated: 0,
       resultsUpdated: 0,
+      pushSent: 0,
       errors: [],
     };
 
@@ -108,6 +112,21 @@ export async function GET(request: Request) {
         });
         if (logError) {
           summary.errors.push(`Sync log failed: ${logError.message}`);
+        }
+
+        // Tell the team; a push failure never fails the sync
+        try {
+          const userIds = await teamMemberUserIds(supabase, team.id);
+          const pushResult = await sendPushToUsers(
+            supabase,
+            userIds,
+            buildSyncSummary(team.id, team.name, changes)
+          );
+          summary.pushSent = pushResult.sent;
+        } catch (pushErr) {
+          summary.errors.push(
+            `Push failed: ${pushErr instanceof Error ? pushErr.message : "unknown error"}`
+          );
         }
       }
 

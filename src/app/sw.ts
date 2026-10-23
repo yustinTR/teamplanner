@@ -98,3 +98,51 @@ const serwist = new Serwist({
 });
 
 serwist.addEventListeners();
+
+// --- Web Push ---------------------------------------------------------
+// Payload shape: see PushPayload in src/lib/push-messages.ts
+
+interface PushPayload {
+  title: string;
+  body: string;
+  url: string;
+  tag?: string;
+}
+
+self.addEventListener("push", (event) => {
+  let payload: PushPayload | null = null;
+  try {
+    payload = event.data?.json() as PushPayload;
+  } catch {
+    payload = null;
+  }
+  if (!payload?.title) return;
+
+  event.waitUntil(
+    self.registration.showNotification(payload.title, {
+      body: payload.body,
+      icon: "/icons/icon-192x192.png",
+      badge: "/icons/icon-192x192.png",
+      tag: payload.tag,
+      data: { url: payload.url },
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url: string = event.notification.data?.url ?? "/";
+
+  event.waitUntil(
+    self.clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clients) => {
+        const existing = clients.find((client) => "focus" in client);
+        if (existing) {
+          existing.navigate(url);
+          return existing.focus();
+        }
+        return self.clients.openWindow(url);
+      })
+  );
+});
