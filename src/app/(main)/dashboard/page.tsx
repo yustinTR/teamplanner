@@ -8,6 +8,7 @@ import { Button } from "@/components/atoms/Button";
 import { TopPlayerCard } from "@/components/molecules/TopPlayerCard";
 import { OnboardingChecklist } from "@/components/molecules/OnboardingChecklist";
 import { useTeamSeasonStats } from "@/hooks/use-player-stats";
+import { currentSeason, seasonLabel } from "@/lib/season";
 
 function SeasonHighlights({ teamId }: { teamId: string }) {
   const { data: stats } = useTeamSeasonStats(teamId);
@@ -28,7 +29,7 @@ function SeasonHighlights({ teamId }: { teamId: string }) {
   return (
     <div className="space-y-3 px-4 pb-4">
       <h2 className="text-sm font-medium text-muted-foreground">
-        Seizoensoverzicht
+        Seizoensoverzicht {seasonLabel(currentSeason())}
       </h2>
       {mostMinutes.totalMinutes > 0 && (
         <TopPlayerCard
