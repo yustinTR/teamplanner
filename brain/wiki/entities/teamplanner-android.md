@@ -24,6 +24,7 @@ The second client on the one Supabase backend. Same project id, tables, RLS and 
 - Has its own `docs/plans/` written by the same `brainstorming` and `writing-plans` skills; the brain ingests from there too (`brain/CLAUDE.md`).
 - Born on the v2 EAFC skills model; never knew the ten-skill model.
 - Secrets in `local.properties`, not committed.
+- Firebase project `myteamplanner` (project number 59534829237) with Android app `1:59534829237:android:b83187e6106db3151940fc`, created 2026-10-23 through the Firebase MCP under Yustin's Google account. The app initialises Firebase from `local.properties` values, not from `google-services.json`; the values are client configuration, kept out of the brain.
 - Two JUnit tests exist since 2026-10-23 (`Season`, match report); `gradlew` is not committed. Building needs a JDK and SDK outside the repo (Android Studio, or the Homebrew OpenJDK 21 + command-line tools set up on 2026-10-23).
 - Calls the web app's import API with its Supabase access token as a Bearer token (`src/lib/supabase/request.ts`), so the scraper lives in one place.
 
