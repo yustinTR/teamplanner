@@ -19,7 +19,7 @@ Rules the sync keeps: dedupe on opponent and day, never overwrite a manually ent
 
 - An imported team must stay correct without the coach touching it.
 - Manual edits win over upstream data.
-- A failed daily run raises an alert — built 2026-10-23 (commit `c6f2e25`): the team's coach and admins get a push naming the team and the first error; operators listed in the `SYNC_ALERT_USER_IDS` environment variable (not yet set) get a run summary.
+- A failed daily run raises an alert — built 2026-10-23 (commit `c6f2e25`): the team's coach and admins get a push naming the team and the first error; operators listed in the `SYNC_ALERT_USER_IDS` environment variable (set to Yustin on 2026-10-23) get a run summary.
 
 ## Decisions
 
@@ -34,4 +34,4 @@ Rules the sync keeps: dedupe on opponent and day, never overwrite a manually ent
 ## Open questions
 
 - A VoetbalAssist licence: needed, available, affordable? The feature that makes onboarding easy rests on it.
-- Set `SYNC_ALERT_USER_IDS` in Vercel to Yustin's auth user id so the operator alert reaches him on a device where push is on.
+- Yustin must have push on at least one device for the operator alert to arrive.

@@ -47,7 +47,7 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Team season stats dashboard ([[statistics-and-fair-playing-time]]) | yes | yes (2026-10-23 port, plain Compose bars) | parity |
 | Admin flag honoured in `isCoach` ([[2026-03-12-admins-share-coach-rights]]) | yes | yes (`currentPlayer.isAdmin`) | parity |
 | Profile editing | yes | yes | parity |
-| Push notifications ([[notifications]]) | **yes (2026-10-23)**, Web Push | no (phase 5) | **gap**; separate path ([[2026-10-23-push-per-client-web-first]]); the three triggers and the `push_subscriptions` table (with `platform`) are shared |
+| Push notifications ([[notifications]]) | **yes (2026-10-23)**, Web Push | **built, waiting for a Firebase project**: FCM token registered as an `android` row, messaging service, deep links, profile toggle; server sends through FCM HTTP v1 | parity in code; blocked on `google-services` values in `local.properties` and `FCM_SERVICE_ACCOUNT_JSON` in Vercel ([[2026-10-23-push-per-client-web-first]]) |
 | Season filter on statistics ([[2026-10-23-statistics-per-season-august-to-july]]) | yes (2026-10-23) | yes (2026-10-23, chip row) | parity |
 | Sync-failure alert to coach | yes (2026-10-23, via push) | n/a until Android push | follows push |
 | PWA install, offline basics | yes | n/a | allowed — platform |
@@ -69,7 +69,7 @@ Platform-forced, written down so they stop being questions:
 | Animation | Framer Motion presets ([[2026-03-02-framer-motion-for-all-animation]]) | Compose animations | no shared presets; feel should match, no rule yet |
 | Navigation | App Router, bottom nav | Navigation Compose, bottom tabs | same four tabs |
 | Secrets | Vercel env | `local.properties` | platform |
-| Push mechanism | Web Push (VAPID), built | undesigned (FCM likely) | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
+| Push mechanism | Web Push (VAPID), built | FCM data messages, built, unconfigured | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
 
 ### Shared contract (must never drift)
 
@@ -93,7 +93,7 @@ Platform-forced, written down so they stop being questions:
 
 ## Risks and tensions
 
-- **A toolchain on the developer's machine.** The ports compile (`assembleDebug`, OpenJDK 21 via Homebrew, SDK 35, Gradle 8.11.1 outside the repo); they have not been run on a device. First device run is owed.
+- **Column and JSON drift was real.** The first emulator run ([[2026-10-23-android-emulator-test-setup]]) found that Android read `detailed_position` / `shirt_number` / `photo_path` (schema: `primary_position`, `jersey_number`, `photo_url`), `instructions` (`setup_instructions`), a `minutes_played` that does not exist, and decoded the substitution plan with snake_case keys while the web writes camelCase. All fixed on 2026-10-23; the shared-fixture test is still missing.
 - **Copied constants and algorithms** are the drift engine. A shared test fixture (same lineup input, same expected output on both sides) would catch it; none exists (synthesis).
 - **Every gap is real.** Yustin decided on 2026-10-23 that onboarding, match-report sharing and the voetbal.nl import all belong on Android too; nothing in the feature ledger is web-only except marketing, SEO and PWA install.
 - **Two `docs/plans/` folders, one skill set**: a design on one side does not prompt the other. The ledger is the prompt.
@@ -101,5 +101,5 @@ Platform-forced, written down so they stop being questions:
 ## Open questions
 
 - Verify the unverified rows (multi-team, Realtime, skills editor, plan creation, stats filter) in the Android code.
-- Device check of the 2026-10-23 ports: stats screen, import flow, onboarding checklist, report image.
-- A bug found while porting: Android's `Match` model read two columns that do not exist (`gathering_minutes`, `travel_minutes`); fixed. Worth a shared fixture test (synthesis).
+- Still unverified on a device: the import flow end to end, image sharing through the share sheet, push.
+- Write the shared fixture test: one lineup JSON, decoded by both `src/types/lineup.ts` and `Lineup.kt`, so key drift fails a build instead of a device run.

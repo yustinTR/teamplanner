@@ -20,11 +20,11 @@ The second client on the one Supabase backend. Same project id, tables, RLS and 
 ## Key facts
 
 - Scaffolded 2026-03-13, the same day the Expo plan was approved — built in Kotlin instead ([[2026-03-13-android-app-in-kotlin-as-one-to-one-port]]).
-- Phases 1–4 (foundation, read-only screens, coach writes, lineup/substitutions/sharing/team settings) built between 2026-03-13 and 2026-03-15. On 2026-10-23 every web feature it lacked was ported in one commit (design: `docs/plans/2026-10-23-web-parity-ports-design.md`), compiled but not yet run on a device. Phase 5 (push, Play Store) is designed (`docs/plans/2026-10-23-phase5-push-and-play-store-design.md`) and blocked on a Firebase project, an FCM service account and a Play Console account.
+- Phases 1–4 (foundation, read-only screens, coach writes, lineup/substitutions/sharing/team settings) built between 2026-03-13 and 2026-03-15. On 2026-10-23 every web feature it lacked was ported in one commit (design: `docs/plans/2026-10-23-web-parity-ports-design.md`), compiled but not yet run on a device. Phase 5: the push client is built (FCM, `push/` package) and the server sends to Android rows through FCM; both wait for a Firebase project's values and a service-account key. The Play Store listing waits for a Play Console account. Verified on an emulator the same day ([[2026-10-23-android-emulator-test-setup]]).
 - Has its own `docs/plans/` written by the same `brainstorming` and `writing-plans` skills; the brain ingests from there too (`brain/CLAUDE.md`).
 - Born on the v2 EAFC skills model; never knew the ten-skill model.
 - Secrets in `local.properties`, not committed.
-- No tests exist; `gradlew` is not committed either. Building needs a JDK and SDK outside the repo (Android Studio, or the Homebrew OpenJDK 21 + command-line tools set up on 2026-10-23).
+- Two JUnit tests exist since 2026-10-23 (`Season`, match report); `gradlew` is not committed. Building needs a JDK and SDK outside the repo (Android Studio, or the Homebrew OpenJDK 21 + command-line tools set up on 2026-10-23).
 - Calls the web app's import API with its Supabase access token as a Bearer token (`src/lib/supabase/request.ts`), so the scraper lives in one place.
 
 ## Relationships

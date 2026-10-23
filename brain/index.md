@@ -9,7 +9,7 @@ have been read — the February 2026 project document, the eleven design
 documents in `docs/plans/`, and the three Android design documents in
 `../teamplanner-android/docs/plans/` (implementation plans are covered on their
 design's source page), plus the 2026-10-23 working session in which Yustin
-answered the open questions. `raw/` is empty. 62 pages.
+answered the open questions. `raw/` is empty. 63 pages.
 
 Start with [[overview]]. The fastest route to what is still unresolved is
 [[open-questions]]; the fastest route to what was planned versus what exists
@@ -97,3 +97,4 @@ _newest first, status shown_
 ## Notes
 
 - [[2026-10-23-active-team-count]] — first reading: 2 active teams of 22, 20 set up but never adopted; the query to repeat monthly
+- [[2026-10-23-android-emulator-test-setup]] — toolchain, AVD, test account and test team for running the Android app from this machine; what the first run found
