@@ -47,7 +47,7 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Team season stats dashboard ([[statistics-and-fair-playing-time]]) | yes | yes (2026-10-23 port, plain Compose bars) | parity |
 | Admin flag honoured in `isCoach` ([[2026-03-12-admins-share-coach-rights]]) | yes | yes (`currentPlayer.isAdmin`) | parity |
 | Profile editing | yes | yes | parity |
-| Push notifications ([[notifications]]) | **yes (2026-10-23)**, Web Push | **built, waiting for a Firebase project**: FCM token registered as an `android` row, messaging service, deep links, profile toggle; server sends through FCM HTTP v1 | parity in code; blocked on `google-services` values in `local.properties` and `FCM_SERVICE_ACCOUNT_JSON` in Vercel ([[2026-10-23-push-per-client-web-first]]) |
+| Push notifications ([[notifications]]) | **yes (2026-10-23)**, Web Push | **yes (2026-10-23)**, FCM: token registered as an `android` row, messaging service, deep links, profile toggle; verified end to end on the emulator with the server's service account | parity ([[2026-10-23-push-per-client-web-first]]); Android push goes live with the next production deploy |
 | Season filter on statistics ([[2026-10-23-statistics-per-season-august-to-july]]) | yes (2026-10-23) | yes (2026-10-23, chip row) | parity |
 | Sync-failure alert to coach | yes (2026-10-23, via push) | n/a until Android push | follows push |
 | PWA install, offline basics | yes | n/a | allowed — platform |
@@ -69,7 +69,7 @@ Platform-forced, written down so they stop being questions:
 | Animation | Framer Motion presets ([[2026-03-02-framer-motion-for-all-animation]]) | Compose animations | no shared presets; feel should match, no rule yet |
 | Navigation | App Router, bottom nav | Navigation Compose, bottom tabs | same four tabs |
 | Secrets | Vercel env | `local.properties` | platform |
-| Push mechanism | Web Push (VAPID), built | FCM data messages, built, unconfigured | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
+| Push mechanism | Web Push (VAPID) | FCM data messages | by choice; both built and configured | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
 
 ### Shared contract (must never drift)
 

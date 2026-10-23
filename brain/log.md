@@ -40,3 +40,7 @@ One Android commit ports every open ledger row except push: 3-4-3, season statis
 ## [2026-10-23] refactor | Android push built, emulator run, schema drift fixed
 Pages touched: [[2026-10-23-android-emulator-test-setup]] (new note), [[web-android-parity]], [[teamplanner-android]], [[notifications]], [[voetbal-nl-integration]], [[open-questions]], `index.md`
 With the Firebase MCP installed but its login still pending, the Android push client and the server's FCM path were built so only configuration remains. A headless emulator run with a dedicated test account and test team found column drift in five models and a camelCase/snake_case mismatch in the substitution plan — Android could not decode any plan saved on the web — all fixed (Android commits `fe6b4ed`, and the lineup-key fix). `SYNC_ALERT_USER_IDS` now points at Yustin. Web commit `0a5de23` adds FCM sending.
+
+## [2026-10-23] refactor | Android push verified end to end
+Pages touched: [[web-android-parity]], [[notifications]], [[native-app]], [[teamplanner-android]], [[open-questions]], [[2026-10-23-android-emulator-test-setup]]
+Yustin logged the Firebase MCP in; the project `myteamplanner` and its Android app were created, the app configured from `local.properties`, the token registered (after fixing an unserialised default `platform`), the service-account key stored in Vercel, and a message sent from this machine through FCM arrived on the emulator and deep-linked into the app. Phase 5 is now only the Play Store. Everything from today waits for a production deploy of `develop`.

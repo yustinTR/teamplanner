@@ -14,7 +14,8 @@ A single place for things nobody owns. Grouped by **planned but not built**, **u
 ## Planned but not built
 
 - **Android on a real phone** — verified on an emulator only ([[2026-10-23-android-emulator-test-setup]]); import flow, share sheet and push untested. → [[web-android-parity]]
-- **Android phase 5 prerequisites** — Firebase project exists (2026-10-23); still needed: a service-account key in `FCM_SERVICE_ACCOUNT_JSON` so the server can send, a Play Console account and a signing key. → [[native-app]]
+- **Play Store** — the only phase 5 item left: Play Console account, signing key, listing. Push is done. → [[native-app]]
+- **Production deploy of `develop`** — push (both clients), seasons, sync alert and the Bearer API are not live until `main` moves. → [[overview]]
 - **Shared lineup fixture test** across both clients. → [[web-android-parity]]
 - **Real-device push check** — subscribe on a phone and trigger the reminder cron by hand. → [[notifications]]
 - **Android push** on its own path, now that Web Push is live. → [[2026-10-23-push-per-client-web-first]]

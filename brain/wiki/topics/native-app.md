@@ -11,7 +11,7 @@ sources: ["[[2026-03-02-growth-seo-viral-design]]", "[[2026-03-13-seo-blog-nativ
 
 ## Where we stand
 
-**An Android app exists and is at parity with the web except for push**: [[teamplanner-android]], Kotlin + Jetpack Compose, phases 1–4 built in March, every later web feature ported on 2026-10-23 (compiled, not yet run on a device). Phase 5 — push on its own path and the Play Store listing — is designed and blocked on accounts only Yustin can create ([[web-android-parity]]).
+**An Android app exists and is at parity with the web except for push**: [[teamplanner-android]], Kotlin + Jetpack Compose, phases 1–4 built in March, every later web feature ported on 2026-10-23 (compiled, not yet run on a device). Phase 5's push half is done on 2026-10-23 (FCM, verified on the emulator); the Play Store listing still waits for a Play Console account and a signing key ([[web-android-parity]]).
 
 How it got here:
 

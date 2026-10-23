@@ -28,7 +28,7 @@ Driving the UI without a window: `adb shell uiautomator dump` plus `adb shell in
 
 ## What was verified on 2026-10-23
 
-Login, dashboard with checklist and season highlights, team list, statistics screen with minutes (after the substitution-plan key fix), team settings with the import button, completed match with hints and the report section, lineup with hint, profile with the notifications card. Not verified: the import flow end to end (needs a real VoetbalAssist club URL), push (needs Firebase), image sharing (share sheet).
+Login, dashboard with checklist and season highlights, team list, statistics screen with minutes (after the substitution-plan key fix), team settings with the import button, completed match with hints and the report section, lineup with hint, profile with the notifications card. Push verified later the same day: a data message sent with the service account arrived and its tap opened the matches screen. Gotcha: after a quick-boot snapshot resume the emulator's GMS push connection is stale and nothing arrives until airplane mode is toggled (`adb shell cmd connectivity airplane-mode enable` / `disable`). Not verified: the import flow end to end (needs a real VoetbalAssist club URL), image sharing (share sheet).
 
 ## Reasoning
 
