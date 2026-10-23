@@ -45,7 +45,7 @@ What the Android app is for, now that push is designed on the web too: Play Stor
 
 ## Open questions
 
-- Play Console state (2026-10-23): internal-test release 3 (1.1.0, targetSdk 36 — Play refused 35) is live for one tester; privacy policy, ads, advertising ID, government, finance, health, content rating (PEGI 3), category Sport, contact details and the full store listing are saved. Still open, in dependency order: *sign-in details* (needs a reviewer account with a known password — the test account's password is not stored anywhere and the SQL reset was left to Yustin), then *target audience*, then *data safety* (saved as draft, complete), then submit from the publishing overview.
+- Play Console state (2026-10-23, end of day): everything is submitted for Google's review — store listing, all declarations (sign-in details with the reviewer account, target audience 18+, data safety, content rating PEGI 3) and a closed-test (Alpha) release 4 (1.1.0, targetSdk 36 — Play refused 35; versionCode 4 after Play's pre-check flagged a `MutableList.removeFirst()` that crashes on Android 14 and lower). Closed test: Netherlands only, tester list "Interne testers" (one address). Internal test track also carries release 3.
 - Closed test: twelve opted-in testers for fourteen days, then a production-access application with questions about the test. Where do twelve testers come from — the own club's two active teams?
 - Android push is a separate path, after the web's ([[2026-10-23-push-per-client-web-first]]); the mechanism is undesigned.
 - When does the Apple developer licence become worth it? Tied to user numbers, no threshold named.
