@@ -48,3 +48,7 @@ Yustin logged the Firebase MCP in; the project `myteamplanner` and its Android a
 ## [2026-10-23] refactor | Release to production; service worker was missing
 Pages touched: [[notifications]], [[2026-02-19-pwa-over-native-app]], [[overview]], [[open-questions]]
 `develop` merged to `main` (`89cd49d`). Two production-only bugs found while verifying: `/sw.js` redirected to `/login` without a session (middleware matcher, fixed `9f626c5`), and no `sw.js` existed at all because the Turbopack build skips the Serwist webpack plugin — the PWA had shipped without a service worker since Next 16; fixed by building with webpack (`47ee95f`). Android push verified earlier the same day.
+
+## [2026-10-23] refactor | Play Store release prepared
+Pages touched: [[native-app]], [[teamplanner-android]], [[open-questions]]
+Yustin has a Play Console account. Upload keystore generated outside the repository, release signing and R8 rules added, the signed minified build smoke-tested on the emulator (login, dashboard, statistics, match detail), listing copy, feature graphic and six screenshots written to `docs/play-store/`. Production web: the webpack build restored the service worker (`sw.js` 200 with push handlers).
