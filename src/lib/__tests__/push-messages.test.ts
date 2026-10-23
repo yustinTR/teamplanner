@@ -2,6 +2,8 @@ import { describe, it, expect } from "vitest";
 import {
   buildAvailabilityReminder,
   buildLineupPublished,
+  buildSyncFailure,
+  buildSyncRunAlert,
   buildSyncSummary,
   lineupPlayerIds,
   usersWithoutResponse,
@@ -42,6 +44,21 @@ describe("push payloads", () => {
     ]);
     expect(many.body).toBe("2 wijzigingen in het programma van Be Fair G2.");
     expect(many.url).toBe("/matches");
+  });
+});
+
+describe("sync alerts", () => {
+  it("tells a coach which team failed and why", () => {
+    const payload = buildSyncFailure("t1", "Be Fair G2", "API timeout");
+    expect(payload.title).toBe("Synchronisatie mislukt");
+    expect(payload.body).toBe("Be Fair G2: API timeout");
+    expect(payload.url).toBe("/team/settings/import");
+  });
+
+  it("summarises a run for operators", () => {
+    expect(buildSyncRunAlert(2, 7).body).toBe(
+      "2 van 7 teams kon niet worden gesynchroniseerd."
+    );
   });
 });
 

@@ -64,6 +64,29 @@ export function buildSyncSummary(
   };
 }
 
+export function buildSyncFailure(
+  teamId: string,
+  teamName: string,
+  error: string
+): PushPayload {
+  return {
+    title: "Synchronisatie mislukt",
+    body: `${teamName}: ${error}`,
+    url: "/team/settings/import",
+    tag: `sync-error-${teamId}`,
+  };
+}
+
+/** Operator alert for a run in which one or more teams failed. */
+export function buildSyncRunAlert(failed: number, total: number): PushPayload {
+  return {
+    title: "Sync: fouten in de dagelijkse run",
+    body: `${failed} van ${total} teams kon niet worden gesynchroniseerd.`,
+    url: "/team/settings/import",
+    tag: "sync-run-alert",
+  };
+}
+
 /**
  * Player ids that are part of a saved lineup: everyone on the pitch plus
  * everyone who comes on in the substitution plan. Loan players

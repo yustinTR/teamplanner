@@ -92,6 +92,40 @@ export async function sendPushToUsers(
   return result;
 }
 
+/** User ids of a team's coach and admins: the people who fix things. */
+export async function teamAdminUserIds(
+  supabase: Client,
+  teamId: string
+): Promise<string[]> {
+  const [teamRes, adminsRes] = await Promise.all([
+    supabase.from("teams").select("created_by").eq("id", teamId).single(),
+    supabase
+      .from("players")
+      .select("user_id")
+      .eq("team_id", teamId)
+      .eq("is_admin", true)
+      .eq("is_active", true)
+      .not("user_id", "is", null),
+  ]);
+  const ids = new Set<string>();
+  if (teamRes.data?.created_by) ids.add(teamRes.data.created_by);
+  for (const admin of adminsRes.data ?? []) {
+    if (admin.user_id) ids.add(admin.user_id);
+  }
+  return [...ids];
+}
+
+/**
+ * Operators who want to hear about failed sync runs: comma-separated auth
+ * user ids in SYNC_ALERT_USER_IDS. Empty when unset.
+ */
+export function operatorUserIds(): string[] {
+  return (process.env.SYNC_ALERT_USER_IDS ?? "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+}
+
 /** Active, account-holding, non-staff members of a team. */
 export async function teamMemberUserIds(
   supabase: Client,
