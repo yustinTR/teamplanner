@@ -44,3 +44,7 @@ With the Firebase MCP installed but its login still pending, the Android push cl
 ## [2026-10-23] refactor | Android push verified end to end
 Pages touched: [[web-android-parity]], [[notifications]], [[native-app]], [[teamplanner-android]], [[open-questions]], [[2026-10-23-android-emulator-test-setup]]
 Yustin logged the Firebase MCP in; the project `myteamplanner` and its Android app were created, the app configured from `local.properties`, the token registered (after fixing an unserialised default `platform`), the service-account key stored in Vercel, and a message sent from this machine through FCM arrived on the emulator; the tap deep link is unverified. Phase 5 is now only the Play Store. Everything from today waits for a production deploy of `develop`.
+
+## [2026-10-23] refactor | Release to production; service worker was missing
+Pages touched: [[notifications]], [[2026-02-19-pwa-over-native-app]], [[overview]], [[open-questions]]
+`develop` merged to `main` (`89cd49d`). Two production-only bugs found while verifying: `/sw.js` redirected to `/login` without a session (middleware matcher, fixed `9f626c5`), and no `sw.js` existed at all because the Turbopack build skips the Serwist webpack plugin — the PWA had shipped without a service worker since Next 16; fixed by building with webpack (`47ee95f`). Android push verified earlier the same day.

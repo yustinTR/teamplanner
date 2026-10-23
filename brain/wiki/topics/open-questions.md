@@ -15,7 +15,7 @@ A single place for things nobody owns. Grouped by **planned but not built**, **u
 
 - **Android on a real phone** — verified on an emulator only ([[2026-10-23-android-emulator-test-setup]]); import flow, share sheet and push untested. → [[web-android-parity]]
 - **Play Store** — the only phase 5 item left: Play Console account, signing key, listing. Push is done. → [[native-app]]
-- **Production deploy of `develop`** — push (both clients), seasons, sync alert and the Bearer API are not live until `main` moves. → [[overview]]
+- **Verify the PWA on a phone after the 2026-10-23 release** — install prompt, offline shell and push, now that the service worker exists again. → [[notifications]]
 - **Shared lineup fixture test** across both clients. → [[web-android-parity]]
 - **Real-device push check** — subscribe on a phone and trigger the reminder cron by hand. → [[notifications]]
 - **Android push** on its own path, now that Web Push is live. → [[2026-10-23-push-per-client-web-first]]
