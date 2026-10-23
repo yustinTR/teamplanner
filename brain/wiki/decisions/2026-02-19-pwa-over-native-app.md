@@ -29,7 +29,7 @@ The audience is on a phone *"op het veld, in de kleedkamer, of onderweg"* ([[202
 
 - Push notifications depend on Web Push, which on iOS only works once the PWA is on the home screen ([[2026-08-24-v2-sync-push-stats-design]]). This is the single biggest cost of the decision and is still unpaid: push is not built. See [[notifications]].
 - No store discoverability; growth is SEO and the viral invite link ([[growth-and-seo]]).
-- Offline basics via a service worker (Serwist), install prompts and OG previews matter more than they would for a native app.
+- Offline basics via a service worker (Serwist), install prompts and OG previews matter more than they would for a native app. Note: from the Next 16 upgrade until 2026-10-23 production shipped no service worker (Turbopack build, webpack-only Serwist plugin); the PWA promise was broken without anyone noticing until push needed the worker ([[notifications]]).
 
 ## Where it lives in the code
 

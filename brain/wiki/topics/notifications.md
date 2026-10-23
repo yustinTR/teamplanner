@@ -21,6 +21,8 @@ sources: ["[[2026-02-xx-project-documentatie-v1]]", "[[2026-03-13-seo-blog-nativ
 
 As built: an availability reminder at 16:00 UTC for matches within three days to members with an account and no answer; a lineup notification to every selected player (starters and substitutes, not loan players, not the coach) on save; a programme update to the whole team when the daily sync changes something; and, as an extra, a sync-failure push to the team's coach and admins plus an operator alert to the users in `SYNC_ALERT_USER_IDS`. Users turn it on in their profile; on iOS the toggle explains the home-screen requirement. The service worker is disabled in development, so the toggle shows "not supported" locally.
 
+**Two production bugs surfaced on release day (2026-10-23)**, both older than push: the middleware redirected `/sw.js` to `/login` for visitors without a session, and — worse — production had **no service worker at all**, because Next 16 builds with Turbopack and the `@serwist/next` plugin only runs under webpack. Offline caching and PWA install had been silently broken since the Turbopack build; Web Push would have been too. Fixed by building with `next build --webpack` and excluding `sw.js` from the middleware matcher (commits `9f626c5`, `47ee95f` on `main`).
+
 ## Requirements
 
 - Availability reminder: players with an account and no response, match within three days, daily at 18:00.

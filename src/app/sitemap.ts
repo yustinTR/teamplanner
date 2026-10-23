@@ -29,6 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
     {
+      url: `${siteUrl}/account-verwijderen`,
+      lastModified: "2026-10-23",
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
       url: `${siteUrl}/features/beschikbaarheid`,
       lastModified: "2026-03-13",
       changeFrequency: "monthly",

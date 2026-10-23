@@ -11,7 +11,7 @@ sources: ["[[2026-03-02-growth-seo-viral-design]]", "[[2026-03-13-seo-blog-nativ
 
 ## Where we stand
 
-**An Android app exists and is at parity with the web except for push**: [[teamplanner-android]], Kotlin + Jetpack Compose, phases 1–4 built in March, every later web feature ported on 2026-10-23 (compiled, not yet run on a device). Phase 5's push half is done on 2026-10-23 (FCM, verified on the emulator); the Play Store listing still waits for a Play Console account and a signing key ([[web-android-parity]]).
+**An Android app exists and is at parity with the web except for push**: [[teamplanner-android]], Kotlin + Jetpack Compose, phases 1–4 built in March, every later web feature ported on 2026-10-23 (compiled, not yet run on a device). Phase 5 is complete on the build side as of 2026-10-23: push (FCM, verified on the emulator) and a signed, R8-minified release build that was smoke-tested on the emulator. Yustin has a Play Console developer account; what remains is the upload itself and the store questionnaires. Listing copy, feature graphic, screenshots and the checklist are in `teamplanner-android/docs/play-store/`; the upload key lives in `~/.android/keystores/` on Yustin's machine, never in the repository ([[web-android-parity]]).
 
 How it got here:
 
@@ -45,6 +45,6 @@ What the Android app is for, now that push is designed on the web too: Play Stor
 
 ## Open questions
 
-- Phase 5 timing, signing and the Play Store listing.
+- Upload the `.aab` to the Play Console (internal testing first), enrol in Play App Signing, answer data safety and content rating from `docs/play-store/listing.md`.
 - Android push is a separate path, after the web's ([[2026-10-23-push-per-client-web-first]]); the mechanism is undesigned.
 - When does the Apple developer licence become worth it? Tied to user numbers, no threshold named.
