@@ -36,4 +36,4 @@ The second client on the one Supabase backend. Same project id, tables, RLS and 
 ## Open questions
 
 - Who keeps the two `Constants.kt` / `constants.ts` files in step? Nothing automated. → [[web-android-parity]]
-- Play Store listing and app signing: no source. → [[native-app]]
+- Play Store listing and app signing: no design doc; the Console state is recorded in [[native-app]].

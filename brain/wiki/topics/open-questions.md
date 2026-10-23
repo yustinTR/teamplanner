@@ -14,7 +14,7 @@ A single place for things nobody owns. Grouped by **planned but not built**, **u
 ## Planned but not built
 
 - **Android on a real phone** — verified on an emulator only ([[2026-10-23-android-emulator-test-setup]]); import flow, share sheet and push untested. → [[web-android-parity]]
-- **Play Store upload** — everything is prepared in `teamplanner-android/docs/play-store/`; Yustin uploads the bundle and answers the questionnaires. → [[native-app]]
+- **Play Store** — bundle, listing and most declarations are in the Console; blocked on a reviewer test account (sign-in details → target audience → data safety), then a 14-day closed test with 12 testers before production. → [[native-app]]
 - **Back up the upload keystore** (`~/.android/keystores/myteamplanner-upload.jks` + `.properties`) somewhere outside this machine. → [[native-app]]
 - **Verify the PWA on a phone after the 2026-10-23 release** — install prompt, offline shell and push, now that the service worker exists again. → [[notifications]]
 - **Shared lineup fixture test** across both clients. → [[web-android-parity]]
