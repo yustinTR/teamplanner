@@ -2,6 +2,7 @@ import webpush from "web-push";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/types";
 import type { PushPayload } from "@/lib/push-messages";
+import { fcmConfigured, sendFcm } from "@/lib/fcm";
 
 type Client = SupabaseClient<Database>;
 
@@ -33,10 +34,11 @@ function configureVapid(): boolean {
 }
 
 /**
- * Send one Web Push message to every web subscription of the given users.
- * Server-only: needs the service-role client because subscriptions are
- * RLS-protected per user. Subscriptions the push service reports as gone
- * (404/410) are deleted.
+ * Send one message to every subscription of the given users: Web Push for
+ * `platform = 'web'` rows, FCM for `platform = 'android'` rows — two paths,
+ * one payload. Server-only: needs the service-role client because
+ * subscriptions are RLS-protected per user. Subscriptions the push service
+ * reports as gone are deleted.
  */
 export async function sendPushToUsers(
   supabase: Client,
@@ -45,12 +47,14 @@ export async function sendPushToUsers(
 ): Promise<SendResult> {
   const result: SendResult = { sent: 0, removed: 0, failed: 0 };
   const ids = [...new Set(userIds)];
-  if (ids.length === 0 || !configureVapid()) return result;
+  if (ids.length === 0) return result;
+  const webReady = configureVapid();
+  const androidReady = fcmConfigured();
+  if (!webReady && !androidReady) return result;
 
   const { data: subscriptions, error } = await supabase
     .from("push_subscriptions")
-    .select("id, endpoint, p256dh, auth")
-    .eq("platform", "web")
+    .select("id, platform, endpoint, p256dh, auth")
     .in("user_id", ids);
   if (error || !subscriptions) {
     result.failed = ids.length;
@@ -62,7 +66,19 @@ export async function sendPushToUsers(
 
   await Promise.all(
     subscriptions.map(async (subscription) => {
-      if (!subscription.p256dh || !subscription.auth) return;
+      if (subscription.platform === "android") {
+        if (!androidReady) return;
+        try {
+          const outcome = await sendFcm(subscription.endpoint, payload);
+          if (outcome === "sent") result.sent += 1;
+          else if (outcome === "gone") gone.push(subscription.id);
+          else result.failed += 1;
+        } catch {
+          result.failed += 1;
+        }
+        return;
+      }
+      if (!webReady || !subscription.p256dh || !subscription.auth) return;
       try {
         await webpush.sendNotification(
           {
