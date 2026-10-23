@@ -103,7 +103,7 @@ export default function PrivacyPage() {
           <ul className="list-disc pl-5 space-y-1">
             <li><strong>Inzage</strong> — opvragen welke gegevens we van je hebben</li>
             <li><strong>Rectificatie</strong> — je gegevens laten corrigeren</li>
-            <li><strong>Verwijdering</strong> — je account en gegevens laten verwijderen</li>
+            <li><strong>Verwijdering</strong> — je account en gegevens laten verwijderen (zie <Link href="/account-verwijderen">account verwijderen</Link>)</li>
             <li><strong>Dataportabiliteit</strong> — je gegevens in een gangbaar formaat ontvangen</li>
             <li><strong>Bezwaar</strong> — bezwaar maken tegen de verwerking van je gegevens</li>
           </ul>
