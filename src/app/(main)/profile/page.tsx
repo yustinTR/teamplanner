@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { LogOut, Pencil } from "lucide-react";
+import { LogOut, Pencil, Smartphone } from "lucide-react";
+import Link from "next/link";
 import { useAuthStore } from "@/stores/auth-store";
 import { Avatar } from "@/components/atoms/Avatar";
 import { Button } from "@/components/atoms/Button";
@@ -147,6 +148,17 @@ export default function ProfilePage() {
             onEnable={handleEnablePush}
             onDisable={handleDisablePush}
           />
+
+          <Link
+            href="/android"
+            className="flex items-center justify-between rounded-xl bg-white p-5 shadow-sm"
+          >
+            <div>
+              <p className="font-medium text-neutral-900">Android-app installeren</p>
+              <p className="text-xs text-muted-foreground">Gratis via Google Play, met meldingen</p>
+            </div>
+            <Smartphone className="size-5 text-primary-700" />
+          </Link>
 
           <form action={logout}>
             <Button variant="outline" className="w-full gap-2 text-danger hover:bg-danger-50 hover:text-danger" type="submit">

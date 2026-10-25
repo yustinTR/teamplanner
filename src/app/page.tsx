@@ -436,6 +436,28 @@ export default function LandingPage() {
       {/* FAQ section */}
       <FaqSection items={faqItems} />
 
+      {/* Android app section */}
+      <section className="bg-white py-12">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center sm:flex-row sm:text-left">
+          <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-700">
+            <Smartphone className="size-6" />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-xl font-bold text-neutral-900">Ook als Android-app</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Gratis in Google Play, als testversie. Zelfde account, met meldingen.
+            </p>
+          </div>
+          <Link
+            href="/android"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-primary-700 px-5 text-sm font-semibold text-primary-700 hover:bg-primary-50"
+          >
+            Installeren
+            <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </section>
+
       {/* CTA section */}
       <section className="bg-gradient-to-r from-primary-800 to-primary-600 py-16">
         <div className="mx-auto max-w-4xl px-4 text-center">
