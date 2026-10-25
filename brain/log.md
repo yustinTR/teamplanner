@@ -84,3 +84,7 @@ Yustin installed the app from the internal test and tested it (details not recor
 ## [2026-10-25] ingest | Autumn roadmap set; share strip decided
 Pages touched: [[2026-10-25-roadmap-coach-first-autumn-2026]], [[2026-10-25-made-with-strip-on-share-images]], [[product-vision-and-roadmap]]
 Yustin chose the full "Gemaakt met MyTeamPlanner" strip for the share images and asked for an adjusted roadmap plus autonomous execution. Roadmap recorded as a decision with a dated table in the vision topic: coach-first sharing, measurement, Android parity in code, PDF and parent view, search review mid November; phases 3–4 explicitly parked.
+
+## [2026-10-25] refactor | Share strip and multi-team shipped
+Pages touched: [[web-android-parity]], [[2026-10-25-made-with-strip-on-share-images]]
+Web: lineup card and match report end in the green "Gemaakt met MyTeamPlanner" strip (checked in Storybook), GTM gains save_lineup, create_match and share_report; merged to production. Android: same strip drawn on the canvas (share sheet opens from the emulator, release-signed build), privacy/deletion links, and the multi-team switcher — TeamStore + getMyTeams() mirroring the web's creator-or-active-player rule, dashboard header menu, tabs rebuilt on switch; the current-player lookup is now scoped to the chosen team. Not yet released to the closed test (versionCode 5 pending the remaining ledger rows).

@@ -24,7 +24,7 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Auth: e-mail login, register, forgot/reset password | yes | yes (phase 1) | parity |
 | Dashboard with quick actions and season highlights | yes | yes | parity |
 | Onboarding checklist and inline hints ([[2026-02-26-onboarding-checklist-hints-design]]) | yes | yes (2026-10-23 port, DataStore) | parity |
-| Multi-team switcher ([[2026-03-02-multi-team-support-design]]) | yes | no: `TeamRepository.getTeamForCurrentUser()` takes the first `players` row (`limit(1)`), nine ViewModels call it; teams the user only *created* are invisible | **gap** (confirmed in code 2026-10-25; next Android work) |
+| Multi-team switcher ([[2026-03-02-multi-team-support-design]]) | yes | yes (2026-10-25): `TeamStore` remembers the choice, `getMyTeams()` mirrors the web membership rule, dashboard header menu, tabs rebuild on switch | parity — smoke-tested with one team on the emulator; the menu itself needs an account with two teams |
 | Match list tabs, detail, CRUD, cancel, score dialog | yes | yes (phases 2–3) | parity |
 | Match stats grid | yes | yes; no filter to lineup players | **gap** (confirmed 2026-10-25, small) |
 | Loan players (leen-spelers, `match_players`) | yes (2026-02-20) | yes (2026-03-13) | parity |
@@ -104,6 +104,6 @@ Platform-forced, written down so they stop being questions:
 
 ## Open questions
 
-- Verified 2026-10-25 in code: all five were gaps. Order of work: multi-team (largest, affects nine ViewModels), stats filter (small), skills editor, plan creation, Realtime availability.
+- Verified 2026-10-25 in code: all five were gaps; multi-team closed the same day. Remaining order: stats filter (small), skills editor, plan creation, Realtime availability.
 - Still unverified on a device: the import flow end to end, image sharing through the share sheet, push.
 - Write the shared fixture test: one lineup JSON, decoded by both `src/types/lineup.ts` and `Lineup.kt`, so key drift fails a build instead of a device run.
