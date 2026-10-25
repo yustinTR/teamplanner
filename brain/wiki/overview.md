@@ -39,7 +39,7 @@ What is open:
 
 ## Biggest risks
 
-1. **Adoption.** Two active teams in 22. The invite step is where teams stall; everything downstream, push included, waits on it.
+1. **Reach.** Eleven active teams of 23 (2026-10-25), nine of them run by the coach alone — a valid mode, per [[2026-10-25-active-team-means-coach-use]]. The constraint is new coaches finding the product: three indexed pages and 33 search clicks in three months ([[growth-and-seo]]).
 2. **Growth read by hand.** Twenty-two team rows, two active; the series has one point.
 3. **Upstream dependency.** The daily sync reads voetbal.nl data with no agreement and no alerting ([[voetbal-nl-integration]]).
 4. **Drift between two clients.** Every web feature is a second implementation in Kotlin; the ledger is level today and will drift again with the next web feature unless it is kept ([[web-android-parity]]).

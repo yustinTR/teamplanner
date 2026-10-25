@@ -26,6 +26,8 @@ sources: ["[[2026-10-23-active-team-definition]]", "[[2026-10-23-open-questions-
 
 ## Reasoning
 
+> Re-read on 2026-10-25: the "adoption, not acquisition" conclusion below rested on the two-member rule, which Yustin rejected. See [[2026-10-25-active-team-recount]] (11 of 23 active).
+
 The gap is adoption, not acquisition: ten teams have a live schedule (most of them through the voetbal.nl import and daily sync), but on all but two of them nobody besides the coach has an account. The invite step of the funnel ([[onboarding-and-conversion]]) is where teams stall. Push notifications ([[notifications]]) cannot help a team whose players never registered; the invite link and the join flow can.
 
 This reading is the baseline for the growth thresholds in [[2026-03-02-growth-before-monetisation]]: 2 of the first 100, not 25.

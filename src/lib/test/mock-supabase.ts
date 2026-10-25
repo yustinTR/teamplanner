@@ -56,7 +56,7 @@ export function createMockSupabase(...results: MockResult[]) {
   const builders = results.map(createMockQueryBuilder);
   let call = 0;
   const channel = {
-    on: vi.fn(function (this: unknown) {
+    on: vi.fn((..._args: unknown[]) => {
       return channel;
     }),
     subscribe: vi.fn(() => channel),

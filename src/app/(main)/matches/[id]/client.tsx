@@ -278,10 +278,7 @@ export function MatchDetailClient({ matchId }: MatchDetailClientProps) {
                 className="flex-1 gap-2"
                 onClick={() =>
                   reportRef.current &&
-                  shareImage(
-                    reportRef.current,
-                    `verslag-${match.opponent}`
-                  )
+                  shareImage(reportRef.current, `verslag-${match.opponent}`, "share_report")
                 }
                 disabled={isGenerating}
               >

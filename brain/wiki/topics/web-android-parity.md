@@ -2,7 +2,7 @@
 type: topic
 title: Web ↔ Android parity ledger
 created: 2026-10-23
-updated: 2026-10-23
+updated: 2026-10-25
 tags: [android, parity, web, process]
 sources: ["[[2026-03-13-android-phase2-core-screens-design]]", "[[2026-03-13-android-phase3-interaction-design]]", "[[2026-03-13-android-phase4-complex-features-design]]"]
 ---
@@ -24,18 +24,18 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Auth: e-mail login, register, forgot/reset password | yes | yes (phase 1) | parity |
 | Dashboard with quick actions and season highlights | yes | yes | parity |
 | Onboarding checklist and inline hints ([[2026-02-26-onboarding-checklist-hints-design]]) | yes | yes (2026-10-23 port, DataStore) | parity |
-| Multi-team switcher ([[2026-03-02-multi-team-support-design]]) | yes | not in phase 2 design (*"Fetch team for current user"*, singular) | **gap** (unverified in code) |
+| Multi-team switcher ([[2026-03-02-multi-team-support-design]]) | yes | no: `TeamRepository.getTeamForCurrentUser()` takes the first `players` row (`limit(1)`), nine ViewModels call it; teams the user only *created* are invisible | **gap** (confirmed in code 2026-10-25; next Android work) |
 | Match list tabs, detail, CRUD, cancel, score dialog | yes | yes (phases 2–3) | parity |
-| Match stats grid | yes | yes; filter to lineup players planned for phase 4 | parity, filter unverified |
+| Match stats grid | yes | yes; no filter to lineup players | **gap** (confirmed 2026-10-25, small) |
 | Loan players (leen-spelers, `match_players`) | yes (2026-02-20) | yes (2026-03-13) | parity |
 | Availability toggle and grid; coach sets it for players without accounts | yes (coach-set: 2026-04-10) | yes (coach-set: 2026-03-13) | parity — Android led |
-| Availability grid live via Realtime | yes | DI provides Realtime; use unverified | unverified |
+| Availability grid live via Realtime | yes | `Realtime` installed in DI, never subscribed | **gap** (confirmed 2026-10-25) |
 | Player list, detail, CRUD, photo upload, deactivate | yes | yes | parity |
 | Skills radar and EAFC rating / card tier (v2 since 2026-03-02) | yes | yes, 6 axes 1–99, `hasEafcSkills` | parity |
-| Skills editor (coach rates players) | yes | not named in any Android design | **gap** (unverified) |
+| Skills editor (coach rates players) | yes | radar chart read-only (`SkillsRadarChart`), no editor | **gap** (confirmed 2026-10-25) |
 | `show_ratings` team setting | yes (2026-03-06) | yes | parity |
 | Events list, detail, CRUD, attendance, tasks; coach-set attendance | yes | yes | parity |
-| Training plans and exercise library | yes | yes (read-only in phase 2) | parity; plan creation on Android unverified |
+| Training plans and exercise library | yes | read-only: list, detail, exercise library; no plan creation | **gap** (confirmed 2026-10-25) |
 | Lineup editor, formation selector, auto-lineup | yes | yes (phase 4) | parity |
 | Formation 3-4-3 for 11v11 (web 2026-04-23) | yes | yes (2026-10-23 port) | parity |
 | Substitution planner, minutes bars, auto-generation | yes | yes | parity |
@@ -69,6 +69,10 @@ Platform-forced, written down so they stop being questions:
 | Animation | Framer Motion presets ([[2026-03-02-framer-motion-for-all-animation]]) | Compose animations | no shared presets; feel should match, no rule yet |
 | Navigation | App Router, bottom nav | Navigation Compose, bottom tabs | same four tabs |
 | Secrets | Vercel env | `local.properties` | platform |
+| Share images end in a "Gemaakt met MyTeamPlanner" strip ([[2026-10-25-made-with-strip-on-share-images]]) | yes (2026-10-25) | yes (2026-10-25, canvas) | parity |
+| Account deletion | `/account-verwijderen` page (e-mail request), linked from privacy policy | links to the same page from the profile screen (2026-10-25) | parity; no in-app delete on either side |
+| Store/install pages | `/android` install page, dashboard hint, landing block | n/a — the app *is* the install | allowed difference: web-only marketing |
+| Legal pages | `/privacy`, `/voorwaarden` | profile links open the web pages | allowed difference: single source for legal text |
 | Push mechanism | Web Push (VAPID) | FCM data messages | by choice; both built and configured | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
 
 ### Shared contract (must never drift)
@@ -100,6 +104,6 @@ Platform-forced, written down so they stop being questions:
 
 ## Open questions
 
-- Verify the unverified rows (multi-team, Realtime, skills editor, plan creation, stats filter) in the Android code.
+- Verified 2026-10-25 in code: all five were gaps. Order of work: multi-team (largest, affects nine ViewModels), stats filter (small), skills editor, plan creation, Realtime availability.
 - Still unverified on a device: the import flow end to end, image sharing through the share sheet, push.
 - Write the shared fixture test: one lineup JSON, decoded by both `src/types/lineup.ts` and `Lineup.kt`, so key drift fails a build instead of a device run.
