@@ -34,7 +34,7 @@ A single place for things nobody owns. Grouped by **planned but not built**, **u
 ## Missing information
 
 - **Monthly active-team series** — first point taken ([[2026-10-23-active-team-count]]); no funnel numbers yet.
-- **Why 20 teams never got a second member** — the adoption question the first count raised. → [[onboarding-and-conversion]] → [[growth-and-seo]], [[onboarding-and-conversion]]
+- **Do coach-only teams want members?** Nine of eleven active teams are run by the coach alone, which is a supported mode ([[2026-10-25-active-team-means-coach-use]]). If they would rather have players respond themselves, the invite flow matters; if not, sharing quality does. Unknown; ask a few of them. → [[onboarding-and-conversion]]
 - **User feedback.** Confirmed 2026-10-23: nothing written down yet, although feedback already shaped `show_ratings`. `raw/` is empty. → [[be-fair]]
 - **Search performance** of the 15 articles and 4 feature pages. → [[growth-and-seo]]
 - **VoetbalAssist licence** — probably behind a paywall the project has not paid for. → [[voetbal-nl-integration]]

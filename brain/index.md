@@ -24,7 +24,8 @@ fastest route to what the Android app lacks is [[web-android-parity]].
 
 _newest first, status shown_
 
-- [[2026-10-23-active-team-definition]] — Active = a match or event in the last 60 days and two or more linked players; thresholds are measured against this, not row counts. · **accepted**
+- [[2026-10-25-active-team-means-coach-use]] — Active = coach use in the last 60 days (match, event or lineup edit); linked members are a separate adoption number, coach-only is a valid mode. · **accepted**
+- [[2026-10-23-active-team-definition]] — Active = activity in 60 days and two or more linked players. · **superseded**
 - [[2026-10-23-storybook-is-the-design-system-figma-dropped]] — Storybook is the design system; `design/Teamplanner.fig` is historical. · **accepted**
 - [[2026-10-23-statistics-per-season-august-to-july]] — Statistics grouped per season, August to July; a season filter on the dashboard, web first. · **accepted**
 - [[2026-10-23-push-per-client-web-first]] — Web Push and Android push on separate paths so the clients can evolve apart; web first; the three triggers are shared. · **accepted**
@@ -96,5 +97,6 @@ _newest first, status shown_
 
 ## Notes
 
-- [[2026-10-23-active-team-count]] — first reading: 2 active teams of 22, 20 set up but never adopted; the query to repeat monthly
+- [[2026-10-25-active-team-recount]] — 11 active teams of 23 under the corrected definition, nine coach-only, five with recent lineup edits
+- [[2026-10-23-active-team-count]] — first reading under the superseded definition: 2 of 22; its adoption conclusion is withdrawn
 - [[2026-10-23-android-emulator-test-setup]] — toolchain, AVD, test account and test team for running the Android app from this machine; what the first run found

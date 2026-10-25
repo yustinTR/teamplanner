@@ -2,8 +2,8 @@
 type: decision
 title: An active team has recent activity and real members
 created: 2026-10-23
-updated: 2026-10-23
-status: accepted
+updated: 2026-10-25
+status: superseded
 decided_by: Yustin Troost, 2026-10-23, agreeing to the assistant's proposal ("ja ik ben het eens")
 supersedes: ""
 tags: [growth, metrics, definition]
@@ -11,6 +11,8 @@ sources: ["[[2026-10-23-open-questions-answered]]"]
 ---
 
 # An active team has recent activity and real members
+
+> Superseded on 2026-10-25 by [[2026-10-25-active-team-means-coach-use]]: the two-member condition counted a valid coach-only mode as failure.
 
 ## Decision
 

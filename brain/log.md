@@ -72,3 +72,7 @@ Google Group "MyTeamPlanner Android testers" created (Yustin solved the captcha)
 ## [2026-10-25] query | SEO reality check and first fixes
 Pages touched: [[growth-and-seo]]
 Search Console (via Yustin's browser): 3 indexed pages, 20 discovered-not-indexed (all blog), 33 clicks / 528 impressions in 3 months. Vercel Analytics 28 days: mostly direct traffic; search engines and ChatGPT a handful each. Fixes shipped to production: feature pages now link to their blog articles (RelatedArticles), dismissible Android-app hint on the dashboard; indexing requested for /blog and nine articles. Also: Alpha track tester source changed to the Google Group (pending Play's quick checks).
+
+## [2026-10-25] ingest | Coach-only teams are a valid mode; active-team count redone
+Pages touched: [[2026-10-25-active-team-means-coach-use]], [[2026-10-25-active-team-recount]], [[2026-10-23-active-team-definition]], [[2026-10-23-active-team-count]], [[overview]], [[open-questions]], [[growth-and-seo]]
+Yustin corrected the assistant: a team with only the coach is not a failed onboarding — the coach can plan alone and share the lineup image. The two-member condition in the 2026-10-23 definition is dropped (decision superseded); activity now means coach use (match, event or lineup edit in 60 days), members are a separate number. Recount: 11 active of 23, nine coach-only, five with lineup edits. The "adoption is the bottleneck" claim is withdrawn from the overview; reach (search visibility) takes its place as the top risk.
