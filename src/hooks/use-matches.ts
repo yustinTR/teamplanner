@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
+import { trackEvent } from "@/lib/gtm";
 import type { MatchInsert, MatchUpdate } from "@/types";
 
 interface RefreshResult {
@@ -87,6 +88,7 @@ export function useCreateMatch() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["matches", data.team_id] });
+      trackEvent("create_match");
     },
   });
 }

@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/types";
 import type { LineupPosition, SubstitutionPlan } from "@/types";
+import { trackEvent } from "@/lib/gtm";
 
 export function useLineup(matchId: string | undefined) {
   const supabase = createClient();
@@ -72,6 +73,7 @@ export function useSaveLineup() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["lineup", data.match_id] });
+      trackEvent("save_lineup", { formation: data.formation });
       notifyLineupPublished(data.match_id);
     },
   });
