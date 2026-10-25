@@ -80,3 +80,7 @@ Yustin corrected the assistant: a team with only the coach is not a failed onboa
 ## [2026-10-25] refactor | Housekeeping after Yustin's device test
 Pages touched: [[web-android-parity]]
 Yustin installed the app from the internal test and tested it (details not recorded). Done autonomously: ESLint now ignores Serwist's generated worker and the hook-test mock compiles, so `npm run lint` and `tsc` are clean for the first time in weeks (web commit `59852be`); Android profile screen links to the privacy policy and the account-deletion page (parity rows added — note: that ledger change landed under the mis-titled commit `d79de27` after a wrong `--amend`; content is correct). Eleven blog URLs have indexing requested; Search Console's daily quota stopped the twelfth ("URL is onbekend bij Google" for voetbal-training-oefeningen — never even discovered). Five articles remain for tomorrow.
+
+## [2026-10-25] ingest | Autumn roadmap set; share strip decided
+Pages touched: [[2026-10-25-roadmap-coach-first-autumn-2026]], [[2026-10-25-made-with-strip-on-share-images]], [[product-vision-and-roadmap]]
+Yustin chose the full "Gemaakt met MyTeamPlanner" strip for the share images and asked for an adjusted roadmap plus autonomous execution. Roadmap recorded as a decision with a dated table in the vision topic: coach-first sharing, measurement, Android parity in code, PDF and parent view, search review mid November; phases 3–4 explicitly parked.

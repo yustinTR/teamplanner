@@ -24,6 +24,8 @@ fastest route to what the Android app lacks is [[web-android-parity]].
 
 _newest first, status shown_
 
+- [[2026-10-25-roadmap-coach-first-autumn-2026]] — Autumn plan: sharpen the coach-alone share loop, measure, close Android parity, then PDF and parent view; phases 3–4 wait. · **accepted**
+- [[2026-10-25-made-with-strip-on-share-images]] — Lineup card and match report end in a green "Gemaakt met MyTeamPlanner" strip on both clients. · **accepted**
 - [[2026-10-25-active-team-means-coach-use]] — Active = coach use in the last 60 days (match, event or lineup edit); linked members are a separate adoption number, coach-only is a valid mode. · **accepted**
 - [[2026-10-23-active-team-definition]] — Active = activity in 60 days and two or more linked players. · **superseded**
 - [[2026-10-23-storybook-is-the-design-system-figma-dropped]] — Storybook is the design system; `design/Teamplanner.fig` is historical. · **accepted**

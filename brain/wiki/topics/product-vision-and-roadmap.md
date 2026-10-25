@@ -26,6 +26,19 @@ Roadmap status against [[2026-02-26-training-library-before-stats-before-ai]]:
 
 Planned and not built: push notifications ([[notifications]]); the parent/carer view, carpool and PDF export are **deferred, not dropped** (*"uitgesteld"*, [[2026-10-23-open-questions-answered]]). The Android app exists with phases 1–4 and lags the web since 2026-03-15 ([[native-app]], [[web-android-parity]]).
 
+### Autumn 2026 plan
+
+Set on 2026-10-25 ([[2026-10-25-roadmap-coach-first-autumn-2026]]), after the recount showed the single coach as the dominant user:
+
+| When | What | Why |
+|---|---|---|
+| now – mid Nov | "Gemaakt met MyTeamPlanner" strip on share images (both clients), share the substitution plan, share from the match list | the shared picture is the working acquisition channel |
+| parallel | funnel events in GTM; crash visibility via Play vitals and Vercel | stop reading the key metric by hand |
+| November | Android: verify and close the five unverified ledger rows; closed-test release 5 | parity debt, first content release after launch |
+| late Nov – Dec | PDF export; read-only parent/carer view by link | coach-alone conveniences; low-friction answer to "do they want members?" |
+| mid Nov review | Search Console re-read, tester count, funnel numbers | decide on content and on the invite flow with data |
+| not now | phases 3–4, carpool, new articles, chasing Play production | need a crowd or a measurement first |
+
 ## Requirements
 
 - Coach creates a match in 30 seconds; player answers availability in 5 seconds; load under 2 seconds; offline basics (`PROJECT_CONTEXT.md` design principles).
@@ -36,7 +49,7 @@ Planned and not built: push notifications ([[notifications]]); the parent/carer 
 
 - [[2026-02-19-pwa-over-native-app]], [[2026-02-19-supabase-as-the-backend]]
 - [[2026-10-23-push-per-client-web-first]], [[2026-10-23-statistics-per-season-august-to-july]], [[2026-10-23-storybook-is-the-design-system-figma-dropped]]
-- [[2026-02-26-training-library-before-stats-before-ai]]
+- [[2026-02-26-training-library-before-stats-before-ai]], [[2026-10-25-roadmap-coach-first-autumn-2026]], [[2026-10-25-made-with-strip-on-share-images]]
 - [[2026-03-02-growth-before-monetisation]]
 - [[2026-03-13-android-app-in-kotlin-as-one-to-one-port]], [[2026-10-23-web-is-the-source-of-truth-for-both-clients]]
 - [[2026-08-24-daily-cron-sync-reuses-the-parser]], [[2026-08-24-web-push-via-service-worker]] (proposed)
