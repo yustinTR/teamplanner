@@ -68,3 +68,7 @@ Checked the Console: Google approved the 2026-10-23 submission within the hour (
 ## [2026-10-25] refactor | Closed test wired as the Android install channel
 Pages touched: [[native-app]], [[open-questions]]
 Google Group "MyTeamPlanner Android testers" created (Yustin solved the captcha), set as the Alpha track's tester source next to the mailing list. Web: `/android` page (two steps, Google-account caveat, why-a-test-version explanation), landing-page block, footer link, profile card; public route; merged to `main` and live. Rejected on the way: automating fake testers with Playwright — it would be fabricating the test Google asks about in the production application.
+
+## [2026-10-25] query | SEO reality check and first fixes
+Pages touched: [[growth-and-seo]]
+Search Console (via Yustin's browser): 3 indexed pages, 20 discovered-not-indexed (all blog), 33 clicks / 528 impressions in 3 months. Vercel Analytics 28 days: mostly direct traffic; search engines and ChatGPT a handful each. Fixes shipped to production: feature pages now link to their blog articles (RelatedArticles), dismissible Android-app hint on the dashboard; indexing requested for /blog and nine articles. Also: Alpha track tester source changed to the Google Group (pending Play's quick checks).
