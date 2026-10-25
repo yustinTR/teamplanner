@@ -35,6 +35,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.2,
     },
     {
+      url: `${siteUrl}/android`,
+      lastModified: "2026-10-25",
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
       url: `${siteUrl}/features/beschikbaarheid`,
       lastModified: "2026-03-13",
       changeFrequency: "monthly",

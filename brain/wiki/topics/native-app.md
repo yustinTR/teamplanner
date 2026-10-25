@@ -40,11 +40,12 @@ What the Android app is for, now that push is designed on the web too: Play Stor
 ## Risks and tensions
 
 - **Two codebases, one developer.** Every web feature since March is an unpaid port. The ledger makes the debt visible; it does not pay it.
-- **Phase 5 is the whole distribution value.** Without a Play Store listing the app reaches nobody the PWA does not; without push it offers nothing the PWA cannot. Both wait on a Firebase project, an FCM service account in Vercel and a Play Console account.
+- **Phase 5 is the whole distribution value.** Without a Play Store listing the app reaches nobody the PWA does not; without push it offers nothing the PWA cannot. Push works; the listing is in the Play Console (2026-10-23) but a *personal* developer account must run a closed test with 12 testers for 14 days before production is unlocked — the store launch is weeks away at best, and the bottleneck is finding twelve testers, not code.
 - **Push in two places, by choice.** Separate paths per client so the two can evolve apart, web first ([[2026-10-23-push-per-client-web-first]]); the three triggers stay the shared contract.
 
 ## Open questions
 
-- Upload the `.aab` to the Play Console (internal testing first), enrol in Play App Signing, answer data safety and content rating from `docs/play-store/listing.md`.
+- Play Console state (2026-10-23, end of day): everything is submitted for Google's review — store listing, all declarations (sign-in details with the reviewer account, target audience 18+, data safety, content rating PEGI 3) and a closed-test (Alpha) release 4 (1.1.0, targetSdk 36 — Play refused 35; versionCode 4 after Play's pre-check flagged a `MutableList.removeFirst()` that crashes on Android 14 and lower). Closed test: Netherlands only, tester list "Interne testers" (one address). Internal test track also carries release 3.
+- Closed test: twelve opted-in testers for fourteen days, then a production-access application with questions about the test. Where do twelve testers come from — the own club's two active teams?
 - Android push is a separate path, after the web's ([[2026-10-23-push-per-client-web-first]]); the mechanism is undesigned.
 - When does the Apple developer licence become worth it? Tied to user numbers, no threshold named.

@@ -52,3 +52,15 @@ Pages touched: [[notifications]], [[2026-02-19-pwa-over-native-app]], [[overview
 ## [2026-10-23] refactor | Play Store release prepared
 Pages touched: [[native-app]], [[teamplanner-android]], [[open-questions]]
 Yustin has a Play Console account. Upload keystore generated outside the repository, release signing and R8 rules added, the signed minified build smoke-tested on the emulator (login, dashboard, statistics, match detail), listing copy, feature graphic and six screenshots written to `docs/play-store/`. Production web: the webpack build restored the service worker (`sw.js` 200 with push handlers).
+
+## [2026-10-23] refactor | Play Console filled in through the browser
+Pages touched: [[native-app]], [[open-questions]], [[teamplanner-android]]
+Driven through Yustin's logged-in Play Console session: Play refused targetSdk 35, so the Android app now targets 36 (versionCode 3) and release 3 (1.1.0) is live on the internal test track with Yustin as tester. Privacy policy, ads, advertising ID, government, finance, health, IARC (PEGI 3), category Sport, contact details and the complete store listing are saved. Data safety demanded an account-deletion URL, which did not exist: the web app gained `/account-verwijderen` (e-mail request, what is deleted, 30 days), deployed to production. Learned: a personal developer account cannot publish to production until a closed test has run with 12 testers for 14 days. Blocked on a reviewer account password (sign-in details), which gates target audience and data safety.
+
+## [2026-10-23] refactor | Play Console submission complete
+Pages touched: [[native-app]], [[open-questions]]
+Yustin set the reviewer account's password and filled in sign-in details himself (the permission filter refused both the SQL reset and the credentials form). After that: target audience 18+, data safety saved, store contact details re-saved (a missed confirmation dialog had dropped them the first time), closed-test track configured (Netherlands, tester list), and a closed-test release created. Play's pre-submission check flagged Kotlin `removeFirst()` on a `MutableList` in `LineupGenerator` (NoSuchMethodError on Android ≤14 with compileSdk 35+); fixed as `removeAt(0)`, rebuilt as versionCode 4, re-uploaded. Fourteen changes submitted for review; the Console shows "Wijzigingen worden beoordeeld".
+
+## [2026-10-25] query | Play review approved; closed test is the channel
+Pages touched: [[open-questions]]
+Checked the Console: Google approved the 2026-10-23 submission within the hour (notification "App-update gepubliceerd", 18:05); closed-test Alpha release 4 is available to listed testers, the "(unreviewed)" temporary name is gone, 0 testers opted in. Yustin will not find 12 testers and has no KvK, so the agreed route is: keep the closed test running indefinitely as the Android distribution channel (self-join Google Group + link on myteamplanner.nl), apply for production only when twelve real users have accumulated; the PWA stays the primary path.

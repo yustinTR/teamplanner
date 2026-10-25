@@ -36,6 +36,7 @@ export function MarketingFooter() {
             <h3 className="text-sm font-semibold text-white">Links</h3>
             <nav className="mt-3 flex flex-col gap-2 text-sm text-neutral-400">
               <Link href="/blog" className="hover:text-white">Blog</Link>
+              <Link href="/android" className="hover:text-white">Android-app</Link>
               <Link href="/login" className="hover:text-white">Inloggen</Link>
               <Link href="/register" className="hover:text-white">Registreren</Link>
               <Link href="/voorwaarden" className="hover:text-white">Voorwaarden</Link>
