@@ -64,3 +64,7 @@ Yustin set the reviewer account's password and filled in sign-in details himself
 ## [2026-10-25] query | Play review approved; closed test is the channel
 Pages touched: [[open-questions]]
 Checked the Console: Google approved the 2026-10-23 submission within the hour (notification "App-update gepubliceerd", 18:05); closed-test Alpha release 4 is available to listed testers, the "(unreviewed)" temporary name is gone, 0 testers opted in. Yustin will not find 12 testers and has no KvK, so the agreed route is: keep the closed test running indefinitely as the Android distribution channel (self-join Google Group + link on myteamplanner.nl), apply for production only when twelve real users have accumulated; the PWA stays the primary path.
+
+## [2026-10-25] refactor | Closed test wired as the Android install channel
+Pages touched: [[native-app]], [[open-questions]]
+Google Group "MyTeamPlanner Android testers" created (Yustin solved the captcha), set as the Alpha track's tester source next to the mailing list. Web: `/android` page (two steps, Google-account caveat, why-a-test-version explanation), landing-page block, footer link, profile card; public route; merged to `main` and live. Rejected on the way: automating fake testers with Playwright — it would be fabricating the test Google asks about in the production application.
