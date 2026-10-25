@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/atoms/Button";
 import { TopPlayerCard } from "@/components/molecules/TopPlayerCard";
 import { OnboardingChecklist } from "@/components/molecules/OnboardingChecklist";
+import { AndroidAppHint } from "@/components/molecules/AndroidAppHint";
 import { useTeamSeasonStats } from "@/hooks/use-player-stats";
 import { currentSeason, seasonLabel } from "@/lib/season";
 
@@ -102,6 +103,7 @@ export default function DashboardPage() {
       {/* Quick action cards */}
       <div className="-mt-4 grid gap-3 px-4 pb-4">
         <OnboardingChecklist />
+        <AndroidAppHint />
 
         <Link href="/matches">
           <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
