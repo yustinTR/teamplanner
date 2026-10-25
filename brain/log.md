@@ -88,3 +88,7 @@ Yustin chose the full "Gemaakt met MyTeamPlanner" strip for the share images and
 ## [2026-10-25] refactor | Share strip and multi-team shipped
 Pages touched: [[web-android-parity]], [[2026-10-25-made-with-strip-on-share-images]]
 Web: lineup card and match report end in the green "Gemaakt met MyTeamPlanner" strip (checked in Storybook), GTM gains save_lineup, create_match and share_report; merged to production. Android: same strip drawn on the canvas (share sheet opens from the emulator, release-signed build), privacy/deletion links, and the multi-team switcher — TeamStore + getMyTeams() mirroring the web's creator-or-active-player rule, dashboard header menu, tabs rebuilt on switch; the current-player lookup is now scoped to the chosen team. Not yet released to the closed test (versionCode 5 pending the remaining ledger rows).
+
+## [2026-10-25] refactor | Android parity ledger closed; release 1.2.0 to the closed test
+Pages touched: [[web-android-parity]], [[native-app]]
+In one evening, all five confirmed Android gaps were built and smoke-tested on the emulator with the release-signed build: stats rows from the lineup (unit-tested), skills editor (overall 63 for an all-50 defender), training-plan creation with exercise picker (plan "Emulator plan" with one exercise now exists in the test team), Realtime availability subscription (compiles; not observed live), multi-team switcher (single-team path verified). Bundle 1.2.0 / versionCode 5 built and uploaded to the Alpha track. Owed: exercise reordering, a two-team test account, a live Realtime check.
