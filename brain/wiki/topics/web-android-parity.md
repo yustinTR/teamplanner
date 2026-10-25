@@ -2,7 +2,7 @@
 type: topic
 title: Web ↔ Android parity ledger
 created: 2026-10-23
-updated: 2026-10-23
+updated: 2026-10-25
 tags: [android, parity, web, process]
 sources: ["[[2026-03-13-android-phase2-core-screens-design]]", "[[2026-03-13-android-phase3-interaction-design]]", "[[2026-03-13-android-phase4-complex-features-design]]"]
 ---
@@ -69,6 +69,9 @@ Platform-forced, written down so they stop being questions:
 | Animation | Framer Motion presets ([[2026-03-02-framer-motion-for-all-animation]]) | Compose animations | no shared presets; feel should match, no rule yet |
 | Navigation | App Router, bottom nav | Navigation Compose, bottom tabs | same four tabs |
 | Secrets | Vercel env | `local.properties` | platform |
+| Account deletion | `/account-verwijderen` page (e-mail request), linked from privacy policy | links to the same page from the profile screen (2026-10-25) | parity; no in-app delete on either side |
+| Store/install pages | `/android` install page, dashboard hint, landing block | n/a — the app *is* the install | allowed difference: web-only marketing |
+| Legal pages | `/privacy`, `/voorwaarden` | profile links open the web pages | allowed difference: single source for legal text |
 | Push mechanism | Web Push (VAPID) | FCM data messages | by choice; both built and configured | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
 
 ### Shared contract (must never drift)
