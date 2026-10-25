@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { blogPosts } from "@/lib/blog";
+import { RelatedArticles } from "@/components/molecules/RelatedArticles";
 import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "lucide-react";
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
@@ -137,6 +139,10 @@ export default function OpstellingenPage() {
           </div>
         </div>
       </section>
+
+      <RelatedArticles
+        posts={blogPosts.filter((post) => post.featureLink === "/features/opstellingen")}
+      />
 
       <section className="bg-gradient-to-r from-primary-800 to-primary-600 px-4 py-16">
         <div className="mx-auto max-w-3xl text-center">
