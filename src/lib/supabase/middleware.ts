@@ -9,7 +9,8 @@ function isPublicPath(pathname: string): boolean {
   // API routes handle their own auth (session check, cron secret, or public)
   if (pathname.startsWith("/api/")) return true;
   return publicPaths.some((path) => pathname.startsWith(path)) ||
-    pathname.startsWith("/join/");
+    pathname.startsWith("/join/") ||
+    pathname.startsWith("/volg/");
 }
 
 export async function updateSession(request: NextRequest) {

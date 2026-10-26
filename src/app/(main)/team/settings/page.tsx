@@ -9,10 +9,12 @@ import { useUpdateTeam } from "@/hooks/use-team";
 import { Button } from "@/components/atoms/Button";
 import { TeamForm } from "@/components/molecules/TeamForm";
 import { InviteLink } from "@/components/molecules/InviteLink";
+import { FollowLinkSettings } from "@/components/molecules/FollowLinkSettings";
 import { AutoSyncSettings } from "@/components/molecules/AutoSyncSettings";
 import { SyncLogList } from "@/components/molecules/SyncLogList";
 import { useSyncLog } from "@/hooks/use-sync-log";
 import { markInviteVisited } from "@/lib/onboarding";
+import { trackEvent } from "@/lib/gtm";
 
 export default function TeamSettingsPage() {
   const router = useRouter();
@@ -83,6 +85,19 @@ export default function TeamSettingsPage() {
               Deel deze link zodat spelers je team kunnen joinen.
             </p>
             <InviteLink inviteCode={currentTeam.invite_code} />
+          </div>
+
+          <div className="rounded-xl bg-white p-5 shadow-md">
+            <FollowLinkSettings
+              shareToken={currentTeam.share_token}
+              disabled={updateTeam.isPending}
+              onToggle={async (enabled) => {
+                const share_token = enabled ? crypto.randomUUID().replace(/-/g, "") : null;
+                await updateTeam.mutateAsync({ id: currentTeam.id, share_token });
+                useAuthStore.getState().setCurrentTeam({ ...currentTeam, share_token });
+                if (enabled) trackEvent("enable_follow_link");
+              }}
+            />
           </div>
 
           <div className="rounded-xl bg-white p-5 shadow-md">
