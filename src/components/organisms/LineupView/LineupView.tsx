@@ -13,7 +13,9 @@ import { Button } from "@/components/atoms/Button";
 import { PitchPlayer } from "@/components/molecules/PitchPlayer";
 import { ShareLineupCard } from "@/components/molecules/ShareLineupCard";
 import { ShareSubstitutionPlan } from "@/components/molecules/ShareSubstitutionPlan";
-import { ArrowRightLeft, ClipboardList, Share2 } from "lucide-react";
+import { LineupSheet } from "@/components/molecules/LineupSheet";
+import { useExportPdf } from "@/hooks/use-export-pdf";
+import { ArrowRightLeft, ClipboardList, FileDown, Share2 } from "lucide-react";
 import { FORMATIONS, type PlayerSkills } from "@/lib/constants";
 import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
 import { useShareImage } from "@/hooks/use-share-image";
@@ -42,6 +44,8 @@ interface LineupViewProps {
 export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProps) {
   const shareRef = useRef<HTMLDivElement>(null);
   const planShareRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const { exportPdf, isExporting } = useExportPdf();
   const { share, isGenerating } = useShareImage();
   const { currentTeam } = useAuthStore();
   const showRatings = currentTeam?.show_ratings ?? true;
@@ -87,6 +91,19 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">Formatie: {formation}</p>
         <div className="flex gap-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1.5"
+            onClick={() =>
+              sheetRef.current && exportPdf(sheetRef.current, `opstelling-${matchId}`, "lineup")
+            }
+            disabled={isExporting || !matchOpponent}
+            aria-label="Opstelling als PDF"
+          >
+            <FileDown className="size-4" />
+            PDF
+          </Button>
           {substitutionPlan && substitutionPlan.substitutionMoments.length > 0 && (
             <Button
               variant="ghost"
@@ -183,6 +200,17 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
               />
             </div>
           )}
+          <div ref={sheetRef}>
+            <LineupSheet
+              teamName={currentTeam?.name ?? "Team"}
+              opponent={matchOpponent}
+              matchDate={matchDate}
+              formation={shareData.formation}
+              players={shareData.players}
+              benchNames={shareData.benchNames}
+              plan={substitutionPlan}
+            />
+          </div>
         </div>
       )}
     </div>

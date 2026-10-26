@@ -31,6 +31,7 @@
     "framer-motion": "^12.34.3",
     "google-auth-library": "^11.3.1",
     "html2canvas-pro": "^2.0.2",
+    "jspdf": "^4.2.1",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
     "radix-ui": "^1.4.3",

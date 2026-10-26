@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, Plus, RefreshCw } from "lucide-react";
+import { Calendar, FileDown, Plus, RefreshCw } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMatches, useCreateMatch, useRefreshMatches } from "@/hooks/use-matches";
 import { MatchCard } from "@/components/organisms/MatchCard";
 import { ShareLineupButton } from "@/components/organisms/ShareLineupButton";
 import { ShareMatchReportButton } from "@/components/organisms/ShareMatchReportButton";
+import { ProgrammeSheet } from "@/components/molecules/ProgrammeSheet";
+import { useExportPdf } from "@/hooks/use-export-pdf";
 import { Button } from "@/components/atoms/Button";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { Spinner } from "@/components/atoms/Spinner";
@@ -50,6 +52,8 @@ export function MatchList() {
   const createMatch = useCreateMatch();
   const refreshMatches = useRefreshMatches();
   const [sheetOpen, setSheetOpen] = useState(false);
+  const programmeRef = useRef<HTMLDivElement>(null);
+  const { exportPdf, isExporting } = useExportPdf();
   const [refreshResult, setRefreshResult] = useState<{
     matchesCreated: number;
     matchesUpdated: number;
@@ -201,8 +205,25 @@ export function MatchList() {
         <p className="text-sm text-muted-foreground">
           {matches.length} {matches.length === 1 ? "wedstrijd" : "wedstrijden"}
         </p>
+        <div className="flex gap-2">
+          {upcoming.length > 0 && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                programmeRef.current &&
+                exportPdf(programmeRef.current, "wedstrijdprogramma", "programme")
+              }
+              disabled={isExporting}
+              aria-label="Programma als PDF"
+              title="Programma als PDF"
+            >
+              <FileDown className="size-4" />
+              {isExporting ? "Bezig..." : "PDF"}
+            </Button>
+          )}
         {isCoach && (
-          <div className="flex gap-2">
+          <>
             {hasImportSource && (
               <Button
                 size="sm"
@@ -243,8 +264,20 @@ export function MatchList() {
                 </div>
               </SheetContent>
             </Sheet>
-          </div>
+          </>
         )}
+        </div>
+      </div>
+
+      {/* Hidden programme sheet for the PDF export */}
+      <div className="fixed -left-[9999px] top-0">
+        <div ref={programmeRef}>
+          <ProgrammeSheet
+            teamName={currentTeam?.name ?? "Team"}
+            matches={upcoming}
+            defaultGatheringMinutes={currentTeam?.default_gathering_minutes ?? 60}
+          />
+        </div>
       </div>
 
       <Tabs defaultValue="upcoming">
