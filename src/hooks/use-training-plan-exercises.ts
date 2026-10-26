@@ -62,16 +62,20 @@ export function useReorderPlanExercises() {
       planId: string;
       exercises: { id: string; sort_order: number }[];
     }) => {
-      // Update all sort_orders in parallel
-      const updates = exercises.map(({ id, sort_order }) =>
-        supabase
-          .from("training_plan_exercises")
-          .update({ sort_order })
-          .eq("id", id)
-      );
-      const results = await Promise.all(updates);
-      const error = results.find((r) => r.error)?.error;
-      if (error) throw error;
+      // (plan_id, sort_order) is unique, so rows first move to negative
+      // placeholders and then to their final slot; a single pass collides
+      // with a row that still holds the target value.
+      const run = async (rows: { id: string; sort_order: number }[]) => {
+        const results = await Promise.all(
+          rows.map(({ id, sort_order }) =>
+            supabase.from("training_plan_exercises").update({ sort_order }).eq("id", id)
+          )
+        );
+        const error = results.find((r) => r.error)?.error;
+        if (error) throw error;
+      };
+      await run(exercises.map(({ id }, index) => ({ id, sort_order: -(index + 1) })));
+      await run(exercises);
       return { planId };
     },
     onSuccess: (data) => {
