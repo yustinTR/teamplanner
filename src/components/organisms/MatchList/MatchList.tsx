@@ -6,6 +6,8 @@ import { Calendar, Plus, RefreshCw } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMatches, useCreateMatch, useRefreshMatches } from "@/hooks/use-matches";
 import { MatchCard } from "@/components/organisms/MatchCard";
+import { ShareLineupButton } from "@/components/organisms/ShareLineupButton";
+import { ShareMatchReportButton } from "@/components/organisms/ShareMatchReportButton";
 import { Button } from "@/components/atoms/Button";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { Spinner } from "@/components/atoms/Spinner";
@@ -136,6 +138,23 @@ export function MatchList() {
   const upcomingGrouped = groupByMonth(upcoming);
   const pastGrouped = groupByMonth(past);
 
+  function renderShareAction(match: Match) {
+    if (match.status === "upcoming") {
+      return (
+        <ShareLineupButton
+          matchId={match.id}
+          opponent={match.opponent}
+          matchDate={match.match_date}
+          variant="icon"
+        />
+      );
+    }
+    if (match.status === "completed") {
+      return <ShareMatchReportButton match={match} variant="icon" />;
+    }
+    return null;
+  }
+
   function renderMatchGroups(groups: [string, Match[]][]) {
     return groups.map(([month, monthMatches]) => (
       <div key={month} className="mb-6">
@@ -149,6 +168,7 @@ export function MatchList() {
                 match={match}
                 defaultGatheringMinutes={currentTeam?.default_gathering_minutes ?? 60}
                 onClick={() => router.push(`/matches/${match.id}`)}
+                action={renderShareAction(match)}
               />
             </AnimatedListItem>
           ))}
