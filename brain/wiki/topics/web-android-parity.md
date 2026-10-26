@@ -35,7 +35,7 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Skills editor (coach rates players) | yes | bottom-sheet editor, slider per EAFC attribute, overall on top (2026-10-25, emulator-tested) | parity |
 | `show_ratings` team setting | yes (2026-03-06) | yes | parity |
 | Events list, detail, CRUD, attendance, tasks; coach-set attendance | yes | yes | parity |
-| Training plans and exercise library | yes | coaches create plans (title, notes) and add/remove exercises from the library (2026-10-25, emulator-tested); no reordering yet | parity, reorder owed |
+| Training plans and exercise library | yes (drag to reorder) | coaches create plans, add/remove exercises, and move them up/down (2026-10-26, emulator-tested) | parity — reorder is buttons on Android, drag on web: allowed, same result |
 | Lineup editor, formation selector, auto-lineup | yes | yes (phase 4) | parity |
 | Formation 3-4-3 for 11v11 (web 2026-04-23) | yes | yes (2026-10-23 port) | parity |
 | Substitution planner, minutes bars, auto-generation | yes | yes | parity |
@@ -44,7 +44,7 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Substitution plan as a share image | `ShareSubstitutionPlan` card: moments, playing-time bars, strip (2026-10-26) | same card on the canvas, shared from the lineup top bar (2026-10-26, emulator-checked via print preview) | parity |
 | Share from the match list | icon on each upcoming (lineup) and played (report) card; data loaded on first tap; no lineup sends the coach to the editor (2026-10-26) | same, `MatchCard` action slot + on-demand load in the list view model (2026-10-26, emulator-tested) | parity |
 | PDF export: lineup sheet and match programme (A4, white) | `useExportPdf` (html2canvas + jsPDF, dynamic import), buttons in lineup view/editor and match list (2026-10-26) | no | gap — owed; Android can draw the same sheets on a canvas and write a PDF with `android.graphics.pdf.PdfDocument` |
-| Follow link for parents ([[2026-10-26-follow-link-for-parents]]) | switch + link in team settings; public page `/volg/<token>` (2026-10-26) | no switch yet | gap — the settings switch is owed; the page itself is web-only by nature (allowed) |
+| Follow link for parents ([[2026-10-26-follow-link-for-parents]]) | switch + link in team settings; public page `/volg/<token>` (2026-10-26) | same switch, link, copy and share in team settings (2026-10-26, emulator-tested: off clears the token, on writes a new one) | parity for the setting; the page is web-only by nature (allowed) |
 | Team settings (name, club, type, gathering, address, ratings toggle), invite link | yes | yes | parity |
 | voetbal.nl import ([[voetbal-nl-integration]]) | yes | yes (2026-10-23 port, through the web API with a Bearer token) | parity; one scraper on the server |
 | Automatic sync toggle, recent changes, refresh now ([[2026-08-24-daily-cron-sync-reuses-the-parser]]) | yes | yes (2026-10-23 port) | parity |
@@ -110,5 +110,6 @@ Platform-forced, written down so they stop being questions:
 
 - Verified 2026-10-25 in code: all five were gaps; all five closed the same day and shipped as closed-test release 5 (1.2.0). Still owed: exercise reordering in a plan; a two-team account to exercise the switcher; a live Realtime check on a device.
 - 2026-10-26: roadmap step 1 finished on both clients (plan image, list sharing); Android release 1.3.0 (versionCode 6) carries it to the closed test. Owed list unchanged.
+- 2026-10-26, later: exercise reordering and the follow-link switch landed on Android. Reordering exposed a shared bug: `(plan_id, sort_order)` is unique, so updating rows one by one (or in parallel, as the web did) collides when two rows swap — both clients now park rows on negative placeholders first. Still owed on Android: PDF export, a two-team account, a live Realtime check.
 - Still unverified on a device: the import flow end to end, image sharing through the share sheet, push.
 - Write the shared fixture test: one lineup JSON, decoded by both `src/types/lineup.ts` and `Lineup.kt`, so key drift fails a build instead of a device run.
