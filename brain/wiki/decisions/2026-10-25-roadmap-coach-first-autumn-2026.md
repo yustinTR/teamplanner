@@ -3,7 +3,7 @@ type: decision
 title: Roadmap for autumn 2026 — coach-first, measure before building more
 created: 2026-10-25
 updated: 2026-10-25
-status: accepted
+status: completed 2026-10-26 — continued by [[2026-10-26-roadmap-extension-winter-2026-27]]
 decided_by: Yustin Troost, 2026-10-25, accepting the assistant's proposal and asking it to execute autonomously ("kan je dan uit je zelf verder met alle nieuwe dingen en een aangepast roadmap opstellen")
 supersedes: ""
 tags: [roadmap, product-vision, growth, android]

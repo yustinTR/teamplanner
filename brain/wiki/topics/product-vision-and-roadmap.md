@@ -2,7 +2,7 @@
 type: topic
 title: Product vision and roadmap
 created: 2026-10-23
-updated: 2026-10-23
+updated: 2026-10-26
 tags: [vision, roadmap, scope]
 sources: ["[[2026-02-xx-project-documentatie-v1]]", "[[2026-02-26-coach-autopilot-roadmap]]", "[[2026-08-24-v2-sync-push-stats-design]]"]
 ---
@@ -39,6 +39,22 @@ Set on 2026-10-25 ([[2026-10-25-roadmap-coach-first-autumn-2026]]), after the re
 | mid Nov review | Search Console re-read, tester count, funnel numbers | decide on content and on the invite flow with data |
 | not now | phases 3–4, carpool, new articles, chasing Play production | need a crowd or a measurement first |
 
+All rows above were delivered by 2026-10-26, a month early ([[2026-10-26-roadmap-extension-winter-2026-27]] records the state).
+
+### Winter 2026/27 extension
+
+Set on 2026-10-26 ([[2026-10-26-roadmap-extension-winter-2026-27]]); each row waits for its trigger:
+
+| When | What | Trigger / why |
+|---|---|---|
+| 1–15 Nov | measure: funnel events, Search Console, tester count, Play vitals | decisions need numbers, not one hand-run query |
+| Nov–Dec | follow link grows: ICS calendar feed, then availability by per-player link | three real teams with the link on; the no-account answer to "registration is the wall" |
+| winterstop | season-half review card (image + PDF, both clients) | data exists; the break is when coaches share |
+| Dec | lineup as text next to the image | small, group chats still like text |
+| ongoing | shared lineup fixture test, Realtime publication check, keystore backup, Sentry, real-device push run | the month's two failure modes were drift and silent breakage |
+| 12 testers × 14 days | apply for Play production | group member count is the trigger |
+| not now | phases 3–4, carpool, iOS native, payments, dark mode, articles before 10 Nov | crowd, measurement or money |
+
 ## Requirements
 
 - Coach creates a match in 30 seconds; player answers availability in 5 seconds; load under 2 seconds; offline basics (`PROJECT_CONTEXT.md` design principles).
@@ -49,7 +65,7 @@ Set on 2026-10-25 ([[2026-10-25-roadmap-coach-first-autumn-2026]]), after the re
 
 - [[2026-02-19-pwa-over-native-app]], [[2026-02-19-supabase-as-the-backend]]
 - [[2026-10-23-push-per-client-web-first]], [[2026-10-23-statistics-per-season-august-to-july]], [[2026-10-23-storybook-is-the-design-system-figma-dropped]]
-- [[2026-02-26-training-library-before-stats-before-ai]], [[2026-10-25-roadmap-coach-first-autumn-2026]], [[2026-10-25-made-with-strip-on-share-images]]
+- [[2026-02-26-training-library-before-stats-before-ai]], [[2026-10-25-roadmap-coach-first-autumn-2026]], [[2026-10-26-roadmap-extension-winter-2026-27]], [[2026-10-25-made-with-strip-on-share-images]], [[2026-10-26-follow-link-for-parents]]
 - [[2026-03-02-growth-before-monetisation]]
 - [[2026-03-13-android-app-in-kotlin-as-one-to-one-port]], [[2026-10-23-web-is-the-source-of-truth-for-both-clients]]
 - [[2026-08-24-daily-cron-sync-reuses-the-parser]], [[2026-08-24-web-push-via-service-worker]] (proposed)
@@ -63,4 +79,4 @@ Set on 2026-10-25 ([[2026-10-25-roadmap-coach-first-autumn-2026]]), after the re
 ## Open questions
 
 - Phase 3 design: what does "development over time" need from the data model? ([[2026-02-26-skills-as-jsonb-without-history]])
-- When does the deferred parent/carer view get a design? Deferred on 2026-10-23 without a date.
+- ~~When does the deferred parent/carer view get a design?~~ Shipped as the follow link on 2026-10-26 ([[2026-10-26-follow-link-for-parents]]); whether it grows into calendar and availability-by-link depends on the November reading.
