@@ -593,6 +593,7 @@ export type Database = {
           last_synced_at: string | null
           logo_url: string | null
           name: string
+          share_token: string | null
           show_ratings: boolean
           team_type: Database["public"]["Enums"]["team_type"]
           updated_at: string
@@ -614,6 +615,7 @@ export type Database = {
           last_synced_at?: string | null
           logo_url?: string | null
           name: string
+          share_token?: string | null
           show_ratings?: boolean
           team_type?: Database["public"]["Enums"]["team_type"]
           updated_at?: string
@@ -635,6 +637,7 @@ export type Database = {
           last_synced_at?: string | null
           logo_url?: string | null
           name?: string
+          share_token?: string | null
           show_ratings?: boolean
           team_type?: Database["public"]["Enums"]["team_type"]
           updated_at?: string
@@ -738,6 +741,10 @@ export type Database = {
         Returns: number
       }
       get_my_team_ids: { Args: never; Returns: string[] }
+      get_public_team_view: {
+        Args: { share_token_input: string }
+        Returns: Json
+      }
       get_team_by_invite_code: {
         Args: { invite_code_input: string }
         Returns: Json

@@ -43,6 +43,7 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Match report sharing (text and image) | yes | yes (2026-10-23 port; text via share sheet) | parity |
 | Substitution plan as a share image | `ShareSubstitutionPlan` card: moments, playing-time bars, strip (2026-10-26) | same card on the canvas, shared from the lineup top bar (2026-10-26, emulator-checked via print preview) | parity |
 | Share from the match list | icon on each upcoming (lineup) and played (report) card; data loaded on first tap; no lineup sends the coach to the editor (2026-10-26) | same, `MatchCard` action slot + on-demand load in the list view model (2026-10-26, emulator-tested) | parity |
+| PDF export: lineup sheet and match programme (A4, white) | `useExportPdf` (html2canvas + jsPDF, dynamic import), buttons in lineup view/editor and match list (2026-10-26) | no | gap — owed; Android can draw the same sheets on a canvas and write a PDF with `android.graphics.pdf.PdfDocument` |
 | Team settings (name, club, type, gathering, address, ratings toggle), invite link | yes | yes | parity |
 | voetbal.nl import ([[voetbal-nl-integration]]) | yes | yes (2026-10-23 port, through the web API with a Bearer token) | parity; one scraper on the server |
 | Automatic sync toggle, recent changes, refresh now ([[2026-08-24-daily-cron-sync-reuses-the-parser]]) | yes | yes (2026-10-23 port) | parity |

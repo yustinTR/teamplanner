@@ -20,6 +20,7 @@ export function createMockTeam(overrides?: Partial<Team>): Team {
     club_name: null,
     created_by: "user-coach-001",
     invite_code: "ABC123",
+    share_token: null,
     formation: "4-3-3",
     team_type: "senioren",
     logo_url: null,
