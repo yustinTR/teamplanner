@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { Share2 } from "lucide-react";
 import { MatchCard } from "./MatchCard";
+import { Button } from "@/components/atoms/Button";
 import type { Match } from "@/types";
 
 const baseMatch: Match = {
@@ -94,5 +96,18 @@ export const WithGatheringOverride: Story = {
       gathering_time: "2026-03-15T12:30:00Z",
     },
     defaultGatheringMinutes: 60,
+  },
+};
+
+export const WithAction: Story = {
+  args: {
+    match: baseMatch,
+    defaultGatheringMinutes: 60,
+    onClick: () => console.log("clicked"),
+    action: (
+      <Button variant="ghost" size="sm" className="size-11 p-0 text-muted-foreground" aria-label="Opstelling delen">
+        <Share2 className="size-4" />
+      </Button>
+    ),
   },
 };

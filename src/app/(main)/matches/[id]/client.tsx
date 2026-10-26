@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, MapPin, Clock, XCircle, CheckCircle, ClipboardList, UserPlus, Users, Share2, Copy } from "lucide-react";
+import { ArrowLeft, Pencil, MapPin, Clock, XCircle, CheckCircle, ClipboardList, UserPlus, Users, Copy } from "lucide-react";
 import Link from "next/link";
 import { useMatch, useUpdateMatch, useCancelMatch } from "@/hooks/use-matches";
 import { useAuthStore } from "@/stores/auth-store";
@@ -20,8 +20,7 @@ import { MatchStatsEditor } from "@/components/organisms/MatchStatsEditor";
 import { OnboardingHint } from "@/components/molecules/OnboardingHint";
 import { useMatchPlayers, useCreateMatchPlayer, useDeleteMatchPlayer } from "@/hooks/use-match-players";
 import { useMatchStats } from "@/hooks/use-match-stats";
-import { ShareMatchReport } from "@/components/molecules/ShareMatchReport";
-import { useShareImage } from "@/hooks/use-share-image";
+import { ShareMatchReportButton } from "@/components/organisms/ShareMatchReportButton";
 import { formatMatchDate, calculateGatheringTime, formatTime } from "@/lib/utils";
 import { HOME_AWAY_LABELS } from "@/lib/constants";
 import {
@@ -61,8 +60,6 @@ export function MatchDetailClient({ matchId }: MatchDetailClientProps) {
   const [scoreHome, setScoreHome] = useState(0);
   const [scoreAway, setScoreAway] = useState(0);
   const [leenOpen, setLeenOpen] = useState(false);
-  const reportRef = useRef<HTMLDivElement>(null);
-  const { share: shareImage, isGenerating } = useShareImage();
   const { data: matchStats } = useMatchStats(match?.status === "completed" ? id : undefined);
 
   const reportStats = (matchStats ?? [])
@@ -273,33 +270,7 @@ export function MatchDetailClient({ matchId }: MatchDetailClientProps) {
                 <Copy className="size-4" />
                 Kopieer tekst
               </Button>
-              <Button
-                variant="outline"
-                className="flex-1 gap-2"
-                onClick={() =>
-                  reportRef.current &&
-                  shareImage(reportRef.current, `verslag-${match.opponent}`, "share_report")
-                }
-                disabled={isGenerating}
-              >
-                <Share2 className="size-4" />
-                {isGenerating ? "Genereren..." : "Deel afbeelding"}
-              </Button>
-            </div>
-
-            {/* Hidden report card for image generation */}
-            <div className="fixed -left-[9999px] top-0">
-              <div ref={reportRef}>
-                <ShareMatchReport
-                  teamName={currentTeam?.name ?? "Team"}
-                  opponent={match.opponent}
-                  homeAway={match.home_away}
-                  matchDate={match.match_date}
-                  scoreHome={match.score_home ?? 0}
-                  scoreAway={match.score_away ?? 0}
-                  stats={reportStats}
-                />
-              </div>
+              <ShareMatchReportButton match={match} className="flex-1" />
             </div>
           </div>
         )}

@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors, useDroppable } from "@dnd-kit/core";
 import { motion } from "framer-motion";
-import { Share2, Wand2 } from "lucide-react";
+import { ArrowRightLeft, Share2, Wand2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/animations";
 import { useAuthStore } from "@/stores/auth-store";
@@ -22,6 +22,7 @@ import { generateSubstitutionPlan, type SubstituteSuggestion, matchPlayerToPlaye
 import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
 import { SubstitutionPlanEditor } from "@/components/organisms/SubstitutionPlanEditor";
 import { ShareLineupCard } from "@/components/molecules/ShareLineupCard";
+import { ShareSubstitutionPlan } from "@/components/molecules/ShareSubstitutionPlan";
 import { useShareImage } from "@/hooks/use-share-image";
 import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan, Availability, MatchPlayer, Team } from "@/types";
 
@@ -102,6 +103,7 @@ function LineupFieldEditor({
 }: LineupFieldEditorProps) {
   const saveLineup = useSaveLineup();
   const shareRef = useRef<HTMLDivElement>(null);
+  const planShareRef = useRef<HTMLDivElement>(null);
   const { share, isGenerating } = useShareImage();
   const [isSaved, setIsSaved] = useState(!!existingLineup);
 
@@ -473,18 +475,34 @@ function LineupFieldEditor({
               Opstelling opgeslagen. Sleep spelers om te wijzigen.
             </p>
             {matchOpponent && (
-              <Button
-                variant="outline"
-                className="w-full gap-2"
-                onClick={() =>
-                  shareRef.current &&
-                  share(shareRef.current, `opstelling-${matchId}`)
-                }
-                disabled={isGenerating}
-              >
-                <Share2 className="size-4" />
-                {isGenerating ? "Genereren..." : "Deel opstelling"}
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 gap-2"
+                  onClick={() =>
+                    shareRef.current &&
+                    share(shareRef.current, `opstelling-${matchId}`)
+                  }
+                  disabled={isGenerating}
+                >
+                  <Share2 className="size-4" />
+                  {isGenerating ? "Genereren..." : "Deel opstelling"}
+                </Button>
+                {substitutionPlan && substitutionPlan.substitutionMoments.length > 0 && (
+                  <Button
+                    variant="outline"
+                    className="flex-1 gap-2"
+                    onClick={() =>
+                      planShareRef.current &&
+                      share(planShareRef.current, `wisselschema-${matchId}`, "share_substitution_plan")
+                    }
+                    disabled={isGenerating}
+                  >
+                    <ArrowRightLeft className="size-4" />
+                    Deel wisselschema
+                  </Button>
+                )}
+              </div>
             )}
           </motion.div>
         )}
@@ -503,6 +521,16 @@ function LineupFieldEditor({
                 substitutions={shareSubstitutions}
               />
             </div>
+            {substitutionPlan && (
+              <div ref={planShareRef}>
+                <ShareSubstitutionPlan
+                  teamName={currentTeam?.name ?? "Team"}
+                  opponent={matchOpponent}
+                  matchDate={matchDate}
+                  plan={substitutionPlan}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

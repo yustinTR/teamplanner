@@ -1,0 +1,1 @@
+export { MadeWithStrip } from "./MadeWithStrip";
