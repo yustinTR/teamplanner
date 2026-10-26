@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { DndContext, type DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors, useDroppable } from "@dnd-kit/core";
 import { motion } from "framer-motion";
-import { ArrowRightLeft, Share2, Wand2 } from "lucide-react";
+import { ArrowRightLeft, FileDown, Share2, Wand2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/animations";
 import { useAuthStore } from "@/stores/auth-store";
@@ -23,6 +23,8 @@ import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } 
 import { SubstitutionPlanEditor } from "@/components/organisms/SubstitutionPlanEditor";
 import { ShareLineupCard } from "@/components/molecules/ShareLineupCard";
 import { ShareSubstitutionPlan } from "@/components/molecules/ShareSubstitutionPlan";
+import { LineupSheet } from "@/components/molecules/LineupSheet";
+import { useExportPdf } from "@/hooks/use-export-pdf";
 import { useShareImage } from "@/hooks/use-share-image";
 import type { LineupPosition, AvailabilityWithPlayer, Player, SubstitutionPlan, Availability, MatchPlayer, Team } from "@/types";
 
@@ -104,6 +106,8 @@ function LineupFieldEditor({
   const saveLineup = useSaveLineup();
   const shareRef = useRef<HTMLDivElement>(null);
   const planShareRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const { exportPdf, isExporting } = useExportPdf();
   const { share, isGenerating } = useShareImage();
   const [isSaved, setIsSaved] = useState(!!existingLineup);
 
@@ -502,6 +506,19 @@ function LineupFieldEditor({
                     Deel wisselschema
                   </Button>
                 )}
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() =>
+                    sheetRef.current && exportPdf(sheetRef.current, `opstelling-${matchId}`, "lineup")
+                  }
+                  disabled={isExporting}
+                  aria-label="Opstelling als PDF"
+                  title="Opstelling als PDF"
+                >
+                  <FileDown className="size-4" />
+                  PDF
+                </Button>
               </div>
             )}
           </motion.div>
@@ -531,6 +548,17 @@ function LineupFieldEditor({
                 />
               </div>
             )}
+            <div ref={sheetRef}>
+              <LineupSheet
+                teamName={currentTeam?.name ?? "Team"}
+                opponent={matchOpponent}
+                matchDate={matchDate}
+                formation={formation}
+                players={sharePlayers}
+                benchNames={benchPlayerNames}
+                plan={substitutionPlan}
+              />
+            </div>
           </div>
         )}
       </div>
