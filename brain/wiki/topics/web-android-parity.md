@@ -41,6 +41,8 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Substitution planner, minutes bars, auto-generation | yes | yes | parity |
 | Lineup image sharing | 540 CSS px card rendered at scale 2 ([[2026-03-02-share-images-from-hidden-components]]) | same card, 540×810 at scale 2 (2026-10-23) | parity ([[2026-10-23-android-share-image-matches-the-web-card]]) |
 | Match report sharing (text and image) | yes | yes (2026-10-23 port; text via share sheet) | parity |
+| Substitution plan as a share image | `ShareSubstitutionPlan` card: moments, playing-time bars, strip (2026-10-26) | same card on the canvas, shared from the lineup top bar (2026-10-26, emulator-checked via print preview) | parity |
+| Share from the match list | icon on each upcoming (lineup) and played (report) card; data loaded on first tap; no lineup sends the coach to the editor (2026-10-26) | same, `MatchCard` action slot + on-demand load in the list view model (2026-10-26, emulator-tested) | parity |
 | Team settings (name, club, type, gathering, address, ratings toggle), invite link | yes | yes | parity |
 | voetbal.nl import ([[voetbal-nl-integration]]) | yes | yes (2026-10-23 port, through the web API with a Bearer token) | parity; one scraper on the server |
 | Automatic sync toggle, recent changes, refresh now ([[2026-08-24-daily-cron-sync-reuses-the-parser]]) | yes | yes (2026-10-23 port) | parity |
@@ -105,5 +107,6 @@ Platform-forced, written down so they stop being questions:
 ## Open questions
 
 - Verified 2026-10-25 in code: all five were gaps; all five closed the same day and shipped as closed-test release 5 (1.2.0). Still owed: exercise reordering in a plan; a two-team account to exercise the switcher; a live Realtime check on a device.
+- 2026-10-26: roadmap step 1 finished on both clients (plan image, list sharing); Android release 1.3.0 (versionCode 6) carries it to the closed test. Owed list unchanged.
 - Still unverified on a device: the import flow end to end, image sharing through the share sheet, push.
 - Write the shared fixture test: one lineup JSON, decoded by both `src/types/lineup.ts` and `Lineup.kt`, so key drift fails a build instead of a device run.
