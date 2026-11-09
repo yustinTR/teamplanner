@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { BarChart3 } from "lucide-react";
+import { useRef, useState } from "react";
+import { BarChart3, Share2 } from "lucide-react";
 import { useTeamStats } from "@/hooks/use-team-stats";
 import { SeasonSelect } from "@/components/molecules/SeasonSelect";
 import { currentSeason, seasonLabel } from "@/lib/season";
@@ -11,6 +11,18 @@ import { AttendanceOverview } from "@/components/molecules/AttendanceOverview";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
 import { EmptyState } from "@/components/atoms/EmptyState";
 import { Spinner } from "@/components/atoms/Spinner";
+import { Button } from "@/components/atoms/Button";
+import { ShareSeasonReview } from "@/components/molecules/ShareSeasonReview";
+import { useShareImage } from "@/hooks/use-share-image";
+import { useAuthStore } from "@/stores/auth-store";
+import { buildSeasonReview } from "@/lib/season-review";
+
+/** "tot de winterstop" in December and January, otherwise "tot nu toe". */
+function seasonSubtitle(season: number, now = new Date()): string | undefined {
+  if (season !== currentSeason(now)) return undefined;
+  const month = now.getMonth();
+  return month === 11 || month === 0 ? "tot de winterstop" : "tot nu toe";
+}
 
 interface TeamStatsDashboardProps {
   teamId: string;
@@ -33,6 +45,9 @@ function StatTile({ label, value }: StatTileProps) {
 export function TeamStatsDashboard({ teamId }: TeamStatsDashboardProps) {
   const [season, setSeason] = useState(() => currentSeason());
   const { data, isLoading } = useTeamStats(teamId, season);
+  const teamName = useAuthStore((s) => s.currentTeam?.name) ?? "Mijn team";
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { share, isGenerating } = useShareImage();
 
   if (isLoading) {
     return (
@@ -61,10 +76,37 @@ export function TeamStatsDashboard({ teamId }: TeamStatsDashboardProps) {
   }
 
   const { summary, playerStats, attendance } = data;
+  const review = buildSeasonReview(summary, playerStats, attendance);
 
   return (
     <div className="space-y-4">
-      {selector}
+      <div className="flex items-center justify-between gap-2">
+        <div>{selector}</div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-1.5"
+          disabled={isGenerating}
+          onClick={() =>
+            cardRef.current &&
+            share(cardRef.current, `seizoen-${seasonLabel(season).replace("/", "-")}`, "share_season_review")
+          }
+        >
+          <Share2 className="size-4" />
+          {isGenerating ? "Genereren..." : "Seizoenskaart delen"}
+        </Button>
+      </div>
+      {/* Off-screen card for html2canvas */}
+      <div aria-hidden="true" className="pointer-events-none fixed -left-[9999px] top-0">
+        <div ref={cardRef}>
+          <ShareSeasonReview
+            teamName={teamName}
+            seasonLabel={seasonLabel(season)}
+            subtitle={seasonSubtitle(season)}
+            review={review}
+          />
+        </div>
+      </div>
       <div className="grid grid-cols-4 gap-2">
         <StatTile label="Gespeeld" value={`${summary.played}`} />
         <StatTile
