@@ -210,6 +210,21 @@
           "value": "{{DLV - players}}"
          }
         ]
+       },
+       {
+        "type": "MAP",
+        "map": [
+         {
+          "type": "TEMPLATE",
+          "key": "parameter",
+          "value": "source"
+         },
+         {
+          "type": "TEMPLATE",
+          "key": "parameterValue",
+          "value": "{{DLV - source}}"
+         }
+        ]
        }
       ]
      }
@@ -504,6 +519,30 @@
       "type": "TEMPLATE",
       "key": "name",
       "value": "players"
+     }
+    ]
+   },
+   {
+    "accountId": "6343176257",
+    "containerId": "245695172",
+    "variableId": "9111",
+    "name": "DLV - source",
+    "type": "v",
+    "parameter": [
+     {
+      "type": "INTEGER",
+      "key": "dataLayerVersion",
+      "value": "2"
+     },
+     {
+      "type": "BOOLEAN",
+      "key": "setDefaultValue",
+      "value": "false"
+     },
+     {
+      "type": "TEMPLATE",
+      "key": "name",
+      "value": "source"
      }
     ]
    }

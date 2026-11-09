@@ -21,6 +21,11 @@ import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } 
 import { useShareImage } from "@/hooks/use-share-image";
 import { buildShareLineupData, lineupAsText, lineupPositions } from "@/lib/share-lineup";
 import { trackEvent } from "@/lib/gtm";
+import { FollowLinkPrompt } from "@/components/molecules/FollowLinkPrompt";
+import { useFollowLink } from "@/hooks/use-follow-link";
+import { dismissHint, isHintDismissed } from "@/lib/onboarding";
+
+const FOLLOW_PROMPT_KEY = "follow_link_after_share";
 import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
 import type { Player } from "@/types";
 
@@ -49,7 +54,16 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
   const { exportPdf, isExporting } = useExportPdf();
   const { share, isGenerating } = useShareImage();
   const [textCopied, setTextCopied] = useState(false);
-  const { currentTeam } = useAuthStore();
+  const { currentTeam, isCoach } = useAuthStore();
+  const followLink = useFollowLink();
+  // "off" until a share; "offer" shows the prompt; "on" after enabling here; "closed" when dismissed
+  const [followPrompt, setFollowPrompt] = useState<"off" | "offer" | "on" | "closed">("off");
+
+  function afterShare() {
+    if (isCoach && !currentTeam?.share_token && !isHintDismissed(FOLLOW_PROMPT_KEY)) {
+      setFollowPrompt("offer");
+    }
+  }
   const showRatings = currentTeam?.show_ratings ?? true;
   const { data: lineup, isLoading } = useLineup(matchId);
   const { data: players } = usePlayers(currentTeam?.id);
@@ -95,6 +109,7 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
       try {
         await navigator.share({ text });
         trackEvent("share_lineup_text", { method: "native" });
+        afterShare();
       } catch {
         // Share sheet closed without sharing.
       }
@@ -102,6 +117,7 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
     }
     await navigator.clipboard.writeText(text);
     trackEvent("share_lineup_text", { method: "clipboard" });
+    afterShare();
     setTextCopied(true);
     setTimeout(() => setTextCopied(false), 2000);
   }
@@ -154,10 +170,11 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
             variant="ghost"
             size="sm"
             className="gap-1.5"
-            onClick={() =>
-              shareRef.current &&
-              share(shareRef.current, `opstelling-${matchId}`)
-            }
+            onClick={async () => {
+              if (!shareRef.current) return;
+              await share(shareRef.current, `opstelling-${matchId}`);
+              afterShare();
+            }}
             disabled={isGenerating || !matchOpponent}
           >
             <Share2 className="size-4" />
@@ -165,6 +182,21 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
           </Button>
         </div>
       </div>
+
+      {(followPrompt === "offer" || followPrompt === "on") && (
+        <FollowLinkPrompt
+          shareToken={followPrompt === "on" ? currentTeam?.share_token ?? null : null}
+          pending={followLink.isPending}
+          onEnable={async () => {
+            await followLink.setEnabled(true, "after_share");
+            setFollowPrompt("on");
+          }}
+          onDismiss={() => {
+            dismissHint(FOLLOW_PROMPT_KEY);
+            setFollowPrompt("closed");
+          }}
+        />
+      )}
 
       <div className="relative aspect-[68/105] w-full overflow-hidden rounded-lg bg-green-600">
         {/* Field markings */}
