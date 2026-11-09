@@ -140,3 +140,7 @@ GTM container version 4 adds the `tool_*` events and their `tool`, `format`, `pl
 ## [2026-11-09] refactor | No social posting via Yustin's accounts
 Pages touched: [[native-app]]
 Reddit was blocked in both browsers; while Facebook groups were being searched, Yustin stopped it: tester recruitment and growth do not run through his personal social media. Nothing was posted or joined. Recruitment continues through the dashboard card, share button and `/android`.
+
+## [2026-11-09] refactor | Lineup as text and season review card on both clients
+Pages touched: [[web-android-parity]]
+Two winter-roadmap rows built ahead of December, on web (live) and Android (`main`, after 1.5.0): lineup as plain text for group chats, grouped keeper/defence/midfield/attack with bench and substitutions; and the season review card (record, goals, top three scorers and assisters, most available players among regular responders) shared from the statistics page, subtitled "tot de winterstop" in December and January. GTM import file gained `share_lineup_text` and `share_season_review` but is not re-imported yet. Yustin wants this project kept apart from his private accounts.
