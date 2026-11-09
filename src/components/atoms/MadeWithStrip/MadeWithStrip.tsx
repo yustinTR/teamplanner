@@ -29,7 +29,7 @@ export function MadeWithStrip() {
         />
         <span style={{ fontSize: 13, fontWeight: 700 }}>Gemaakt met MyTeamPlanner</span>
       </div>
-      <span style={{ fontSize: 11, opacity: 0.9 }}>myteamplanner.nl · gratis voor je team</span>
+      <span style={{ fontSize: 11, opacity: 0.9 }}>myteamplanner.nl/maak · gratis voor je team</span>
     </div>
   );
 }
