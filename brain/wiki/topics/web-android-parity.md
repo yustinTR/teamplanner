@@ -83,6 +83,8 @@ Platform-forced, written down so they stop being questions:
 | Free tools without account (`/tools/wisselschema`, `/tools/opstelling`) | yes (2026-11-09) | — | allowed difference: public marketing pages, not app features |
 | Lineup as text (copy / share sheet) — roadmap winter row "lineup as text" | yes (2026-11-09), 'Tekst' button in the lineup | yes, chat icon in the lineup toolbar (`ui/lineup/LineupText.kt`, unit-tested), on `main`, unreleased | parity in code — ships with the next Android release |
 | Season review card ([[2026-10-26-roadmap-extension-winter-2026-27]]) | yes (2026-11-09), 'Seizoenskaart delen' on the statistics page | yes, share icon on the statistics screen (`ui/team/SeasonReviewImage.kt`, checked in print preview), on `main`, unreleased | parity in code — ships with the next Android release; a PDF page is not built on either client |
+| Follow-link offer after sharing a lineup | yes (2026-11-09), `FollowLinkPrompt` | yes, card in the lineup screen, on `main`, unreleased (checked on the emulator end to end) | parity in code — ships with the next Android release |
+| Club-site widget and embed code (`/embed/<token>`) | yes (2026-11-09) | — | allowed difference: club websites are maintained on a computer; the code is copied from the web settings |
 
 ### Shared contract (must never drift)
 

@@ -55,3 +55,11 @@ export const NoPlayerCount: Story = {
     difficulty: "basis",
   },
 };
+
+/** On the public exercise pages the card links to the indexable page. */
+export const PublicLink: Story = {
+  args: {
+    ...Default.args,
+    href: "/voetbaloefeningen/rondo-4-tegen-2",
+  },
+};

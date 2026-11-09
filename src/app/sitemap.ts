@@ -1,10 +1,17 @@
 import { FORMAT_PAGES } from "@/lib/format-pages";
 import type { MetadataRoute } from "next";
 import { blogPosts } from "@/lib/blog";
+import {
+  AGE_GROUPS,
+  EXERCISES_BASE_PATH,
+  exercisePath,
+  getPublishedExercises,
+} from "@/lib/public-exercises";
 
 const siteUrl = "https://www.myteamplanner.nl";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const exercises = await getPublishedExercises();
   const latestPostDate = blogPosts
     .map((post) => post.date)
     .sort()
@@ -55,6 +62,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.8,
       }))
     ),
+    {
+      url: `${siteUrl}${EXERCISES_BASE_PATH}`,
+      lastModified: "2026-11-09",
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...AGE_GROUPS.map((g) => ({
+      url: `${siteUrl}${EXERCISES_BASE_PATH}/leeftijd/${g.slug}`,
+      lastModified: "2026-11-09",
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...exercises.map((e) => ({
+      url: `${siteUrl}${exercisePath(e.title)}`,
+      lastModified: e.updated_at.slice(0, 10),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     {
       url: `${siteUrl}/android`,
       lastModified: "2026-10-25",

@@ -1,0 +1,1 @@
+export { ExerciseContent } from "./ExerciseContent";

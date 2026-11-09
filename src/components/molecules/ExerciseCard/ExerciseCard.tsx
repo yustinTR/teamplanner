@@ -20,6 +20,8 @@ interface ExerciseCardProps {
   minPlayers?: number | null;
   maxPlayers?: number | null;
   difficulty: string;
+  /** Defaults to the in-app detail page. */
+  href?: string;
 }
 
 export function ExerciseCard({
@@ -30,6 +32,7 @@ export function ExerciseCard({
   minPlayers,
   maxPlayers,
   difficulty,
+  href,
 }: ExerciseCardProps) {
   const playerRange =
     minPlayers && maxPlayers
@@ -41,7 +44,7 @@ export function ExerciseCard({
           : null;
 
   return (
-    <Link href={`/trainingen/oefeningen/${id}`} className={"m-3"}>
+    <Link href={href ?? `/trainingen/oefeningen/${id}`} className={"m-3"}>
       <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-all hover:shadow-md">
         {/* Category illustration */}
         <div className="relative h-24 w-full overflow-hidden bg-neutral-50">

@@ -152,3 +152,7 @@ Eight format pages for the two free tools and the overview article "Speelvormen 
 ## [2026-11-09] refactor | Free tools hand their players to a new team
 Pages touched: [[onboarding-and-conversion]]
 "Bewaar mijn team" in both tools saves the roster locally; create-team and the empty dashboard pick it up. Live. Second growth lever after the format pages: search brings coaches to a tool, the handoff removes the empty-team step.
+
+## [2026-11-09] refactor | Follow-link offer after sharing; club-site widget
+Pages touched: [[growth-and-seo]], [[web-android-parity]]
+Two in-product spread levers, live on web: the follow-link offer after a lineup share (also Android `main`, checked end to end on the emulator, which switched the test team's link on) and the embeddable team widget with copyable code in the follow-link settings. The widget shows no lineups or names on purpose. GTM import file now also carries `copy_embed_code` and a `source` parameter on `enable_follow_link`; not yet imported.
