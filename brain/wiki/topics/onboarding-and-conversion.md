@@ -18,6 +18,8 @@ The funnel is: search or shared link → landing page → register → create te
 - **Player onboarding** ([[2026-03-02-growth-seo-viral-design]]): the invite link previews in WhatsApp with the team name and lands on *"Coach X nodigt je uit voor Team Y"*; a `join_team` RPC and e-mail templates exist since 2026-02-25 (`supabase/migrations/20260225080855_*`).
 - **Voetbal.nl import** shortens "add players" and "plan matches" for teams that exist on voetbal.nl ([[voetbal-nl-integration]]).
 
+- **Tool-to-team handoff (2026-11-09)**: names, format and team name typed into a free tool travel through sign-up in localStorage (7 days) and fill the first team: create-team prefills name and team type and adds the players unless the coach unticks it; the empty dashboard says the players are waiting. Measured with `tool_cta_click` → `tool_handoff_used` (GTM import file updated, not yet imported). Not verified end to end in a browser: that needs a real sign-up on production; covered by a hook test and a story.
+
 ## Requirements
 
 - A coach must reach a shared invite link without documentation; a player must reach their first availability tap from a WhatsApp message in one flow.

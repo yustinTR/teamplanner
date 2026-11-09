@@ -148,3 +148,7 @@ Two winter-roadmap rows built ahead of December, on web (live) and Android (`mai
 ## [2026-11-09] refactor | Tool landing pages per KNVB format
 Pages touched: [[growth-and-seo]]
 Eight format pages for the two free tools and the overview article "Speelvormen jeugdvoetbal", live. Chosen from the growth options as the first lever because the tools need search traffic before the tool-to-account handoff matters. Next candidate: carry the tool's names and format into a new account.
+
+## [2026-11-09] refactor | Free tools hand their players to a new team
+Pages touched: [[onboarding-and-conversion]]
+"Bewaar mijn team" in both tools saves the roster locally; create-team and the empty dashboard pick it up. Live. Second growth lever after the format pages: search brings coaches to a tool, the handoff removes the empty-team step.
