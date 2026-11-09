@@ -8,7 +8,18 @@ export interface BlogPost {
   featureLabel: string;
   keywords: string[];
   relatedSlugs?: string[];
+  /** Contextual sign-up prompt shown inside the article, after `afterSection`. */
+  cta?: BlogPostCta;
   sections: BlogSection[];
+}
+
+export interface BlogPostCta {
+  heading: string;
+  text: string;
+  buttonLabel: string;
+  preview: "substitution-plan" | "lineup" | "none";
+  /** Zero-based index of the section the prompt follows. */
+  afterSection: number;
 }
 
 export interface BlogSection {
@@ -28,6 +39,13 @@ export const blogPosts: BlogPost[] = [
     featureLabel: "Opstellingen maken",
     keywords: ["opstelling 7 tegen 7", "formatie 7v7", "jeugdvoetbal opstelling", "7 tegen 7 formaties"],
     relatedSlugs: ["wisselschema-jeugdvoetbal", "opstelling-maken-voetbal", "voetbal-teamindeling-maken"],
+    cta: {
+      heading: "Je 2-3-1 klaar om te delen",
+      text: "Kies de formatie, sleep je spelers op hun plek en plan de wissels. Je team krijgt de opstelling als afbeelding in de groepsapp.",
+      buttonLabel: "Maak je 7 tegen 7 opstelling",
+      preview: "lineup",
+      afterSection: 1,
+    },
     sections: [
       {
         heading: "Waarom 7 tegen 7?",
@@ -68,15 +86,29 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "wisselschema-jeugdvoetbal",
-    title: "Wisselschema jeugdvoetbal: eerlijk wisselen",
+    title: "Wisselschema jeugdvoetbal: voorbeeld 7 tegen 7",
     description:
-      "Hoe maak je een eerlijk wisselschema voor je jeugdteam? Praktische tips en een stapsgewijze aanpak voor coaches die elke speler evenveel speeltijd willen geven.",
+      "Hoe maak je een wisselschema? Stap voor stap, met een uitgewerkt voorbeeld voor 7 tegen 7 met 9 spelers. Iedereen speelt 37 of 38 minuten — zo verdeel je speeltijd eerlijk.",
     date: "2026-02-25",
-    readingTime: "4 min",
+    readingTime: "5 min",
     featureLink: "/features/opstellingen",
     featureLabel: "Wisselschema maken",
-    keywords: ["wisselschema jeugdvoetbal", "speeltijd verdelen", "eerlijk wisselen voetbal", "wisselschema maken"],
+    keywords: [
+      "wisselschema jeugdvoetbal",
+      "hoe maak je een wisselschema",
+      "wisselschema maken",
+      "wisselschema 7 tegen 7",
+      "speeltijd verdelen",
+      "eerlijk wisselen voetbal",
+    ],
     relatedSlugs: ["opstelling-7-tegen-7-voetbal", "beschikbaarheid-bijhouden-team", "opstelling-maken-voetbal"],
+    cta: {
+      heading: "Maak dit wisselschema in 2 minuten",
+      text: "Sleep je spelers op het veld, kies je wisselmomenten en zie direct hoeveel minuten iedereen speelt. Daarna deel je het schema met één tik in de groepsapp.",
+      buttonLabel: "Maak je wisselschema",
+      preview: "substitution-plan",
+      afterSection: 3,
+    },
     sections: [
       {
         heading: "Waarom eerlijke speeltijd belangrijk is",
@@ -97,6 +129,14 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           "Tel het totaal aantal speelminuten: 7 posities x 50 minuten = 350 speelminuten. Deel dit door 14 spelers = 25 minuten per speler. In de praktijk is het niet altijd exact gelijk, maar streef naar maximaal 5 minuten verschil.",
           "Houd bij hoeveel minuten elke speler over het seizoen maakt. Zo kun je compenseren als iemand een keer minder heeft gespeeld.",
+        ],
+      },
+      {
+        heading: "Voorbeeld: wisselschema 7 tegen 7 met 9 spelers",
+        paragraphs: [
+          "Een JO11-team speelt 2x 25 minuten in een 2-3-1. Je hebt een keeper en acht veldspelers voor zes veldposities, dus 6 x 50 = 300 veldminuten verdeeld over acht spelers: 37 of 38 minuten per speler. De keeper speelt de hele wedstrijd.",
+          "Minuut 12: de linker verdediger en de linker middenvelder gaan eruit, de twee wissels komen erin. Minuut 25 (rust): de rechter verdediger en de centrale middenvelder gaan eruit, de twee spelers van minuut 12 komen terug. Minuut 37: de rechter middenvelder en de spits gaan eruit, de twee spelers van de rust komen terug.",
+          "Resultaat: vier spelers spelen 38 minuten, vier spelers 37 minuten. Niemand zit langer dan 13 minuten aan de kant, en elke wissel is een duo, zodat er nooit meer dan twee nieuwe spelers tegelijk het veld op komen. Wissel de volgende week de volgorde om, zodat niet steeds dezelfde spelers beginnen.",
         ],
       },
       {
@@ -235,15 +275,29 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "voetbal-training-oefeningen",
-    title: "Voetbal training oefeningen: 79+ ideeën",
+    title: "Voetbal training oefeningen voor de jeugd (+ thuis)",
     description:
-      "Geen inspiratie voor de training? Blader door 79+ voetbaloefeningen gefilterd op niveau, thema en spelersaantal. Van warming-up tot tactische sessies.",
+      "Vijf voetbaloefeningen voor de jeugdtraining, drie die je thuis kunt doen, en een bibliotheek met 79 oefeningen gefilterd op niveau en thema. Van warming-up tot partijvorm.",
     date: "2026-02-05",
-    readingTime: "4 min",
+    readingTime: "6 min",
     featureLink: "/features/trainingen",
     featureLabel: "Oefeningen bekijken",
-    keywords: ["voetbal training oefeningen", "voetbaloefeningen", "training voetbal", "oefeningen jeugdvoetbal"],
+    keywords: [
+      "voetbal training oefeningen",
+      "voetbal training oefeningen jeugd",
+      "voetbal oefeningen voor thuis",
+      "voetbaltraining thuis",
+      "voetbaloefeningen",
+      "oefeningen jeugdvoetbal",
+    ],
     relatedSlugs: ["voetbalseizoen-plannen", "spelers-beoordelen-jeugdtrainer", "opstelling-7-tegen-7-voetbal"],
+    cta: {
+      heading: "Je hele training in één plan",
+      text: "Kies een warming-up, twee hoofdoefeningen en een partijvorm uit 79 oefeningen. De app telt de minuten op en je spelers zien vooraf wat er op het programma staat.",
+      buttonLabel: "Maak je trainingsplan",
+      preview: "none",
+      afterSection: 2,
+    },
     sections: [
       {
         heading: "Het wekelijkse dilemma",
@@ -253,9 +307,27 @@ export const blogPosts: BlogPost[] = [
         ],
       },
       {
-        heading: "Een bibliotheek met 79+ oefeningen",
+        heading: "5 oefeningen voor de jeugdtraining",
         paragraphs: [
-          "MyTeamPlanner bevat een groeiende bibliotheek met kant-en-klare voetbaloefeningen. Elke oefening heeft een duidelijke beschrijving, materiaallijst, en variaties voor verschillende niveaus.",
+          "Rondo 4 tegen 1 (warming-up, 10 min): vier spelers op de hoeken van een vak van 8 bij 8 meter, één speler in het midden. Na een balverovering wisselt de speler die de fout maakte. Leert aannemen, kijken en snel afspelen.",
+          "Passen in driehoeken (passing, 10 min): drie pionnen op 10 meter van elkaar, spelers volgen hun pass. Laat ze eerst met rechts, dan met links spelen. Bij de jongste jeugd liever 6 meter dan 10.",
+          "Dribbelen door poortjes (dribbelen, 10 min): zet acht tot tien pionnenpoortjes verspreid in een vak. Iedere speler een bal, in één minuut door zoveel mogelijk poortjes. Jongere spelers tellen hardop, oudere mogen geen poortje twee keer achter elkaar nemen.",
+          "1 tegen 1 op een klein doeltje (aanvallen en verdedigen, 15 min): twee rijen naast een doeltje, de trainer speelt de bal in, wie hem heeft valt aan. Kort en intensief, met veel herhalingen per speler.",
+          "Partijvorm 4 tegen 4 op kleine doeltjes (partijvorm, 15 min): geen keepers, kleine velden, veel balcontacten. Eindig elke training met een partij — daar komen de spelers voor.",
+        ],
+      },
+      {
+        heading: "3 voetbaloefeningen voor thuis",
+        paragraphs: [
+          "Tegen de muur passen: om en om links en rechts tegen een muur of schutting, de bal elke keer eerst aannemen. Tel hoeveel keer het in een minuut lukt en probeer dat record te verbeteren.",
+          "Hooghouden: begin met bal laten stuiten, hooghouden, stuiten. Voor de jongste spelers is tien keer achter elkaar al een mooi doel.",
+          "Slalom tussen spullen: zet vijf flessen of schoenen op een rij en dribbel er met binnen- en buitenkant voet tussendoor. Zo traint een speler in de tuin of op de stoep wat ook op het veld terugkomt.",
+        ],
+      },
+      {
+        heading: "Een bibliotheek met 79 oefeningen",
+        paragraphs: [
+          "MyTeamPlanner bevat een bibliotheek met 79 kant-en-klare voetbaloefeningen. Elke oefening heeft een duidelijke beschrijving, materiaallijst, en variaties voor verschillende niveaus.",
           "Filter op categorie (passing, positiespel, verdedigen, aanvallen, conditie), moeilijkheidsgraad (basis, gemiddeld, gevorderd), en teamtype (senioren, jeugd, G-team). Zo vind je in seconden de juiste oefening.",
         ],
       },
@@ -592,9 +664,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "opstelling-maken-voetbal",
-    title: "Online voetbalopstelling maken en delen met je team",
+    title: "Voetbal opstelling maken en delen (gratis online)",
     description:
-      "Leer hoe je snel een voetbalopstelling maakt met een online tool. Van formatie kiezen tot spelers slepen en delen via WhatsApp — alles uitgelegd voor coaches.",
+      "Maak je voetbal opstelling online: kies een formatie, sleep spelers op het veld en deel de opstelling als afbeelding in de groepsapp. Gratis, voor 11 en 7 tegen 7.",
     date: "2026-04-10",
     readingTime: "5 min",
     featureLink: "/features/opstellingen",
@@ -608,6 +680,13 @@ export const blogPosts: BlogPost[] = [
       "opstelling tool gratis",
     ],
     relatedSlugs: ["opstelling-7-tegen-7-voetbal", "wisselschema-jeugdvoetbal", "beste-voetbal-team-app"],
+    cta: {
+      heading: "Zo ziet je opstelling eruit in de groepsapp",
+      text: "Kies een formatie, sleep je spelers op hun plek en deel de opstelling als afbeelding. Met wisselmomenten erbij, zodat iedereen weet wanneer hij speelt.",
+      buttonLabel: "Maak je opstelling",
+      preview: "lineup",
+      afterSection: 2,
+    },
     sections: [
       {
         heading: "Waarom je opstelling digitaal maken?",
