@@ -120,3 +120,7 @@ The test account got a second team (3 players, 1 match); the Android switcher li
 ## [2026-11-09] query | November reading: search caught up, usage flat
 Pages touched: [[2026-11-09-search-and-usage-reading]] (new note), [[growth-and-seo]], [[2026-10-25-active-team-recount]], `index.md`
 Search Console via Yustin's Chrome: 21 pages indexed (3 on 2026-10-25), all blog articles in; 25 clicks / 1,130 impressions in 14 days, 10 clicks on the substitution-schedule article. The feature pages opstellingen, trainingen and wedstrijden had never been crawled — indexing requested. Supabase: 9 real active teams (the October 11 included the emulator team; corrected), 3 new real teams, both follow-link tokens belong to emulator teams. GTM funnel still unread.
+
+## [2026-11-09] refactor | Growth push: tools, tester recruitment, GTM gap, KNVB formats
+Pages touched: [[2026-11-09-knvb-youth-match-formats]] (new decision), [[growth-and-seo]], [[native-app]], [[web-android-parity]], `index.md`
+Live: blog CTAs with the share card, tester recruitment (dashboard card, share button, `/android`), GTM version 3 forwarding all app events to GA4 — they had never reached it. Testers: 1 of 12. On branch `feature/knvb-youth-formats` (web and Android): KNVB youth formats, free schedule and lineup tools, `/maak` on the share strip, search tuning. Blog content corrected the same day: no KNVB youth category plays 7 v 7. The production migration was refused by the permission filter and waits for Yustin.

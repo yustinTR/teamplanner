@@ -78,6 +78,9 @@ Platform-forced, written down so they stop being questions:
 | Store/install pages | `/android` install page, dashboard hint, landing block | n/a — the app *is* the install | allowed difference: web-only marketing |
 | Legal pages | `/privacy`, `/voorwaarden` | profile links open the web pages | allowed difference: single source for legal text |
 | Push mechanism | Web Push (VAPID) | FCM data messages | by choice; both built and configured | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
+| KNVB youth formats: 6 v 6, 8 v 8, 11 v 11 from JO13 ([[2026-11-09-knvb-youth-match-formats]]) | branch `feature/knvb-youth-formats` | branch `feature/knvb-youth-formats` (constants, 6v6 formations, settings label) | pending — both wait for the production migration; unit tests green on both |
+| Share strip reads `myteamplanner.nl/maak` | branch | branch | pending release on both |
+| Free tools without account (`/tools/wisselschema`, `/tools/opstelling`) | branch | — | allowed difference: public marketing pages, not app features |
 
 ### Shared contract (must never drift)
 
