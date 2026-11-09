@@ -6,14 +6,21 @@ import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "luc
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Beschikbaarheid bijhouden — gratis voetbal team app",
+  title: "Aanwezigheid app voor je voetbalteam — gratis",
   description:
-    "Beschikbaarheid bijhouden voor je voetbalteam zonder WhatsApp-chaos. Spelers geven met één tik aan of ze er zijn. Gratis voor amateurvoetbal.",
+    "Aanwezigheid en beschikbaarheid bijhouden voor je voetbalteam zonder WhatsApp-chaos. Spelers geven met één tik aan of ze er zijn, jij ziet direct wie je kunt opstellen. Gratis.",
+  keywords: [
+    "aanwezigheid app",
+    "aanwezigheid bijhouden voetbal",
+    "beschikbaarheid bijhouden voetbalteam",
+    "afmelden training app",
+    "voetbal team app",
+  ],
   alternates: {
     canonical: "https://www.myteamplanner.nl/features/beschikbaarheid",
   },
   openGraph: {
-    title: "Beschikbaarheid bijhouden — gratis voetbal team app",
+    title: "Aanwezigheid app voor je voetbalteam — gratis",
     description: "Beschikbaarheid bijhouden voor je voetbalteam zonder WhatsApp-chaos. Spelers geven met één tik aan of ze er zijn.",
     url: "https://www.myteamplanner.nl/features/beschikbaarheid",
   },

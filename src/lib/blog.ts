@@ -396,14 +396,14 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "app-voetbaltrainer",
-    title: "Beste apps voor voetbaltrainers in 2026",
+    title: "Voetbaltrainer app: de beste apps voor coaches (2026)",
     description:
-      "Welke apps zijn er voor amateurvoetbaltrainers? Een vergelijking van de beste tools voor teammanagement, opstellingen en beschikbaarheid.",
+      "Op zoek naar een voetbaltrainer app of voetbal coach app? Een vergelijking van de beste apps voor amateurtrainers: opstellingen, wisselschema's, aanwezigheid en trainingen.",
     date: "2026-03-10",
     readingTime: "5 min",
     featureLink: "/register",
     featureLabel: "Gratis starten",
-    keywords: ["app voetbaltrainer", "beste voetbal app", "voetbal coach app", "teammanagement app voetbal"],
+    keywords: ["voetbaltrainer app", "app voetbaltrainer", "voetbal coach app", "beste voetbal app", "teammanagement app voetbal"],
     relatedSlugs: ["gratis-voetbal-app-voor-je-team", "team-managen-als-voetbaltrainer", "communicatie-voetbalteam"],
     sections: [
       {
@@ -466,7 +466,7 @@ export const blogPosts: BlogPost[] = [
         heading: "Plan je trainingen",
         paragraphs: [
           "Maak een globaal trainingsplan per periode. Wissel techniek, tactiek en conditie af. In de voorbereiding focus je op conditie en teambuilding. Tijdens de competitie werk je aan specifieke verbeterpunten die je in wedstrijden ziet.",
-          "Gebruik een oefeningenbibliotheek voor inspiratie. Met 79+ kant-en-klare oefeningen hoef je niet elke week het wiel opnieuw uit te vinden. Filter op thema, niveau en aantal spelers om snel de juiste oefening te vinden.",
+          "Gebruik een oefeningenbibliotheek voor inspiratie. Met 79 kant-en-klare oefeningen hoef je niet elke week het wiel opnieuw uit te vinden. Filter op thema, niveau en aantal spelers om snel de juiste oefening te vinden.",
         ],
       },
       {

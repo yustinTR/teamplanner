@@ -8,19 +8,19 @@ import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Voetbal trainingsschema maken — gratis oefeningen",
   description:
-    "Trainingsschema maken voor je voetbalteam met 79+ kant-en-klare oefeningen. Filter op niveau en thema, stel een plan samen in 2 minuten. Gratis.",
+    "Trainingsschema maken voor je voetbalteam met 79 kant-en-klare oefeningen. Filter op niveau en thema, stel een plan samen in 2 minuten. Gratis.",
   alternates: {
     canonical: "https://www.myteamplanner.nl/features/trainingen",
   },
   openGraph: {
     title: "Voetbal trainingsschema maken — gratis oefeningen",
-    description: "Trainingsschema maken voor je voetbalteam met 79+ kant-en-klare oefeningen. Filter op niveau en thema.",
+    description: "Trainingsschema maken voor je voetbalteam met 79 kant-en-klare oefeningen. Filter op niveau en thema.",
     url: "https://www.myteamplanner.nl/features/trainingen",
   },
 };
 
 const solutions = [
-  "Bibliotheek met 79+ kant-en-klare voetbaloefeningen met illustraties",
+  "Bibliotheek met 79 kant-en-klare voetbaloefeningen met illustraties",
   "Filter op teamniveau (jeugd, senioren, G-team), thema en spelersaantal",
   "Combineer oefeningen tot een trainingsplan en koppel het aan je kalender",
   "Oefeningen voor elke leeftijd — van warming-up tot tactische sessies",
@@ -49,7 +49,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "Trainingsplannen met kant-en-klare oefeningen",
-  description: "Stel in 2 minuten een trainingsplan samen uit 79+ voetbaloefeningen. Gefilterd op niveau en thema.",
+  description: "Stel in 2 minuten een trainingsplan samen uit 79 voetbaloefeningen. Gefilterd op niveau en thema.",
   url: "https://www.myteamplanner.nl/features/trainingen",
   isPartOf: { "@type": "WebSite", name: "MyTeamPlanner", url: "https://www.myteamplanner.nl" },
 };
