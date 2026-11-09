@@ -132,3 +132,7 @@ Yustin approved the migration; it added `jo12_jo11`, `jo10`, `jo9_jo8` and tagge
 ## [2026-11-09] refactor | Android 1.5.0 built; enum bug found on the emulator
 Pages touched: [[web-android-parity]]
 Release-signed 1.5.0 (versionCode 9) smoke-tested: settings list the KNVB types, the legacy team shows "JO11 - JO9 (7 tegen 7)", a JO10 team gets 2-2-1/1-3-1/2-1-2. Switching the second test team to `jo10` broke the match list: the `TeamType` enum in `data/model/Team.kt` did not know the value, so 1.4.1 fails on any team with a new type. Fixed with all values plus a fallback serializer (Android `679df0b`, unit-tested). Upload to the closed test waits for the Chrome connection. Test data: "Emulator tweede team" is now `jo10`.
+
+## [2026-11-09] refactor | GTM version 4; Android 1.5.0 submitted
+Pages touched: [[web-android-parity]], [[growth-and-seo]]
+GTM container version 4 adds the `tool_*` events and their `tool`, `format`, `players` parameters to the GA4 app-events tag. Android 1.5.0 (versionCode 9) uploaded to the Alpha track with Dutch release notes and sent for review after Play's quick checks; no errors or device-support changes.
