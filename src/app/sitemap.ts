@@ -35,6 +35,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.2,
     },
     {
+      url: `${siteUrl}/tools/wisselschema`,
+      lastModified: "2026-11-09",
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${siteUrl}/tools/opstelling`,
+      lastModified: "2026-11-09",
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${siteUrl}/android`,
       lastModified: "2026-10-25",
       changeFrequency: "monthly",

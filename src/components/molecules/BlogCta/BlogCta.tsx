@@ -12,6 +12,8 @@ interface BlogCtaProps {
   heading: string;
   text: string;
   buttonLabel: string;
+  /** Where the main button goes; defaults to sign-up. */
+  href?: string;
   secondaryHref?: string;
   secondaryLabel?: string;
   /** Example of what the reader will make, e.g. a share card. */
@@ -29,6 +31,7 @@ export function BlogCta({
   heading,
   text,
   buttonLabel,
+  href = "/register",
   secondaryHref,
   secondaryLabel,
   preview,
@@ -58,8 +61,8 @@ export function BlogCta({
 
       <div className="mt-5 flex flex-wrap gap-3">
         <Link
-          href="/register"
-          onClick={() => track("register")}
+          href={href}
+          onClick={() => track(href === "/register" ? "register" : href)}
           className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-primary-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-700"
         >
           {buttonLabel}

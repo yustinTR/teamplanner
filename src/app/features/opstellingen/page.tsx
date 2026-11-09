@@ -8,19 +8,19 @@ import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Voetbal opstelling maken — gratis online tool",
   description:
-    "Voetbalopstelling maken met drag & drop en direct delen met je team. Kies uit 11v11 en 7v7 formaties, plan wissels met eerlijke speeltijd. Gratis.",
+    "Voetbalopstelling maken met drag & drop en direct delen met je team. Formaties voor 11, 8, 7 en 6 tegen 6, wissels met eerlijke speeltijd. Gratis.",
   alternates: {
     canonical: "https://www.myteamplanner.nl/features/opstellingen",
   },
   openGraph: {
     title: "Voetbal opstelling maken — gratis online tool",
-    description: "Voetbalopstelling maken met drag & drop en direct delen met je team. Kies uit 11v11 en 7v7 formaties.",
+    description: "Voetbalopstelling maken met drag & drop en direct delen met je team. Formaties voor 11, 8, 7 en 6 tegen 6.",
     url: "https://www.myteamplanner.nl/features/opstellingen",
   },
 };
 
 const solutions = [
-  "Kies uit formaties voor 11v11, 8v8 en 7v7 (ook voor jeugd en G-teams)",
+  "Formaties voor 11, 8, 7 en 6 tegen 6 — volgens de KNVB-speelvormen voor de jeugd, ook voor G-teams",
   "Sleep spelers naar hun positie op het voetbalveld",
   "Plan wisselmomenten en zie automatisch hoeveel minuten elke speler speelt",
   "Eerlijke speeltijdverdeling over het seizoen — cruciaal bij jeugd en G-voetbal",
@@ -31,7 +31,7 @@ const steps = [
   {
     step: "1",
     title: "Kies een formatie",
-    description: "4-3-3, 4-4-2, of een 7v7 variant — jij bepaalt.",
+    description: "4-3-3 voor 11 tegen 11, 3-3-1 voor 8 tegen 8, 2-2-1 voor 6 tegen 6 — jij bepaalt.",
   },
   {
     step: "2",
@@ -112,6 +112,31 @@ export default function OpstellingenPage() {
                 <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Free tools, no account */}
+      <section className="bg-white px-4 pt-16">
+        <div className="mx-auto max-w-3xl rounded-2xl bg-primary-50 p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-neutral-900">Eerst proberen zonder account?</h2>
+          <p className="mt-2 text-sm text-neutral-700">
+            Maak een opstelling of een eerlijk wisselschema in de gratis tools en deel het direct in de
+            groepsapp.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href="/tools/opstelling"
+              className="inline-flex min-h-[44px] items-center rounded-xl bg-primary-600 px-5 text-sm font-semibold text-white hover:bg-primary-700"
+            >
+              Opstelling maken
+            </Link>
+            <Link
+              href="/tools/wisselschema"
+              className="inline-flex min-h-[44px] items-center rounded-xl border border-primary-700 bg-white px-5 text-sm font-semibold text-primary-700 hover:bg-primary-50"
+            >
+              Wisselschema maken
+            </Link>
           </div>
         </div>
       </section>

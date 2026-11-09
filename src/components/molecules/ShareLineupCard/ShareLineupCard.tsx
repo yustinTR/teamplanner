@@ -18,8 +18,9 @@ interface SubstitutionDisplay {
 
 interface ShareLineupCardProps {
   teamName: string;
-  opponent: string;
-  matchDate: string;
+  /** Omitted by the public lineup tool, where there is no match yet. */
+  opponent?: string;
+  matchDate?: string;
   formation: string;
   players: SharePlayer[];
   benchNames: string[];
@@ -37,13 +38,13 @@ export function ShareLineupCard({
   substitutions,
   className,
 }: ShareLineupCardProps) {
-  const date = new Date(matchDate);
-  const dateStr = date.toLocaleDateString("nl-NL", {
+  const date = matchDate ? new Date(matchDate) : null;
+  const dateStr = date?.toLocaleDateString("nl-NL", {
     weekday: "short",
     day: "numeric",
     month: "short",
   });
-  const timeStr = date.toLocaleTimeString("nl-NL", {
+  const timeStr = date?.toLocaleTimeString("nl-NL", {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -75,15 +76,17 @@ export function ShareLineupCard({
         >
           {teamName}
         </h2>
-        <p
-          style={{
-            fontSize: 16,
-            color: "rgba(255,255,255,0.7)",
-            marginTop: 4,
-          }}
-        >
-          vs. {opponent}
-        </p>
+        {opponent && (
+          <p
+            style={{
+              fontSize: 16,
+              color: "rgba(255,255,255,0.7)",
+              marginTop: 4,
+            }}
+          >
+            vs. {opponent}
+          </p>
+        )}
         <p
           style={{
             fontSize: 13,
@@ -91,7 +94,8 @@ export function ShareLineupCard({
             marginTop: 4,
           }}
         >
-          {dateStr} · {timeStr} · {formation}
+          {date ? `${dateStr} · ${timeStr} · ` : ""}
+          {formation}
         </p>
       </div>
 

@@ -123,3 +123,13 @@ export const WithoutRatings: Story = {
     benchNames: [],
   },
 };
+
+/** Used by the public lineup tool: no opponent or date yet. */
+export const WithoutMatch: Story = {
+  args: {
+    ...Default.args,
+    opponent: undefined,
+    matchDate: undefined,
+    substitutions: undefined,
+  },
+};

@@ -4,6 +4,7 @@ import {
   FORMATIONS_11,
   FORMATIONS_8,
   FORMATIONS_7,
+  FORMATIONS_6,
   AVAILABILITY_LABELS,
   MATCH_STATUS_LABELS,
   POSITION_LABELS,
@@ -211,9 +212,27 @@ describe("getFormationsForTeamType", () => {
     expect(result).toBe(FORMATIONS_11);
   });
 
-  it("returns 7v7 formations for jo15_jo13", () => {
-    const result = getFormationsForTeamType("jo15_jo13");
-    expect(result).toBe(FORMATIONS_7);
+  it("returns 11v11 formations for jo15_jo13 (KNVB: 11 v 11 from JO13)", () => {
+    expect(getFormationsForTeamType("jo15_jo13")).toBe(FORMATIONS_11);
+  });
+
+  it("returns 8v8 formations for jo12_jo11", () => {
+    expect(getFormationsForTeamType("jo12_jo11")).toBe(FORMATIONS_8);
+  });
+
+  it("returns 6v6 formations for jo10 and jo9_jo8", () => {
+    expect(getFormationsForTeamType("jo10")).toBe(FORMATIONS_6);
+    expect(getFormationsForTeamType("jo9_jo8")).toBe(FORMATIONS_6);
+  });
+
+  it("keeps 7v7 formations for legacy jo11_jo9 teams", () => {
+    expect(getFormationsForTeamType("jo11_jo9")).toBe(FORMATIONS_7);
+  });
+
+  it("gives every 6v6 formation six positions", () => {
+    for (const positions of Object.values(FORMATIONS_6)) {
+      expect(positions).toHaveLength(6);
+    }
   });
 
   it("returns 8v8 formations for g_team", () => {
@@ -232,8 +251,16 @@ describe("getDefaultFormation", () => {
     expect(getDefaultFormation("senioren")).toBe("4-3-3");
   });
 
-  it('returns "2-3-1" for jo15_jo13', () => {
-    expect(getDefaultFormation("jo15_jo13")).toBe("2-3-1");
+  it('returns "4-3-3" for jo15_jo13', () => {
+    expect(getDefaultFormation("jo15_jo13")).toBe("4-3-3");
+  });
+
+  it('returns "2-2-1" for jo10', () => {
+    expect(getDefaultFormation("jo10")).toBe("2-2-1");
+  });
+
+  it('returns "2-3-1" for legacy jo11_jo9', () => {
+    expect(getDefaultFormation("jo11_jo9")).toBe("2-3-1");
   });
 
   it('returns "3-3-1" for g_team', () => {
