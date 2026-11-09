@@ -1,9 +1,56 @@
+import { Fragment } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Clock } from "lucide-react";
-import { blogPosts, getBlogPost, getAllSlugs, type BlogPost } from "@/lib/blog";
+import {
+  blogPosts,
+  getBlogPost,
+  getAllSlugs,
+  type BlogPost,
+  type BlogPostCta,
+} from "@/lib/blog";
+import {
+  DEMO_FORMATION,
+  DEMO_MATCH_DATE,
+  DEMO_OPPONENT,
+  DEMO_TEAM,
+  demoBench,
+  demoLineupPlayers,
+  demoLineupSubstitutions,
+  demoSubstitutionPlan,
+} from "@/lib/blog-cta-demo";
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
+import { BlogCta } from "@/components/molecules/BlogCta";
+import { ShareLineupCard } from "@/components/molecules/ShareLineupCard";
+import { ShareSubstitutionPlan } from "@/components/molecules/ShareSubstitutionPlan";
+
+function renderCtaPreview(preview: BlogPostCta["preview"]) {
+  if (preview === "substitution-plan") {
+    return (
+      <ShareSubstitutionPlan
+        teamName={DEMO_TEAM}
+        opponent={DEMO_OPPONENT}
+        matchDate={DEMO_MATCH_DATE}
+        plan={demoSubstitutionPlan}
+      />
+    );
+  }
+  if (preview === "lineup") {
+    return (
+      <ShareLineupCard
+        teamName={DEMO_TEAM}
+        opponent={DEMO_OPPONENT}
+        matchDate={DEMO_MATCH_DATE}
+        formation={DEMO_FORMATION}
+        players={demoLineupPlayers}
+        benchNames={demoBench}
+        substitutions={demoLineupSubstitutions}
+      />
+    );
+  }
+  return undefined;
+}
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -121,47 +168,45 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           {/* Content */}
           <div className="mt-10 space-y-8">
-            {post.sections.map((section) => (
-              <section key={section.heading}>
-                <h2 className="text-xl font-bold text-neutral-900">
-                  {section.heading}
-                </h2>
-                {section.paragraphs.map((paragraph, i) => (
-                  <p
-                    key={i}
-                    className="mt-3 leading-relaxed text-neutral-700"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-              </section>
+            {post.sections.map((section, index) => (
+              <Fragment key={section.heading}>
+                <section>
+                  <h2 className="text-xl font-bold text-neutral-900">
+                    {section.heading}
+                  </h2>
+                  {section.paragraphs.map((paragraph, i) => (
+                    <p
+                      key={i}
+                      className="mt-3 leading-relaxed text-neutral-700"
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                </section>
+                {post.cta && post.cta.afterSection === index && (
+                  <BlogCta
+                    slug={post.slug}
+                    placement="inline"
+                    heading={post.cta.heading}
+                    text={post.cta.text}
+                    buttonLabel={post.cta.buttonLabel}
+                    preview={renderCtaPreview(post.cta.preview)}
+                  />
+                )}
+              </Fragment>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="mt-12 rounded-2xl bg-primary-50 p-6 sm:p-8">
-            <h3 className="text-lg font-bold text-neutral-900">
-              Probeer MyTeamPlanner gratis
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              In 2 minuten je team aangemaakt. Geen creditcard nodig.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <Link
-                href="/register"
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-primary-600 px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-700"
-              >
-                Gratis starten
-                <ArrowRight className="size-4" />
-              </Link>
-              <Link
-                href={post.featureLink}
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-neutral-200 bg-white px-6 text-sm font-semibold text-neutral-700 transition-colors hover:bg-neutral-50"
-              >
-                {post.featureLabel}
-              </Link>
-            </div>
-          </div>
+          <BlogCta
+            className="mt-12"
+            slug={post.slug}
+            placement="end"
+            heading="Probeer MyTeamPlanner gratis"
+            text="In 2 minuten je team aangemaakt. Geen creditcard nodig."
+            buttonLabel="Gratis starten"
+            secondaryHref={post.featureLink}
+            secondaryLabel={post.featureLabel}
+          />
         </div>
       </article>
 

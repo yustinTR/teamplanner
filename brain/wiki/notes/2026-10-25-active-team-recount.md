@@ -21,6 +21,9 @@ sources: ["[[2026-10-25-active-team-means-coach-use]]", "[[2026-10-23-active-tea
 | Edited a lineup in the last 60 days | 5 |
 | Teams with five or more players entered | 13 |
 
+> [!warning] Correction (2026-11-09)
+> The 23 teams and 11 active included the emulator test team; the real figures were 22 and 10. Later counts exclude teams named `Emulator%` — see [[2026-11-09-search-and-usage-reading]] (9 active of 25).
+
 ## Reasoning
 
 Half the teams are in use. Nine of the eleven are run by the coach alone, which Yustin considers a normal mode, not a stalled onboarding ([[2026-10-25-active-team-means-coach-use]]). Five teams touched a lineup recently; that is the strongest signal that the core promise (opstelling maken en delen) is being used. The earlier conclusion that "adoption is the bottleneck" ([[2026-10-23-active-team-count]]) is withdrawn; the open question is now whether the nine coach-only teams would benefit from members or are served well as they are.

@@ -29,7 +29,7 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Match stats grid | yes | yes; rows follow the substitution plan, else the lineup, else the squad (2026-10-25, unit-tested) | parity |
 | Loan players (leen-spelers, `match_players`) | yes (2026-02-20) | yes (2026-03-13) | parity |
 | Availability toggle and grid; coach sets it for players without accounts | yes (coach-set: 2026-04-10) | yes (coach-set: 2026-03-13) | parity — Android led |
-| Availability grid live via Realtime | yes | match detail subscribes to `availability` changes for the match (2026-10-25) | parity in code; live update not yet seen on a device |
+| Availability grid live via Realtime | yes — but never worked until 2026-10-26: the `supabase_realtime` publication had no tables | subscribes to `availability` changes; connected only since the OkHttp Ktor engine (2026-10-26, seen live on the emulator: count changed after a database write) | parity, verified |
 | Player list, detail, CRUD, photo upload, deactivate | yes | yes | parity |
 | Skills radar and EAFC rating / card tier (v2 since 2026-03-02) | yes | yes, 6 axes 1–99, `hasEafcSkills` | parity |
 | Skills editor (coach rates players) | yes | bottom-sheet editor, slider per EAFC attribute, overall on top (2026-10-25, emulator-tested) | parity |
@@ -110,6 +110,6 @@ Platform-forced, written down so they stop being questions:
 
 - Verified 2026-10-25 in code: all five were gaps; all five closed the same day and shipped as closed-test release 5 (1.2.0). Still owed: exercise reordering in a plan; a two-team account to exercise the switcher; a live Realtime check on a device.
 - 2026-10-26: roadmap step 1 finished on both clients (plan image, list sharing); Android release 1.3.0 (versionCode 6) carries it to the closed test. Owed list unchanged.
-- 2026-10-26, later: exercise reordering and the follow-link switch landed on Android. Reordering exposed a shared bug: `(plan_id, sort_order)` is unique, so updating rows one by one (or in parallel, as the web did) collides when two rows swap — both clients now park rows on negative placeholders first. PDF export followed the same afternoon (release 1.4.0, versionCode 7). Still owed on Android: a two-team account to exercise the switcher, a live Realtime check.
+- 2026-10-26, later: exercise reordering and the follow-link switch landed on Android. Reordering exposed a shared bug: `(plan_id, sort_order)` is unique, so updating rows one by one (or in parallel, as the web did) collides when two rows swap — both clients now park rows on negative placeholders first. PDF export followed the same afternoon (release 1.4.0, versionCode 7). Both remaining checks done the same day: a second team on the test account shows the switcher, switches data and survives a restart; Realtime was seen live after two fixes (publication tables, OkHttp engine; release 1.4.1). Nothing is owed on Android as of 2026-10-26.
 - Still unverified on a device: the import flow end to end, image sharing through the share sheet, push.
 - Write the shared fixture test: one lineup JSON, decoded by both `src/types/lineup.ts` and `Lineup.kt`, so key drift fails a build instead of a device run.

@@ -27,6 +27,7 @@ _newest first, status shown_
 - [[2026-10-25-roadmap-coach-first-autumn-2026]] — Autumn plan: sharpen the coach-alone share loop, measure, close Android parity, then PDF and parent view; phases 3–4 wait. · **accepted**
 - [[2026-10-25-made-with-strip-on-share-images]] — Lineup card and match report end in a green "Gemaakt met MyTeamPlanner" strip on both clients. · **accepted**
 - [[2026-10-26-follow-link-for-parents]] — Team-level read-only link (`/volg/<token>`) with programme and lineups for parents/carers; the cheap test of whether coach-only teams want followers. · **accepted**
+- [[2026-10-26-roadmap-extension-winter-2026-27]] — Winter plan after the autumn plan finished early: measure first, follow link grows (calendar, availability by link), season review card, hygiene; triggers per row. · **accepted**
 - [[2026-10-25-active-team-means-coach-use]] — Active = coach use in the last 60 days (match, event or lineup edit); linked members are a separate adoption number, coach-only is a valid mode. · **accepted**
 - [[2026-10-23-active-team-definition]] — Active = activity in 60 days and two or more linked players. · **superseded**
 - [[2026-10-23-storybook-is-the-design-system-figma-dropped]] — Storybook is the design system; `design/Teamplanner.fig` is historical. · **accepted**
@@ -100,6 +101,7 @@ _newest first, status shown_
 
 ## Notes
 
+- [[2026-11-09-search-and-usage-reading]] — two weeks after the indexing fixes: 21 pages indexed, Google clicks up, feature pages never crawled; 9 real active teams, no real follow link
 - [[2026-10-25-active-team-recount]] — 11 active teams of 23 under the corrected definition, nine coach-only, five with recent lineup edits
 - [[2026-10-23-active-team-count]] — first reading under the superseded definition: 2 of 22; its adoption conclusion is withdrawn
 - [[2026-10-23-android-emulator-test-setup]] — toolchain, AVD, test account and test team for running the Android app from this machine; what the first run found
