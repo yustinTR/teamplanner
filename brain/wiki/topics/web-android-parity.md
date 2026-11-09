@@ -81,6 +81,8 @@ Platform-forced, written down so they stop being questions:
 | KNVB youth formats: 6 v 6, 8 v 8, 11 v 11 from JO13 ([[2026-11-09-knvb-youth-match-formats]]) | yes (2026-11-09) | 1.5.0 (versionCode 9) smoke-tested and submitted to the closed test 2026-11-09, in review | parity once approved — 1.4.1 cannot decode `jo10`/`jo12_jo11`/`jo9_jo8` teams (TeamType enum), fixed in 1.5.0 with a fallback |
 | Share strip reads `myteamplanner.nl/maak` | yes (2026-11-09) | in 1.5.0, in review | parity once approved |
 | Free tools without account (`/tools/wisselschema`, `/tools/opstelling`) | yes (2026-11-09) | — | allowed difference: public marketing pages, not app features |
+| Lineup as text (copy / share sheet) — roadmap winter row "lineup as text" | yes (2026-11-09), 'Tekst' button in the lineup | yes, chat icon in the lineup toolbar (`ui/lineup/LineupText.kt`, unit-tested), on `main`, unreleased | parity in code — ships with the next Android release |
+| Season review card ([[2026-10-26-roadmap-extension-winter-2026-27]]) | yes (2026-11-09), 'Seizoenskaart delen' on the statistics page | yes, share icon on the statistics screen (`ui/team/SeasonReviewImage.kt`, checked in print preview), on `main`, unreleased | parity in code — ships with the next Android release; a PDF page is not built on either client |
 
 ### Shared contract (must never drift)
 

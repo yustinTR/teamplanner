@@ -1,3 +1,4 @@
+import { FORMAT_PAGES } from "@/lib/format-pages";
 import type { MetadataRoute } from "next";
 import { blogPosts } from "@/lib/blog";
 
@@ -46,6 +47,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    ...FORMAT_PAGES.flatMap((p) =>
+      ["wisselschema", "opstelling"].map((tool) => ({
+        url: `${siteUrl}/tools/${tool}/${p.slug}`,
+        lastModified: "2026-11-09",
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      }))
+    ),
     {
       url: `${siteUrl}/android`,
       lastModified: "2026-10-25",

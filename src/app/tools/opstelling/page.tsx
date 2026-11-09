@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 import { FaqSection } from "@/components/molecules/FaqSection";
+import { FORMAT_PAGES } from "@/lib/format-pages";
 import { LineupMakerTool } from "@/components/organisms/LineupMakerTool";
 
 const url = "https://www.myteamplanner.nl/tools/opstelling";
@@ -94,6 +95,21 @@ export default function LineupMakerToolPage() {
           </section>
         </div>
       </main>
+      <nav aria-label="Per speelvorm" className="mx-auto max-w-2xl px-4 pb-12">
+        <h2 className="text-base font-semibold text-neutral-900">Opstelling per speelvorm</h2>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {FORMAT_PAGES.map((p) => (
+            <li key={p.slug}>
+              <Link
+                href={`/tools/opstelling/${p.slug}`}
+                className="inline-flex min-h-[44px] items-center rounded-full border border-neutral-200 px-4 text-sm font-medium text-neutral-700 hover:border-primary-600 hover:text-primary-700"
+              >
+                Opstelling {p.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
       <FaqSection items={faqItems} />
     </div>
   );
