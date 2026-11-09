@@ -156,3 +156,7 @@ Pages touched: [[onboarding-and-conversion]]
 ## [2026-11-09] refactor | Follow-link offer after sharing; club-site widget
 Pages touched: [[growth-and-seo]], [[web-android-parity]]
 Two in-product spread levers, live on web: the follow-link offer after a lineup share (also Android `main`, checked end to end on the emulator, which switched the test team's link on) and the embeddable team widget with copyable code in the follow-link settings. The widget shows no lineups or names on purpose. GTM import file now also carries `copy_embed_code` and a `source` parameter on `enable_follow_link`; not yet imported.
+
+## [2026-11-09] refactor | Public exercise pages; GTM version 5
+Pages touched: [[growth-and-seo]], [[training-content]]
+The exercise library is now public and indexable at `/voetbaloefeningen` (79 exercise pages, hub, six age-group pages), with a sign-up prompt that returns the coach to the exercise. Anon read was already allowed by RLS, so no migration. The GTM import with all events since version 4 plus `exercise_cta_click` was imported and published as container version 5 at Yustin's request.
