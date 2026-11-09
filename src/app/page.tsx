@@ -445,14 +445,15 @@ export default function LandingPage() {
           <div className="flex-1">
             <h2 className="text-xl font-bold text-neutral-900">Ook als Android-app</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Gratis in Google Play, als testversie. Zelfde account, met meldingen.
+              Gratis in Google Play als testversie. Help je mee testen? Dan staat de app straks
+              voor iedereen in de Store.
             </p>
           </div>
           <Link
             href="/android"
             className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-primary-700 px-5 text-sm font-semibold text-primary-700 hover:bg-primary-50"
           >
-            Installeren
+            Word tester
             <ArrowRight className="size-4" />
           </Link>
         </div>

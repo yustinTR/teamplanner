@@ -154,8 +154,8 @@ export default function ProfilePage() {
             className="flex items-center justify-between rounded-xl bg-white p-5 shadow-sm"
           >
             <div>
-              <p className="font-medium text-neutral-900">Android-app installeren</p>
-              <p className="text-xs text-muted-foreground">Gratis via Google Play, met meldingen</p>
+              <p className="font-medium text-neutral-900">Android-app: word tester</p>
+              <p className="text-xs text-muted-foreground">Help de app de Play Store in, met meldingen</p>
             </div>
             <Smartphone className="size-5 text-primary-700" />
           </Link>
