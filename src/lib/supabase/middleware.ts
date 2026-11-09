@@ -10,7 +10,8 @@ function isPublicPath(pathname: string): boolean {
   if (pathname.startsWith("/api/")) return true;
   return publicPaths.some((path) => pathname.startsWith(path)) ||
     pathname.startsWith("/join/") ||
-    pathname.startsWith("/volg/");
+    pathname.startsWith("/volg/") ||
+    pathname.startsWith("/embed/");
 }
 
 export async function updateSession(request: NextRequest) {

@@ -1,0 +1,1 @@
+export { TeamWidget } from "./TeamWidget";

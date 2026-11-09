@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Share2 } from "lucide-react";
+import { Check, Code, Copy, Share2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { getFollowUrl } from "@/lib/utils";
+import { trackEvent } from "@/lib/gtm";
 
 interface FollowLinkSettingsProps {
   /** Null when the link is switched off. */
@@ -15,9 +16,18 @@ interface FollowLinkSettingsProps {
   disabled?: boolean;
 }
 
+/** Iframe snippet for a club website, plus a plain link credit outside the iframe. */
+export function embedCode(shareToken: string): string {
+  return [
+    `<iframe src="https://www.myteamplanner.nl/embed/${shareToken}" title="Programma en uitslagen" width="100%" height="440" style="border:0;max-width:480px" loading="lazy"></iframe>`,
+    `<p style="font-size:12px">Programma bijgehouden met <a href="https://www.myteamplanner.nl">MyTeamPlanner, de gratis teamplanner voor voetbal</a></p>`,
+  ].join("\n");
+}
+
 /** Coach setting: the read-only "volglink" for parents and carers. */
 export function FollowLinkSettings({ shareToken, onToggle, disabled }: FollowLinkSettingsProps) {
   const [copied, setCopied] = useState(false);
+  const [embedCopied, setEmbedCopied] = useState(false);
   const url = shareToken ? getFollowUrl(shareToken) : null;
 
   async function handleCopy() {
@@ -25,6 +35,14 @@ export function FollowLinkSettings({ shareToken, onToggle, disabled }: FollowLin
     await navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  }
+
+  async function handleCopyEmbed() {
+    if (!shareToken) return;
+    await navigator.clipboard.writeText(embedCode(shareToken));
+    trackEvent("copy_embed_code");
+    setEmbedCopied(true);
+    setTimeout(() => setEmbedCopied(false), 2000);
   }
 
   function handleShareWhatsApp() {
@@ -67,6 +85,17 @@ export function FollowLinkSettings({ shareToken, onToggle, disabled }: FollowLin
             <Button variant="outline" className="flex-1" onClick={handleShareWhatsApp}>
               <Share2 className="mr-2 size-4" />
               Deel via WhatsApp
+            </Button>
+          </div>
+          <div className="space-y-1.5 border-t pt-3">
+            <p className="text-sm font-medium">Op de website van je club</p>
+            <p className="text-xs text-muted-foreground">
+              Programma en uitslagen als blokje op de clubsite, altijd actueel. Zonder opstellingen of
+              namen van spelers. Geef deze code aan de beheerder van de website.
+            </p>
+            <Button variant="outline" className="w-full" onClick={handleCopyEmbed}>
+              {embedCopied ? <Check className="mr-2 size-4" /> : <Code className="mr-2 size-4" />}
+              {embedCopied ? "Code gekopieerd!" : "Kopieer code voor de website"}
             </Button>
           </div>
         </>

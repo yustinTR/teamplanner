@@ -250,7 +250,7 @@
        {
         "type": "TEMPLATE",
         "key": "arg1",
-        "value": "^(save_lineup|create_match|share_report|share_substitution_plan|export_pdf|enable_follow_link|set_availability|blog_cta_click|android_tester_step|android_tester_share|android_tester_hint_click|android_tester_hint_dismiss|tool_generate|tool_copy_text|tool_share_image|tool_cta_click|share_lineup_text|share_season_review|tool_handoff_used)$"
+        "value": "^(save_lineup|create_match|share_report|share_substitution_plan|export_pdf|enable_follow_link|set_availability|blog_cta_click|android_tester_step|android_tester_share|android_tester_hint_click|android_tester_hint_dismiss|tool_generate|tool_copy_text|tool_share_image|tool_cta_click|share_lineup_text|share_season_review|tool_handoff_used|copy_embed_code)$"
        }
       ]
      }
