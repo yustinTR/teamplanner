@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useToolHandoff } from "@/hooks/use-tool-handoff";
 import { Calendar, Users, Settings, Plus, ClipboardList, ChevronRight, Clock, Target, Trophy, PartyPopper } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/atoms/Button";
@@ -62,6 +63,7 @@ function SeasonHighlights({ teamId }: { teamId: string }) {
 
 export default function DashboardPage() {
   const { currentTeam, isCoach, currentPlayer } = useAuthStore();
+  const handoffCount = useToolHandoff()?.names.length ?? 0;
 
   if (!currentTeam) {
     return (
@@ -75,7 +77,9 @@ export default function DashboardPage() {
         />
         <h1 className="text-2xl font-bold">Welkom bij MyTeamPlanner</h1>
         <p className="mt-2 text-center text-muted-foreground">
-          Je hebt nog geen team. Maak er een aan om te beginnen.
+          {handoffCount > 0
+            ? `Je ${handoffCount} spelers uit de tool staan klaar. Maak je team aan en ze staan er meteen in.`
+            : "Je hebt nog geen team. Maak er een aan om te beginnen."}
         </p>
         <Link href="/create-team" className="mt-6">
           <Button className="gap-2">

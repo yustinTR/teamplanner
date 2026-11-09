@@ -144,3 +144,7 @@ Reddit was blocked in both browsers; while Facebook groups were being searched, 
 ## [2026-11-09] refactor | Lineup as text and season review card on both clients
 Pages touched: [[web-android-parity]]
 Two winter-roadmap rows built ahead of December, on web (live) and Android (`main`, after 1.5.0): lineup as plain text for group chats, grouped keeper/defence/midfield/attack with bench and substitutions; and the season review card (record, goals, top three scorers and assisters, most available players among regular responders) shared from the statistics page, subtitled "tot de winterstop" in December and January. GTM import file gained `share_lineup_text` and `share_season_review` but is not re-imported yet. Yustin wants this project kept apart from his private accounts.
+
+## [2026-11-09] refactor | Tool landing pages per KNVB format
+Pages touched: [[growth-and-seo]]
+Eight format pages for the two free tools and the overview article "Speelvormen jeugdvoetbal", live. Chosen from the growth options as the first lever because the tools need search traffic before the tool-to-account handoff matters. Next candidate: carry the tool's names and format into a new account.

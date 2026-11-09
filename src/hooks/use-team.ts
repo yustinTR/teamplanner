@@ -28,7 +28,10 @@ export function useCreateTeam() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (team: Omit<TeamInsert, "created_by">) => {
+    mutationFn: async ({
+      playerNames = [],
+      ...team
+    }: Omit<TeamInsert, "created_by"> & { playerNames?: string[] }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Niet ingelogd");
 
@@ -46,6 +49,14 @@ export function useCreateTeam() {
         name: user.user_metadata?.name ?? user.email ?? "Coach",
       });
       if (playerError) throw new Error("Team aangemaakt, maar kon speler niet toevoegen. Probeer opnieuw.");
+
+      // Players typed into a free tool before sign-up
+      if (playerNames.length > 0) {
+        const { error: rosterError } = await supabase
+          .from("players")
+          .insert(playerNames.map((name) => ({ team_id: data.id, name })));
+        if (rosterError) throw new Error("Team aangemaakt, maar kon de spelers niet toevoegen. Voeg ze toe via Team.");
+      }
 
       return data;
     },

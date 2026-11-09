@@ -6,6 +6,7 @@ import { ArrowRight, Copy, Share2 } from "lucide-react";
 import { ShareSubstitutionPlan } from "@/components/molecules/ShareSubstitutionPlan";
 import { useShareImage } from "@/hooks/use-share-image";
 import { trackEvent } from "@/lib/gtm";
+import { saveToolHandoff } from "@/lib/tool-handoff";
 import { buildFairSchedule, MATCH_FORMATS, type FairSchedule } from "@/lib/fair-schedule";
 
 interface SubstitutionScheduleToolProps {
@@ -193,15 +194,19 @@ export function SubstitutionScheduleTool({
           <aside className="rounded-2xl bg-primary-50 p-5">
             <p className="font-semibold text-neutral-900">Elke week opnieuw? Bewaar je team.</p>
             <p className="mt-1 text-sm text-neutral-700">
-              Met een gratis account onthoudt MyTeamPlanner je spelers, houdt het de speelminuten
-              over het hele seizoen bij en zie je wie er beschikbaar is.
+              Maak een gratis account: je {names.length} spelers en de speelvorm staan dan meteen in je
+              team. MyTeamPlanner houdt de speelminuten over het hele seizoen bij en laat zien wie er
+              beschikbaar is.
             </p>
             <Link
               href="/register"
-              onClick={() => trackEvent("tool_cta_click", { tool: "wisselschema" })}
+              onClick={() => {
+                saveToolHandoff({ tool: "wisselschema", names, formatKey: format.key, teamName });
+                trackEvent("tool_cta_click", { tool: "wisselschema" });
+              }}
               className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-primary-600 px-5 text-sm font-semibold text-white hover:bg-primary-700"
             >
-              Gratis account maken
+              Bewaar mijn team
               <ArrowRight className="size-4" />
             </Link>
           </aside>

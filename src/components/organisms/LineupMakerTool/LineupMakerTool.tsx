@@ -6,6 +6,7 @@ import { ArrowRight, Copy, Share2 } from "lucide-react";
 import { ShareLineupCard } from "@/components/molecules/ShareLineupCard";
 import { useShareImage } from "@/hooks/use-share-image";
 import { trackEvent } from "@/lib/gtm";
+import { saveToolHandoff } from "@/lib/tool-handoff";
 import { FORMATIONS_11, FORMATIONS_8, FORMATIONS_7, FORMATIONS_6 } from "@/lib/constants";
 import { MATCH_FORMATS } from "@/lib/fair-schedule";
 
@@ -229,15 +230,18 @@ export function LineupMakerTool({ initialNames = "", initialFormat = "senioren" 
           <aside className="rounded-2xl bg-primary-50 p-5">
             <p className="font-semibold text-neutral-900">Wil je ook zien wie er kan?</p>
             <p className="mt-1 text-sm text-neutral-700">
-              Met een gratis account geven je spelers hun beschikbaarheid door en maak je de
-              opstelling alleen met wie er is — inclusief wisselschema en speelminuten.
+              Maak een gratis account: je {names.length} spelers staan dan meteen in je team. Je
+              spelers geven hun beschikbaarheid door en jij maakt de opstelling met wie er is.
             </p>
             <Link
               href="/register"
-              onClick={() => trackEvent("tool_cta_click", { tool: "opstelling" })}
+              onClick={() => {
+                saveToolHandoff({ tool: "opstelling", names, formatKey: format.key, teamName });
+                trackEvent("tool_cta_click", { tool: "opstelling" });
+              }}
               className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-primary-600 px-5 text-sm font-semibold text-white hover:bg-primary-700"
             >
-              Gratis account maken
+              Bewaar mijn team
               <ArrowRight className="size-4" />
             </Link>
           </aside>
