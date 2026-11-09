@@ -110,7 +110,7 @@ export const blogPosts: BlogPost[] = [
       heading: "Maak je eigen wisselschema in 1 minuut",
       text: "Vul je spelers in, kies je speelvorm en krijg direct een eerlijk schema met speelminuten. Gratis en zonder account; delen in de groepsapp met één tik.",
       buttonLabel: "Maak je wisselschema",
-      href: "/tools/wisselschema",
+      href: "/tools/wisselschema/8-tegen-8",
       preview: "substitution-plan",
       afterSection: 3,
     },
@@ -783,6 +783,69 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           "De overstap hoeft niet groot te zijn. Maak een account aan in MyTeamPlanner, voeg je spelers toe en deel de uitnodigingslink in je bestaande WhatsApp-groep. Binnen een paar minuten zijn de eerste spelers gekoppeld.",
           "Gebruik de eerste weken beide systemen naast elkaar als dat nodig is. Zodra de meeste spelers gewend zijn, merk je vanzelf dat de WhatsApp-groep stiller wordt — en dat is precies de bedoeling. Je team communiceert gestructureerder en jij bespaart uren per week.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "speelvormen-jeugdvoetbal-knvb",
+    title: "Speelvormen jeugdvoetbal: 6 tegen 6, 8 tegen 8 en 11 tegen 11",
+    description:
+      "Welke speelvorm hoort bij welke leeftijd? Het overzicht van de KNVB-speelvormen voor de jeugd: aantal spelers, speeltijd en veld voor JO8 tot en met JO13, met opstellingen en wisselschema's per vorm.",
+    date: "2026-11-09",
+    readingTime: "4 min",
+    featureLink: "/features/opstellingen",
+    featureLabel: "Opstellingen maken",
+    keywords: [
+      "speelvormen jeugdvoetbal",
+      "knvb speelvormen pupillen",
+      "6 tegen 6 voetbal",
+      "8 tegen 8 voetbal",
+      "jo11 8 tegen 8",
+      "jo9 6 tegen 6",
+    ],
+    relatedSlugs: ["wisselschema-jeugdvoetbal", "opstelling-maken-voetbal", "opstelling-7-tegen-7-voetbal"],
+    cta: {
+      heading: "Je 8 tegen 8 klaar om te delen",
+      text: "Kies je speelvorm en formatie, vul je spelers in en deel de opstelling als afbeelding in de groepsapp. Gratis en zonder account.",
+      buttonLabel: "Maak je opstelling",
+      href: "/tools/opstelling/8-tegen-8",
+      preview: "lineup",
+      afterSection: 2,
+    },
+    sections: [
+      {
+        heading: "Het overzicht",
+        paragraphs: [
+          "De KNVB laat jeugdteams op kleinere velden met minder spelers voetballen, zodat iedereen vaker aan de bal komt. JO8, JO9 en JO10 spelen 6 tegen 6. JO11 en JO12 spelen 8 tegen 8. Vanaf JO13 is het 11 tegen 11 op een heel veld.",
+          "Twijfel je over jouw team, kijk dan naar de leeftijdscategorie in de competitie-indeling van je district: die bepaalt de speelvorm, niet het aantal spelers in je selectie.",
+        ],
+      },
+      {
+        heading: "6 tegen 6: JO8, JO9 en JO10",
+        paragraphs: [
+          "Een keeper en vijf veldspelers, op een veld van 42,5 bij 30 meter met pupillendoelen van 5 bij 2 meter. JO8 en JO9 spelen 2x 20 minuten, JO10 2x 25 minuten. Halverwege elke helft is er een time-out van maximaal 2 minuten.",
+          "Gangbare opstellingen zijn 2-2-1, 1-3-1 en 2-1-2. Met een selectie van acht of negen spelers zitten er steeds twee of drie op de bank, dus een wisselschema is geen overbodige luxe. Maak er een met de wisselschema-tool voor 6 tegen 6.",
+        ],
+      },
+      {
+        heading: "8 tegen 8: JO11 en JO12",
+        paragraphs: [
+          "Een keeper en zeven veldspelers, op een veld van 64 bij 42,5 meter met een maat 5-bal. De speeltijd is 2x 30 minuten, met halverwege elke helft een time-out van maximaal 2 minuten. Strafschoppen worden genomen vanaf 9 meter.",
+          "De 3-3-1 is de meest gebruikte opstelling; 2-3-2, 2-4-1 en 3-2-2 zijn goede alternatieven. Op de pagina's voor opstelling en wisselschema 8 tegen 8 vind je per formatie wanneer je hem kiest.",
+        ],
+      },
+      {
+        heading: "11 tegen 11: vanaf JO13",
+        paragraphs: [
+          "Vanaf JO13 spelen teams 11 tegen 11 op een heel veld. JO13 speelt 2x 30 minuten; de speeltijd loopt met de leeftijd op tot 2x 45 minuten bij de senioren.",
+          "De overstap van 8 naar 11 spelers is groot: meer ruimte, meer posities en een buitenspelregel die er nu echt toe doet. Begin met een overzichtelijke 4-3-3 of 4-4-2 en geef spelers de tijd om aan de nieuwe posities te wennen.",
+        ],
+      },
+      {
+        heading: "En 7 tegen 7?",
+        paragraphs: [
+          "7 tegen 7 is geen KNVB-speelvorm voor de jeugd, maar kom je wel tegen bij 7x7-competities voor senioren en veteranen, op toernooien en bij G-voetbal. Daarvoor zijn er aparte pagina's voor opstelling en wisselschema 7 tegen 7.",
         ],
       },
     ],
