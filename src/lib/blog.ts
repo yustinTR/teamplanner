@@ -17,7 +17,7 @@ export interface BlogPostCta {
   heading: string;
   text: string;
   buttonLabel: string;
-  preview: "substitution-plan" | "lineup" | "none";
+  preview: "substitution-plan" | "lineup" | "lineup-7" | "none";
   /** Zero-based index of the section the prompt follows. */
   afterSection: number;
 }
@@ -32,25 +32,26 @@ export const blogPosts: BlogPost[] = [
     slug: "opstelling-7-tegen-7-voetbal",
     title: "Opstelling 7 tegen 7: formaties en tips",
     description:
-      "Welke formaties werken het beste bij 7 tegen 7? Van 2-3-1 tot 3-2-1 — ontdek de beste opstellingen voor jeugdvoetbal met praktische tips voor coaches.",
+      "Welke formaties werken het beste bij 7 tegen 7? Van 2-3-1 tot 3-2-1 — de beste opstellingen voor 7x7-competities, toernooien en G-voetbal, met praktische tips voor coaches.",
     date: "2026-02-28",
     readingTime: "5 min",
     featureLink: "/features/opstellingen",
     featureLabel: "Opstellingen maken",
-    keywords: ["opstelling 7 tegen 7", "formatie 7v7", "jeugdvoetbal opstelling", "7 tegen 7 formaties"],
+    keywords: ["opstelling 7 tegen 7", "formatie 7v7", "7x7 voetbal opstelling", "7 tegen 7 formaties"],
     relatedSlugs: ["wisselschema-jeugdvoetbal", "opstelling-maken-voetbal", "voetbal-teamindeling-maken"],
     cta: {
       heading: "Je 2-3-1 klaar om te delen",
       text: "Kies de formatie, sleep je spelers op hun plek en plan de wissels. Je team krijgt de opstelling als afbeelding in de groepsapp.",
       buttonLabel: "Maak je 7 tegen 7 opstelling",
-      preview: "lineup",
+      preview: "lineup-7",
       afterSection: 1,
     },
     sections: [
       {
         heading: "Waarom 7 tegen 7?",
         paragraphs: [
-          "Bij de KNVB spelen teams in de JO11 en JO9 categorie op een kleiner veld met 7 spelers. Dit formaat is ideaal om jonge spelers meer balbezit te geven en tactisch inzicht te ontwikkelen. Elke speler raakt de bal vaker dan bij 11v11, wat de technische ontwikkeling versnelt.",
+          "7 tegen 7 speel je op een half veld: in 7x7-competities voor senioren en veteranen, op toernooien, bij G-voetbal en in partijvormen op de training. Iedereen raakt de bal vaker dan bij 11 tegen 11, en met minder spelers is de tactiek overzichtelijk.",
+          "Let op bij jeugdteams: de KNVB laat JO8 tot en met JO10 6 tegen 6 spelen en JO11 en JO12 8 tegen 8. Vanaf JO13 is het 11 tegen 11. De formaties hieronder zijn voor 7 tegen 7; speel je in de jeugdcompetitie, kies dan de vorm van je leeftijdscategorie.",
           "Als coach is het belangrijk om een formatie te kiezen die past bij het niveau van je team. Hieronder bespreken we de meest gebruikte opstellingen.",
         ],
       },
@@ -86,9 +87,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "wisselschema-jeugdvoetbal",
-    title: "Wisselschema jeugdvoetbal: voorbeeld 7 tegen 7",
+    title: "Wisselschema jeugdvoetbal: voorbeeld 8 tegen 8",
     description:
-      "Hoe maak je een wisselschema? Stap voor stap, met een uitgewerkt voorbeeld voor 7 tegen 7 met 9 spelers. Iedereen speelt 37 of 38 minuten — zo verdeel je speeltijd eerlijk.",
+      "Hoe maak je een wisselschema? Stap voor stap, met een uitgewerkt voorbeeld voor een JO11-team: 8 tegen 8, 2x 30 minuten, tien spelers. Zo verdeel je speeltijd eerlijk.",
     date: "2026-02-25",
     readingTime: "5 min",
     featureLink: "/features/opstellingen",
@@ -97,7 +98,7 @@ export const blogPosts: BlogPost[] = [
       "wisselschema jeugdvoetbal",
       "hoe maak je een wisselschema",
       "wisselschema maken",
-      "wisselschema 7 tegen 7",
+      "wisselschema 8 tegen 8",
       "speeltijd verdelen",
       "eerlijk wisselen voetbal",
     ],
@@ -120,23 +121,23 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "Stap 1: Bepaal je wisselmomenten",
         paragraphs: [
-          "Bij een wedstrijd van 2x 25 minuten kun je bijvoorbeeld wisselen na 12, 25 en 37 minuten. Dat geeft je 4 speelperiodes. Met 14 spelers en 7 posities kun je dan in elke periode andere spelers laten spelen.",
+          "Bij een wedstrijd van 2x 30 minuten kun je bijvoorbeeld wisselen na 12, 24, 36 en 48 minuten. Dat geeft je vijf speelperiodes van 12 minuten, en in elke periode kunnen andere spelers op de bank zitten.",
           "Houd het simpel: wissel per periode 2-3 spelers tegelijk. Zo houd je structuur in het team en voorkom je dat alles door elkaar loopt.",
         ],
       },
       {
         heading: "Stap 2: Verdeel de minuten",
         paragraphs: [
-          "Tel het totaal aantal speelminuten: 7 posities x 50 minuten = 350 speelminuten. Deel dit door 14 spelers = 25 minuten per speler. In de praktijk is het niet altijd exact gelijk, maar streef naar maximaal 5 minuten verschil.",
+          "Tel het totaal aantal speelminuten: 8 posities x 60 minuten = 480 speelminuten. Met 12 spelers is dat 40 minuten per speler. Speelt je keeper de hele wedstrijd, reken dan alleen met de veldposities en veldspelers. In de praktijk is het niet altijd exact gelijk; streef naar zo min mogelijk verschil en compenseer de week erna.",
           "Houd bij hoeveel minuten elke speler over het seizoen maakt. Zo kun je compenseren als iemand een keer minder heeft gespeeld.",
         ],
       },
       {
-        heading: "Voorbeeld: wisselschema 7 tegen 7 met 9 spelers",
+        heading: "Voorbeeld: wisselschema 8 tegen 8 voor een JO11-team",
         paragraphs: [
-          "Een JO11-team speelt 2x 25 minuten in een 2-3-1. Je hebt een keeper en acht veldspelers voor zes veldposities, dus 6 x 50 = 300 veldminuten verdeeld over acht spelers: 37 of 38 minuten per speler. De keeper speelt de hele wedstrijd.",
-          "Minuut 12: de linker verdediger en de linker middenvelder gaan eruit, de twee wissels komen erin. Minuut 25 (rust): de rechter verdediger en de centrale middenvelder gaan eruit, de twee spelers van minuut 12 komen terug. Minuut 37: de rechter middenvelder en de spits gaan eruit, de twee spelers van de rust komen terug.",
-          "Resultaat: vier spelers spelen 38 minuten, vier spelers 37 minuten. Niemand zit langer dan 13 minuten aan de kant, en elke wissel is een duo, zodat er nooit meer dan twee nieuwe spelers tegelijk het veld op komen. Wissel de volgende week de volgorde om, zodat niet steeds dezelfde spelers beginnen.",
+          "Een JO11-team speelt volgens de KNVB 8 tegen 8, 2x 30 minuten. Dit team heeft tien spelers en speelt 3-3-1: een keeper en negen veldspelers voor zeven veldposities. Dat zijn 7 x 60 = 420 veldminuten, gemiddeld 46 à 47 per speler. De keeper speelt de hele wedstrijd.",
+          "Minuut 12: de linksback en de linker middenvelder gaan eruit, de twee wissels komen erin. Minuut 24: de centrale verdediger en de centrale middenvelder gaan eruit, de twee spelers van minuut 12 komen terug. Minuut 36: de rechtsback en de rechter middenvelder eruit, de twee van minuut 24 terug. Minuut 48: de spits en één van de eerste wissels eruit, de twee van minuut 36 terug.",
+          "Resultaat: acht veldspelers spelen 48 minuten, één speler 36. Precies gelijk lukt met negen spelers voor zeven plekken niet zonder elke paar minuten te wisselen. Laat daarom elke week een andere speler die extra beurt op de bank nemen, en houd de minuten over het seizoen bij: dan is het na een paar wedstrijden wél eerlijk verdeeld.",
         ],
       },
       {
@@ -666,7 +667,7 @@ export const blogPosts: BlogPost[] = [
     slug: "opstelling-maken-voetbal",
     title: "Voetbal opstelling maken en delen (gratis online)",
     description:
-      "Maak je voetbal opstelling online: kies een formatie, sleep spelers op het veld en deel de opstelling als afbeelding in de groepsapp. Gratis, voor 11 en 7 tegen 7.",
+      "Maak je voetbal opstelling online: kies een formatie, sleep spelers op het veld en deel de opstelling als afbeelding in de groepsapp. Gratis, voor 11 tegen 11 en kleinere vormen.",
     date: "2026-04-10",
     readingTime: "5 min",
     featureLink: "/features/opstellingen",
@@ -698,7 +699,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "De juiste formatie kiezen",
         paragraphs: [
-          "Bij 11 tegen 11 zijn de klassieke formaties 4-3-3, 4-4-2 en 3-5-2. Welke het beste werkt, hangt af van je spelers. Heb je sterke buitenspelers? Dan is 4-3-3 ideaal. Een sterk middenveld? Overweeg 4-4-2 of 3-5-2. Bij jeugdvoetbal (7v7) zijn 2-3-1 en 3-2-1 het populairst.",
+          "Bij 11 tegen 11 zijn de klassieke formaties 4-3-3, 4-4-2 en 3-5-2. Welke het beste werkt, hangt af van je spelers. Heb je sterke buitenspelers? Dan is 4-3-3 ideaal. Een sterk middenveld? Overweeg 4-4-2 of 3-5-2. In de KNVB-jeugd speelt JO11–JO12 8 tegen 8, met 3-3-1 en 2-3-2 als gangbare formaties; bij 7 tegen 7 zijn 2-3-1 en 3-2-1 het populairst.",
           "Het belangrijkste: kies een formatie die past bij het niveau van je team. Bij de jongste jeugd is ontwikkeling belangrijker dan tactiek. Bij de senioren kun je meer eisen stellen aan positioneel spel.",
         ],
       },
