@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildShareLineupData, lineupPositions } from "../share-lineup";
+import { buildShareLineupData, lineupAsText, lineupPositions } from "../share-lineup";
 import type { AvailabilityWithPlayer, Lineup, Player } from "@/types";
 
 const player = (id: string, name: string, skills: Player["skills"] = null): Player =>
@@ -106,5 +106,55 @@ describe("buildShareLineupData", () => {
     expect(withRatings?.players[1].overall).toBeTypeOf("number");
     expect(withRatings?.players[1].cardTier).not.toBeNull();
     expect(withoutRatings?.players[1].overall).toBeNull();
+  });
+});
+
+describe("lineupAsText", () => {
+  const data = {
+    formation: "2-2-1",
+    players: [
+      { name: "Sem", positionLabel: "K", x: 50, y: 92, overall: null, cardTier: null },
+      { name: "Lucas", positionLabel: "ST", x: 50, y: 20, overall: null, cardTier: null },
+      { name: "Daan", positionLabel: "CB", x: 30, y: 70, overall: null, cardTier: null },
+      { name: "Luuk", positionLabel: "CB", x: 70, y: 70, overall: null, cardTier: null },
+      { name: "Finn", positionLabel: "CM", x: 30, y: 45, overall: null, cardTier: null },
+      { name: "Noah", positionLabel: "CM", x: 70, y: 45, overall: null, cardTier: null },
+    ],
+    benchNames: ["Bram"],
+    substitutionPlan: {
+      teamType: "JO10",
+      totalMinutes: 50,
+      substitutionMoments: [
+        {
+          minute: 25,
+          out: [{ player_id: "d", name: "Daan", position_label: "CB" }],
+          in: [{ player_id: "b", name: "Bram", position_label: "CB" }],
+        },
+      ],
+      playerMinutes: [],
+    },
+  };
+
+  it("lists keeper, lines from defence to attack, bench and substitutions", () => {
+    const text = lineupAsText(data, { opponent: "VV Oost", matchDate: "2026-11-14T09:30:00" });
+    const lines = text.split("\n");
+    expect(lines[0]).toBe("Opstelling vs. VV Oost");
+    expect(lines[1]).toContain("2-2-1");
+    expect(text).toContain("Keeper: Sem");
+    expect(text).toContain("Verdediging: Daan, Luuk");
+    expect(text).toContain("Middenveld: Finn, Noah");
+    expect(text).toContain("Aanval: Lucas");
+    expect(text).toContain("Bank: Bram");
+    expect(text).toContain("25': Bram voor Daan");
+    expect(text.indexOf("Verdediging")).toBeLessThan(text.indexOf("Aanval"));
+  });
+
+  it("leaves out empty sections", () => {
+    const text = lineupAsText(
+      { ...data, benchNames: [], substitutionPlan: null },
+      { opponent: "VV Oost", matchDate: "2026-11-14T09:30:00" }
+    );
+    expect(text).not.toContain("Bank:");
+    expect(text).not.toContain("Wissels:");
   });
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useLineup } from "@/hooks/use-lineup";
 import { usePlayers } from "@/hooks/use-players";
 import { useMatchPlayers } from "@/hooks/use-match-players";
@@ -15,11 +15,12 @@ import { ShareLineupCard } from "@/components/molecules/ShareLineupCard";
 import { ShareSubstitutionPlan } from "@/components/molecules/ShareSubstitutionPlan";
 import { LineupSheet } from "@/components/molecules/LineupSheet";
 import { useExportPdf } from "@/hooks/use-export-pdf";
-import { ArrowRightLeft, ClipboardList, FileDown, Share2 } from "lucide-react";
+import { ArrowRightLeft, Check, ClipboardList, FileDown, MessageSquareText, Share2 } from "lucide-react";
 import { FORMATIONS, type PlayerSkills } from "@/lib/constants";
 import { ensureEafcFormat, calculateOverallRating, getCardTier, hasEafcSkills } from "@/lib/player-rating";
 import { useShareImage } from "@/hooks/use-share-image";
-import { buildShareLineupData, lineupPositions } from "@/lib/share-lineup";
+import { buildShareLineupData, lineupAsText, lineupPositions } from "@/lib/share-lineup";
+import { trackEvent } from "@/lib/gtm";
 import { SubstitutionPlan as SubstitutionPlanView } from "@/components/organisms/SubstitutionPlan";
 import type { Player } from "@/types";
 
@@ -47,6 +48,7 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
   const sheetRef = useRef<HTMLDivElement>(null);
   const { exportPdf, isExporting } = useExportPdf();
   const { share, isGenerating } = useShareImage();
+  const [textCopied, setTextCopied] = useState(false);
   const { currentTeam } = useAuthStore();
   const showRatings = currentTeam?.show_ratings ?? true;
   const { data: lineup, isLoading } = useLineup(matchId);
@@ -86,6 +88,24 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
   const playerMap = new Map(allPlayers.map((p) => [p.id, p]));
   const substitutionPlan = shareData?.substitutionPlan ?? null;
 
+  async function shareAsText() {
+    if (!shareData || !matchOpponent || !matchDate) return;
+    const text = lineupAsText(shareData, { opponent: matchOpponent, matchDate });
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ text });
+        trackEvent("share_lineup_text", { method: "native" });
+      } catch {
+        // Share sheet closed without sharing.
+      }
+      return;
+    }
+    await navigator.clipboard.writeText(text);
+    trackEvent("share_lineup_text", { method: "clipboard" });
+    setTextCopied(true);
+    setTimeout(() => setTextCopied(false), 2000);
+  }
+
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
@@ -103,6 +123,17 @@ export function LineupView({ matchId, matchOpponent, matchDate }: LineupViewProp
           >
             <FileDown className="size-4" />
             PDF
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1.5"
+            onClick={shareAsText}
+            disabled={!matchOpponent || !shareData}
+            aria-label="Opstelling als tekst delen"
+          >
+            {textCopied ? <Check className="size-4" /> : <MessageSquareText className="size-4" />}
+            {textCopied ? "Gekopieerd" : "Tekst"}
           </Button>
           {substitutionPlan && substitutionPlan.substitutionMoments.length > 0 && (
             <Button
