@@ -78,9 +78,9 @@ Platform-forced, written down so they stop being questions:
 | Store/install pages | `/android` install page, dashboard hint, landing block | n/a — the app *is* the install | allowed difference: web-only marketing |
 | Legal pages | `/privacy`, `/voorwaarden` | profile links open the web pages | allowed difference: single source for legal text |
 | Push mechanism | Web Push (VAPID) | FCM data messages | by choice; both built and configured | by choice, so the clients can evolve apart; triggers shared ([[2026-10-23-push-per-client-web-first]]) |
-| KNVB youth formats: 6 v 6, 8 v 8, 11 v 11 from JO13 ([[2026-11-09-knvb-youth-match-formats]]) | branch `feature/knvb-youth-formats` | branch `feature/knvb-youth-formats` (constants, 6v6 formations, settings label) | pending — both wait for the production migration; unit tests green on both |
-| Share strip reads `myteamplanner.nl/maak` | branch | branch | pending release on both |
-| Free tools without account (`/tools/wisselschema`, `/tools/opstelling`) | branch | — | allowed difference: public marketing pages, not app features |
+| KNVB youth formats: 6 v 6, 8 v 8, 11 v 11 from JO13 ([[2026-11-09-knvb-youth-match-formats]]) | yes (2026-11-09) | 1.5.0 (versionCode 9) smoke-tested and submitted to the closed test 2026-11-09, in review | parity once approved — 1.4.1 cannot decode `jo10`/`jo12_jo11`/`jo9_jo8` teams (TeamType enum), fixed in 1.5.0 with a fallback |
+| Share strip reads `myteamplanner.nl/maak` | yes (2026-11-09) | in 1.5.0, in review | parity once approved |
+| Free tools without account (`/tools/wisselschema`, `/tools/opstelling`) | yes (2026-11-09) | — | allowed difference: public marketing pages, not app features |
 
 ### Shared contract (must never drift)
 

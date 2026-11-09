@@ -22,7 +22,7 @@ How it got here:
 
 What the Android app is for, now that push is designed on the web too: Play Store discoverability and trust, a native feel, haptics, the system share sheet, and — once phase 5 happens — push without the PWA's home-screen caveat on Android. iOS has no native client: *"ooit komt er ook een ios client maar ios licentie vind ik nog te duur dus voorlopig blijft bij pwa en android"* ([[2026-10-23-open-questions-answered]]) — deferred on cost, not rejected.
 
-- **Tester count 2026-11-09**: the Google Group is the only tester source and has 1 member (Yustin) — 1 of 12. Push reaches one Android subscriber, so a push appeal is pointless. Recruitment now runs through the dashboard card with a share button, `/android`, and drafted posts in `docs/play-store/tester-recruitment.md` that need Yustin's go per channel.
+- **Tester count 2026-11-09**: the Google Group is the only tester source and has 1 member (Yustin) — 1 of 12. Push reaches one Android subscriber, so a push appeal is pointless. Recruitment now runs through the dashboard card with a share button, `/android`, and drafted posts in `docs/play-store/tester-recruitment.md`. Yustin decided on 2026-11-09 that recruitment does not run through his own social media accounts: Reddit and Facebook posting is off, the in-app route stays.
 
 ## Requirements
 

@@ -96,3 +96,47 @@ export function buildShareLineupData({
     substitutionPlan: (lineup.substitution_plan as unknown as SubstitutionPlan | null) ?? null,
   };
 }
+
+interface LineupTextContext {
+  opponent: string;
+  /** ISO date-time of the match. */
+  matchDate: string;
+}
+
+/**
+ * Plain-text lineup for a group chat: keeper, lines from defence to attack,
+ * bench and substitution moments. Lines are grouped by height on the pitch
+ * so any formation reads the same way.
+ */
+export function lineupAsText(data: ShareLineupData, { opponent, matchDate }: LineupTextContext): string {
+  const date = new Date(matchDate);
+  const when = `${date.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" })} · ${date.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" })}`;
+
+  const keeper = data.players.filter((p) => p.positionLabel === "K");
+  const field = data.players.filter((p) => p.positionLabel !== "K");
+  const band = (y: number) => (y >= 62 ? "Verdediging" : y >= 35 ? "Middenveld" : "Aanval");
+  const lines = new Map<string, string[]>();
+  for (const p of [...field].sort((a, b) => b.y - a.y || a.x - b.x)) {
+    const key = band(p.y);
+    lines.set(key, [...(lines.get(key) ?? []), p.name]);
+  }
+
+  const out = [`Opstelling vs. ${opponent}`, `${when} · ${data.formation}`, ""];
+  if (keeper.length) out.push(`Keeper: ${keeper.map((p) => p.name).join(", ")}`);
+  for (const key of ["Verdediging", "Middenveld", "Aanval"]) {
+    const names = lines.get(key);
+    if (names) out.push(`${key}: ${names.join(", ")}`);
+  }
+  if (data.benchNames.length) out.push(`Bank: ${data.benchNames.join(", ")}`);
+
+  const moments = data.substitutionPlan?.substitutionMoments ?? [];
+  if (moments.length) {
+    out.push("", "Wissels:");
+    for (const m of moments) {
+      const swaps = m.out.map((o, i) => `${m.in[i]?.name ?? "?"} voor ${o.name}`).join(", ");
+      out.push(`${m.minute}': ${swaps}`);
+    }
+  }
+  out.push("", "Gemaakt met MyTeamPlanner — myteamplanner.nl/maak");
+  return out.join("\n");
+}

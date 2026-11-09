@@ -124,3 +124,19 @@ Search Console via Yustin's Chrome: 21 pages indexed (3 on 2026-10-25), all blog
 ## [2026-11-09] refactor | Growth push: tools, tester recruitment, GTM gap, KNVB formats
 Pages touched: [[2026-11-09-knvb-youth-match-formats]] (new decision), [[growth-and-seo]], [[native-app]], [[web-android-parity]], `index.md`
 Live: blog CTAs with the share card, tester recruitment (dashboard card, share button, `/android`), GTM version 3 forwarding all app events to GA4 — they had never reached it. Testers: 1 of 12. On branch `feature/knvb-youth-formats` (web and Android): KNVB youth formats, free schedule and lineup tools, `/maak` on the share strip, search tuning. Blog content corrected the same day: no KNVB youth category plays 7 v 7. The production migration was refused by the permission filter and waits for Yustin.
+
+## [2026-11-09] refactor | KNVB formats and free tools live
+Pages touched: [[2026-11-09-knvb-youth-match-formats]] (accepted), [[web-android-parity]], [[growth-and-seo]], `index.md`
+Yustin approved the migration; it added `jo12_jo11`, `jo10`, `jo9_jo8` and tagged 28 exercises. Web merged and live: team types, `/tools/wisselschema` (checked on production: 4 moments for a JO11 team of ten, `tool_generate` in the dataLayer), `/tools/opstelling`, `/maak`. Android merged to `main`, release owed. GTM import for the `tool_*` events waits for the Chrome connection; file in `docs/analytics/`.
+
+## [2026-11-09] refactor | Android 1.5.0 built; enum bug found on the emulator
+Pages touched: [[web-android-parity]]
+Release-signed 1.5.0 (versionCode 9) smoke-tested: settings list the KNVB types, the legacy team shows "JO11 - JO9 (7 tegen 7)", a JO10 team gets 2-2-1/1-3-1/2-1-2. Switching the second test team to `jo10` broke the match list: the `TeamType` enum in `data/model/Team.kt` did not know the value, so 1.4.1 fails on any team with a new type. Fixed with all values plus a fallback serializer (Android `679df0b`, unit-tested). Upload to the closed test waits for the Chrome connection. Test data: "Emulator tweede team" is now `jo10`.
+
+## [2026-11-09] refactor | GTM version 4; Android 1.5.0 submitted
+Pages touched: [[web-android-parity]], [[growth-and-seo]]
+GTM container version 4 adds the `tool_*` events and their `tool`, `format`, `players` parameters to the GA4 app-events tag. Android 1.5.0 (versionCode 9) uploaded to the Alpha track with Dutch release notes and sent for review after Play's quick checks; no errors or device-support changes.
+
+## [2026-11-09] refactor | No social posting via Yustin's accounts
+Pages touched: [[native-app]]
+Reddit was blocked in both browsers; while Facebook groups were being searched, Yustin stopped it: tester recruitment and growth do not run through his personal social media. Nothing was posted or joined. Recruitment continues through the dashboard card, share button and `/android`.
