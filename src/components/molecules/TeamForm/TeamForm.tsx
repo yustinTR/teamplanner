@@ -83,7 +83,11 @@ export function TeamForm({ defaultValues, onSubmit, submitLabel = "Opslaan" }: T
             <SelectValue placeholder="Kies een teamtype" />
           </SelectTrigger>
           <SelectContent>
-            {ACTIVE_TEAM_TYPES.map((value) => (
+            {/* A team on a legacy type keeps it selectable until the coach picks a current one. */}
+            {[
+              ...(ACTIVE_TEAM_TYPES as readonly string[]).includes(teamType) ? [] : [teamType],
+              ...ACTIVE_TEAM_TYPES,
+            ].map((value) => (
               <SelectItem key={value} value={value}>
                 {TEAM_TYPE_LABELS[value]}
               </SelectItem>

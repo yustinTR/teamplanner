@@ -12,25 +12,41 @@ export interface TeamTypeConfig {
 export const TEAM_TYPE_CONFIG: Record<string, TeamTypeConfig> = {
   senioren: { label: "Senioren", halfMinutes: 45, halves: 2, fieldPlayers: 11 },
   jo19_jo17: { label: "JO19 - JO17", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
-  jo15_jo13: { label: "JO15 - JO13", halfMinutes: 30, halves: 2, fieldPlayers: 7 },
-  jo11_jo9: { label: "JO11 - JO9", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
+  // KNVB formats: 11 v 11 from JO13 (2x30; JO14-15 play 2x35), 8 v 8 for JO11-JO12,
+  // 6 v 6 for JO8-JO10. fieldPlayers counts the keeper.
+  jo15_jo13: { label: "JO15 - JO13", halfMinutes: 30, halves: 2, fieldPlayers: 11 },
+  jo12_jo11: { label: "JO12 - JO11", halfMinutes: 30, halves: 2, fieldPlayers: 8 },
+  jo10: { label: "JO10", halfMinutes: 25, halves: 2, fieldPlayers: 6 },
+  jo9_jo8: { label: "JO9 - JO8", halfMinutes: 20, halves: 2, fieldPlayers: 6 },
   g_team: { label: "G-Team", halfMinutes: 30, halves: 2, fieldPlayers: 8 },
   // Legacy values (still valid in DB, mapped to new configs)
+  jo11_jo9: { label: "JO11 - JO9 (7 tegen 7)", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
   jo19_jo15: { label: "JO19 - JO15", halfMinutes: 40, halves: 2, fieldPlayers: 11 },
   jo13_jo11: { label: "JO13 - JO11", halfMinutes: 30, halves: 2, fieldPlayers: 7 },
   jo9_jo7: { label: "JO9 - JO7", halfMinutes: 25, halves: 2, fieldPlayers: 7 },
 };
 
 // Only show these team types in the UI (excludes legacy values)
-export const ACTIVE_TEAM_TYPES = ["senioren", "jo19_jo17", "jo15_jo13", "jo11_jo9", "g_team"] as const;
+export const ACTIVE_TEAM_TYPES = [
+  "senioren",
+  "jo19_jo17",
+  "jo15_jo13",
+  "jo12_jo11",
+  "jo10",
+  "jo9_jo8",
+  "g_team",
+] as const;
 
 export const TEAM_TYPE_LABELS: Record<string, string> = {
   senioren: "Senioren",
   jo19_jo17: "JO19 - JO17",
-  jo15_jo13: "JO15 - JO13",
-  jo11_jo9: "JO11 - JO9",
+  jo15_jo13: "JO15 - JO13 (11 tegen 11)",
+  jo12_jo11: "JO12 - JO11 (8 tegen 8)",
+  jo10: "JO10 (6 tegen 6)",
+  jo9_jo8: "JO9 - JO8 (6 tegen 6)",
   g_team: "G-Team",
   // Legacy
+  jo11_jo9: "JO11 - JO9 (7 tegen 7)",
   jo19_jo15: "JO19 - JO15",
   jo13_jo11: "JO13 - JO11",
   jo9_jo7: "JO9 - JO7",
@@ -115,7 +131,7 @@ export const FORMATIONS_11: Record<string, Omit<LineupPosition, "player_id">[]> 
   ],
 };
 
-// 8v8 formations (G-team)
+// 8v8 formations (JO12-JO11, G-team)
 export const FORMATIONS_8: Record<string, Omit<LineupPosition, "player_id">[]> = {
   "3-3-1": [
     { x: 50, y: 92, position_label: "K" },
@@ -159,7 +175,35 @@ export const FORMATIONS_8: Record<string, Omit<LineupPosition, "player_id">[]> =
   ],
 };
 
-// 7v7 formations (JO15 en lager)
+// 6v6 formations (JO10-JO8): keeper plus five
+export const FORMATIONS_6: Record<string, Omit<LineupPosition, "player_id">[]> = {
+  "2-2-1": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 30, y: 70, position_label: "CB" },
+    { x: 70, y: 70, position_label: "CB" },
+    { x: 30, y: 45, position_label: "CM" },
+    { x: 70, y: 45, position_label: "CM" },
+    { x: 50, y: 20, position_label: "ST" },
+  ],
+  "1-3-1": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 50, y: 72, position_label: "CB" },
+    { x: 20, y: 47, position_label: "LM" },
+    { x: 50, y: 45, position_label: "CM" },
+    { x: 80, y: 47, position_label: "RM" },
+    { x: 50, y: 20, position_label: "ST" },
+  ],
+  "2-1-2": [
+    { x: 50, y: 92, position_label: "K" },
+    { x: 30, y: 70, position_label: "CB" },
+    { x: 70, y: 70, position_label: "CB" },
+    { x: 50, y: 48, position_label: "CM" },
+    { x: 30, y: 22, position_label: "ST" },
+    { x: 70, y: 22, position_label: "ST" },
+  ],
+};
+
+// 7v7 formations (legacy JO11-JO9 teams)
 export const FORMATIONS_7: Record<string, Omit<LineupPosition, "player_id">[]> = {
   "2-3-1": [
     { x: 50, y: 92, position_label: "K" },
@@ -204,6 +248,7 @@ export const FORMATIONS: Record<string, Omit<LineupPosition, "player_id">[]> = {
   ...FORMATIONS_11,
   ...FORMATIONS_8,
   ...FORMATIONS_7,
+  ...FORMATIONS_6,
 };
 
 // Helper to get the right formations for a team type
@@ -212,7 +257,10 @@ export function getFormationsForTeamType(teamType: string): Record<string, Omit<
   if (config && config.fieldPlayers === 8) {
     return FORMATIONS_8;
   }
-  if (config && config.fieldPlayers <= 7) {
+  if (config && config.fieldPlayers <= 6) {
+    return FORMATIONS_6;
+  }
+  if (config && config.fieldPlayers === 7) {
     return FORMATIONS_7;
   }
   return FORMATIONS_11;
@@ -224,7 +272,10 @@ export function getDefaultFormation(teamType: string): string {
   if (config && config.fieldPlayers === 8) {
     return "3-3-1";
   }
-  if (config && config.fieldPlayers <= 7) {
+  if (config && config.fieldPlayers <= 6) {
+    return "2-2-1";
+  }
+  if (config && config.fieldPlayers === 7) {
     return "2-3-1";
   }
   return "4-3-3";

@@ -774,6 +774,9 @@ export type Database = {
         | "jo19_jo17"
         | "jo15_jo13"
         | "jo11_jo9"
+        | "jo12_jo11"
+        | "jo10"
+        | "jo9_jo8"
         | "g_team"
         | "jo19_jo15"
         | "jo13_jo11"
@@ -924,6 +927,9 @@ export const Constants = {
         "jo19_jo17",
         "jo15_jo13",
         "jo11_jo9",
+        "jo12_jo11",
+        "jo10",
+        "jo9_jo8",
         "g_team",
         "jo19_jo15",
         "jo13_jo11",
