@@ -136,3 +136,7 @@ Release-signed 1.5.0 (versionCode 9) smoke-tested: settings list the KNVB types,
 ## [2026-11-09] refactor | GTM version 4; Android 1.5.0 submitted
 Pages touched: [[web-android-parity]], [[growth-and-seo]]
 GTM container version 4 adds the `tool_*` events and their `tool`, `format`, `players` parameters to the GA4 app-events tag. Android 1.5.0 (versionCode 9) uploaded to the Alpha track with Dutch release notes and sent for review after Play's quick checks; no errors or device-support changes.
+
+## [2026-11-09] refactor | No social posting via Yustin's accounts
+Pages touched: [[native-app]]
+Reddit was blocked in both browsers; while Facebook groups were being searched, Yustin stopped it: tester recruitment and growth do not run through his personal social media. Nothing was posted or joined. Recruitment continues through the dashboard card, share button and `/android`.
