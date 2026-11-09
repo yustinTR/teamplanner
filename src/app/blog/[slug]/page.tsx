@@ -15,8 +15,13 @@ import {
   DEMO_MATCH_DATE,
   DEMO_OPPONENT,
   DEMO_TEAM,
+  DEMO_FORMATION_7,
+  DEMO_OPPONENT_7,
+  DEMO_TEAM_7,
   demoBench,
+  demoBench7,
   demoLineupPlayers,
+  demoLineupPlayers7,
   demoLineupSubstitutions,
   demoSubstitutionPlan,
 } from "@/lib/blog-cta-demo";
@@ -46,6 +51,18 @@ function renderCtaPreview(preview: BlogPostCta["preview"]) {
         players={demoLineupPlayers}
         benchNames={demoBench}
         substitutions={demoLineupSubstitutions}
+      />
+    );
+  }
+  if (preview === "lineup-7") {
+    return (
+      <ShareLineupCard
+        teamName={DEMO_TEAM_7}
+        opponent={DEMO_OPPONENT_7}
+        matchDate={DEMO_MATCH_DATE}
+        formation={DEMO_FORMATION_7}
+        players={demoLineupPlayers7}
+        benchNames={demoBench7}
       />
     );
   }

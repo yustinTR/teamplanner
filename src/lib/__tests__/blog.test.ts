@@ -24,15 +24,15 @@ describe("blog posts", () => {
 describe("demo substitution plan", () => {
   const { playerMinutes, totalMinutes } = demoSubstitutionPlan;
 
-  it("fills seven positions for the whole match", () => {
+  it("fills eight positions (8 v 8) for the whole match", () => {
     const total = playerMinutes.reduce((sum, p) => sum + p.totalMinutes, 0);
-    expect(total).toBe(7 * totalMinutes);
+    expect(total).toBe(8 * totalMinutes);
   });
 
-  it("gives outfield players at most one minute difference, as the article claims", () => {
-    const outfield = playerMinutes.filter((p) => p.totalMinutes < totalMinutes);
-    const minutes = outfield.map((p) => p.totalMinutes);
-    expect(Math.max(...minutes) - Math.min(...minutes)).toBeLessThanOrEqual(1);
+  it("has eight outfield players on 48 minutes and one on 36, as the article says", () => {
+    const outfield = playerMinutes.filter((p) => p.totalMinutes < totalMinutes).map((p) => p.totalMinutes);
+    expect(outfield.filter((m) => m === 48)).toHaveLength(8);
+    expect(outfield.filter((m) => m === 36)).toHaveLength(1);
   });
 
   it("matches each player's periods to their minutes", () => {
