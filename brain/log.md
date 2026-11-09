@@ -124,3 +124,7 @@ Search Console via Yustin's Chrome: 21 pages indexed (3 on 2026-10-25), all blog
 ## [2026-11-09] refactor | Growth push: tools, tester recruitment, GTM gap, KNVB formats
 Pages touched: [[2026-11-09-knvb-youth-match-formats]] (new decision), [[growth-and-seo]], [[native-app]], [[web-android-parity]], `index.md`
 Live: blog CTAs with the share card, tester recruitment (dashboard card, share button, `/android`), GTM version 3 forwarding all app events to GA4 — they had never reached it. Testers: 1 of 12. On branch `feature/knvb-youth-formats` (web and Android): KNVB youth formats, free schedule and lineup tools, `/maak` on the share strip, search tuning. Blog content corrected the same day: no KNVB youth category plays 7 v 7. The production migration was refused by the permission filter and waits for Yustin.
+
+## [2026-11-09] refactor | KNVB formats and free tools live
+Pages touched: [[2026-11-09-knvb-youth-match-formats]] (accepted), [[web-android-parity]], [[growth-and-seo]], `index.md`
+Yustin approved the migration; it added `jo12_jo11`, `jo10`, `jo9_jo8` and tagged 28 exercises. Web merged and live: team types, `/tools/wisselschema` (checked on production: 4 moments for a JO11 team of ten, `tool_generate` in the dataLayer), `/tools/opstelling`, `/maak`. Android merged to `main`, release owed. GTM import for the `tool_*` events waits for the Chrome connection; file in `docs/analytics/`.

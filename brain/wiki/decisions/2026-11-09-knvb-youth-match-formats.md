@@ -3,8 +3,8 @@ type: decision
 title: Team types follow the KNVB youth match formats
 created: 2026-11-09
 updated: 2026-11-09
-status: proposed
-decided_by: Yustin Troost (asked for "alles", 2026-11-09); migration awaiting his approval
+status: accepted
+decided_by: Yustin Troost (product call, approved the migration 2026-11-09)
 supersedes: ""
 tags: [decision, data-model, youth, seo]
 sources: ["[[2026-11-09-search-and-usage-reading]]"]
@@ -28,9 +28,9 @@ Since 2026-02-20 (`supabase/migrations/20260220121202_update_team_types_for_7v7.
 ## Consequences
 
 - Exercises tagged `jo11_jo9` are also tagged with the three new types (same migration), so exercise filters keep working.
-- Android must ship the same constants; done on branch `feature/knvb-youth-formats` in both repositories ([[web-android-parity]]).
+- Android must ship the same constants; merged to `main` in both repositories on 2026-11-09 ([[web-android-parity]]).
 - The free tools ([[growth-and-seo]]) offer exactly these formats.
 
 ## Where it lives in the code
 
-`supabase/migrations/20261109120000_knvb_youth_team_types.sql`, `src/lib/constants.ts` (`TEAM_TYPE_CONFIG`, `FORMATIONS_6`), `data/Constants.kt` on Android. Status `proposed` until the migration runs on production.
+`supabase/migrations/20261109120000_knvb_youth_team_types.sql`, `src/lib/constants.ts` (`TEAM_TYPE_CONFIG`, `FORMATIONS_6`), `data/Constants.kt` on Android. Migration applied to production on 2026-11-09; web live the same day; Android on `main`, not yet released to the closed test.
