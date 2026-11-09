@@ -101,6 +101,7 @@ _newest first, status shown_
 
 ## Notes
 
+- [[2026-11-09-search-and-usage-reading]] — two weeks after the indexing fixes: 21 pages indexed, Google clicks up, feature pages never crawled; 9 real active teams, no real follow link
 - [[2026-10-25-active-team-recount]] — 11 active teams of 23 under the corrected definition, nine coach-only, five with recent lineup edits
 - [[2026-10-23-active-team-count]] — first reading under the superseded definition: 2 of 22; its adoption conclusion is withdrawn
 - [[2026-10-23-android-emulator-test-setup]] — toolchain, AVD, test account and test team for running the Android app from this machine; what the first run found
