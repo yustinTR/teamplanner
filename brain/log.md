@@ -128,3 +128,7 @@ Live: blog CTAs with the share card, tester recruitment (dashboard card, share b
 ## [2026-11-09] refactor | KNVB formats and free tools live
 Pages touched: [[2026-11-09-knvb-youth-match-formats]] (accepted), [[web-android-parity]], [[growth-and-seo]], `index.md`
 Yustin approved the migration; it added `jo12_jo11`, `jo10`, `jo9_jo8` and tagged 28 exercises. Web merged and live: team types, `/tools/wisselschema` (checked on production: 4 moments for a JO11 team of ten, `tool_generate` in the dataLayer), `/tools/opstelling`, `/maak`. Android merged to `main`, release owed. GTM import for the `tool_*` events waits for the Chrome connection; file in `docs/analytics/`.
+
+## [2026-11-09] refactor | Android 1.5.0 built; enum bug found on the emulator
+Pages touched: [[web-android-parity]]
+Release-signed 1.5.0 (versionCode 9) smoke-tested: settings list the KNVB types, the legacy team shows "JO11 - JO9 (7 tegen 7)", a JO10 team gets 2-2-1/1-3-1/2-1-2. Switching the second test team to `jo10` broke the match list: the `TeamType` enum in `data/model/Team.kt` did not know the value, so 1.4.1 fails on any team with a new type. Fixed with all values plus a fallback serializer (Android `679df0b`, unit-tested). Upload to the closed test waits for the Chrome connection. Test data: "Emulator tweede team" is now `jo10`.
