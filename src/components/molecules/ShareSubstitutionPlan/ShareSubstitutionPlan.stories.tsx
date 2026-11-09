@@ -77,3 +77,11 @@ export const NoSubstitutions: Story = {
     },
   },
 };
+
+/** Used by the public schedule tool: no opponent or date yet. */
+export const WithoutMatch: Story = {
+  args: {
+    teamName: "JO11-1",
+    plan,
+  },
+};

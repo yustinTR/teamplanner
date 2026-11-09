@@ -207,6 +207,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     heading={post.cta.heading}
                     text={post.cta.text}
                     buttonLabel={post.cta.buttonLabel}
+                    href={post.cta.href}
                     preview={renderCtaPreview(post.cta.preview)}
                   />
                 )}

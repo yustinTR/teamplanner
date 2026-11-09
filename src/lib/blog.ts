@@ -17,6 +17,8 @@ export interface BlogPostCta {
   heading: string;
   text: string;
   buttonLabel: string;
+  /** Main button target; defaults to sign-up. */
+  href?: string;
   preview: "substitution-plan" | "lineup" | "lineup-7" | "none";
   /** Zero-based index of the section the prompt follows. */
   afterSection: number;
@@ -43,6 +45,7 @@ export const blogPosts: BlogPost[] = [
       heading: "Je 2-3-1 klaar om te delen",
       text: "Kies de formatie, sleep je spelers op hun plek en plan de wissels. Je team krijgt de opstelling als afbeelding in de groepsapp.",
       buttonLabel: "Maak je 7 tegen 7 opstelling",
+      href: "/tools/opstelling",
       preview: "lineup-7",
       afterSection: 1,
     },
@@ -104,9 +107,10 @@ export const blogPosts: BlogPost[] = [
     ],
     relatedSlugs: ["opstelling-7-tegen-7-voetbal", "beschikbaarheid-bijhouden-team", "opstelling-maken-voetbal"],
     cta: {
-      heading: "Maak dit wisselschema in 2 minuten",
-      text: "Sleep je spelers op het veld, kies je wisselmomenten en zie direct hoeveel minuten iedereen speelt. Daarna deel je het schema met één tik in de groepsapp.",
+      heading: "Maak je eigen wisselschema in 1 minuut",
+      text: "Vul je spelers in, kies je speelvorm en krijg direct een eerlijk schema met speelminuten. Gratis en zonder account; delen in de groepsapp met één tik.",
       buttonLabel: "Maak je wisselschema",
+      href: "/tools/wisselschema",
       preview: "substitution-plan",
       afterSection: 3,
     },
@@ -685,6 +689,7 @@ export const blogPosts: BlogPost[] = [
       heading: "Zo ziet je opstelling eruit in de groepsapp",
       text: "Kies een formatie, sleep je spelers op hun plek en deel de opstelling als afbeelding. Met wisselmomenten erbij, zodat iedereen weet wanneer hij speelt.",
       buttonLabel: "Maak je opstelling",
+      href: "/tools/opstelling",
       preview: "lineup",
       afterSection: 2,
     },
