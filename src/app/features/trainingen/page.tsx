@@ -74,6 +74,13 @@ export default function TrainingenPage() {
           <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">
             Geen uren meer zoeken naar oefeningen. Stel in 2 minuten een complete training samen uit onze bibliotheek.
           </p>
+          <Link
+            href="/voetbaloefeningen"
+            className="mt-6 inline-flex min-h-[44px] items-center gap-1.5 text-sm font-medium text-white underline-offset-4 hover:underline"
+          >
+            Bekijk alle oefeningen zonder account
+            <ArrowRight className="size-4" />
+          </Link>
         </div>
       </section>
 

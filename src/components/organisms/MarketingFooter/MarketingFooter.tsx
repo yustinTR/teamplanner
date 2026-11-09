@@ -31,6 +31,7 @@ export function MarketingFooter() {
               <Link href="/features/trainingen" className="hover:text-white">Trainingen</Link>
               <Link href="/tools/wisselschema" className="hover:text-white">Gratis wisselschema</Link>
               <Link href="/tools/opstelling" className="hover:text-white">Gratis opstelling maken</Link>
+              <Link href="/voetbaloefeningen" className="hover:text-white">Voetbaloefeningen</Link>
             </nav>
           </div>
 
