@@ -193,7 +193,14 @@ export function MatchDetailClient({ matchId }: MatchDetailClientProps) {
               </Button>
             </Link>
           </div>
-          <AvailabilityGrid matchId={match.id} />
+          <AvailabilityGrid
+            matchId={match.id}
+            reminder={
+              match.status === "upcoming" && new Date(match.match_date) > new Date()
+                ? { opponent: match.opponent, matchDate: match.match_date, homeAway: match.home_away }
+                : undefined
+            }
+          />
         </div>
 
         {isCoach && match.status === "upcoming" && new Date(match.match_date) < new Date() && (

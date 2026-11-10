@@ -160,3 +160,7 @@ Two in-product spread levers, live on web: the follow-link offer after a lineup 
 ## [2026-11-09] refactor | Public exercise pages; GTM version 5
 Pages touched: [[growth-and-seo]], [[training-content]]
 The exercise library is now public and indexable at `/voetbaloefeningen` (79 exercise pages, hub, six age-group pages), with a sign-up prompt that returns the coach to the exercise. Anon read was already allowed by RLS, so no migration. The GTM import with all events since version 4 plus `exercise_cta_click` was imported and published as container version 5 at Yustin's request.
+
+## [2026-11-10] refactor | Calendar subscription on the follow link
+Pages touched: [[growth-and-seo]], [[web-android-parity]]
+Parents can subscribe to the team's matches from the follow page (`.ics` feed, Apple, Google or copied link). Live on web; nothing owed on Android because the follow page is web-only. `calendar_subscribe` added to the GTM import file; the container still has to be re-imported for it.
