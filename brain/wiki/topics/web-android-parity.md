@@ -30,6 +30,7 @@ Android ([[teamplanner-android]]) was built to the web app as it stood on 2026-0
 | Loan players (leen-spelers, `match_players`) | yes (2026-02-20) | yes (2026-03-13) | parity |
 | Availability toggle and grid; coach sets it for players without accounts | yes (coach-set: 2026-04-10) | yes (coach-set: 2026-03-13) | parity — Android led |
 | Availability grid live via Realtime | yes — but never worked until 2026-10-26: the `supabase_realtime` publication had no tables | subscribes to `availability` changes; connected only since the OkHttp Ktor engine (2026-10-26, seen live on the emulator: count changed after a database write) | parity, verified |
+| Coach reminder for players who have not answered (share a ready-made message) | yes (2026-11-10) | no | Android owes it: a button under the grid that opens the share sheet with the same text |
 | Player list, detail, CRUD, photo upload, deactivate | yes | yes | parity |
 | Skills radar and EAFC rating / card tier (v2 since 2026-03-02) | yes | yes, 6 axes 1–99, `hasEafcSkills` | parity |
 | Skills editor (coach rates players) | yes | bottom-sheet editor, slider per EAFC attribute, overall on top (2026-10-25, emulator-tested) | parity |

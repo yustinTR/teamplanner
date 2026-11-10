@@ -164,3 +164,7 @@ The exercise library is now public and indexable at `/voetbaloefeningen` (79 exe
 ## [2026-11-10] refactor | Calendar subscription on the follow link
 Pages touched: [[growth-and-seo]], [[web-android-parity]]
 Parents can subscribe to the team's matches from the follow page (`.ics` feed, Apple, Google or copied link). Live on web; nothing owed on Android because the follow page is web-only. `calendar_subscribe` added to the GTM import file; the container still has to be re-imported for it.
+
+## [2026-11-10] refactor | Reminder for players who have not answered
+Pages touched: [[growth-and-seo]], [[web-android-parity]]
+Coaches can share one ready-made reminder naming the players who have not answered for an upcoming match, with a link to the match. Live on web; Android owes the same button. `availability_reminder` added to the GTM import file; the container still has to be re-imported, together with `calendar_subscribe`.
