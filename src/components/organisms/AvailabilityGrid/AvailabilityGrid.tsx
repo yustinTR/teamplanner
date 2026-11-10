@@ -7,15 +7,22 @@ import { useMatchPlayers } from "@/hooks/use-match-players";
 import { PlayerAvailabilityRow } from "@/components/molecules/PlayerAvailabilityRow";
 import { AvailabilitySummary } from "@/components/molecules/AvailabilitySummary";
 import { AvailabilityToggle } from "@/components/molecules/AvailabilityToggle";
+import { AvailabilityReminder } from "@/components/molecules/AvailabilityReminder";
 import { Badge } from "@/components/atoms/Badge";
 import { Spinner } from "@/components/atoms/Spinner";
 import type { AvailabilityStatus, Player } from "@/types";
 
 interface AvailabilityGridProps {
   matchId: string;
+  /** When given, the coach can remind players who have not answered. */
+  reminder?: {
+    opponent: string;
+    matchDate: string;
+    homeAway: "home" | "away";
+  };
 }
 
-export function AvailabilityGrid({ matchId }: AvailabilityGridProps) {
+export function AvailabilityGrid({ matchId, reminder }: AvailabilityGridProps) {
   const { currentTeam, isCoach } = useAuthStore();
   const { data: players, isLoading: playersLoading } = usePlayers(currentTeam?.id);
   const { data: availability, isLoading: availabilityLoading } = useAvailability(matchId);
@@ -79,6 +86,14 @@ export function AvailabilityGrid({ matchId }: AvailabilityGridProps) {
         unavailable={unavailableCount}
         maybe={maybeCount}
       />
+
+      {isCoach && reminder && (
+        <AvailabilityReminder
+          names={groups.none.map((p) => p.name)}
+          matchPath={`/matches/${matchId}`}
+          {...reminder}
+        />
+      )}
 
       {matchPlayers && matchPlayers.length > 0 && (
         <div>
