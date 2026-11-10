@@ -2,7 +2,7 @@
 type: topic
 title: Training content
 created: 2026-10-23
-updated: 2026-10-23
+updated: 2026-11-09
 tags: [training, exercises, content, ai]
 sources: ["[[2026-02-26-coach-autopilot-roadmap]]"]
 ---
@@ -11,7 +11,7 @@ sources: ["[[2026-02-26-coach-autopilot-roadmap]]"]
 
 ## Where we stand
 
-The exercise library and training plans exist since 2026-02-26 (`src/app/(main)/trainingen/`, tables `exercises` and `exercise_categories`, seeds in `supabase/migrations/20260226100001_seed_exercises.sql` and `20260226113221_add_more_exercises.sql`). Filters by level (from `team_type`), theme, player count and duration; plans combine exercises and attach to events, as the roadmap designed ([[2026-02-26-coach-autopilot-roadmap]]). The feature page `/features/trainingen` sells it publicly ([[2026-02-26-seo-feature-pages-design]]).
+The exercise library and training plans exist since 2026-02-26 (`src/app/(main)/trainingen/`, tables `exercises` and `exercise_categories`, seeds in `supabase/migrations/20260226100001_seed_exercises.sql` and `20260226113221_add_more_exercises.sql`). Filters by level (from `team_type`), theme, player count and duration; plans combine exercises and attach to events, as the roadmap designed ([[2026-02-26-coach-autopilot-roadmap]]). The feature page `/features/trainingen` sells it publicly ([[2026-02-26-seo-feature-pages-design]]). Since 2026-11-09 every published exercise also has a public, indexable page under `/voetbaloefeningen`, with hub and age-group pages; legacy 7 v 7 youth tags are hidden there and in the app ([[growth-and-seo]]).
 
 The content strategy in the roadmap: *"AI-gegenereerd"* initial set, curated with *"voetbaltrainer.nl, KNVB materiaal, YouTube"*, *"Alle oefeningen worden gereviewd voordat ze live gaan"*, and G-team content *"fundamenteel anders"* from senior content.
 

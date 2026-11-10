@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { PublicTeamView } from "@/components/organisms/PublicTeamView";
+import { CalendarSubscribe } from "@/components/molecules/CalendarSubscribe";
+import { calendarPath } from "@/lib/team-calendar";
 import type { PublicTeamView as PublicTeamViewData } from "@/types/public-team";
 
 interface FollowPageProps {
@@ -52,6 +54,9 @@ export default async function FollowPage({ params }: FollowPageProps) {
         matches={view.matches ?? []}
         now={new Date().toISOString()}
       />
+      <div className="mx-auto max-w-lg px-4 pb-6">
+        <CalendarSubscribe feedUrl={`https://www.myteamplanner.nl${calendarPath(token)}`} />
+      </div>
       <footer className="pb-8 text-center text-xs text-muted-foreground">
         Gemaakt met{" "}
         <Link href="/" className="font-medium text-primary-600">
