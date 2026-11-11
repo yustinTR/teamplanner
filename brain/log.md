@@ -168,3 +168,7 @@ Parents can subscribe to the team's matches from the follow page (`.ics` feed, A
 ## [2026-11-10] refactor | Reminder for players who have not answered
 Pages touched: [[growth-and-seo]], [[web-android-parity]]
 Coaches can share one ready-made reminder naming the players who have not answered for an upcoming match, with a link to the match. Live on web; Android owes the same button. `availability_reminder` added to the GTM import file; the container still has to be re-imported, together with `calendar_subscribe`.
+
+## [2026-11-11] refactor | GTM version 6
+Pages touched: [[growth-and-seo]]
+GTM import with `calendar_subscribe` and `availability_reminder` merged (only the "App events (GA4)" trigger changed) and published as container version 6 at Yustin's request.
