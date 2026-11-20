@@ -172,3 +172,7 @@ Coaches can share one ready-made reminder naming the players who have not answer
 ## [2026-11-11] refactor | GTM version 6
 Pages touched: [[growth-and-seo]]
 GTM import with `calendar_subscribe` and `availability_reminder` merged (only the "App events (GA4)" trigger changed) and published as container version 6 at Yustin's request.
+
+## [2026-11-20] refactor | Second Android tester
+Pages touched: [[native-app]]
+A second tester was added straight to the Google Group at Yustin's request and emailed the opt-in steps: 2 of the 12 needed for production access.
