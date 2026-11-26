@@ -176,3 +176,7 @@ GTM import with `calendar_subscribe` and `availability_reminder` merged (only th
 ## [2026-11-20] refactor | Second Android tester
 Pages touched: [[native-app]]
 A second tester was added straight to the Google Group at Yustin's request and emailed the opt-in steps: 2 of the 12 needed for production access.
+
+## [2026-11-26] refactor | SEO check
+Pages touched: [[growth-and-seo]]
+Search Console reading for 28 days: 107 clicks and 6,770 impressions, four times the clicks of 9 November. Only 28 pages indexed; 98 new exercise, age-group and format pages were crawled but not indexed, most likely because they are thin.
