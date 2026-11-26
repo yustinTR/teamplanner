@@ -180,3 +180,7 @@ A second tester was added straight to the Google Group at Yustin's request and e
 ## [2026-11-26] refactor | SEO check
 Pages touched: [[growth-and-seo]]
 Search Console reading for 28 days: 107 clicks and 6,770 impressions, four times the clicks of 9 November. Only 28 pages indexed; 98 new exercise, age-group and format pages were crawled but not indexed, most likely because they are thin.
+
+## [2026-11-26] refactor | Coaching guides on the exercise pages
+Pages touched: [[growth-and-seo]]
+To get the 98 crawled-but-unindexed pages indexed, every exercise and age-group page got unique coaching copy and FAQ schema, plus title and description fixes site-wide. Search Console validation started; result in the December reading.
