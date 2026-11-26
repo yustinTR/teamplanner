@@ -18,7 +18,7 @@ const url = `https://www.myteamplanner.nl${EXERCISES_BASE_PATH}`;
 export const metadata: Metadata = {
   title: "Voetbaloefeningen voor je training (gratis)",
   description:
-    "Kant-en-klare voetbaloefeningen voor jeugd en senioren: warming-up, passing, positiespel, verdedigen, aanvallen, afwerken en conditie. Met opzet, duur en variaties.",
+    "Gratis voetbaloefeningen voor jeugd en senioren: warming-up, passing, positiespel, verdedigen, aanvallen, afwerken en conditie, met opzet en variaties.",
   keywords: [
     "voetbaloefeningen",
     "voetbal oefeningen",

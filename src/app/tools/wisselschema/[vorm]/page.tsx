@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const page = getFormatPage((await params).vorm);
   if (!page) return {};
   const url = `https://www.myteamplanner.nl/tools/wisselschema/${page.slug}`;
-  const title = `Wisselschema ${page.name} maken (${page.audience})`;
-  const description = `Maak gratis een eerlijk wisselschema voor ${page.name}: vul je spelers in en zie direct de speelminuten. Voor ${page.audience}. Delen als afbeelding of tekst.`;
+  const title = `Wisselschema ${page.name} maken (gratis)`;
+  const description = `Gratis wisselschema voor ${page.name} (${page.audience}): vul je spelers in, zie direct de speelminuten en deel het in de groepsapp.`;
   return {
     title,
     description,

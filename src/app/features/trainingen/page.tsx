@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     title: "Voetbal trainingsschema maken — gratis oefeningen",
     description: "Trainingsschema maken voor je voetbalteam met 79 kant-en-klare oefeningen. Filter op niveau en thema.",
     url: "https://www.myteamplanner.nl/features/trainingen",
+    images: [{ url: "/api/og", width: 1200, height: 630 }],
   },
 };
 

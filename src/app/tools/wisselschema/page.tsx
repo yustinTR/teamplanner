@@ -10,7 +10,7 @@ const url = "https://www.myteamplanner.nl/tools/wisselschema";
 export const metadata: Metadata = {
   title: "Wisselschema maken (gratis, zonder account)",
   description:
-    "Maak in één minuut een eerlijk wisselschema voor je voetbalteam. Vul je spelers in, kies 11, 8 of 6 tegen 6 en deel het schema als afbeelding of tekst in de groepsapp.",
+    "Maak in één minuut een eerlijk wisselschema voor je voetbalteam: spelers invullen, 11, 8 of 6 tegen 6 kiezen en delen in de groepsapp. Gratis.",
   keywords: [
     "wisselschema maken",
     "wisselschema generator",

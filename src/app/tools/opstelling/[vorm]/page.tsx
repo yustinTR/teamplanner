@@ -18,9 +18,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const page = getFormatPage((await params).vorm);
   if (!page) return {};
   const url = `https://www.myteamplanner.nl/tools/opstelling/${page.slug}`;
-  const formations = page.formations.map((f) => f.formation).join(", ");
+  const formations = page.formations.slice(0, 3).map((f) => f.formation).join(", ");
   const title = `Opstelling ${page.name}: formaties en gratis tool`;
-  const description = `De beste opstellingen voor ${page.name} (${page.audience}): ${formations}. Maak je opstelling gratis online en deel hem als afbeelding in de groepsapp.`;
+  const description = `De beste opstellingen voor ${page.name} (${page.audience}): ${formations}. Maak je opstelling gratis online en deel hem.`;
   return {
     title,
     description,
