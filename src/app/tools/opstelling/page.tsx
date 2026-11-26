@@ -8,7 +8,7 @@ import { LineupMakerTool } from "@/components/organisms/LineupMakerTool";
 const url = "https://www.myteamplanner.nl/tools/opstelling";
 
 export const metadata: Metadata = {
-  title: "Opstelling maken voor voetbal (gratis, zonder account)",
+  title: "Opstelling maken (gratis, zonder account)",
   description:
     "Maak je voetbalopstelling online: kies 11, 8 of 6 tegen 6 en een formatie, vul je spelers in en deel het in de groepsapp. Gratis, zonder account.",
   keywords: [
