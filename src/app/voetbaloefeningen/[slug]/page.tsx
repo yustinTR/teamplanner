@@ -4,8 +4,11 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 import { ExerciseCard } from "@/components/molecules/ExerciseCard";
 import { ExerciseContent } from "@/components/molecules/ExerciseContent";
+import { ExerciseGuide } from "@/components/molecules/ExerciseGuide";
+import { FaqList } from "@/components/molecules/FaqList";
 import { ExerciseSignupCta } from "@/components/molecules/ExerciseSignupCta";
 import { EXERCISE_CATEGORY_LABELS } from "@/lib/constants";
+import { getExerciseGuide } from "@/lib/exercise-guides";
 import {
   EXERCISES_BASE_PATH,
   exercisePath,
@@ -34,9 +37,12 @@ export async function generateMetadata({ params }: ExercisePageProps): Promise<M
 
   const category = EXERCISE_CATEGORY_LABELS[exercise.category] ?? exercise.category;
   const url = `https://www.myteamplanner.nl${exercisePath(exercise.title)}`;
-  const description = shortDescription(exercise.description);
+  const description = getExerciseGuide(slug)?.metaDescription ?? shortDescription(exercise.description);
+  // Keep the title within what Google shows (the layout adds " | MyTeamPlanner").
+  const long = `${exercise.title} — voetbaloefening ${category.toLowerCase()}`;
+  const short = `${exercise.title} — voetbaloefening`;
   return {
-    title: `${exercise.title} — voetbaloefening ${category.toLowerCase()}`,
+    title: long.length <= 48 ? long : short.length <= 48 ? short : exercise.title,
     description,
     alternates: { canonical: url },
     openGraph: {
@@ -57,6 +63,7 @@ export default async function PublicExercisePage({ params }: ExercisePageProps) 
 
   const category = EXERCISE_CATEGORY_LABELS[exercise.category] ?? exercise.category;
   const related = relatedExercises(exercises, exercise);
+  const guide = getExerciseGuide(slug);
 
   return (
     <div className="min-h-screen bg-white">
@@ -73,6 +80,17 @@ export default async function PublicExercisePage({ params }: ExercisePageProps) 
           <div className="mt-4">
             <ExerciseContent exercise={exercise} />
           </div>
+
+          {guide && (
+            <>
+              <div className="mt-6">
+                <ExerciseGuide guide={guide} />
+              </div>
+              <div className="mt-8">
+                <FaqList items={guide.faq} />
+              </div>
+            </>
+          )}
 
           <div className="mt-8">
             <ExerciseSignupCta exerciseId={exercise.id} exerciseSlug={slug} />

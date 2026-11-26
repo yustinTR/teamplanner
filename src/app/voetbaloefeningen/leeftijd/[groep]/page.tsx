@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 import { ExerciseCard } from "@/components/molecules/ExerciseCard";
+import { FaqList } from "@/components/molecules/FaqList";
 import { EXERCISE_CATEGORY_LABELS } from "@/lib/constants";
+import { getAgeGroupGuide } from "@/lib/exercise-guides";
 import {
   AGE_GROUPS,
   EXERCISES_BASE_PATH,
@@ -31,9 +33,12 @@ export async function generateMetadata({ params }: AgeGroupPageProps): Promise<M
   if (!group) return {};
   const url = `https://www.myteamplanner.nl${EXERCISES_BASE_PATH}/leeftijd/${group.slug}`;
   const title = `Voetbaloefeningen voor ${group.label}`;
+  const withFormat = `${title} (${group.format})`;
   return {
-    title: `${title} (${group.format})`,
-    description: `Trainingsoefeningen voor ${group.label} (${group.format}): warming-up, passing, positiespel, verdedigen, aanvallen en afwerken. Met opzet, duur en variaties.`,
+    title: withFormat.length <= 48 ? withFormat : title,
+    description:
+      getAgeGroupGuide(group.slug)?.metaDescription ??
+      `Trainingsoefeningen voor ${group.label} (${group.format}): warming-up, passing, positiespel, verdedigen, aanvallen en afwerken.`,
     alternates: { canonical: url },
     openGraph: { title, url, type: "website", siteName: "MyTeamPlanner", images: [{ url: "/api/og", width: 1200, height: 630 }] },
   };
@@ -46,6 +51,7 @@ export default async function AgeGroupExercisesPage({ params }: AgeGroupPageProp
 
   const exercises = exercisesForAgeGroup(await getPublishedExercises(), group);
   const groups = groupByCategory(exercises);
+  const guide = getAgeGroupGuide(group.slug);
 
   return (
     <div className="min-h-screen bg-white">
@@ -63,6 +69,29 @@ export default async function AgeGroupExercisesPage({ params }: AgeGroupPageProp
           <p className="mt-3 max-w-2xl text-neutral-600">
             {group.intro} Hieronder staan {exercises.length} oefeningen die passen bij {group.format}.
           </p>
+
+          {guide && (
+            <section className="mt-8 max-w-2xl">
+              <h2 className="text-xl font-bold text-neutral-900">Waar let je op bij {group.label}?</h2>
+              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-neutral-600">
+                {guide.focus.map((line) => {
+                  const i = line.indexOf(":");
+                  return (
+                    <li key={line}>
+                      {i === -1 ? line : (
+                        <>
+                          <span className="font-semibold text-neutral-800">{line.slice(0, i)}</span>
+                          {line.slice(i)}
+                        </>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+              <h2 className="mt-6 text-xl font-bold text-neutral-900">Zo ziet een training eruit</h2>
+              <p className="mt-2 text-sm leading-relaxed text-neutral-600">{guide.session}</p>
+            </section>
+          )}
 
           {groups.map(([category, list]) => (
             <section key={category} className="mt-10">
@@ -86,6 +115,12 @@ export default async function AgeGroupExercisesPage({ params }: AgeGroupPageProp
               </div>
             </section>
           ))}
+
+          {guide && (
+            <div className="mt-12 max-w-2xl">
+              <FaqList items={guide.faq} />
+            </div>
+          )}
 
           <div className="mt-12 rounded-2xl bg-neutral-50 p-5">
             <h2 className="font-semibold text-neutral-900">Ook handig voor {group.format}</h2>

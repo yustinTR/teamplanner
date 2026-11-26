@@ -21,7 +21,7 @@ import { AuthRedirect } from "@/components/molecules/AuthRedirect";
 export const metadata: Metadata = {
   title: "MyTeamPlanner — Gratis teamplanner voor amateurvoetbal",
   description:
-    "De gratis app voor amateurvoetbalteams. Beheer wedstrijden, opstellingen, beschikbaarheid en evenementen. Makkelijker dan WhatsApp, speciaal voor coaches en spelers.",
+    "De gratis app voor amateurvoetbalteams: wedstrijden, opstellingen, beschikbaarheid en trainingen op één plek. Makkelijker dan WhatsApp voor coach en spelers.",
   alternates: {
     canonical: "https://www.myteamplanner.nl",
   },

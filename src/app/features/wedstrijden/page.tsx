@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     title: "Wedstrijden plannen — gratis voetbal team app",
     description: "Wedstrijden plannen en bijhouden voor je amateurvoetbalteam. Importeer van voetbal.nl, houd scores bij.",
     url: "https://www.myteamplanner.nl/features/wedstrijden",
+    images: [{ url: "/api/og", width: 1200, height: 630 }],
   },
 };
 

@@ -8,7 +8,7 @@ import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Aanwezigheid app voor je voetbalteam — gratis",
   description:
-    "Aanwezigheid en beschikbaarheid bijhouden voor je voetbalteam zonder WhatsApp-chaos. Spelers geven met één tik aan of ze er zijn, jij ziet direct wie je kunt opstellen. Gratis.",
+    "Beschikbaarheid bijhouden voor je voetbalteam zonder WhatsApp-chaos. Spelers geven met één tik aan of ze er zijn, jij ziet wie je kunt opstellen.",
   keywords: [
     "aanwezigheid app",
     "aanwezigheid bijhouden voetbal",
@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     title: "Aanwezigheid app voor je voetbalteam — gratis",
     description: "Beschikbaarheid bijhouden voor je voetbalteam zonder WhatsApp-chaos. Spelers geven met één tik aan of ze er zijn.",
     url: "https://www.myteamplanner.nl/features/beschikbaarheid",
+    images: [{ url: "/api/og", width: 1200, height: 630 }],
   },
 };
 

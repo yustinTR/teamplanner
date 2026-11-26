@@ -164,3 +164,19 @@ The exercise library is now public and indexable at `/voetbaloefeningen` (79 exe
 ## [2026-11-10] refactor | Calendar subscription on the follow link
 Pages touched: [[growth-and-seo]], [[web-android-parity]]
 Parents can subscribe to the team's matches from the follow page (`.ics` feed, Apple, Google or copied link). Live on web; nothing owed on Android because the follow page is web-only. `calendar_subscribe` added to the GTM import file; the container still has to be re-imported for it.
+
+## [2026-11-10] refactor | Reminder for players who have not answered
+Pages touched: [[growth-and-seo]], [[web-android-parity]]
+Coaches can share one ready-made reminder naming the players who have not answered for an upcoming match, with a link to the match. Live on web; Android owes the same button. `availability_reminder` added to the GTM import file; the container still has to be re-imported, together with `calendar_subscribe`.
+
+## [2026-11-11] refactor | GTM version 6
+Pages touched: [[growth-and-seo]]
+GTM import with `calendar_subscribe` and `availability_reminder` merged (only the "App events (GA4)" trigger changed) and published as container version 6 at Yustin's request.
+
+## [2026-11-20] refactor | Second Android tester
+Pages touched: [[native-app]]
+A second tester was added straight to the Google Group at Yustin's request and emailed the opt-in steps: 2 of the 12 needed for production access.
+
+## [2026-11-26] refactor | SEO check
+Pages touched: [[growth-and-seo]]
+Search Console reading for 28 days: 107 clicks and 6,770 impressions, four times the clicks of 9 November. Only 28 pages indexed; 98 new exercise, age-group and format pages were crawled but not indexed, most likely because they are thin.

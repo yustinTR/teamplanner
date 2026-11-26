@@ -6,16 +6,17 @@ import { Calendar, Users, ClipboardList, Dumbbell, ArrowRight, Check } from "luc
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Voetbal opstelling maken — gratis online tool",
+  title: "Opstelling maken voor voetbal — gratis app",
   description:
-    "Voetbalopstelling maken met drag & drop en direct delen met je team. Formaties voor 11, 8, 7 en 6 tegen 6, wissels met eerlijke speeltijd. Gratis.",
+    "Opstelling maken voor je voetbalteam: sleep spelers op het veld, plan wissels met eerlijke speeltijd en deel de opstelling. Voor 11, 8 en 6 tegen 6.",
   alternates: {
     canonical: "https://www.myteamplanner.nl/features/opstellingen",
   },
   openGraph: {
-    title: "Voetbal opstelling maken — gratis online tool",
+    title: "Opstelling maken voor voetbal — gratis app",
     description: "Voetbalopstelling maken met drag & drop en direct delen met je team. Formaties voor 11, 8, 7 en 6 tegen 6.",
     url: "https://www.myteamplanner.nl/features/opstellingen",
+    images: [{ url: "/api/og", width: 1200, height: 630 }],
   },
 };
 

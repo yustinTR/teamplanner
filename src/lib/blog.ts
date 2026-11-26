@@ -34,7 +34,7 @@ export const blogPosts: BlogPost[] = [
     slug: "opstelling-7-tegen-7-voetbal",
     title: "Opstelling 7 tegen 7: formaties en tips",
     description:
-      "Welke formaties werken het beste bij 7 tegen 7? Van 2-3-1 tot 3-2-1 — de beste opstellingen voor 7x7-competities, toernooien en G-voetbal, met praktische tips voor coaches.",
+      "Welke formatie werkt het best bij 7 tegen 7? Van 2-3-1 tot 3-2-1: de beste opstellingen voor 7x7-competities, toernooien en G-voetbal, met tips.",
     date: "2026-02-28",
     readingTime: "5 min",
     featureLink: "/features/opstellingen",
@@ -282,7 +282,7 @@ export const blogPosts: BlogPost[] = [
     slug: "voetbal-training-oefeningen",
     title: "Voetbal training oefeningen voor de jeugd (+ thuis)",
     description:
-      "Vijf voetbaloefeningen voor de jeugdtraining, drie die je thuis kunt doen, en een bibliotheek met 79 oefeningen gefilterd op niveau en thema. Van warming-up tot partijvorm.",
+      "Vijf voetbaloefeningen voor de jeugdtraining, drie om thuis te doen en 79 gratis oefeningen op niveau en thema. Van warming-up tot partijvorm.",
     date: "2026-02-05",
     readingTime: "6 min",
     featureLink: "/features/trainingen",
@@ -398,7 +398,7 @@ export const blogPosts: BlogPost[] = [
     slug: "app-voetbaltrainer",
     title: "Voetbaltrainer app: de beste apps voor coaches (2026)",
     description:
-      "Op zoek naar een voetbaltrainer app of voetbal coach app? Een vergelijking van de beste apps voor amateurtrainers: opstellingen, wisselschema's, aanwezigheid en trainingen.",
+      "De beste voetbaltrainer apps voor amateurcoaches vergeleken: opstellingen, wisselschema's, aanwezigheid en trainingen. Welke past bij jouw team?",
     date: "2026-03-10",
     readingTime: "5 min",
     featureLink: "/register",
@@ -615,7 +615,7 @@ export const blogPosts: BlogPost[] = [
     slug: "beste-voetbal-team-app",
     title: "De beste gratis team app voor amateurvoetbal (2026)",
     description:
-      "Op zoek naar een gratis voetbal team app? Vergelijk de populairste apps voor amateurvoetbal: van beschikbaarheid en opstellingen tot communicatie en wedstrijdbeheer.",
+      "Gratis voetbal team app gezocht? Vergelijk de populairste apps voor amateurvoetbal op beschikbaarheid, opstellingen, communicatie en wedstrijden.",
     date: "2026-04-10",
     readingTime: "6 min",
     featureLink: "/features/beschikbaarheid",
@@ -671,7 +671,7 @@ export const blogPosts: BlogPost[] = [
     slug: "opstelling-maken-voetbal",
     title: "Voetbal opstelling maken en delen (gratis online)",
     description:
-      "Maak je voetbal opstelling online: kies een formatie, sleep spelers op het veld en deel de opstelling als afbeelding in de groepsapp. Gratis, voor 11 tegen 11 en kleinere vormen.",
+      "Opstelling maken voor voetbal: kies een formatie, sleep spelers op het veld en deel de opstelling in de groepsapp. Gratis, voor 11, 8 en 6 tegen 6.",
     date: "2026-04-10",
     readingTime: "5 min",
     featureLink: "/features/opstellingen",
@@ -789,9 +789,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "speelvormen-jeugdvoetbal-knvb",
-    title: "Speelvormen jeugdvoetbal: 6 tegen 6, 8 tegen 8 en 11 tegen 11",
+    title: "Speelvormen jeugdvoetbal KNVB: 6, 8 en 11 tegen 11",
     description:
-      "Welke speelvorm hoort bij welke leeftijd? Het overzicht van de KNVB-speelvormen voor de jeugd: aantal spelers, speeltijd en veld voor JO8 tot en met JO13, met opstellingen en wisselschema's per vorm.",
+      "Welke speelvorm hoort bij welke leeftijd? De KNVB-speelvormen voor JO8 tot en met JO13: spelers, speeltijd en veld, met opstellingen per vorm.",
     date: "2026-11-09",
     readingTime: "4 min",
     featureLink: "/features/opstellingen",
